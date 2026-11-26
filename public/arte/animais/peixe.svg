@@ -1,5 +1,110 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M16.4063 5.86579C13.7196 5.86579 12.6138 8.38265 12.5642 10.6875H11.6562C7.71325 10.6875 4.386 13.3238 3.34101 16.93C3.24997 16.9043 3.15393 16.8906 3.05469 16.8906C2.4722 16.8906 2 17.3628 2 17.9453C2 18.4103 2.30089 18.805 2.71858 18.9453C2.30089 19.0856 2 19.4803 2 19.9453C2 20.5278 2.4722 21 3.05469 21C3.08932 21 3.12355 20.9983 3.15732 20.9951C3.92819 24.986 7.44024 28 11.6563 28H13.4398C13.476 28.965 13.9493 29.9973 15.071 29.9973H17.2755C17.3817 30.0155 17.5836 29.9508 17.5411 29.5463C17.4984 29.1401 17.31 28.3105 16.3079 28H16.3438C20.7284 28 24.3516 24.7401 24.9219 20.5117V24.688C24.9219 26.9377 29.8438 29.3129 29.8438 27.1254V22.6252C29.8438 21.42 27.8051 19.365 26.5403 19.3439C27.8051 19.3227 29.8438 17.2678 29.8438 16.0625V11.5623C29.8438 9.37484 24.9219 11.75 24.9219 13.9998V18.1758C24.4203 14.4568 21.5569 11.4869 17.8911 10.8254C21.509 10.5504 22.1007 8.05045 22.2188 6.92694C22.3188 5.97513 21.8438 5.82292 21.5938 5.86579H16.4063Z" fill="#00A6ED"/>
-<path d="M11.7261 13.8039C11.9035 13.5922 12.2189 13.5644 12.4305 13.7418C15.4796 16.2969 15.6411 20.7905 12.4726 24.1405C12.2829 24.3411 11.9664 24.3499 11.7658 24.1601C11.5652 23.9704 11.5564 23.6539 11.7461 23.4533C14.5777 20.4595 14.3329 16.6406 11.7882 14.5082C11.5766 14.3309 11.5488 14.0155 11.7261 13.8039Z" fill="#0074BA"/>
-<path d="M9.07812 17.5C9.07812 17.8365 8.8053 18.1094 8.46875 18.1094C8.1322 18.1094 7.85938 17.8365 7.85938 17.5C7.85938 17.1635 8.1322 16.8906 8.46875 16.8906C8.8053 16.8906 9.07812 17.1635 9.07812 17.5Z" fill="#1C1C1C"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="peixe-corpo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffb04a"/>
+      <stop offset="0.55" stop-color="#f57a1c"/>
+      <stop offset="1" stop-color="#d4560e"/>
+    </linearGradient>
+    <linearGradient id="peixe-nadadeira" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffa040"/>
+      <stop offset="1" stop-color="#e2620f"/>
+    </linearGradient>
+    <linearGradient id="peixe-faixa" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e3e8ef"/>
+    </linearGradient>
+    <linearGradient id="peixe-anemona" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c58ae0"/>
+      <stop offset="1" stop-color="#8a4fb0"/>
+    </linearGradient>
+    <clipPath id="peixe-clip-corpo">
+      <path d="M34 106 C34 74 68 50 110 48 C150 46 180 64 202 86 L202 124 C180 148 150 164 110 162 C68 160 34 138 34 106 Z"/>
+    </clipPath>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="150" cy="237" rx="80" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="anemona" stroke-linejoin="round" stroke-linecap="round" fill="none">
+    <g stroke="#6a3388" stroke-width="12">
+      <path d="M134 226 C122 214 120 198 126 186"/><path d="M146 222 C138 204 140 188 148 176"/><path d="M160 220 C156 202 160 186 170 176"/><path d="M174 220 C174 202 180 188 192 180"/><path d="M188 222 C192 206 202 194 214 190"/><path d="M200 226 C208 214 220 208 230 208"/><path d="M152 224 C148 208 132 200 118 202"/>
+    </g>
+    <g stroke="url(#peixe-anemona)" stroke-width="7">
+      <path d="M134 226 C122 214 120 198 126 186"/><path d="M146 222 C138 204 140 188 148 176"/><path d="M160 220 C156 202 160 186 170 176"/><path d="M174 220 C174 202 180 188 192 180"/><path d="M188 222 C192 206 202 194 214 190"/><path d="M200 226 C208 214 220 208 230 208"/><path d="M152 224 C148 208 132 200 118 202"/>
+    </g>
+    <g fill="#f6c6f0" stroke="#6a3388" stroke-width="2">
+      <circle cx="126" cy="185" r="5.5"/><circle cx="148" cy="175" r="5.5"/><circle cx="170" cy="175" r="5.5"/><circle cx="192" cy="179" r="5.5"/><circle cx="214" cy="190" r="5.5"/><circle cx="230" cy="208" r="5.5"/><circle cx="117" cy="202" r="5.5"/>
+    </g>
+    <g fill="#ffffff" stroke="none" opacity="0.8">
+      <circle cx="124.5" cy="183.5" r="1.8"/><circle cx="146.5" cy="173.5" r="1.8"/><circle cx="168.5" cy="173.5" r="1.8"/><circle cx="190.5" cy="177.5" r="1.8"/><circle cx="212.5" cy="188.5" r="1.8"/><circle cx="228.5" cy="206.5" r="1.8"/><circle cx="115.5" cy="200.5" r="1.8"/>
+    </g>
+    <path d="M124 236 C124 222 142 216 168 216 C196 216 214 222 214 236 Z" fill="url(#peixe-anemona)" stroke="#6a3388" stroke-width="2.5"/>
+    <path d="M138 224 Q160 218 186 220" stroke="#e2b8f2" stroke-width="2.5" opacity="0.9"/>
+    <path d="M146 232 l2 -6 M164 233 l1 -7 M184 233 l-1 -7 M200 233 l-2 -6" stroke="#6a3388" stroke-width="1.5" opacity="0.7"/>
+  </g>
+
+  <g id="nadadeiras-de-tras" stroke-linejoin="round" stroke-linecap="round" fill="url(#peixe-nadadeira)" stroke="#2a1a14" stroke-width="5">
+    <!-- dorsal em duas partes (espinhosa e mole) -->
+    <path d="M80 66 C84 40 108 30 126 44 C138 30 170 34 188 68 L198 90 L82 76 Z"/>
+    <path d="M96 60 l4 -16 M108 56 l2 -16 M148 56 l2 -12 M162 62 l4 -14 M174 72 l5 -12" stroke="#c9500c" stroke-width="1.6" fill="none"/>
+    <!-- anal -->
+    <path d="M146 148 C152 170 172 178 186 170 C192 160 192 146 188 134 Z"/>
+    <path d="M156 156 l8 10 M168 152 l8 12 M178 146 l6 14" stroke="#c9500c" stroke-width="1.5" fill="none"/>
+    <!-- pélvica -->
+    <path d="M86 150 C82 166 88 178 98 180 C104 172 106 160 102 150 Z"/>
+    <!-- cauda arredondada -->
+    <path d="M196 94 C212 72 236 66 246 75 C240 94 240 116 246 135 C236 144 212 138 196 116 Z"/>
+    <path d="M206 100 L234 84 M208 106 L236 104 M206 112 L234 124" stroke="#c9500c" stroke-width="1.6" fill="none"/>
+    <path d="M208 94 Q220 82 234 80" stroke="#ffd29a" stroke-width="2.5" fill="none" opacity="0.9"/>
+  </g>
+
+  <g id="corpo" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M34 106 C34 74 68 50 110 48 C150 46 180 64 202 86 L202 124 C180 148 150 164 110 162 C68 160 34 138 34 106 Z"
+          fill="url(#peixe-corpo)" stroke="#a8410a" stroke-width="2.5"/>
+    <!-- escamas -->
+    <g clip-path="url(#peixe-clip-corpo)" fill="none" stroke="#d4600f" stroke-width="1.4" opacity="0.6">
+      <path d="M116 84 q4 4 8 0 M118 100 q4 4 8 0 M116 116 q4 4 8 0 M118 132 q4 4 8 0"/>
+      <path d="M166 82 q4 4 8 0 M168 98 q4 4 8 0 M166 114 q4 4 8 0 M168 130 q4 4 8 0"/>
+    </g>
+    <!-- faixas brancas contornadas de preto -->
+    <g clip-path="url(#peixe-clip-corpo)" fill="url(#peixe-faixa)" stroke="#2a1a14" stroke-width="5">
+      <path d="M86 40 C76 72 76 128 88 172 L108 172 C98 128 98 72 106 40 Z"/>
+      <path d="M136 40 C140 66 128 90 126 106 C126 120 138 144 144 172 L166 172 C160 144 150 122 150 106 C152 92 160 66 158 40 Z"/>
+      <path d="M184 60 C180 86 180 126 186 154 L210 154 L210 60 Z"/>
+    </g>
+    <path d="M60 70 Q84 54 110 54" fill="none" stroke="#ffd29a" stroke-width="4" opacity="0.9"/>
+    <path d="M34 106 C34 74 68 50 110 48 C150 46 180 64 202 86 L202 124 C180 148 150 164 110 162 C68 160 34 138 34 106 Z"
+          fill="none" stroke="#a8410a" stroke-width="2.5"/>
+    <!-- opérculo (brânquia) -->
+    <path d="M78 80 C70 96 70 122 80 140" fill="none" stroke="#c9500c" stroke-width="2"/>
+  </g>
+
+  <g id="peitoral" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M110 112 C126 108 140 116 146 130 C140 142 124 144 112 132 Z" fill="url(#peixe-nadadeira)" stroke="#2a1a14" stroke-width="5"/>
+    <path d="M116 118 L138 127 M115 125 L134 133" stroke="#c9500c" stroke-width="1.4" fill="none"/>
+    <path d="M116 116 Q126 114 134 118" stroke="#ffd29a" stroke-width="2" fill="none"/>
+  </g>
+
+  <g id="rosto" stroke-linejoin="round" stroke-linecap="round">
+    <!-- boquinha sorrindo -->
+    <path d="M36 112 Q38 108 42 110" fill="none" stroke="#a8410a" stroke-width="2"/>
+    <path d="M38 114 Q46 122 54 116" fill="none" stroke="#7a2e08" stroke-width="2.2"/>
+    <ellipse cx="58" cy="122" rx="7.5" ry="4.8" fill="#f4908a" opacity="0.55"/>
+    <path d="M46 84 Q56 76 66 76" fill="none" stroke="#ffe0b8" stroke-width="2.5" opacity="0.9"/>
+  </g>
+
+  <g id="olhos">
+    <ellipse cx="62" cy="96" rx="13" ry="14" fill="#f08a2a" stroke="#2a1a14" stroke-width="2"/>
+    <ellipse cx="62" cy="96.5" rx="9" ry="10.5" fill="#2b1d16"/>
+    <circle cx="58.5" cy="92" r="4.2" fill="#fff"/>
+    <circle cx="66" cy="101" r="2" fill="#fff"/>
+  </g>
+
+  <g id="bolhas" fill="#e6f6ff" fill-opacity="0.5" stroke="#7cc4ea" stroke-width="2">
+    <circle cx="22" cy="86" r="6"/>
+    <circle cx="30" cy="62" r="4"/>
+    <circle cx="20" cy="44" r="7"/>
+    <path d="M18 82 a4 4 0 0 1 3 -3 M16 40 a5 5 0 0 1 4 -3" stroke="#ffffff" fill="none"/>
+  </g>
 </svg>

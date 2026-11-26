@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import * as THREE from "three";
-import { arteDoAnimal, type TerritorioId } from "@/content/animais";
+import { arteDoAnimal, type Animal, type TerritorioId } from "@/content/animais";
 import { animaisDaFase, animaisDoTerritorio, chaveFase, faseDesbloqueada, JOGOS, TERRITORIOS } from "@/content/jornada";
 import type { Progress } from "@/lib/progress";
 import { speak } from "@/lib/speech";
@@ -183,6 +183,23 @@ function Placa({
   );
 }
 
+/** Um bicho diferente de capa para cada fase do bioma (sem repetir enquanto houver bichos). */
+const capasCache = new Map<string, (Animal | undefined)[]>();
+function capasDoTerritorio(id: TerritorioId) {
+  const pronto = capasCache.get(id);
+  if (pronto) return pronto;
+  const t = TERRITORIOS.find((x) => x.id === id)!;
+  const usados = new Set<string>();
+  const capas = t.fases.map((f) => {
+    const pool = animaisDaFase(t, f);
+    const escolhido = pool.find((a) => !usados.has(a.id)) ?? pool[usados.size % Math.max(1, pool.length)];
+    if (escolhido) usados.add(escolhido.id);
+    return escolhido;
+  });
+  capasCache.set(id, capas);
+  return capas;
+}
+
 function NoFase({ territorio, fase, progresso, atual }: { territorio: TerritorioId; fase: number; progresso: Progress; atual: boolean }) {
   const router = useRouter();
   const [balanca, setBalanca] = useState(false);
@@ -191,8 +208,7 @@ function NoFase({ territorio, fase, progresso, atual }: { territorio: Territorio
   const chave = chaveFase(territorio, fase);
   const resultado = progresso.fases[chave];
   const livre = faseDesbloqueada(progresso.fases, territorio, fase);
-  const doFase = animaisDaFase(t, f);
-  const capa = doFase.find((a) => a.silabas.join("·") === f.exemplo) ?? doFase[0];
+  const capa = capasDoTerritorio(territorio)[fase];
 
   return (
     <motion.button
@@ -223,17 +239,27 @@ function NoFase({ territorio, fase, progresso, atual }: { territorio: Territorio
       style={{ transformOrigin: "bottom center" }}
     >
       {atual && (
+        // mãozinha apontando para a próxima fase (não depende de leitura)
         <motion.span
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={MOLA_TOQUE}
-          className="mb-1 rounded-full bg-amarelo px-2.5 py-0.5 text-[11px] font-extrabold tracking-[0.1em] text-roxo shadow-[0_2px_0_var(--color-amarelo-escuro)]"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: [0, 6, 0] }}
+          transition={{ y: { duration: 0.9, repeat: Infinity, ease: "easeInOut" }, opacity: MOLA_TOQUE }}
+          className="pointer-events-none mb-0.5"
         >
-          ▶ JOGAR
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/arte/ui/mao.svg" alt="" className="size-9 drop-shadow" draggable={false} />
         </motion.span>
       )}
+      {atual && (
+        <motion.span
+          aria-hidden
+          className="pointer-events-none absolute bottom-0 left-1/2 size-14 -translate-x-1/2 rounded-full ring-4 ring-amarelo"
+          animate={{ scale: [1, 1.45], opacity: [0.9, 0] }}
+          transition={{ duration: 1.4, repeat: Infinity, ease: "easeOut" }}
+        />
+      )}
       <span
-        className={`relative grid size-14 place-items-center rounded-full border-[3px] shadow-flutuante ${
+        className={`relative grid size-14 place-items-center rounded-full border-[3px] shadow-flutuante ${!livre ? "opacity-60" : ""} ${
           resultado ? "border-coral bg-branco" : atual ? "border-amarelo bg-branco" : livre ? "border-roxo bg-branco" : "border-bloqueado bg-[#efedf5]"
         }`}
       >

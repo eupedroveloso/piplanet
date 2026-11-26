@@ -1,16 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
   <defs>
     <linearGradient id="jabuti-casco" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#7a6248"/>
-      <stop offset="0.5" stop-color="#524032"/>
-      <stop offset="1" stop-color="#2a2019"/>
+      <stop offset="0" stop-color="#8a7052"/>
+      <stop offset="0.5" stop-color="#5e4a39"/>
+      <stop offset="1" stop-color="#33271f"/>
     </linearGradient>
     <radialGradient id="jabuti-areola" cx="0.4" cy="0.35" r="0.75">
       <stop offset="0" stop-color="#ffd977"/>
       <stop offset="1" stop-color="#dc9a2c"/>
     </radialGradient>
     <linearGradient id="jabuti-pele" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#93806f"/>
+      <stop offset="0" stop-color="#a08c7a"/>
       <stop offset="0.5" stop-color="#66554a"/>
       <stop offset="1" stop-color="#3b2f28"/>
     </linearGradient>

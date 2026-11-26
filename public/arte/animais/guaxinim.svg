@@ -1,14 +1,146 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M4.00244 9.57V8.34C4.00244 7.6 4.60244 7 5.34244 7H6.57244C8.25418 7 9.87413 7.63554 11.1089 8.76564C12.5445 7.9231 14.2154 7.43994 16.0024 7.43994C17.7917 7.43994 19.4646 7.92431 20.8991 8.77111C22.1335 7.63449 23.7521 7 25.4325 7H26.6625C27.4025 7 28.0025 7.6 28.0025 8.34V9.57C28.0025 11.2867 27.3402 12.939 26.1657 14.1829L29.3024 17.9199C30.0524 18.7999 30.2124 20.0299 29.7424 21.0899C29.0994 22.5265 28.2378 23.844 27.1999 25H4.80152C3.7652 23.8463 2.90475 22.5322 2.26244 21.0999C1.79244 20.0499 1.96244 18.8199 2.70244 17.9299L5.84122 14.1851C4.66544 12.9409 4.00244 11.2877 4.00244 9.57Z" fill="#9B9B9B"/>
-<path d="M23.3024 10.7799C23.3724 10.8499 23.4424 10.9299 23.5024 11.0099L25.128 12.9466C25.9356 12.0173 26.3924 10.8194 26.3924 9.58V8.96C26.3924 8.77 26.2424 8.62 26.0524 8.62H25.4324C24.2634 8.62 23.1454 9.01316 22.2461 9.73114C22.6243 10.0529 22.9775 10.4036 23.3024 10.7799Z" fill="#636363"/>
-<path d="M9.75652 9.72301C8.85554 9.00993 7.73216 8.60999 6.57243 8.60999H5.95243C5.76243 8.60999 5.61243 8.75999 5.61243 8.94999V9.56999C5.61243 10.8102 6.06983 12.0089 6.88605 12.9385L8.50244 11.0099C8.53244 10.9699 8.56494 10.9299 8.59744 10.8899C8.62994 10.8499 8.66244 10.8099 8.69244 10.7699C9.02009 10.3944 9.37587 10.0443 9.75652 9.72301Z" fill="#636363"/>
-<path d="M11.7824 15.5H11.7024C10.5924 15.5 9.55242 15.99 8.83242 16.83L6.24242 19.81C5.01242 21.23 4.47242 23.09 4.75242 24.94C7.30482 27.8211 10.9509 29.7114 15.0489 29.9692C15.0998 29.9736 15.151 29.9772 15.2024 29.98C15.2631 29.9823 15.3238 29.9845 15.3844 29.9867C15.4137 29.9879 15.4431 29.989 15.4724 29.99C15.6516 29.9959 15.8292 30 16.0024 30C16.1832 30 16.3687 29.9952 16.5524 29.9889V29.99C16.6227 29.9875 16.6928 29.9846 16.7628 29.9812C16.7727 29.9808 16.7826 29.9804 16.7924 29.98C16.8164 29.9788 16.8403 29.9774 16.8642 29.9759C21.0077 29.7457 24.6968 27.8473 27.2724 24.94C27.5524 23.09 27.0124 21.23 25.7824 19.81L23.1924 16.83C22.4724 15.99 21.4324 15.5 20.3224 15.5H20.2424C18.2124 15.54 16.5624 17.24 16.5524 19.3V21.4H15.4724V19.3C15.4624 17.24 13.8124 15.54 11.7824 15.5Z" fill="#D3D3D3"/>
-<path d="M10.0624 17.88C10.4624 17.4 11.0724 17.1 11.7524 17.11C12.9224 17.13 13.8524 18.12 13.8524 19.3V21.4346C12.0322 21.6832 10.6224 23.2438 10.6224 25.14C10.6224 27.678 12.5826 29.7869 15.1066 29.9739C14.6836 29.9491 14.2653 29.9069 13.8524 29.848V29.85C12.126 29.606 10.4876 29.0628 9.00336 28.278C8.82761 28.1854 8.65393 28.0893 8.48242 27.99V27.9838C6.0495 26.451 5.55123 23.0722 7.46243 20.87L10.0624 17.88Z" fill="#636363"/>
-<path d="M15.2673 29.9824C15.5008 29.9936 15.7356 29.9995 15.9717 30C15.7421 29.9993 15.505 29.9912 15.2673 29.9824Z" fill="#636363"/>
-<path d="M16.0345 30C16.2631 29.9995 16.4908 29.9937 16.7172 29.9829C16.4913 29.9914 16.2595 29.9993 16.0345 30Z" fill="#636363"/>
-<path d="M16.9242 29.9716C17.3449 29.9457 17.7612 29.9024 18.1724 29.8429V29.85C20.0124 29.59 21.7524 28.99 23.3124 28.12C25.9424 26.66 26.5324 23.14 24.5624 20.87L21.9624 17.88C21.5624 17.4 20.9524 17.1 20.2724 17.11C19.1024 17.13 18.1724 18.12 18.1724 19.3V21.4387C19.9853 21.7008 21.3724 23.2626 21.3724 25.14C21.3724 27.6758 19.4308 29.7768 16.9242 29.9716Z" fill="#636363"/>
-<path d="M12 18C11.4477 18 11 18.4477 11 19V20C11 20.5523 11.4477 21 12 21C12.5523 21 13 20.5523 13 20V19C13 18.4477 12.5523 18 12 18Z" fill="#212121"/>
-<path d="M20 18C19.4477 18 19 18.4477 19 19V20C19 20.5523 19.4477 21 20 21C20.5523 21 21 20.5523 21 20V19C21 18.4477 20.5523 18 20 18Z" fill="#212121"/>
-<path d="M17.5024 27.6801C16.9024 27.6801 16.3724 27.4201 16.0024 27.0001C15.6324 27.4201 15.1024 27.6801 14.5024 27.6801C13.4024 27.6801 12.5024 26.7801 12.5024 25.6801C12.5024 25.4001 12.7224 25.1801 13.0024 25.1801C13.2824 25.1801 13.5024 25.4001 13.5024 25.6801C13.5024 26.2301 13.9524 26.6801 14.5024 26.6801C15.0524 26.6801 15.5024 26.2301 15.5024 25.6801C15.5024 25.4001 15.7224 25.1801 16.0024 25.1801C16.2824 25.1801 16.5024 25.4001 16.5024 25.6801C16.5024 26.2301 16.9524 26.6801 17.5024 26.6801C18.0524 26.6801 18.5024 26.2301 18.5024 25.6801C18.5024 25.4001 18.7224 25.1801 19.0024 25.1801C19.2824 25.1801 19.5024 25.4001 19.5024 25.6801C19.5024 26.7801 18.6024 27.6801 17.5024 27.6801Z" fill="#212121"/>
-<path d="M15.3225 24.32L14.0725 23.06C13.4625 22.45 13.8925 21.4 14.7525 21.4H17.2525C18.1125 21.4 18.5425 22.45 17.9325 23.06L16.6825 24.32C16.3125 24.7 15.7025 24.7 15.3225 24.32Z" fill="#212121"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="guaxinim-pelo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d2cdc6"/>
+      <stop offset="0.55" stop-color="#9e9890"/>
+      <stop offset="1" stop-color="#716b64"/>
+    </linearGradient>
+    <linearGradient id="guaxinim-pelo2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8f8981"/>
+      <stop offset="1" stop-color="#635d56"/>
+    </linearGradient>
+    <radialGradient id="guaxinim-cabeca" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#dcd7d0"/>
+      <stop offset="0.65" stop-color="#a7a199"/>
+      <stop offset="1" stop-color="#7c766f"/>
+    </radialGradient>
+    <linearGradient id="guaxinim-branco" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e4e0da"/>
+    </linearGradient>
+    <linearGradient id="guaxinim-preto" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4a4542"/>
+      <stop offset="1" stop-color="#221e1c"/>
+    </linearGradient>
+    <linearGradient id="guaxinim-agua" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#bfe6f7"/>
+      <stop offset="0.6" stop-color="#7cc6ea"/>
+      <stop offset="1" stop-color="#4fa3d6"/>
+    </linearGradient>
+    <radialGradient id="guaxinim-iris" cx="0.4" cy="0.35" r="0.7">
+      <stop offset="0" stop-color="#e2cfae"/>
+      <stop offset="1" stop-color="#a88a62"/>
+    </radialGradient>
+    <clipPath id="guaxinim-clip-cauda">
+      <path d="M186 192 C212 194 224 178 226 156 C228 136 222 118 212 102 C238 98 254 126 252 158 C250 192 230 216 196 218 Z"/>
+    </clipPath>
+    <clipPath id="guaxinim-clip-cabeca">
+      <path d="M86 50 C114 50 128 68 128 90 C128 100 134 106 130 112 C122 126 104 134 86 134 C68 134 50 126 42 112 C38 106 44 100 44 90 C44 68 58 50 86 50 Z"/>
+    </clipPath>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="168" cy="237" rx="76" ry="7" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="poca" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M26 228 C26 216 54 212 84 212 C114 212 140 218 138 228 C136 238 110 240 82 240 C52 240 26 238 26 228 Z" fill="url(#guaxinim-agua)" stroke="#3a86b8" stroke-width="2.5"/>
+    <path d="M40 222 Q62 216 88 217" fill="none" stroke="#ffffff" stroke-width="3" opacity="0.8"/>
+    <ellipse cx="120" cy="233" rx="8" ry="2" fill="#ffffff" opacity="0.6"/>
+  </g>
+
+  <g id="cauda" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M186 192 C212 194 224 178 226 156 C228 136 222 118 212 102 C238 98 254 126 252 158 C250 192 230 216 196 218 Z"
+          fill="url(#guaxinim-pelo)" stroke="#3e3a36" stroke-width="2.5"/>
+    <g clip-path="url(#guaxinim-clip-cauda)" fill="#2e2a27">
+      <path d="M212 237 L230 230 L199 170 L195 171 Z M248 217 L260 203 L203 166 L201 168 Z M269 183 L273 166 L206 157 L205 162 Z M274 147 L273 132 L206 143 L206 150 Z M268 113 L261 99 L201 131 L204 137 Z"/>
+    </g>
+    <path d="M214 100 C228 98 244 108 248 122 C236 120 226 116 216 108 Z" fill="#2e2a27"/>
+    <path d="M240 132 C244 152 240 172 230 190" fill="none" stroke="#f2efea" stroke-width="2.5" opacity="0.6"/>
+  </g>
+
+  <g id="patas-tras" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M176 154 C206 150 216 180 206 204 C202 214 196 220 190 222 L172 222 C172 210 170 198 166 190 C158 178 160 162 176 154 Z" fill="url(#guaxinim-pelo2)" stroke="#3e3a36" stroke-width="2.5"/>
+    <path d="M166 222 C166 214 198 214 200 222 C200 230 194 234 182 234 C170 234 166 230 166 222 Z" fill="#3a3532" stroke="#221e1c" stroke-width="2"/>
+    <path d="M174 228 v6 M181 229 v5 M188 228 v6" stroke="#6e6762" stroke-width="1.4"/>
+  </g>
+
+  <g id="corpo" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M96 126 C112 104 160 102 188 120 C210 134 214 170 200 192 C190 208 170 214 150 214 C126 214 104 204 96 184 C90 168 88 142 96 126 Z"
+          fill="url(#guaxinim-pelo)" stroke="#3e3a36" stroke-width="2.5"/>
+    <path d="M106 120 Q130 106 160 110" fill="none" stroke="#eeebe6" stroke-width="4" opacity="0.8"/>
+    <path d="M150 112 C168 116 178 126 186 140" fill="none" stroke="#6b665f" stroke-width="3" opacity="0.5"/>
+    <g fill="none" stroke="#6b665f" stroke-width="1.6" opacity="0.7">
+      <path d="M140 128 l4 5 M162 130 l4 5 M180 150 l3 5 M150 152 l4 5 M172 176 l3 5 M130 168 l4 5 M186 168 l3 5 M118 146 l4 5"/>
+    </g>
+    <g fill="none" stroke="#e8e4de" stroke-width="1.6" opacity="0.8">
+      <path d="M128 136 l3 5 M154 140 l3 5 M140 184 l3 5"/>
+    </g>
+    <!-- coxa traseira -->
+    <path d="M160 168 C172 150 200 152 206 176 C210 194 200 210 186 214" fill="none" stroke="#5f5953" stroke-width="2.2" opacity="0.8"/>
+    <path d="M170 164 Q186 156 198 166" fill="none" stroke="#e8e4de" stroke-width="2.5" opacity="0.7"/>
+  </g>
+
+  <g id="bracos" stroke-linejoin="round" stroke-linecap="round">
+    <!-- braço de lá -->
+    <path d="M130 158 C126 180 118 200 112 216 L96 214 C102 196 108 176 112 156 Z" fill="url(#guaxinim-pelo2)" stroke="#3e3a36" stroke-width="2.5"/>
+    <!-- braço de cá -->
+    <path d="M114 140 C106 166 92 190 80 212 L62 210 C72 188 84 162 92 136 Z" fill="url(#guaxinim-pelo)" stroke="#3e3a36" stroke-width="2.5"/>
+    <path d="M96 150 q-6 20 -18 42" fill="none" stroke="#eeebe6" stroke-width="2.5" opacity="0.8"/>
+    <!-- mãozinhas de dedos finos dentro da água -->
+    <g fill="#3a3532" stroke="#221e1c" stroke-width="1.8">
+      <path d="M58 208 C60 202 78 202 80 208 L80 218 L76 225 L74 218 L71 226 L68 218 L64 225 L62 217 L56 221 Z"/>
+      <path d="M94 212 C96 206 112 206 114 212 L114 220 L111 227 L109 220 L106 228 L103 220 L100 227 L98 219 L93 222 Z"/>
+    </g>
+    <!-- ondinhas em volta das mãos -->
+    <g fill="none" stroke="#ffffff" stroke-width="2" opacity="0.9">
+      <path d="M50 224 Q68 230 86 224 M90 226 Q104 232 120 226"/>
+    </g>
+    <g fill="none" stroke="#3a86b8" stroke-width="1.6" opacity="0.8">
+      <path d="M44 231 Q66 237 88 232 M92 234 Q108 238 126 232"/>
+    </g>
+    <g fill="#e7f6fd"><circle cx="52" cy="206" r="2.2"/><circle cx="86" cy="202" r="1.8"/><circle cx="120" cy="208" r="2"/></g>
+  </g>
+
+  <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
+    <!-- orelhas com borda branca -->
+    <path d="M52 72 C46 56 50 42 58 36 C68 40 76 50 78 60 Z" fill="url(#guaxinim-branco)" stroke="#3e3a36" stroke-width="2.5"/>
+    <path d="M56 64 C53 54 56 46 60 43 C66 47 70 53 71 59 Z" fill="#4a4542"/>
+    <path d="M120 72 C126 56 122 42 114 36 C104 40 96 50 94 60 Z" fill="url(#guaxinim-branco)" stroke="#3e3a36" stroke-width="2.5"/>
+    <path d="M116 64 C119 54 116 46 112 43 C106 47 102 53 101 59 Z" fill="#3a3532"/>
+    <!-- cabeça com bochechas peludas -->
+    <path d="M86 50 C114 50 128 68 128 90 C128 100 134 106 130 112 C122 126 104 134 86 134 C68 134 50 126 42 112 C38 106 44 100 44 90 C44 68 58 50 86 50 Z"
+          fill="url(#guaxinim-cabeca)" stroke="#3e3a36" stroke-width="2.5"/>
+    <g clip-path="url(#guaxinim-clip-cabeca)">
+      <!-- rosto branco -->
+      <path d="M36 92 C44 80 60 74 72 76 C80 77 84 82 86 86 C88 82 92 77 100 76 C112 74 128 80 136 92 L136 140 L36 140 Z" fill="url(#guaxinim-branco)"/>
+      <!-- faixa preta (máscara) -->
+      <path d="M86 84 C80 76 70 74 60 76 C48 80 40 90 38 104 C48 106 58 104 66 100 C74 96 80 96 86 100 C92 96 98 96 106 100 C114 104 124 106 134 104 C132 90 124 80 112 76 C102 74 92 76 86 84 Z" fill="url(#guaxinim-preto)"/>
+      <!-- listra escura na testa -->
+      <path d="M80 50 C82 62 84 74 86 84 C88 74 90 62 92 50 Z" fill="#5a544e"/>
+    </g>
+    <!-- sobrancelhas brancas -->
+    <path d="M56 74 Q66 66 78 72 M94 72 Q106 66 116 74" fill="none" stroke="#ffffff" stroke-width="4"/>
+    <path d="M52 66 Q60 54 76 52" fill="none" stroke="#f2efea" stroke-width="3" opacity="0.7"/>
+    <!-- focinho -->
+    <path d="M76 104 C76 98 96 98 96 104 L98 116 C98 124 92 128 86 128 C80 128 74 124 74 116 Z" fill="url(#guaxinim-branco)" stroke="#a49e96" stroke-width="1.6"/>
+    <path d="M78 112 C78 107 94 107 94 112 C94 117 90 120 86 120 C82 120 78 117 78 112 Z" fill="#221e1c"/>
+    <ellipse cx="83" cy="110.5" rx="3" ry="1.5" fill="#6e6762"/>
+    <path d="M86 120 v3 M80 125 Q86 129 92 125" fill="none" stroke="#3e3a36" stroke-width="1.8"/>
+    <g fill="none" stroke="#8f8981" stroke-width="1.2"><path d="M74 116 L58 114 M74 120 L58 122 M98 116 L114 114 M98 120 L114 122"/></g>
+    <ellipse cx="60" cy="116" rx="8" ry="5" fill="#f4908a" opacity="0.5"/>
+    <ellipse cx="112" cy="116" rx="8" ry="5" fill="#f4908a" opacity="0.5"/>
+  </g>
+
+  <g id="olhos">
+    <!-- íris clara para o olho aparecer sobre a máscara -->
+    <ellipse cx="68" cy="90" rx="11.5" ry="12.5" fill="url(#guaxinim-iris)" stroke="#f2efea" stroke-width="1.5"/>
+    <ellipse cx="104" cy="90" rx="11.5" ry="12.5" fill="url(#guaxinim-iris)" stroke="#f2efea" stroke-width="1.5"/>
+    <ellipse cx="68.5" cy="90.5" rx="8" ry="9.5" fill="#2b1d16"/>
+    <ellipse cx="104.5" cy="90.5" rx="8" ry="9.5" fill="#2b1d16"/>
+    <circle cx="65" cy="86" r="4.2" fill="#fff"/>
+    <circle cx="72.5" cy="95" r="2" fill="#fff"/>
+    <circle cx="101" cy="86" r="4.2" fill="#fff"/>
+    <circle cx="108.5" cy="95" r="2" fill="#fff"/>
+  </g>
 </svg>

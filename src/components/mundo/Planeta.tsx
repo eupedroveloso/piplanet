@@ -134,6 +134,14 @@ function Globo({
 }) {
   const controles = useRef<CameraControlsImpl>(null);
   const camera = useThree((s) => s.camera);
+  const tela = useThree((s) => s.size);
+  /** Distância em que o globo inteiro (com a atmosfera) cabe na tela, inclusive no celular em pé. */
+  const distInteiro = (() => {
+    const meiaV = (40 / 2) * (Math.PI / 180);
+    const meiaH = Math.atan(Math.tan(meiaV) * (tela.width / Math.max(1, tela.height)));
+    const raioVisivel = RAIO * 1.32; // globo + atmosfera + folga para as placas
+    return Math.max(22, raioVisivel / Math.sin(Math.min(meiaV, meiaH)));
+  })();
   const tocando = useRef(false);
   useEffect(() => {
     camRef.current = camera;
@@ -155,20 +163,17 @@ function Globo({
 
   // Abre mostrando o país atual
   useEffect(() => {
-    olharPara(atual, 22, false);
+    olharPara(atual, distInteiro, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Voo até o país escolhido (antes de entrar na ilha)
   useEffect(() => {
-    if (alvo) olharPara(alvo, 10.5, true);
+    if (alvo) olharPara(alvo, Math.max(10.5, distInteiro * 0.5), true);
      
   }, [alvo]);
 
-  // Giro bem lento quando ninguém está mexendo
-  useFrame((_, dt) => {
-    if (!alvo && !tocando.current) controles.current?.rotate(dt * 0.04, 0, false);
-  });
+  // O planeta fica parado: só gira quando a criança arrasta com o dedo.
 
   return (
     <>
@@ -176,7 +181,7 @@ function Globo({
         ref={controles}
         smoothTime={0.8}
         minDistance={10}
-        maxDistance={24}
+        maxDistance={Math.max(24, distInteiro + 2)}
         mouseButtons={{
           left: CameraControlsImpl.ACTION.ROTATE,
           middle: CameraControlsImpl.ACTION.NONE,

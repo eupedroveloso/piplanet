@@ -1,11 +1,150 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M4.61 13H3.39C3.18 13 3 12.82 3 12.61V10.64H5V12.61C5 12.82 4.82 13 4.61 13Z" fill="#D3D3D3"/>
-<path d="M16.64 7H20.5C25.75 7 30 11.25 30 16.5C30 21.75 25.75 26 20.5 26H10V18.97C7.75003 18.72 6.00003 16.82 6.00003 14.5V14H8.31003C9.00003 14 9.59003 13.59 9.85003 13L5.5 11L2.39648 6.04339C2.54151 5.90802 2.71977 5.80563 2.92003 5.75L10.06 3.8C11.05 3.53 12.07 3.61 12.97 3.99C13.2 3.41 13.77 3 14.43 3C15.3 3 16 3.7 16 4.57C16 5.15 15.68 5.66 15.2 5.93L15.61 6.49C15.86 6.81 16.24 7 16.64 7Z" fill="#A56953"/>
-<path d="M10 12.31C10 13.24 9.24 14 8.31 14H6L5 15L6.2549 16C6.87106 17.7498 8.53626 19 10.5 19C12.99 19 15 16.99 15 14.5V13.5C15 12.12 13.88 11 12.5 11H11.31C10.59 11 10 11.59 10 12.31Z" fill="#7D4533"/>
-<path d="M9.85 13C9.95 12.79 10 12.56 10 12.31V11.41C10 10.08 8.92 9.00005 7.59 9.00005H6.26C5.5 9.00005 4.81 8.54005 4.52 7.83005L4 6.55005L2 6.95005V7.46005C2 10.52 4.48 13 7.53 13H9.85Z" fill="#F3AD61"/>
-<path d="M2.44 6H3.33C3.78 6 4.1 6.44 3.97 6.86L3.75 7.55C3.52 8.28 2.92 8.8 2.2 8.95C2.07 8.47 2 7.98 2 7.46V6.95C2 6.58 2.17 6.23 2.44 6Z" fill="#1C1C1C"/>
-<path d="M7.5 6C7.22 6 7 6.22 7 6.5V7.25C7 7.53 7.22 7.75 7.5 7.75C7.78 7.75 8 7.53 8 7.25V6.5C8 6.22 7.78 6 7.5 6Z" fill="#1C1C1C"/>
-<path d="M6 14H5C4.45 14 4 14.45 4 15C4 15.55 4.45 16 5 16H6.2549C6.08978 15.5311 6 15.0263 6 14.5V14Z" fill="#1C1C1C"/>
-<path d="M27 23.43C25.11 24.63 22.77 24.89 20.66 24.12L10.06 20.28C10.05 20.28 10.04 20.27 10.03 20.27L9.99997 20.26C9.48997 20.08 8.93997 19.98 8.35997 20C5.97997 20.08 4.03997 22.03 3.99997 24.42C3.95997 26.94 5.98997 29 8.49997 29H21.43C24.51 29 27 26.51 27 23.43Z" fill="#533566"/>
-<path d="M14.43 5.31995C14.8442 5.31995 15.18 4.98416 15.18 4.56995C15.18 4.15573 14.8442 3.81995 14.43 3.81995C14.0158 3.81995 13.68 4.15573 13.68 4.56995C13.68 4.98416 14.0158 5.31995 14.43 5.31995Z" fill="#6D4534"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="castor-pelo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#cf9158"/>
+      <stop offset="0.55" stop-color="#a0623a"/>
+      <stop offset="1" stop-color="#6e3d1e"/>
+    </linearGradient>
+    <linearGradient id="castor-pelo2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a86a3e"/>
+      <stop offset="1" stop-color="#6a3a1c"/>
+    </linearGradient>
+    <radialGradient id="castor-cabeca" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#d69a62"/>
+      <stop offset="0.65" stop-color="#a6673c"/>
+      <stop offset="1" stop-color="#7a4424"/>
+    </radialGradient>
+    <linearGradient id="castor-barriga" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eac394"/>
+      <stop offset="1" stop-color="#c08a5a"/>
+    </linearGradient>
+    <linearGradient id="castor-cauda" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8a7a72"/>
+      <stop offset="0.55" stop-color="#5e4e48"/>
+      <stop offset="1" stop-color="#3e322e"/>
+    </linearGradient>
+    <linearGradient id="castor-dente" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffb35c"/>
+      <stop offset="1" stop-color="#e2731e"/>
+    </linearGradient>
+    <linearGradient id="castor-galho" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b98a5c"/>
+      <stop offset="1" stop-color="#7a5232"/>
+    </linearGradient>
+    <linearGradient id="castor-folha" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8fd58a"/>
+      <stop offset="1" stop-color="#3f9a5c"/>
+    </linearGradient>
+    <clipPath id="castor-clip-cauda">
+      <path d="M150 204 C170 188 222 186 240 198 C250 206 246 222 232 228 C210 236 170 232 150 222 Z"/>
+    </clipPath>
+    <clipPath id="castor-clip-corpo">
+      <path d="M108 112 C140 104 178 124 186 162 C194 200 180 230 140 232 C104 234 82 214 82 182 C82 150 86 120 108 112 Z"/>
+    </clipPath>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="146" cy="237" rx="100" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="cauda" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M150 204 C170 188 222 186 240 198 C250 206 246 222 232 228 C210 236 170 232 150 222 Z" fill="url(#castor-cauda)" stroke="#2e2420" stroke-width="2.5"/>
+    <!-- escamas cruzadas -->
+    <g clip-path="url(#castor-clip-cauda)" fill="none" stroke="#2e2420" stroke-width="1.4" opacity="0.7">
+      <path d="M150 230 L190 186 M162 234 L202 190 M174 236 L214 192 M186 238 L226 194 M198 238 L238 194 M210 238 L250 196 M222 238 L256 200 M140 224 L176 186"/>
+      <path d="M150 192 L196 236 M162 190 L208 236 M176 188 L222 236 M190 188 L236 234 M204 188 L250 232 M218 188 L256 224 M232 190 L256 214"/>
+    </g>
+    <path d="M176 198 Q206 192 232 200" fill="none" stroke="#b8aaa2" stroke-width="3" opacity="0.8"/>
+  </g>
+
+  <g id="pe-de-la" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M150 214 C162 210 176 214 178 224 C178 232 170 234 160 234 C148 234 144 222 150 214 Z" fill="url(#castor-pelo2)" stroke="#4a2812" stroke-width="2.5"/>
+  </g>
+
+  <g id="corpo" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M108 112 C140 104 178 124 186 162 C194 200 180 230 140 232 C104 234 82 214 82 182 C82 150 86 120 108 112 Z"
+          fill="url(#castor-pelo)" stroke="#4a2812" stroke-width="2.5"/>
+    <g clip-path="url(#castor-clip-corpo)">
+      <path d="M96 150 C106 136 136 138 150 160 C162 180 160 214 140 230 L82 234 L82 170 Z" fill="url(#castor-barriga)" opacity="0.85"/>
+    </g>
+    <path d="M150 124 Q172 136 180 158" fill="none" stroke="#e8b482" stroke-width="3.5" opacity="0.7"/>
+    <g fill="none" stroke="#7a4424" stroke-width="1.8" opacity="0.7">
+      <path d="M160 160 q4 6 4 12 M170 178 q2 6 0 12 M166 200 q0 6 -3 10 M150 140 q5 4 7 10"/>
+    </g>
+    <g fill="none" stroke="#b9845a" stroke-width="1.6" opacity="0.8">
+      <path d="M110 186 q4 4 4 10 M126 200 q4 4 4 10 M104 210 q4 4 4 8"/>
+    </g>
+  </g>
+
+  <g id="pes" stroke-linejoin="round" stroke-linecap="round">
+    <!-- pé de trás grande, com membrana entre os dedos -->
+    <path d="M104 208 C116 210 122 220 120 228 L118 234 Q111 230 106 235 Q99 230 92 235 Q85 230 78 235 Q71 231 64 234 C62 224 74 214 86 210 C92 208 98 207 104 208 Z" fill="#7a645a" stroke="#2e2420" stroke-width="2.2"/>
+    <g fill="none" stroke="#3e302a" stroke-width="5">
+      <path d="M100 214 L118 232 M98 214 L106 233 M96 214 L92 233 M94 214 L78 233 M92 214 L65 232"/>
+    </g>
+    <g fill="none" stroke="#a08a7e" stroke-width="1.4" opacity="0.9">
+      <path d="M110 230 q-4 -3 -2 -8 M98 231 q-2 -4 0 -9 M85 231 q0 -4 3 -8 M72 231 q2 -4 6 -7"/>
+    </g>
+    <path d="M84 212 C92 206 104 206 112 212" fill="none" stroke="#a08a7e" stroke-width="2" opacity="0.8"/>
+    <g fill="#f3e6d0"><circle cx="65" cy="233" r="1.8"/><circle cx="78" cy="234" r="1.8"/><circle cx="92" cy="234" r="1.8"/><circle cx="106" cy="234" r="1.8"/><circle cx="118" cy="233" r="1.8"/></g>
+  </g>
+
+  <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
+    <!-- orelhas pequenas -->
+    <circle cx="70" cy="54" r="10" fill="url(#castor-cabeca)" stroke="#4a2812" stroke-width="2.5"/>
+    <circle cx="71" cy="55" r="5" fill="#6e3d1e"/>
+    <circle cx="128" cy="52" r="10" fill="url(#castor-cabeca)" stroke="#4a2812" stroke-width="2.5"/>
+    <circle cx="127" cy="53" r="5" fill="#5e3418"/>
+    <!-- cabeça -->
+    <path d="M98 44 C126 44 140 62 140 86 C140 108 128 126 98 126 C70 126 56 108 56 86 C56 62 70 44 98 44 Z"
+          fill="url(#castor-cabeca)" stroke="#4a2812" stroke-width="2.5"/>
+    <path d="M66 74 Q72 54 92 50" fill="none" stroke="#efc08e" stroke-width="3.5" opacity="0.8"/>
+    <g fill="none" stroke="#7a4424" stroke-width="1.6" opacity="0.6"><path d="M128 76 l4 4 M130 94 l4 3 M64 98 l-4 3"/></g>
+    <!-- focinho claro -->
+    <path d="M76 100 C76 88 120 88 120 100 C120 112 110 118 98 118 C86 118 76 112 76 100 Z" fill="url(#castor-barriga)" stroke="#8a5a34" stroke-width="2"/>
+    <path d="M88 94 C88 89 108 89 108 94 C108 99 103 102 98 102 C93 102 88 99 88 94 Z" fill="#3a2418" stroke="#24150e" stroke-width="1.5"/>
+    <ellipse cx="94" cy="92.5" rx="3.5" ry="1.6" fill="#7a5c4e"/>
+    <path d="M98 102 v4 M88 108 Q98 112 108 108" fill="none" stroke="#4a2812" stroke-width="2"/>
+    <!-- bigodes -->
+    <g fill="none" stroke="#5e3418" stroke-width="1.3" opacity="0.8">
+      <path d="M78 100 L60 96 M78 104 L60 106 M118 100 L136 96 M118 104 L136 106"/>
+    </g>
+    <!-- dentes laranja grandes -->
+    <path d="M89 108 L97 108 L97 124 Q93 127 89 124 Z" fill="url(#castor-dente)" stroke="#a24e14" stroke-width="1.8"/>
+    <path d="M99 108 L107 108 L107 124 Q103 127 99 124 Z" fill="url(#castor-dente)" stroke="#a24e14" stroke-width="1.8"/>
+    <path d="M91 111 v9 M101 111 v9" stroke="#ffe0b0" stroke-width="1.8"/>
+    <ellipse cx="70" cy="104" rx="8" ry="5" fill="#f4908a" opacity="0.5"/>
+    <ellipse cx="126" cy="104" rx="8" ry="5" fill="#f4908a" opacity="0.5"/>
+  </g>
+
+  <g id="olhos">
+    <ellipse cx="82" cy="76" rx="9" ry="10.5" fill="#2b1d16"/>
+    <ellipse cx="114" cy="76" rx="9" ry="10.5" fill="#2b1d16"/>
+    <circle cx="78.5" cy="71.5" r="4.2" fill="#fff"/>
+    <circle cx="86" cy="80.5" r="2" fill="#fff"/>
+    <circle cx="110.5" cy="71.5" r="4.2" fill="#fff"/>
+    <circle cx="118" cy="80.5" r="2" fill="#fff"/>
+    <path d="M73 63 q4 -3 9 -2 M123 63 q-4 -3 -9 -2" fill="none" stroke="#4a2812" stroke-width="1.8" stroke-linecap="round"/>
+  </g>
+
+  <g id="galho" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M30 146 C70 138 130 130 180 124 C184 128 184 134 180 136 C130 142 72 152 32 158 C26 156 26 148 30 146 Z" fill="url(#castor-galho)" stroke="#5a3a22" stroke-width="2.2"/>
+    <ellipse cx="181" cy="130" rx="4" ry="6" fill="#f0d3a8" stroke="#5a3a22" stroke-width="2"/>
+    <!-- marcas de roída -->
+    <path d="M140 132 q4 -3 8 0 q4 -3 8 0 M140 140 q4 3 8 0 q4 3 8 0" fill="none" stroke="#f0d3a8" stroke-width="2"/>
+    <path d="M40 148 Q90 140 130 135" fill="none" stroke="#dcb488" stroke-width="2" opacity="0.8"/>
+    <path d="M44 150 Q36 136 30 130" fill="none" stroke="#5a3a22" stroke-width="3"/>
+    <path d="M30 130 C22 120 8 120 6 128 C12 134 24 136 30 130 Z" fill="url(#castor-folha)" stroke="#2f7a46" stroke-width="2"/>
+    <path d="M40 140 C48 130 46 120 40 116 C34 124 36 134 40 140 Z" fill="url(#castor-folha)" stroke="#2f7a46" stroke-width="2"/>
+    <path d="M30 129 L10 127 M40 138 L40 120" stroke="#2f7a46" stroke-width="1.2"/>
+  </g>
+
+  <g id="maos" stroke-linejoin="round" stroke-linecap="round">
+    <!-- bracinhos segurando o galho -->
+    <path d="M92 124 C80 128 72 136 72 146 L86 150 C88 142 94 136 100 132 Z" fill="url(#castor-pelo)" stroke="#4a2812" stroke-width="2.5"/>
+    <path d="M140 122 C150 124 156 130 156 140 L142 144 C140 136 136 132 132 130 Z" fill="url(#castor-pelo2)" stroke="#4a2812" stroke-width="2.5"/>
+    <path d="M70 140 C70 134 86 134 88 140 L88 152 Q84 156 80 152 Q76 156 72 152 Q68 150 70 140 Z" fill="#4e3a32" stroke="#2e2420" stroke-width="2"/>
+    <path d="M140 136 C140 130 156 130 158 136 L158 146 Q154 150 150 146 Q146 150 142 146 Q138 144 140 136 Z" fill="#4e3a32" stroke="#2e2420" stroke-width="2"/>
+    <path d="M76 142 v8 M82 142 v8 M146 138 v7 M152 138 v7" stroke="#2e2420" stroke-width="1.4"/>
+  </g>
 </svg>

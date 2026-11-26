@@ -1,6 +1,6 @@
 "use client";
 
-import { createPersistentStore } from "./store";
+import { chaveDoPerfil, createPersistentStore } from "./store";
 
 /**
  * GAMIFICAÇÃO (sem punição)
@@ -37,7 +37,7 @@ export interface Progress {
   cartas: Record<string, Carta>;
 }
 
-export const progressStore = createPersistentStore<Progress>("pg:progress:v3", {
+export const progressStore = createPersistentStore<Progress>(chaveDoPerfil("pg:progress:v3"), {
   patinhas: 0,
   animaisColetados: [],
   fases: {},

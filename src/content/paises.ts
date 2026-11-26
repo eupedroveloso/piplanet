@@ -86,11 +86,11 @@ export const PAISES: Pais[] = [
       },
       {
         id: "br-amazonia",
-        nome: "Amazônia",
+        nome: "Florestas",
         tipo: "floresta-tropical",
         u: 0.3,
         v: 0.28,
-        boasVindas: "Chegamos na Amazônia, a maior floresta tropical do mundo!",
+        boasVindas: "Chegamos nas florestas do Brasil: a Amazônia e a Mata Atlântica!",
         niveis: [
           { dificuldades: [1], exemplo: "sa·po" },
           { dificuldades: [2], exemplo: "a·ra·ra" },

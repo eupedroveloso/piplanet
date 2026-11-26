@@ -14,6 +14,7 @@ export { Casinha, Peca } from "./Peca";
 export { Contador, NumeroAnimado } from "./Contador";
 export { CLASSE_ETIQUETA } from "./Etiqueta";
 export { Estrelas } from "./Estrelas";
+export { fonteQueCabe } from "./leitura";
 export { Mascote } from "./Mascote";
 export { NavInferior } from "./NavInferior";
 export { Painel } from "./Painel";

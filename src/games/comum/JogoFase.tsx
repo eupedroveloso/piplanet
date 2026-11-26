@@ -126,11 +126,11 @@ export function JogoFase({
   }
 
   const topo = (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2 pt-[env(safe-area-inset-top)] sm:gap-3">
       <BotaoRedondoLink href="/" aria-label="Voltar ao mapa">
         <Arte nome="ui/voltar" className="size-7" />
       </BotaoRedondoLink>
-      <div className="flex flex-1 justify-center">
+      <div className="flex min-w-0 flex-1 justify-center">
         <AnimatePresence mode="wait" initial={false}>
           {etapa === "jogando" || etapa === "acertou" ? (
             <motion.div key="bolinhas" {...TROCA}>
@@ -140,10 +140,12 @@ export function JogoFase({
             <motion.span
               key="titulo"
               {...TROCA}
-              className="flex items-center gap-2 text-xl font-extrabold text-t-destaque uppercase"
+              className="flex min-w-0 items-center gap-2 text-base font-extrabold text-t-destaque uppercase sm:text-xl"
             >
-              <Arte nome={info.icone} className="size-7" />
-              {territorio.nome} · {fase.titulo}
+              <Arte nome={info.icone} className="size-7 shrink-0" />
+              <span className="truncate">
+                {territorio.nome} · {fase.titulo}
+              </span>
             </motion.span>
           )}
         </AnimatePresence>
@@ -172,19 +174,19 @@ export function JogoFase({
       <AnimatePresence mode="wait">
         {/* ── Início ─────────────────────────────────────────────────────── */}
         {tela === "inicio" && (
-          <motion.div key="inicio" {...TELA} className="relative z-10 flex flex-1 flex-col items-center justify-center gap-8">
+          <motion.div key="inicio" {...TELA} className="relative z-10 flex flex-1 flex-col items-center justify-center gap-5 sm:gap-8">
             <motion.span
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={MOLA_ENTRADA}
-              className="flex items-center gap-3 rounded-full bg-branco px-6 py-2 shadow-suave"
+              className="flex items-center gap-2 rounded-full bg-branco px-4 py-1.5 shadow-suave sm:gap-3 sm:px-6 sm:py-2"
             >
-              <Arte nome={info.icone} className="size-10" />
-              <span className="text-3xl font-extrabold text-roxo">{info.nome}</span>
+              <Arte nome={info.icone} className="size-9 sm:size-10" />
+              <span className="text-2xl font-extrabold text-roxo sm:text-3xl">{info.nome}</span>
             </motion.span>
             <Mascote fala={info.instrucao} tamanho="lg" />
             <motion.div
-              className="flex flex-wrap justify-center gap-3"
+              className="flex flex-wrap justify-center gap-2 sm:gap-3"
               initial="fora"
               animate="dentro"
               variants={{ dentro: { transition: { staggerChildren: 0.06, delayChildren: 0.2 } } }}
@@ -200,7 +202,7 @@ export function JogoFase({
                     whileTap={{ scale: 0.92 }}
                     onClick={() => speak(a.nome)}
                     aria-label={a.nome}
-                    className="grid size-20 place-items-center rounded-md bg-branco/70"
+                    className="grid size-16 place-items-center rounded-md bg-branco/70 sm:size-20"
                   >
                     <Arte src={arteDoAnimal(a)} className="size-14" />
                   </motion.button>
@@ -468,12 +470,12 @@ export function CirculoBicho({ animal, acertou }: { animal: Animal; acertou: boo
       transition={acertou ? { duration: 0.7, ease: "easeInOut" } : { type: "spring", stiffness: 200, damping: 14 }}
       whileHover={{ y: -3 }}
       whileTap={{ scale: 0.95 }}
-      className={`relative grid size-44 place-items-center rounded-full bg-branco transition-shadow duration-300 sm:size-52 ${
+      className={`relative grid size-36 place-items-center rounded-full bg-branco transition-shadow duration-300 sm:size-52 ${
         acertou ? "shadow-[0_8px_0_var(--color-verde-escuro)] ring-4 ring-verde" : "shadow-[0_8px_0_var(--t-chao)]"
       }`}
       aria-label={acertou ? animal.nome : "Que bicho é esse?"}
     >
-      <Arte src={arteDoAnimal(animal)} className="size-30 sm:size-36" />
+      <Arte src={arteDoAnimal(animal)} className="size-24 sm:size-36" />
       {acertou && <Comemoracao raio={140} />}
     </motion.button>
   );

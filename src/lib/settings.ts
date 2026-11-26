@@ -1,6 +1,6 @@
 "use client";
 
-import { createPersistentStore } from "./store";
+import { chaveDoPerfil, createPersistentStore } from "./store";
 
 export interface Settings {
   /** Voz ligada (leitura de sílabas, palavras e curiosidades). */
@@ -11,7 +11,7 @@ export interface Settings {
   ultimoPais: string | null;
 }
 
-export const settingsStore = createPersistentStore<Settings>("pg:settings", {
+export const settingsStore = createPersistentStore<Settings>(chaveDoPerfil("pg:settings"), {
   voz: true,
   velocidadeVoz: 0.8,
   ultimoPais: null,

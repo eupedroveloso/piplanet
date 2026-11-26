@@ -1,10 +1,145 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M26.5384 11.9606L29.9784 17.9606C30.2284 18.3906 29.9084 18.9306 29.3884 18.9306C28.9484 18.9206 28.6684 19.4106 28.8084 19.8306L29.2539 21.0706H2.81836L3.25836 19.7706C3.39836 19.3506 3.08836 18.9206 2.64836 18.9206C2.14836 18.9206 1.83836 18.3906 2.08836 17.9606L5.53836 11.9406C5.67836 11.6906 5.82836 11.4006 5.97836 11.1006L6.00836 2.67056C5.97836 2.08056 6.69836 1.77056 7.09836 2.20056L14.1684 7.60056C14.4384 7.81056 14.7784 8 15.1184 8H16.8684C17.2084 8 17.5484 7.81056 17.8184 7.60056L24.8884 2.20056C25.2884 1.77056 26.0084 2.08056 25.9784 2.67056L26.0084 10.9606C26.1584 11.2506 26.3384 11.5706 26.5384 11.9406V11.9606Z" fill="#9B9B9B"/>
-<path d="M6.99835 9.77054C6.98835 10.0605 7.28835 10.2705 7.56835 10.1705L11.8684 8.61054C12.1784 8.50054 12.2484 8.08054 11.9784 7.87054L7.69835 4.60054C7.44835 4.32054 6.98835 4.52054 7.00835 4.89054L6.99835 9.77054Z" fill="#D3D3D3"/>
-<path d="M25.0083 9.7706C25.0083 10.0606 24.7183 10.2706 24.4383 10.1706L20.1283 8.6106C19.8183 8.5006 19.7483 8.0806 20.0183 7.8706L24.2983 4.6006C24.5483 4.3306 25.0083 4.5306 24.9883 4.9006L25.0083 9.7706Z" fill="#D3D3D3"/>
-<path d="M14.0983 30H17.9883C19.1383 30 20.1583 29.2006 20.5483 28.1206L21.2283 24.9406C21.3283 24.4806 21.7583 24.1806 22.2183 24.2306C23.7383 24.4206 26.8983 24.8006 27.5383 24.8006C28.5383 24.8006 28.2183 23.9606 28.2183 23.9606L27.8683 22.9106C27.8183 22.7606 27.6883 21.8906 28.6483 21.9006C29.7283 21.9206 29.1983 20.9106 29.1983 20.9106L24.4383 18.9106C24.4383 18.9106 21.8583 17.6506 20.5883 18.9306L17.6683 21.8706C17.6083 21.9406 17.5283 21.9906 17.4483 22.0406C17.0098 22.2798 16.5316 22.3997 16.0433 22.4105C15.555 22.3997 15.0768 22.2798 14.6383 22.0406C14.5583 21.9906 14.4783 21.9406 14.4183 21.8706L11.4983 18.9306C10.2283 17.6506 7.64831 18.9106 7.64831 18.9106L2.875 20.9106C2.875 20.9106 2.35831 21.9206 3.43831 21.9006C4.39831 21.8906 4.26831 22.7606 4.21831 22.9106L3.86831 23.9606C3.86831 23.9606 3.54831 24.8006 4.54831 24.8006C5.18831 24.8006 8.34831 24.4206 9.86831 24.2306C10.3283 24.1806 10.7583 24.4806 10.8583 24.9406L11.5383 28.1206C11.9283 29.2006 12.9483 30 14.0983 30Z" fill="#D3D3D3"/>
-<path d="M11 15C11 14.4477 11.4477 14 12 14C12.5523 14 13 14.4477 13 15V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V15Z" fill="#1C1C1C"/>
-<path d="M19 15C19 14.4477 19.4477 14 20 14C20.5523 14 21 14.4477 21 15V16C21 16.5523 20.5523 17 20 17C19.4477 17 19 16.5523 19 16V15Z" fill="#1C1C1C"/>
-<path d="M14.7313 20H17.2706C18.3603 20 18.9155 21.521 18.1342 22.4053L16.8594 23.5844C16.3762 24.1385 15.6051 24.1385 15.1219 23.5844L13.8471 22.4053C13.0966 21.5092 13.6415 20 14.7313 20Z" fill="#1C1C1C"/>
-<path d="M16.5 24.5C16.5 24.2239 16.2761 24 16 24C15.7239 24 15.5 24.2239 15.5 24.5C15.5 25.1118 15.2758 25.7539 14.8995 26.2362C14.5251 26.7161 14.0338 27 13.5 27C13.2239 27 13 27.2239 13 27.5C13 27.7761 13.2239 28 13.5 28C14.4162 28 15.1749 27.5089 15.688 26.8513C15.803 26.7039 15.9073 26.5463 16 26.3809C16.0927 26.5463 16.197 26.7039 16.312 26.8513C16.8251 27.5089 17.5838 28 18.5 28C18.7761 28 19 27.7761 19 27.5C19 27.2239 18.7761 27 18.5 27C17.9662 27 17.4749 26.7161 17.1005 26.2362C16.7242 25.7539 16.5 25.1118 16.5 24.5Z" fill="#1C1C1C"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="lobo-pelo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d9d6d2"/>
+      <stop offset="0.55" stop-color="#a9a49e"/>
+      <stop offset="1" stop-color="#7d7771"/>
+    </linearGradient>
+    <linearGradient id="lobo-pelo-tras" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#97918a"/>
+      <stop offset="1" stop-color="#6c665f"/>
+    </linearGradient>
+    <linearGradient id="lobo-dorso" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7a736c"/>
+      <stop offset="0.6" stop-color="#57504a"/>
+      <stop offset="1" stop-color="#3f3934"/>
+    </linearGradient>
+    <radialGradient id="lobo-cabeca" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#e2dfdb"/>
+      <stop offset="0.65" stop-color="#aea9a3"/>
+      <stop offset="1" stop-color="#857f78"/>
+    </radialGradient>
+    <linearGradient id="lobo-claro" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fffdf8"/>
+      <stop offset="1" stop-color="#e6ddcf"/>
+    </linearGradient>
+    <radialGradient id="lobo-iris" cx="0.4" cy="0.35" r="0.7">
+      <stop offset="0" stop-color="#ffd27a"/>
+      <stop offset="1" stop-color="#d98c1e"/>
+    </radialGradient>
+    <clipPath id="lobo-clip-corpo">
+      <path d="M100 122 C116 106 172 104 204 112 C224 118 228 142 220 158 C214 170 200 172 188 170 L122 170 C106 170 96 160 96 144 C96 134 96 128 100 122 Z"/>
+    </clipPath>
+    <clipPath id="lobo-clip-cauda">
+      <path d="M212 122 C232 126 244 146 242 170 C240 190 236 206 232 216 C222 212 214 198 214 182 C214 166 214 150 206 136 Z"/>
+    </clipPath>
+    <clipPath id="lobo-clip-cabeca">
+      <path d="M80 40 C106 40 120 56 120 78 C120 92 114 100 108 106 C102 116 92 128 78 128 C64 128 54 116 48 106 C42 100 38 92 38 78 C38 56 54 40 80 40 Z"/>
+    </clipPath>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="142" cy="237" rx="92" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="patas-tras" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M124 160 L124 224 L138 224 L140 160 Z" fill="url(#lobo-pelo-tras)" stroke="#4a443e" stroke-width="2.5"/>
+    <path d="M196 156 C210 162 214 178 208 192 L210 224 L222 224 L222 190 C226 176 220 162 210 154 Z" fill="url(#lobo-pelo-tras)" stroke="#4a443e" stroke-width="2.5"/>
+    <path d="M122 222 Q122 234 130 234 L140 234 Q144 230 140 222 Z M208 222 Q208 234 216 234 L225 234 Q229 230 224 222 Z" fill="#8a847d" stroke="#4a443e" stroke-width="2"/>
+    <path d="M130 228 v6 M135 228 v6 M215 228 v6 M220 228 v6" stroke="#4a443e" stroke-width="1.4"/>
+  </g>
+
+  <g id="cauda" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M212 122 C232 126 244 146 242 170 C240 190 236 206 232 216 C222 212 214 198 214 182 C214 166 214 150 206 136 Z"
+          fill="url(#lobo-pelo)" stroke="#4a443e" stroke-width="2.5"/>
+    <g clip-path="url(#lobo-clip-cauda)">
+      <path d="M200 110 C226 116 240 130 246 150 C236 146 226 140 214 140 Z" fill="url(#lobo-dorso)"/>
+      <path d="M210 196 C222 194 236 192 248 196 L248 230 L210 230 Z" fill="#3f3934"/>
+      <path d="M224 150 C228 166 228 182 224 196" fill="none" stroke="#eeebe6" stroke-width="3" opacity="0.7"/>
+    </g>
+    <path d="M232 156 l3 8 M236 172 l2 8 M222 168 l1 8" stroke="#6c665f" stroke-width="1.5"/>
+  </g>
+
+  <g id="patas-frente" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M102 156 C102 180 104 204 104 224 L118 224 C118 204 120 180 122 156 Z" fill="url(#lobo-pelo)"/>
+    <path d="M102 164 C102 184 104 204 104 224 M118 224 C118 204 120 184 121 166" fill="none" stroke="#4a443e" stroke-width="2.5"/>
+    <path d="M164 150 C190 146 200 168 194 186 C192 192 188 196 188 204 L188 224 L174 224 L174 202 C176 196 178 192 176 186 C166 180 162 166 164 150 Z" fill="url(#lobo-pelo)"/>
+    <path d="M174 224 L174 202 C176 196 178 192 176 186 M188 224 L188 204 C188 196 192 192 194 186 C198 174 196 164 190 156" fill="none" stroke="#4a443e" stroke-width="2.5"/>
+    <path d="M107 176 C107 192 108 204 108 214" fill="none" stroke="#f2efea" stroke-width="2.5" opacity="0.8"/>
+    <!-- patas com dedinhos -->
+    <path d="M100 222 Q98 234 108 234 L120 234 Q124 230 120 222 Z M170 222 Q168 234 178 234 L190 234 Q194 230 190 222 Z" fill="url(#lobo-claro)" stroke="#4a443e" stroke-width="2"/>
+    <path d="M108 228 v6 M114 228 v6 M178 228 v6 M184 228 v6" stroke="#8a847d" stroke-width="1.5"/>
+  </g>
+
+  <g id="corpo" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M100 122 C116 106 172 104 204 112 C224 118 228 142 220 158 C214 170 200 172 188 170 L122 170 C106 170 96 160 96 144 C96 134 96 128 100 122 Z"
+          fill="url(#lobo-pelo)" stroke="#4a443e" stroke-width="2.5"/>
+    <g clip-path="url(#lobo-clip-corpo)">
+      <!-- dorso mais escuro (sela) -->
+      <path d="M96 104 L232 104 L232 132 C210 128 196 140 176 136 C156 132 144 140 126 134 C112 130 104 130 96 128 Z" fill="url(#lobo-dorso)"/>
+      <!-- barriga clara -->
+      <path d="M96 160 C130 164 170 164 230 154 L230 180 L96 180 Z" fill="url(#lobo-claro)"/>
+      <g fill="none" stroke="#3f3934" stroke-width="2" opacity="0.6">
+        <path d="M128 132 l4 6 M150 134 l3 6 M172 134 l4 7 M196 130 l4 7"/>
+      </g>
+    </g>
+    <path d="M128 112 Q156 106 182 108" fill="none" stroke="#9a938c" stroke-width="3.5" opacity="0.9"/>
+    <path d="M178 122 C198 118 214 132 212 150" fill="none" stroke="#6c665f" stroke-width="2" opacity="0.5"/>
+    <g fill="none" stroke="#7d7771" stroke-width="1.5" opacity="0.7">
+      <path d="M140 146 l4 4 M158 150 l4 4 M196 150 l3 5 M130 154 l4 4"/>
+    </g>
+  </g>
+
+  <g id="juba" stroke-linejoin="round" stroke-linecap="round">
+    <!-- pescoço com colar de pelos -->
+    <path d="M70 108 C70 92 98 86 118 96 C132 104 140 120 138 136 L132 146 L126 140 L120 156 L112 148 L104 162 L98 150 L88 160 L86 146 C76 138 70 124 70 108 Z" fill="url(#lobo-pelo)" stroke="#4a443e" stroke-width="2.5"/>
+    <path d="M116 112 q6 8 6 18 M126 116 q4 8 2 16" fill="none" stroke="#7d7771" stroke-width="1.8" opacity="0.7"/>
+    <path d="M84 120 C90 132 98 140 108 146 L104 160 L98 150 L88 160 L86 146 C80 140 78 130 84 120 Z" fill="url(#lobo-claro)"/>
+  </g>
+
+  <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
+    <!-- orelhas em pé -->
+    <path d="M50 58 C44 44 44 28 50 16 C60 22 72 34 76 46 Z" fill="url(#lobo-dorso)" stroke="#3a342f" stroke-width="2.5"/>
+    <path d="M53 48 C50 40 50 30 53 24 C59 30 65 36 68 44 Z" fill="#efe6da"/>
+    <path d="M108 58 C114 44 114 28 108 16 C98 22 86 34 82 46 Z" fill="url(#lobo-dorso)" stroke="#3a342f" stroke-width="2.5"/>
+    <path d="M105 48 C108 40 108 30 105 24 C99 30 93 36 90 44 Z" fill="#d9cdbd"/>
+    <!-- tufos claros nas bochechas -->
+    <path d="M46 88 L26 100 L40 102 L30 112 L48 110 L42 118 L58 114 Z" fill="url(#lobo-claro)" stroke="#4a443e" stroke-width="2.2"/>
+    <path d="M112 88 L132 100 L118 102 L128 112 L110 110 L116 118 L100 114 Z" fill="#e6ddcf" stroke="#4a443e" stroke-width="2.2"/>
+    <!-- cabeça -->
+    <path d="M80 40 C106 40 120 56 120 78 C120 92 114 100 108 106 C102 116 92 128 78 128 C64 128 54 116 48 106 C42 100 38 92 38 78 C38 56 54 40 80 40 Z"
+          fill="url(#lobo-cabeca)" stroke="#4a443e" stroke-width="2.5"/>
+    <g clip-path="url(#lobo-clip-cabeca)">
+      <!-- testa escura -->
+      <path d="M60 38 C70 46 74 56 79 72 C84 56 88 46 98 38 Z" fill="url(#lobo-dorso)" opacity="0.85"/>
+      <!-- bochechas e máscara claras -->
+      <path d="M34 82 C44 80 54 86 60 96 C64 104 70 108 79 108 C88 108 94 104 98 96 C104 86 114 80 124 82 L124 132 L34 132 Z" fill="url(#lobo-claro)"/>
+    </g>
+    <!-- sobrancelhas claras -->
+    <path d="M54 64 q8 -5 14 -1 M104 64 q-8 -5 -14 -1" fill="none" stroke="#f6f1ea" stroke-width="3.5"/>
+    <path d="M48 66 Q54 50 70 46" fill="none" stroke="#f0ede9" stroke-width="3" opacity="0.7"/>
+    <!-- focinho longo -->
+    <path d="M72 84 C74 80 84 80 86 84 C88 92 94 102 95 114 C95 126 88 132 79 132 C70 132 63 126 63 114 C64 102 70 92 72 84 Z" fill="url(#lobo-claro)" stroke="#b9ad9c" stroke-width="1.6"/>
+    <path d="M63 116 C63 127 70 132 79 132 C88 132 95 127 95 116" fill="none" stroke="#4a443e" stroke-width="2.2"/>
+    <path d="M75 88 C74 96 72 104 71 110" fill="none" stroke="#ffffff" stroke-width="2.5" opacity="0.9"/>
+    <!-- nariz -->
+    <path d="M70 114 C70 108 88 108 88 114 C88 120 84 123 79 123 C74 123 70 120 70 114 Z" fill="#2b2522" stroke="#1a1513" stroke-width="1.5"/>
+    <ellipse cx="75" cy="112.5" rx="3.5" ry="1.8" fill="#6e6460"/>
+    <path d="M79 123 L79 127 M72 128 Q79 133 86 128" fill="none" stroke="#3a342f" stroke-width="2"/>
+    <!-- bigodes pontilhados -->
+    <g fill="#8a847d"><circle cx="69" cy="120" r="1"/><circle cx="66" cy="116" r="1"/><circle cx="89" cy="120" r="1"/><circle cx="92" cy="116" r="1"/></g>
+    <ellipse cx="54" cy="104" rx="8" ry="5" fill="#f4908a" opacity="0.5"/>
+    <ellipse cx="104" cy="104" rx="8" ry="5" fill="#f4908a" opacity="0.5"/>
+  </g>
+
+  <g id="olhos">
+    <ellipse cx="62" cy="80" rx="11" ry="12" fill="url(#lobo-iris)" stroke="#8a5a14" stroke-width="1.5"/>
+    <ellipse cx="96" cy="80" rx="11" ry="12" fill="url(#lobo-iris)" stroke="#8a5a14" stroke-width="1.5"/>
+    <ellipse cx="62.5" cy="80.5" rx="7.5" ry="9" fill="#2b1d16"/>
+    <ellipse cx="96.5" cy="80.5" rx="7.5" ry="9" fill="#2b1d16"/>
+    <circle cx="59" cy="76" r="4.2" fill="#fff"/>
+    <circle cx="66.5" cy="85" r="2" fill="#fff"/>
+    <circle cx="93" cy="76" r="4.2" fill="#fff"/>
+    <circle cx="100.5" cy="85" r="2" fill="#fff"/>
+  </g>
 </svg>

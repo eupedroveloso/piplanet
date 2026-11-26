@@ -324,7 +324,7 @@ const mod = (rnd: R, lista: readonly NomeModelo[], x: number, z: number, s: numb
 const COM_MODELO = {
   arvoreRedonda: arvoreRedondaProc,
   pinheiro: (rnd: R, x: number, z: number, s: number, verdes: string[], neve = false) =>
-    neve ? mod(rnd, MODELOS.pinheirosPequenos, x, z, s, "#dcefe8") : mod(rnd, MODELOS.pinheiros, x, z, s * 0.9, escolha(rnd, verdes)),
+    neve ? mod(rnd, MODELOS.pinheirosPequenos, x, z, s, "#dcefe8") : mod(rnd, MODELOS.pinheiros, x, z, s, escolha(rnd, verdes)),
   cipreste: (rnd: R, x: number, z: number, s: number, verdes: string[]) => mod(rnd, MODELOS.ciprestes, x, z, s * 0.85, escolha(rnd, verdes)),
   betula: betulaProc,
   acacia: (rnd: R, x: number, z: number, s: number) => mod(rnd, MODELOS.acacias, x, z, s * 1.05, escolha(rnd, ["#8fb04a", "#7fa340", "#9cbc52"])),

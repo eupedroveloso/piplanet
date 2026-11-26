@@ -1,12 +1,14 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type * as THREE from "three";
 import { chaveFase, faseDesbloqueada, paisDesbloqueado, TERRITORIOS, territorioDesbloqueado } from "@/content/jornada";
 import { PAISES, type PaisId } from "@/content/paises";
 import { useProgress } from "@/lib/progress";
+import { speak } from "@/lib/speech";
 import { settingsStore, useSettings } from "@/lib/settings";
 import { Arte, BotaoRedondo, MOLA_ENTRADA, TelaCarregando } from "@/components/ui";
 import { useProgress as useCarga } from "@react-three/drei";
@@ -22,6 +24,7 @@ const Planeta = dynamic(() => import("./Planeta").then((m) => m.Planeta), { ssr:
  *   Planeta → país (ilha com a silhueta real) → bioma de perto (trilha e fases).
  */
 export function MapaMundo() {
+  const router = useRouter();
   const progresso = useProgress();
   const { ultimoPais } = useSettings();
   const [paisAberto, setPaisAberto] = useState<PaisId | null>(null);
@@ -153,6 +156,17 @@ export function MapaMundo() {
         )}
       </AnimatePresence>
 
+      {/* CONTINUAR DAQUI: atalho grande para a próxima fase (não depende de leitura) */}
+      {!carregando && (
+        <ContinuarDaqui
+          onIr={() => {
+            const i = atual.fases.findIndex((_, k) => !(chaveFase(atual.id, k) in progresso.fases));
+            speak("Vamos continuar!");
+            setTimeout(() => router.push(`/jogar/${atual.id}/${Math.max(0, i)}`), 250);
+          }}
+        />
+      )}
+
       {/* Carregando: cobre tudo até a cena estar pronta de verdade */}
       <AnimatePresence>
         {carregando && <TelaCarregando key="carregando" progresso={progressoCarga} fundo={nivel === "planeta" ? "escuro" : "claro"} />}
@@ -193,5 +207,27 @@ export function MapaMundo() {
         </BotaoRedondo>
       </div>
     </div>
+  );
+}
+
+/** Botão grande e pulsante com a Juju e o ▶: leva direto para a próxima fase. */
+function ContinuarDaqui({ onIr }: { onIr: () => void }) {
+  return (
+    <motion.button
+      type="button"
+      aria-label="Continuar daqui"
+      onClick={onIr}
+      initial={{ opacity: 0, y: 30, scale: 0.8 }}
+      animate={{ opacity: 1, y: 0, scale: [1, 1.06, 1] }}
+      transition={{ opacity: MOLA_ENTRADA, y: MOLA_ENTRADA, scale: { duration: 1.6, repeat: Infinity, ease: "easeInOut" } }}
+      whileHover={{ y: -3 }}
+      whileTap={{ scale: 0.9 }}
+      className="absolute bottom-24 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full bg-amarelo py-2 pr-6 pl-2 shadow-[0_6px_0_var(--color-amarelo-escuro)] ring-4 ring-branco/70"
+    >
+      <span className="grid size-12 place-items-center rounded-full bg-branco">
+        <Arte nome="animais/coruja" className="size-10" />
+      </span>
+      <Arte nome="ui/play" className="size-10" />
+    </motion.button>
   );
 }

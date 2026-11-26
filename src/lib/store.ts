@@ -3,18 +3,22 @@
 import { useSyncExternalStore } from "react";
 
 /**
- * Store mínimo salvo no localStorage do navegador.
- * Sem backend e sem login: tudo fica no aparelho, de graça.
+ * Store mínimo salvo no localStorage do navegador (tudo fica no aparelho, de graça).
+ * A chave pode depender do perfil que entrou (cada um tem o próprio progresso).
  */
-export function createPersistentStore<T>(key: string, initial: T) {
+export function createPersistentStore<T>(chave: string | (() => string), initial: T) {
   const listeners = new Set<() => void>();
+  const keyAtual = () => (typeof chave === "function" ? chave() : chave);
+  let cachedKey: string | undefined;
   let cachedRaw: string | null | undefined;
   let cachedValue: T = initial;
 
   function read(): T {
     if (typeof window === "undefined") return initial;
+    const key = keyAtual();
     const raw = window.localStorage.getItem(key);
-    if (raw !== cachedRaw) {
+    if (raw !== cachedRaw || key !== cachedKey) {
+      cachedKey = key;
       cachedRaw = raw;
       try {
         cachedValue = raw ? { ...initial, ...JSON.parse(raw) } : initial;
@@ -27,13 +31,13 @@ export function createPersistentStore<T>(key: string, initial: T) {
 
   function write(updater: (prev: T) => T) {
     const next = updater(read());
-    window.localStorage.setItem(key, JSON.stringify(next));
+    window.localStorage.setItem(keyAtual(), JSON.stringify(next));
     listeners.forEach((l) => l());
   }
 
   function subscribe(listener: () => void) {
     listeners.add(listener);
-    const onStorage = (e: StorageEvent) => e.key === key && listener();
+    const onStorage = (e: StorageEvent) => e.key === keyAtual() && listener();
     window.addEventListener("storage", onStorage);
     return () => {
       listeners.delete(listener);
@@ -46,4 +50,24 @@ export function createPersistentStore<T>(key: string, initial: T) {
   }
 
   return { read, write, useStore };
+}
+
+/** Perfil que entrou (cookie legível pg_perfil). */
+export function perfilAtual(): string {
+  if (typeof document === "undefined") return "pietro";
+  const m = document.cookie.match(/(?:^|; )pg_perfil=([^;]+)/);
+  return m ? decodeURIComponent(m[1]) : "pietro";
+}
+
+/** Chave de armazenamento do perfil atual. O Pietro herda o progresso salvo antes dos perfis existirem. */
+export function chaveDoPerfil(base: string) {
+  return () => {
+    const perfil = perfilAtual();
+    const chave = `${base}:${perfil}`;
+    if (typeof window !== "undefined" && perfil === "pietro" && !window.localStorage.getItem(chave)) {
+      const antigo = window.localStorage.getItem(base);
+      if (antigo) window.localStorage.setItem(chave, antigo);
+    }
+    return chave;
+  };
 }

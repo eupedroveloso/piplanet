@@ -12,9 +12,10 @@ import { BALANCO, MOLA_ENTRADA, MOLA_TOQUE } from "./movimento";
  * a peça "voa" até a casinha e a casinha dá um pop com uma onda suave.
  */
 
+/** Mobile primeiro: cabe em 360 px; cresce no tablet (sm). Toque sempre ≥ 56 px. */
 const BLOCOS = {
-  md: "grid h-24 min-w-24 place-items-center rounded-md px-4 font-leitura text-5xl font-bold uppercase sm:h-28 sm:min-w-28 sm:text-6xl",
-  sm: "grid h-20 min-w-16 place-items-center rounded-md px-3 font-leitura text-4xl font-bold uppercase sm:h-24 sm:min-w-20 sm:text-5xl",
+  md: "grid h-20 min-w-20 place-items-center rounded-md px-3 font-leitura text-4xl font-bold uppercase sm:h-28 sm:min-w-28 sm:px-4 sm:text-6xl",
+  sm: "grid h-16 min-w-14 place-items-center rounded-md px-2 font-leitura text-3xl font-bold uppercase sm:h-24 sm:min-w-20 sm:px-3 sm:text-5xl",
 };
 
 export function Peca({

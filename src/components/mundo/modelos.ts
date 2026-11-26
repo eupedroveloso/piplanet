@@ -14,7 +14,7 @@ export type Familia = "arvore" | "pinheiro" | "palmeira" | "arbusto" | "tufo" | 
 /** Tamanho-alvo de cada família (altura, ou largura para pedras e troncos caídos). */
 export const FAMILIAS: Record<Familia, { medida: "altura" | "largura"; alvo: number }> = {
   arvore: { medida: "altura", alvo: 2.0 },
-  pinheiro: { medida: "altura", alvo: 1.9 },
+  pinheiro: { medida: "altura", alvo: 2.4 },
   palmeira: { medida: "altura", alvo: 1.9 },
   arbusto: { medida: "altura", alvo: 0.5 },
   tufo: { medida: "altura", alvo: 0.28 },
@@ -131,9 +131,9 @@ export function modelosDoPais(pais: PaisId): NomeModelo[] {
 export const urlModelos = (pais: PaisId) => `/modelos/${pais}.glb`;
 
 /**
- * Chave da troca para modelos prontos. Fica `false` até o caminho novo estar pronto e conferido;
+ * Chave da troca para modelos prontos. Ligada em 2026-11-26 depois de conferida no portal (Brasil, Rússia, EUA). Desligue para voltar ao procedural;
  * para testar sem afetar ninguém: localStorage.setItem("pg:modelos", "1") no navegador de teste.
  */
-export const USAR_MODELOS = false;
+export const USAR_MODELOS = true;
 export const modelosLigados = () =>
   USAR_MODELOS || (typeof window !== "undefined" && window.localStorage?.getItem("pg:modelos") === "1");

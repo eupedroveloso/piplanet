@@ -1,15 +1,122 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M27.5 2C26.88 2 26.31 2.23 25.87 2.6L16 11L6.13 2.6C5.69 2.23 5.12 2 4.5 2C3.12 2 2 3.12 2 4.5V14.25C2 16.32 3.68 18 5.75 18H8C4.69 18 2 20.69 2 24C2 27.31 4.69 30 8 30C10.36 30 12.4 28.64 13.38 26.66C13.49 26.43 13.59 26.2 13.67 25.96L16 20.3904L18.33 25.96C18.41 26.2 18.51 26.43 18.62 26.66C19.6 28.64 21.64 30 24 30C27.31 30 30 27.31 30 24C30 20.69 27.31 18 24 18H26.25C28.32 18 30 16.32 30 14.25V4.5C30 3.12 28.88 2 27.5 2Z" fill="#533566"/>
-<path d="M10.21 13.9599L5.45001 11.2099C4.91001 10.8899 4.23001 11.2899 4.23001 11.9199V13.9199C4.23001 15.6199 5.61001 16.9999 7.31001 16.9999C7.93001 16.9999 8.53001 16.7499 8.97001 16.3099L10.34 14.9399C10.63 14.6499 10.57 14.1699 10.21 13.9599Z" fill="#FF822D"/>
-<path d="M22.02 13.9599L26.78 11.2099C27.32 10.8899 28 11.2899 28 11.9199V13.9199C28 15.6199 26.62 16.9999 24.92 16.9999C24.3 16.9999 23.7 16.7499 23.26 16.3099L21.89 14.9399C21.6 14.6499 21.66 14.1699 22.02 13.9599Z" fill="#FF822D"/>
-<path d="M17 16.8499L19.77 15.2499C20.15 15.0399 20.63 15.0999 20.94 15.4099L21.74 16.2099C22.03 16.4999 21.82 16.9999 21.41 16.9999H17V16.8499Z" fill="#FF822D"/>
-<path d="M12.46 15.2499L15.23 16.8499V16.9999H10.82C10.41 16.9999 10.2 16.4999 10.49 16.2099L11.29 15.4099C11.6 15.0999 12.08 15.0399 12.46 15.2499Z" fill="#FF822D"/>
-<path d="M4.23001 5.98009V8.20009C4.23001 8.91009 4.61001 9.57009 5.22001 9.92009L15.23 15.7001V13.0001L5.76001 5.25009C5.15001 4.75009 4.23001 5.19009 4.23001 5.98009Z" fill="#FF6723"/>
-<path d="M28 5.98009V8.20009C28 8.91009 27.62 9.57009 27.01 9.92009L17 15.7001V13.0001L26.47 5.25009C27.08 4.75009 28 5.19009 28 5.98009Z" fill="#FF6723"/>
-<path d="M12.96 19.5H9.64001C9.09001 19.5 8.82001 20.16 9.21001 20.54L12.16 23.49C12.47 23.8 12.99 23.69 13.16 23.29L14.06 21.14C14.39 20.37 13.81 19.5 12.96 19.5Z" fill="#FF6723"/>
-<path d="M6.02 19.9599C4.53 20.6899 3.5 22.2299 3.5 23.9999C3.5 26.4699 5.45 28.4599 7.91 28.4999C9.67 28.5299 11.25 27.5699 12.03 25.9899L12.04 25.9699C12.04 25.9649 12.0425 25.9624 12.045 25.9599C12.0475 25.9574 12.05 25.9549 12.05 25.9499C12.27 25.4799 12.17 24.9099 11.8 24.5399L7.45 20.1999C7.07 19.8199 6.5 19.7199 6.02 19.9599ZM6.64 27.01C5.73425 27.01 5 26.2757 5 25.37C5 24.4642 5.73425 23.73 6.64 23.73C7.54575 23.73 8.28 24.4642 8.28 25.37C8.28 26.2757 7.54575 27.01 6.64 27.01Z" fill="#FF6723"/>
-<path d="M19.08 19.5H22.4C22.95 19.5 23.22 20.16 22.83 20.54L19.88 23.49C19.57 23.8 19.05 23.69 18.88 23.29L17.98 21.14C17.65 20.37 18.23 19.5 19.08 19.5Z" fill="#FF6723"/>
-<path d="M26.02 19.9599C27.51 20.6899 28.54 22.2299 28.54 23.9999C28.54 26.4699 26.59 28.4599 24.13 28.4999C22.37 28.5299 20.79 27.5699 20.01 25.9899L20 25.9799C20 25.9749 19.9975 25.9724 19.995 25.9699C19.9925 25.9674 19.99 25.9649 19.99 25.9599C19.77 25.4899 19.87 24.9199 20.24 24.5499L24.59 20.1999C24.97 19.8199 25.54 19.7199 26.02 19.9599ZM25.4 26.8801C26.3058 26.8801 27.04 26.1458 27.04 25.2401C27.04 24.3344 26.3058 23.6001 25.4 23.6001C24.4943 23.6001 23.76 24.3344 23.76 25.2401C23.76 26.1458 24.4943 26.8801 25.4 26.8801Z" fill="#FF6723"/>
-<path d="M13.305 2.19344C13.1357 1.9753 12.8216 1.93572 12.6034 2.10504C12.3853 2.27436 12.3457 2.58846 12.515 2.8066C14.0792 4.82178 15.01 7.35463 15.01 10.11C15.01 10.3862 15.2339 10.61 15.51 10.61C15.7519 10.61 15.9537 10.4383 16 10.21C16.0463 10.4383 16.2481 10.61 16.49 10.61C16.7661 10.61 16.99 10.3862 16.99 10.11C16.99 7.35463 17.9208 4.82178 19.485 2.8066C19.6543 2.58846 19.6147 2.27436 19.3966 2.10504C19.1784 1.93572 18.8643 1.9753 18.695 2.19344C17.097 4.25228 16.1087 6.81046 16 9.59613C15.8913 6.81046 14.903 4.25228 13.305 2.19344Z" fill="#212121"/>
-<path d="M16.9168 10.778C17.5602 10.4455 18 9.77414 18 9C18 7.89543 17.1046 7 16 7C14.8954 7 14 7.89543 14 9C14 9.77177 14.4371 10.4414 15.0773 10.7749C14.7211 11.0393 14.49 11.463 14.49 11.94V22.55C14.49 23.35 15.14 24 15.94 24H16.05C16.85 24 17.5 23.35 17.5 22.55V11.94C17.5 11.4648 17.2707 11.0425 16.9168 10.778Z" fill="#321B41"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="borboleta-asa" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9cecff"/>
+      <stop offset="0.45" stop-color="#36a6f2"/>
+      <stop offset="1" stop-color="#1f4fc4"/>
+    </linearGradient>
+    <linearGradient id="borboleta-asa2" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8fe2ff"/>
+      <stop offset="0.5" stop-color="#2f96ea"/>
+      <stop offset="1" stop-color="#1c44b0"/>
+    </linearGradient>
+    <linearGradient id="borboleta-corpo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6a5a52"/>
+      <stop offset="1" stop-color="#2a201c"/>
+    </linearGradient>
+    <radialGradient id="borboleta-cabeca" cx="0.38" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#7d6b62"/>
+      <stop offset="1" stop-color="#2e2420"/>
+    </radialGradient>
+    <radialGradient id="borboleta-petala" cx="0.4" cy="0.35" r="0.8">
+      <stop offset="0" stop-color="#ffb3c1"/>
+      <stop offset="1" stop-color="#ee5f78"/>
+    </radialGradient>
+    <linearGradient id="borboleta-folha" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8fd58a"/>
+      <stop offset="1" stop-color="#3f9a5c"/>
+    </linearGradient>
+    <clipPath id="borboleta-c1"><path d="M122 106 C100 82 60 48 26 46 C16 52 18 74 28 92 C42 116 80 124 122 122 Z"/></clipPath>
+    <clipPath id="borboleta-c2"><path d="M122 120 C96 122 58 130 46 156 C40 174 54 192 74 190 C98 188 116 162 126 132 Z"/></clipPath>
+    <clipPath id="borboleta-c3"><path d="M134 106 C152 84 186 56 214 54 C222 60 220 80 212 94 C200 114 168 122 134 122 Z"/></clipPath>
+    <clipPath id="borboleta-c4"><path d="M134 120 C156 124 186 134 196 156 C200 172 190 186 174 184 C156 182 142 158 132 132 Z"/></clipPath>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="128" cy="237" rx="64" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="flor" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M128 200 C126 214 122 226 124 236" fill="none" stroke="#2f7a46" stroke-width="6"/>
+    <path d="M128 200 C126 214 122 226 124 236" fill="none" stroke="#5dbb85" stroke-width="3"/>
+    <path d="M124 222 C112 212 96 212 88 218 C98 228 114 230 124 222 Z" fill="url(#borboleta-folha)" stroke="#2f7a46" stroke-width="2"/>
+    <path d="M126 214 C138 202 154 202 162 208 C152 218 136 220 126 214 Z" fill="url(#borboleta-folha)" stroke="#2f7a46" stroke-width="2"/>
+    <path d="M92 218 L122 221 M158 208 L128 213" stroke="#2f7a46" stroke-width="1.2"/>
+    <g fill="url(#borboleta-petala)" stroke="#b83c55" stroke-width="2">
+      <ellipse cx="128" cy="180" rx="13" ry="10"/>
+      <ellipse cx="104" cy="188" rx="17" ry="10" transform="rotate(-12 104 188)"/>
+      <ellipse cx="152" cy="188" rx="17" ry="10" transform="rotate(12 152 188)"/>
+      <ellipse cx="114" cy="200" rx="16" ry="9" transform="rotate(18 114 200)"/>
+      <ellipse cx="142" cy="200" rx="16" ry="9" transform="rotate(-18 142 200)"/>
+    </g>
+    <path d="M94 184 q8 -4 16 -2 M144 182 q8 -2 16 2" fill="none" stroke="#ffe0e6" stroke-width="2" opacity="0.9"/>
+    <ellipse cx="128" cy="190" rx="13" ry="7" fill="#ffc935" stroke="#d99a10" stroke-width="2"/>
+    <g fill="#d99a10"><circle cx="122" cy="189" r="1.3"/><circle cx="128" cy="192" r="1.3"/><circle cx="134" cy="189" r="1.3"/><circle cx="128" cy="187" r="1.2"/></g>
+  </g>
+
+  <g id="asas-de-la" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M134 120 C156 124 186 134 196 156 C200 172 190 186 174 184 C156 182 142 158 132 132 Z" fill="url(#borboleta-asa2)"/>
+    <g clip-path="url(#borboleta-c4)">
+      <path d="M184 138 C200 156 198 182 176 184 C164 184 154 178 146 168" fill="none" stroke="#1a2140" stroke-width="18"/>
+      <g fill="#ffffff"><circle cx="186" cy="174" r="2"/><circle cx="176" cy="179" r="1.8"/><circle cx="166" cy="176" r="1.6"/><circle cx="192" cy="164" r="1.6"/></g>
+      <path d="M140 132 L176 166 M144 128 L188 152" stroke="#1c4aa8" stroke-width="1.5" fill="none" opacity="0.6"/>
+    </g>
+    <path d="M134 120 C156 124 186 134 196 156 C200 172 190 186 174 184 C156 182 142 158 132 132 Z" fill="none" stroke="#141a33" stroke-width="2.5"/>
+    <path d="M134 106 C152 84 186 56 214 54 C222 60 220 80 212 94 C200 114 168 122 134 122 Z" fill="url(#borboleta-asa2)"/>
+    <g clip-path="url(#borboleta-c3)">
+      <path d="M134 106 C152 84 186 56 214 54 C222 60 220 80 212 94" fill="none" stroke="#1a2140" stroke-width="22"/>
+      <ellipse cx="212" cy="62" rx="12" ry="14" fill="#1a2140"/>
+      <g fill="#ffffff"><circle cx="206" cy="66" r="2.2"/><circle cx="210" cy="78" r="2"/><circle cx="198" cy="64" r="1.8"/><circle cx="186" cy="70" r="1.6"/><circle cx="204" cy="88" r="1.6"/></g>
+      <path d="M140 116 L196 84 M142 112 L184 76" stroke="#1c4aa8" stroke-width="1.5" fill="none" opacity="0.6"/>
+      <path d="M146 110 Q170 92 196 82" fill="none" stroke="#d6f8ff" stroke-width="4" opacity="0.6"/>
+    </g>
+    <path d="M134 106 C152 84 186 56 214 54 C222 60 220 80 212 94 C200 114 168 122 134 122 Z" fill="none" stroke="#141a33" stroke-width="2.5"/>
+  </g>
+
+  <g id="asas-de-ca" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M122 120 C96 122 58 130 46 156 C40 174 54 192 74 190 C98 188 116 162 126 132 Z" fill="url(#borboleta-asa)"/>
+    <g clip-path="url(#borboleta-c2)">
+      <path d="M58 136 C40 156 46 188 72 190 C86 190 98 184 106 172" fill="none" stroke="#1a2140" stroke-width="20"/>
+      <g fill="#ffffff"><circle cx="54" cy="172" r="2.2"/><circle cx="62" cy="182" r="2"/><circle cx="74" cy="184" r="2"/><circle cx="86" cy="180" r="1.8"/><circle cx="50" cy="160" r="1.8"/></g>
+      <path d="M118 128 L70 160 M120 126 L60 148 M120 132 L88 172" stroke="#1c4aa8" stroke-width="1.6" fill="none" opacity="0.6"/>
+      <path d="M110 128 Q84 136 64 152" fill="none" stroke="#d6f8ff" stroke-width="4" opacity="0.6"/>
+    </g>
+    <path d="M122 120 C96 122 58 130 46 156 C40 174 54 192 74 190 C98 188 116 162 126 132 Z" fill="none" stroke="#141a33" stroke-width="2.5"/>
+    <path d="M122 106 C100 82 60 48 26 46 C16 52 18 74 28 92 C42 116 80 124 122 122 Z" fill="url(#borboleta-asa)"/>
+    <g clip-path="url(#borboleta-c1)">
+      <path d="M122 106 C100 82 60 48 26 46 C16 52 18 74 28 92" fill="none" stroke="#1a2140" stroke-width="24"/>
+      <ellipse cx="28" cy="54" rx="14" ry="16" fill="#1a2140"/>
+      <g fill="#ffffff"><circle cx="30" cy="60" r="2.4"/><circle cx="26" cy="74" r="2.2"/><circle cx="40" cy="56" r="2"/><circle cx="54" cy="60" r="1.8"/><circle cx="32" cy="86" r="1.8"/><circle cx="70" cy="70" r="1.6"/></g>
+      <path d="M118 116 L52 80 M118 112 L66 72 M118 120 L44 96" stroke="#1c4aa8" stroke-width="1.6" fill="none" opacity="0.6"/>
+      <path d="M108 108 Q78 88 50 82" fill="none" stroke="#d6f8ff" stroke-width="5" opacity="0.6"/>
+    </g>
+    <path d="M122 106 C100 82 60 48 26 46 C16 52 18 74 28 92 C42 116 80 124 122 122 Z" fill="none" stroke="#141a33" stroke-width="2.5"/>
+  </g>
+
+  <g id="corpo" stroke-linejoin="round" stroke-linecap="round">
+    <!-- perninhas pousadas na flor -->
+    <path d="M124 124 L114 150 L116 184 M128 128 L126 156 L124 186 M132 124 L142 150 L138 184" fill="none" stroke="#2a201c" stroke-width="2.2"/>
+    <!-- abdômen -->
+    <path d="M122 124 C120 140 122 158 128 172 C134 158 136 140 134 124 Z" fill="url(#borboleta-corpo)" stroke="#1a1412" stroke-width="2.2"/>
+    <path d="M123 134 h10 M123 144 h10 M124 154 h8 M126 163 h4" stroke="#8a7a70" stroke-width="1.4"/>
+    <!-- tórax peludinho -->
+    <ellipse cx="128" cy="112" rx="10" ry="15" fill="url(#borboleta-corpo)" stroke="#1a1412" stroke-width="2.2"/>
+    <path d="M123 104 q2 -4 6 -5" fill="none" stroke="#a8988e" stroke-width="2" opacity="0.8"/>
+    <!-- antenas com ponta grossa -->
+    <path d="M122 80 C116 64 106 50 96 42 M132 80 C138 64 148 50 158 42" fill="none" stroke="#2a201c" stroke-width="2.4"/>
+    <ellipse cx="95" cy="41" rx="4" ry="5.5" fill="#2a201c" transform="rotate(-40 95 41)"/>
+    <ellipse cx="159" cy="41" rx="4" ry="5.5" fill="#2a201c" transform="rotate(40 159 41)"/>
+    <!-- cabeça -->
+    <circle cx="127" cy="88" r="15" fill="url(#borboleta-cabeca)" stroke="#1a1412" stroke-width="2.2"/>
+    <path d="M118 80 q4 -5 10 -5" fill="none" stroke="#a8988e" stroke-width="2" opacity="0.8"/>
+    <ellipse cx="121" cy="88" rx="5.5" ry="6.5" fill="#100a08"/>
+    <ellipse cx="134" cy="88" rx="5.5" ry="6.5" fill="#100a08"/>
+    <circle cx="119" cy="85.5" r="2.6" fill="#fff"/>
+    <circle cx="123.5" cy="91" r="1.2" fill="#fff"/>
+    <circle cx="132" cy="85.5" r="2.6" fill="#fff"/>
+    <circle cx="136.5" cy="91" r="1.2" fill="#fff"/>
+    <path d="M123 97 Q127 100 131 97" fill="none" stroke="#c9b6aa" stroke-width="1.6"/>
+    <ellipse cx="117" cy="96" rx="3.5" ry="2.2" fill="#f4908a" opacity="0.6"/>
+    <ellipse cx="138" cy="96" rx="3.5" ry="2.2" fill="#f4908a" opacity="0.6"/>
+  </g>
 </svg>

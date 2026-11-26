@@ -1,7 +1,94 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M26 3.00006C26 2.41006 25.5 1.95006 24.91 2.00006C22.9085 2.1853 20.8988 2.86456 19.2969 3.87272C19.0074 3.8511 18.715 3.84009 18.42 3.84009H16.81C11.27 3.84009 5.69 6.45009 2.36 10.8801C1.92 11.4601 1.88 12.2601 2.26 12.8801C2.72928 13.6601 3.34132 14.3597 4.04991 14.9514H17V16.7999C17 18.0999 17.73 19.2899 18.89 19.8799L18.98 19.9299C19.45 20.1699 20 19.8299 20 19.2999V14.9514H22.4472C23.602 15.2918 24.8156 15.4801 26 15.4801V14.9514H26.033V20.8364L18.45 24.4725L18.0494 23.7128C17.841 23.7618 17.6314 23.8048 17.42 23.8401C17.14 23.8901 16.85 23.7801 16.67 23.5601L14.91 21.3601C13.71 19.8701 11.92 19.0001 10.02 19.0001H8.77C8.46 19.0001 8.28 19.3501 8.47 19.6001L13.7 26.5701C13.89 26.8201 13.9 27.1701 13.72 27.4401L12.4 29.4201C12.25 29.6701 12.43 30.0001 12.72 30.0001H14.34C15.38 30.0001 16.36 29.4801 16.94 28.6101L17.79 27.3501C17.94 27.1301 18.18 27.0001 18.45 27.0001C18.58 27.0001 18.71 27.0001 18.84 26.9901C25.04 26.7701 30 21.6801 30 15.4201C30 11.92 28.4508 8.78487 26 6.66228V3.00006Z" fill="#9B9B9B"/>
-<path d="M23 13.92V11.5C23 11.31 23.18 11.17 23.39 11.22C26.09 11.95 28.06 14.43 28.03 17.37C28.01 19.5 26.88 21.47 25.09 22.63L24.14 23.25C22.29 24.45 20.2 25.24 18.03 25.57V23.72C18.13 23.7 18.22 23.67 18.32 23.65C20.1763 22.9509 24.0014 21.5848 24.0014 19.0108C24.0014 17.4577 22.4805 17.0232 21.72 17H9.15C7.3 16.91 5.47 16.15 4.03 14.95L5.44 13.74C7.5 11.97 10.13 11 12.84 11H19.73C19.88 11 20 11.12 20 11.27C20 12.49 20.61 13.64 21.63 14.33L21.91 14.51C22.37 14.82 23 14.48 23 13.92Z" fill="#D3D3D3"/>
-<path d="M15 12C15 12.28 15.22 12.5 15.5 12.5C15.77 12.5 16 12.28 16 12V9.98999C16 9.71999 15.78 9.48999 15.5 9.48999C15.22 9.48999 15 9.70999 15 9.98999V12Z" fill="#636363"/>
-<path d="M17 12C17 12.28 17.22 12.5 17.5 12.5C17.77 12.5 18 12.28 18 12V9.98999C18 9.70999 17.78 9.48999 17.5 9.48999C17.22 9.48999 17 9.70999 17 9.98999V12Z" fill="#636363"/>
-<path d="M10.51 12C11.0623 12 11.51 11.5523 11.51 11C11.51 10.4477 11.0623 10 10.51 10C9.95771 10 9.50999 10.4477 9.50999 11C9.50999 11.5523 9.95771 12 10.51 12Z" fill="#1C1C1C"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="tubarao-dorso" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a6c3d8"/>
+      <stop offset="0.55" stop-color="#6e93b0"/>
+      <stop offset="1" stop-color="#4c6f8a"/>
+    </linearGradient>
+    <linearGradient id="tubarao-barbatana" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8fb0c8"/>
+      <stop offset="1" stop-color="#4f7390"/>
+    </linearGradient>
+    <linearGradient id="tubarao-barriga" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#dce6ee"/>
+    </linearGradient>
+    <clipPath id="tubarao-clip-corpo">
+      <path d="M16 122 C16 94 56 72 110 70 C154 68 190 92 212 112 L214 126 C190 148 152 172 106 172 C56 172 16 154 16 122 Z"/>
+    </clipPath>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="130" cy="237" rx="84" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g transform="translate(0 16)" stroke-linejoin="round" stroke-linecap="round">
+    <g id="barbatanas-de-tras" fill="url(#tubarao-barbatana)" stroke="#2f4a5e" stroke-width="2.5">
+      <!-- cauda em meia-lua -->
+      <path d="M204 116 C214 92 228 64 244 46 C248 72 240 100 224 120 C236 136 244 156 246 176 C230 166 214 148 204 128 Z"/>
+      <path d="M214 112 C222 94 232 74 240 60" fill="none" stroke="#c4d8e6" stroke-width="2.5"/>
+      <!-- segunda dorsal e anal -->
+      <path d="M182 100 L190 86 L196 106 Z"/>
+      <path d="M178 146 L190 160 L194 138 Z"/>
+      <!-- peitoral do lado de lá -->
+      <path d="M78 158 C82 174 88 186 98 194 C102 184 100 170 94 158 Z" fill="#4f7390"/>
+      <!-- dorsal alta -->
+      <path d="M94 78 C108 62 118 42 126 24 Q132 20 135 28 C136 46 142 66 160 82 Z"/>
+      <path d="M116 54 Q122 40 128 30" fill="none" stroke="#c4d8e6" stroke-width="3"/>
+    </g>
+
+    <g id="corpo">
+      <path d="M16 122 C16 94 56 72 110 70 C154 68 190 92 212 112 L214 126 C190 148 152 172 106 172 C56 172 16 154 16 122 Z" fill="url(#tubarao-dorso)"/>
+      <!-- barriga branca bem demarcada -->
+      <g clip-path="url(#tubarao-clip-corpo)">
+        <path d="M6 128 C26 134 44 128 62 132 C78 138 86 146 106 146 C134 146 170 136 220 120 L230 200 L6 200 Z" fill="url(#tubarao-barriga)"/>
+        <path d="M6 128 C26 134 44 128 62 132 C78 138 86 146 106 146 C134 146 170 136 220 120" fill="none" stroke="#8fa9bd" stroke-width="1.6"/>
+        <!-- luz no dorso -->
+        <path d="M38 92 Q78 72 128 74" fill="none" stroke="#d6e6f1" stroke-width="5" opacity="0.8"/>
+        <!-- pintinhas de textura -->
+        <g fill="#5d819c" opacity="0.5">
+          <circle cx="150" cy="100" r="1.6"/><circle cx="164" cy="108" r="1.4"/><circle cx="140" cy="112" r="1.4"/><circle cx="176" cy="114" r="1.6"/><circle cx="120" cy="104" r="1.4"/>
+        </g>
+      </g>
+      <path d="M16 122 C16 94 56 72 110 70 C154 68 190 92 212 112 L214 126 C190 148 152 172 106 172 C56 172 16 154 16 122 Z" fill="none" stroke="#2f4a5e" stroke-width="2.5"/>
+      <!-- 5 fendas branquiais -->
+      <g fill="none" stroke="#3d5d75" stroke-width="2.2">
+        <path d="M84 98 Q79 114 84 132"/><path d="M92 97 Q87 114 92 133"/><path d="M100 96 Q95 114 100 134"/><path d="M108 96 Q103 114 108 134"/><path d="M116 97 Q111 114 116 133"/>
+      </g>
+    </g>
+
+    <g id="barbatanas-da-frente" fill="url(#tubarao-barbatana)" stroke="#2f4a5e" stroke-width="2.5">
+      <!-- peitoral grande -->
+      <path d="M100 148 C112 168 124 186 148 202 C154 188 148 168 134 150 Z"/>
+      <path d="M110 156 Q124 174 142 190" fill="none" stroke="#c4d8e6" stroke-width="2.5"/>
+      <!-- pélvica -->
+      <path d="M156 156 L164 172 L172 150 Z"/>
+    </g>
+
+    <g id="rosto">
+      <!-- narina -->
+      <path d="M24 114 q4 -2 7 0" fill="none" stroke="#2f4a5e" stroke-width="2"/>
+      <!-- sorriso com poucos dentinhos arredondados -->
+      <path d="M28 140 Q48 154 72 142" fill="#7a3d4a" stroke="#2f4a5e" stroke-width="2.2"/>
+      <g fill="#ffffff" stroke="#9fb2c0" stroke-width="1">
+        <path d="M38 144.5 q2.5 5 5 0 Z"/><path d="M48 147 q2.5 5 5 0 Z"/><path d="M59 146 q2.5 5 5 0 Z"/>
+      </g>
+      <path d="M25 138 q2 2 4 2 M71 142 q2 0 4 -2" fill="none" stroke="#2f4a5e" stroke-width="2"/>
+      <ellipse cx="68" cy="130" rx="8" ry="5" fill="#f4908a" opacity="0.5"/>
+    </g>
+
+    <g id="olhos">
+      <ellipse cx="52" cy="108" rx="9" ry="10.5" fill="#2b1d16"/>
+      <circle cx="48.5" cy="103.5" r="4.2" fill="#fff"/>
+      <circle cx="56" cy="112.5" r="2" fill="#fff"/>
+      <path d="M42 93 q8 -5 16 -2" fill="none" stroke="#2f4a5e" stroke-width="2"/>
+    </g>
+  </g>
+
+  <g id="bolhas" fill="#e6f6ff" fill-opacity="0.5" stroke="#7cc4ea" stroke-width="2">
+    <circle cx="18" cy="104" r="5"/>
+    <circle cx="26" cy="82" r="3.5"/>
+    <circle cx="16" cy="62" r="6.5"/>
+    <path d="M14 60 a4 4 0 0 1 3 -3" stroke="#ffffff" fill="none"/>
+  </g>
 </svg>

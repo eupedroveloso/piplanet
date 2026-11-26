@@ -12,6 +12,7 @@ import {
   Comemoracao,
   MOLA_ENTRADA,
   MOLA_TOQUE,
+  fonteQueCabe,
 } from "@/components/ui";
 import { JogoFase, type RodadaProps } from "../comum/JogoFase";
 
@@ -96,11 +97,15 @@ function RodadaAchar({
   return (
     <>
       {/* Palavra com sílabas prontas */}
-      <div className="flex flex-wrap items-center justify-center gap-2 rounded-xl bg-branco px-6 py-4 shadow-[0_8px_0_var(--t-chao)]">
+      {/* Numa linha só, em qualquer celular: a fonte encolhe com a largura (RI·NO·CE·RON·TE em 360 px) */}
+      <div
+        style={{ fontSize: fonteQueCabe(animal.silabas.join("").length, animal.silabas.length - 1, 72) }}
+        className="flex max-w-full items-center justify-center gap-[0.08em] rounded-xl bg-branco px-3 py-3 font-leitura shadow-[0_8px_0_var(--t-chao)] sm:px-6 sm:py-4"
+      >
         {animal.silabas.map((s, i) => (
-          <span key={i} className="flex items-center gap-2">
+          <span key={i} className="flex items-center gap-[0.08em]">
             {i > 0 && (
-              <span className="text-4xl font-bold text-tinta-suave">·</span>
+              <span aria-hidden className="text-[0.6em] font-bold text-tinta-suave">·</span>
             )}
             <motion.button
               type="button"
@@ -115,7 +120,7 @@ function RodadaAchar({
               transition={
                 acertou ? { duration: 0.5, delay: i * 0.12 } : MOLA_TOQUE
               }
-              className={`rounded-md px-2 font-leitura text-6xl font-bold uppercase transition-colors duration-300 sm:text-7xl ${
+              className={`min-h-12 rounded-md px-[0.1em] leading-tight font-bold uppercase transition-colors duration-300 ${
                 acertou ? "text-verde-escuro" : "text-roxo"
               } ${lendo === i ? "bg-amarelo-claro" : ""}`}
             >
@@ -126,7 +131,7 @@ function RodadaAchar({
       </div>
 
       {/* Opções de bicho */}
-      <div className="flex flex-wrap justify-center gap-4">
+      <div className="grid grid-cols-2 justify-items-center gap-3 [&>*:last-child:nth-child(odd)]:col-span-2 sm:flex sm:flex-wrap sm:justify-center sm:gap-4">
         {opcoes.map((a, n) => {
           const certo = a.id === animal.id;
           return (
@@ -156,7 +161,7 @@ function RodadaAchar({
                     ? { duration: 1, repeat: Infinity, ease: "easeInOut" }
                     : { duration: 0.4 }
                 }
-                className={`relative grid size-36 place-items-center rounded-xl bg-branco transition-[opacity,box-shadow] duration-300 sm:size-44 ${
+                className={`relative grid size-[min(9rem,40vw)] place-items-center rounded-xl bg-branco transition-[opacity,box-shadow] duration-300 sm:size-44 ${
                   acertou && certo
                     ? "shadow-[0_8px_0_var(--color-verde-escuro)] ring-4 ring-verde"
                     : dica && certo
@@ -164,7 +169,7 @@ function RodadaAchar({
                       : "shadow-[0_8px_0_var(--t-chao)]"
                 } ${acertou && !certo ? "opacity-30" : ""}`}
               >
-                <Arte src={arteDoAnimal(a)} className="size-24 sm:size-32" />
+                <Arte src={arteDoAnimal(a)} className="size-[70%] sm:size-32" />
                 {acertou && certo && <Comemoracao raio={130} />}
               </motion.button>
             </motion.div>

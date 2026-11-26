@@ -111,11 +111,12 @@ function RodadaMontar({ animal, fase, acertou, errar, acertar, modo }: RodadaPro
   }
 
   const dica = errosCasa >= ERROS_ATE_DICA ? pecas.find((p) => !p.used && p.text === unidades[feitas])?.id : undefined;
-  const pequeno = modo !== "silabas";
+  // Palavras longas (RI·NO·CE·RON·TE) usam o bloco menor para caber numa linha no celular
+  const pequeno = modo !== "silabas" || unidades.length >= 4;
 
   return (
     <>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3 sm:gap-4">
         <CirculoBicho animal={animal} acertou={acertou} />
         {modo === "frase" && (
           // Ouvir a frase inteira (apoio para quem ainda não lê); pulsa até ser tocado
@@ -123,7 +124,7 @@ function RodadaMontar({ animal, fase, acertou, errar, acertar, modo }: RodadaPro
             aria-label="Ouvir a frase"
             fala={false}
             onClick={ouvirFrase}
-            className={`size-16 ${ouviuFrase ? "" : "animate-pulsar ring-4 ring-amarelo"}`}
+            className={`size-14 sm:size-16 ${ouviuFrase ? "" : "animate-pulsar ring-4 ring-amarelo"}`}
           >
             <Arte nome="ui/som-ligado" className="size-9" />
           </BotaoRedondo>
@@ -131,7 +132,7 @@ function RodadaMontar({ animal, fase, acertou, errar, acertar, modo }: RodadaPro
       </div>
 
       {/* Casinhas, agrupadas por sílaba */}
-      <div className="flex flex-wrap justify-center gap-5">
+      <div className={`flex flex-wrap justify-center ${modo === "silabas" ? "gap-1.5 sm:gap-5" : "gap-2 sm:gap-5"}`}>
         {grupos.map((_, g) => {
           const membros = unidades.map((u, i) => ({ u, i })).filter(({ i }) => grupoDe[i] === g);
           const pronta = membros.every(({ i }) => i < feitas);
@@ -139,9 +140,9 @@ function RodadaMontar({ animal, fase, acertou, errar, acertar, modo }: RodadaPro
           return (
             <div
               key={g}
-              className={`flex gap-1.5 rounded-lg p-1.5 transition-colors duration-300 ${pequeno && pronta ? "bg-verde-claro" : ""} ${
-                pequeno && atual ? "bg-branco/60" : ""
-              }`}
+              className={`flex gap-1 rounded-lg transition-colors duration-300 sm:gap-1.5 ${modo === "silabas" ? "" : "p-1 sm:p-1.5"} ${
+                modo !== "silabas" && pronta ? "bg-verde-claro" : ""
+              } ${modo !== "silabas" && atual ? "bg-branco/60" : ""}`}
             >
               {membros.map(({ u, i }) => (
                 <Casinha
@@ -159,7 +160,7 @@ function RodadaMontar({ animal, fase, acertou, errar, acertar, modo }: RodadaPro
 
       {/* Peças */}
       {!acertou && (
-        <div className="flex flex-wrap justify-center gap-4">
+        <div className="flex flex-wrap justify-center gap-2.5 sm:gap-4">
           {pecas.map((p, n) => (
             <Peca
               key={p.id}

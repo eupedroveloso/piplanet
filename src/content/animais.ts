@@ -62,7 +62,7 @@ export const ANIMAIS: Animal[] = [
   a("burro", "bur-ro", 3, "br-fazenda", "mamífero", "As orelhas grandes do burro ajudam a ouvir sons bem de longe."),
   a("abelha", "a-be-lha", 3, "br-fazenda", "inseto", "A abelha faz uma dança para mostrar às outras onde estão as flores."),
 
-  // ── Brasil · Amazônia ─────────────────────────────────────────────────
+  // ── Brasil · Florestas (Amazônia e Mata Atlântica) ────────────────────
   a("sapo", "sa-po", 1, "br-amazonia", "anfíbio", "Muitos sapos usam os olhos para ajudar a engolir: eles empurram os olhos para dentro da boca."),
   a("mico", "mi-co", 1, "br-amazonia", "mamífero", "O mico-leão-dourado só existe na Mata Atlântica, aqui no Brasil."),
   a("boto", "bo-to", 1, "br-amazonia", "mamífero", "O boto-cor-de-rosa vive nos rios da Amazônia."),
