@@ -21,7 +21,7 @@ import { falarSobre } from "@/lib/falar-bicho";
 import { infoNivel } from "@/content/niveis";
 import {
   Arte,
-  Bolinhas,
+  TrilhaProgresso,
   Botao,
   BotaoLink,
   BotaoRedondoLink,
@@ -148,9 +148,10 @@ export function JogoFase({
       </BotaoRedondoLink>
       <div className="flex min-w-0 flex-1 justify-center">
         <AnimatePresence mode="wait" initial={false}>
-          {etapa === "jogando" || etapa === "acertou" ? (
-            <motion.div key="bolinhas" {...TROCA}>
-              <Bolinhas total={fila.length} feitas={indice} atualConcluida={etapa === "acertou"} />
+          {etapa === "jogando" || etapa === "acertou" || etapa === "fim" ? (
+            // Trilhinha: o Pietro anda até a próxima parada a cada bicho; no fim, chega na bandeira
+            <motion.div key="trilha" {...TROCA} className="flex w-full justify-center">
+              <TrilhaProgresso total={fila.length} feitas={etapa === "fim" ? fila.length : indice + (etapa === "acertou" ? 1 : 0)} />
             </motion.div>
           ) : (
             <motion.span

@@ -142,7 +142,7 @@ export function JornadaNiveis({ niveis, atual }: { niveis: { n: number; icone: s
     <div className="flex flex-col gap-1.5">
       <div className="flex gap-1">
         {niveis.map((nv) => (
-          <div key={nv.n} className="flex min-w-0 flex-col items-center gap-1" style={{ flexGrow: Math.max(1, nv.total), flexBasis: 0 }}>
+          <div key={nv.n} className="flex min-w-0 flex-col items-center gap-1" style={{ flexGrow: Math.sqrt(Math.max(1, nv.total)), flexBasis: 0 }}>
             <Arte nome={nv.icone} className={`size-6 ${nv.n > atual ? "opacity-40 grayscale" : ""}`} />
             <div className={`relative h-3.5 w-full overflow-hidden rounded-full bg-linha ${nv.n === atual ? "ring-2 ring-amarelo ring-offset-1" : ""}`}>
               <motion.div

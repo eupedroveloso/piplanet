@@ -57,3 +57,9 @@ Criança com autismo leve e hiperfoco em animais, aprendendo a ler. Ela conhece 
   - Para mostrar que ele está olhando para baixo, basta descer as pupilas. Pálpebra pesada ou olho fechado deu cara de desconfiado ou de sono, e foi descartado.
   - No avatar de 32 px, o rosto precisa ocupar cerca de 60% do círculo e o chapéu fica menor. Com o chapéu dominando, o rosto some.
   - Não houve foto de referência, então é um menino genérico de cabelo castanho; o dono ajusta depois.
+- 2026-11-26 (Pietro em movimento): fiz o ciclo de caminhada de perfil em 4 quadros (`pietro-andando-1..4.svg`) e o `pietro-feliz.svg`. O gerador é `scripts/mascote/pietro_andando.py`, que reaproveita as partes de `pietro.py`.
+  - Para os quadros não pularem: viewBox 256 igual nos quatro e quadril fixo em x=130. Só muda a altura do corpo: nos quadros de passagem ele sobe cerca de 3 px, calculado para o pé de apoio tocar sempre y=236. A sombra no chão fica fixa.
+  - Pernas e braços são feitos com segmentos (coxa e canela, braço e antebraço) com ângulos por quadro; a fórmula está no gerador. O lado de longe usa os tons de sombra.
+  - Mochila e binóculo balançam 1 a 2 px, atrasados em relação ao corpo.
+  - Na ponta da perna da bermuda, usar `stroke-linecap="butt"`. Com ponta redonda, os joelhos viraram bolinhas.
+  - Na pose feliz (comemoração), olhos em arco e boca aberta são aceitáveis. No uso geral, manter o sorriso fechado.

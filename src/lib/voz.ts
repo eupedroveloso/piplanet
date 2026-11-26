@@ -112,8 +112,32 @@ function paraMp3(pcm: Buffer): Uint8Array<ArrayBuffer> {
   return out;
 }
 
-/** Gera o MP3 da frase (até 3 tentativas até a leitura bater com o texto). null se não der. */
+// ── ElevenLabs (voz principal quando houver chave) ─────────────────────────────
+/** Modelo mais barato e rápido da ElevenLabs (metade dos créditos por caractere), fala pt-BR. */
+const ELEVEN_MODELO = process.env.ELEVENLABS_MODELO || "eleven_flash_v2_5";
+export const usaElevenLabs = () => !!(process.env.ELEVENLABS_API_KEY && process.env.ELEVENLABS_VOICE_ID);
+/** Identifica a voz em uso (entra na chave do cache: trocar a voz gera tudo de novo). */
+export const vozEmUso = () =>
+  usaElevenLabs() ? `eleven|${ELEVEN_MODELO}|${process.env.ELEVENLABS_VOICE_ID}` : `${VOZ_MODELO}|${VOZ_VOZ}`;
+
+async function gerarEleven(texto: string): Promise<Uint8Array<ArrayBuffer> | null> {
+  const r = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${process.env.ELEVENLABS_VOICE_ID}?output_format=mp3_44100_64`, {
+    method: "POST",
+    headers: { "xi-api-key": process.env.ELEVENLABS_API_KEY!, "Content-Type": "application/json", Accept: "audio/mpeg" },
+    body: JSON.stringify({
+      text: texto,
+      model_id: ELEVEN_MODELO,
+      language_code: "pt",
+      voice_settings: { stability: 0.45, similarity_boost: 0.8, style: 0.35, use_speaker_boost: true },
+    }),
+  }).catch(() => null);
+  if (!r?.ok) return null;
+  return new Uint8Array(await r.arrayBuffer());
+}
+
+/** Gera o MP3 da frase. ElevenLabs se houver chave; senão OpenRouter (até 3 tentativas conferindo a leitura). */
 export async function gerarVoz(texto: string): Promise<Uint8Array<ArrayBuffer> | null> {
+  if (usaElevenLabs()) return gerarEleven(texto);
   const chave = process.env.OPENROUTER_API_KEY;
   if (!chave) return null;
   for (let i = 0; i < 3; i++) {

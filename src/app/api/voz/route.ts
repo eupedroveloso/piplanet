@@ -1,9 +1,9 @@
 import { createHash } from "node:crypto";
-import { gerarVoz, VOZ_MODELO, VOZ_VERSAO, VOZ_VOZ } from "@/lib/voz";
+import { gerarVoz, usaElevenLabs, VOZ_MODELO, VOZ_VERSAO, VOZ_VOZ, vozEmUso } from "@/lib/voz";
 
 /**
  * VOZ DA JUJU
- * GET /api/voz?t=<texto> → MP3. Cada frase é gerada UMA vez (OpenRouter, modelo de voz mais barato)
+ * GET /api/voz?t=<texto> → MP3. Cada frase é gerada UMA vez (ElevenLabs se houver chave; senão OpenRouter)
  * e guardada no banco (VozCache). Depois disso, tocar não custa nada, em nenhum aparelho.
  * Sem chave/crédito, responde 503 e o app usa a voz do navegador.
  */
@@ -26,7 +26,7 @@ export async function GET(req: Request) {
   const texto = normalizar(new URL(req.url).searchParams.get("t") ?? "");
   if (!texto) return new Response("texto vazio", { status: 400 });
 
-  const chave = createHash("sha256").update(VOZ_VERSAO ? `${VOZ_MODELO}|${VOZ_VOZ}|${VOZ_VERSAO}|${texto}` : `${VOZ_MODELO}|${VOZ_VOZ}|${texto}`).digest("hex");
+  const chave = createHash("sha256").update(usaElevenLabs() ? `${vozEmUso()}|${texto}` : VOZ_VERSAO ? `${VOZ_MODELO}|${VOZ_VOZ}|${VOZ_VERSAO}|${texto}` : `${VOZ_MODELO}|${VOZ_VOZ}|${texto}`).digest("hex");
   const temBanco = !!(process.env.DATABASE_URL_POOLED || process.env.DATABASE_URL);
   const db = temBanco ? (await import("@/lib/db")).db : null;
 

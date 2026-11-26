@@ -1,5 +1,5 @@
 import sys,os
-OUT=sys.argv[1]
+OUT=sys.argv[1] if len(sys.argv)>1 else '.'
 SK="#f6c9a0"; SKS="#e3a77c"; SKD="#c98a62"
 HAIR="#6b3f22"; HAIRL="#8f5a33"; HAIRD="#4e2c17"
 HAT="#e2c487"; HATS="#c9a462"; HATL="#f1dcaa"; BAND="#7a4a26"

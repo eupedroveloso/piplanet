@@ -11,7 +11,8 @@ import { animaisDaFase, animaisDoTerritorio, chaveFase, faseDesbloqueada, JOGOS,
 import { infoNivel } from "@/content/niveis";
 import type { Progress } from "@/lib/progress";
 import { speak } from "@/lib/speech";
-import { BALANCO, CLASSE_ETIQUETA, MOLA_ENTRADA, MOLA_TOQUE } from "@/components/ui";
+import { BALANCO, CLASSE_ETIQUETA, MOLA_ENTRADA } from "@/components/ui";
+import { ExploradorAndando, ExploradorParado } from "./Explorador";
 import type { Ilha } from "./ilha";
 
 /**
@@ -133,13 +134,10 @@ export function Rotulos({
           </div>
         ))}
 
-      {/* Mãozinha viajando na ponta do caminho que se desenha (sem ela com movimento reduzido: aparece só no fim) */}
+      {/* O explorador anda na ponta do caminho que se desenha (com movimento reduzido: só aparece no nó novo) */}
       {foco && andando && !reduzir && (
         <div data-ancora="caminho" className="absolute top-0 left-0">
-          <motion.span initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} transition={MOLA_TOQUE} className="block">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/arte/ui/mao.svg" alt="" className="size-9 -translate-y-[29px] drop-shadow" draggable={false} />
-          </motion.span>
+          <ExploradorAndando />
         </div>
       )}
 
@@ -158,7 +156,8 @@ export function Rotulos({
                 fase={f}
                 progresso={progresso}
                 atual={!andando && atual?.t === foco && atual.i === f}
-                acendeu={!reduzir && caminhada?.acender === `${foco}-${f}`}
+                chegou={caminhada?.acender === `${foco}-${f}`}
+                marco={!!nivelQueComeca(chaveFase(foco, f))}
               />
             </div>
           ))}
@@ -279,15 +278,20 @@ function NoFase({
   fase,
   progresso,
   atual,
-  acendeu = false,
+  chegou = false,
+  marco = false,
 }: {
   territorio: TerritorioId;
   fase: number;
   progresso: Progress;
   atual: boolean;
-  /** O caminho acabou de chegar aqui: um pulso extra de "acendeu". */
-  acendeu?: boolean;
+  /** O caminho acabou de chegar aqui: pulso extra de "acendeu" e o explorador dá um pulinho. */
+  chegou?: boolean;
+  /** Primeira fase de um nível novo: a chegada tem um brilho extra. */
+  marco?: boolean;
 }) {
+  const reduzir = useReducedMotion();
+  const acendeu = chegou && !reduzir;
   const router = useRouter();
   const [balanca, setBalanca] = useState(false);
   const t = TERRITORIOS.find((x) => x.id === territorio)!;
@@ -325,18 +329,8 @@ function NoFase({
       className="relative flex flex-col items-center"
       style={{ transformOrigin: "bottom center" }}
     >
-      {atual && (
-        // mãozinha apontando para a próxima fase (não depende de leitura)
-        <motion.span
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: [0, 6, 0] }}
-          transition={{ y: { duration: 0.9, repeat: Infinity, ease: "easeInOut" }, opacity: MOLA_TOQUE }}
-          className="pointer-events-none mb-0.5"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/arte/ui/mao.svg" alt="" className="size-9 drop-shadow" draggable={false} />
-        </motion.span>
-      )}
+      {/* o explorador espera ao lado da próxima fase (não depende de leitura) */}
+      {atual && <ExploradorParado chegou={chegou} nivelNovo={marco} />}
       {atual && (
         <motion.span
           aria-hidden
@@ -353,6 +347,33 @@ function NoFase({
           animate={{ scale: 1.8, opacity: 0 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
         />
+      )}
+      {/* nível novo: brilho extra (anel maior + estrelinhas saindo do nó) */}
+      {acendeu && marco && (
+        <>
+          <motion.span
+            aria-hidden
+            className="pointer-events-none absolute bottom-0 left-1/2 size-14 -translate-x-1/2 rounded-full ring-[6px] ring-amarelo-claro"
+            initial={{ scale: 1, opacity: 1 }}
+            animate={{ scale: 2.6, opacity: 0 }}
+            transition={{ duration: 1, ease: "easeOut", delay: 0.1 }}
+          />
+          {[0, 1, 2, 3, 4, 5].map((k) => {
+            const a = (k / 6) * Math.PI * 2 - Math.PI / 2;
+            return (
+              <motion.img
+                key={k}
+                src="/arte/ui/estrela.svg"
+                alt=""
+                aria-hidden
+                className="pointer-events-none absolute bottom-5 left-1/2 -ml-2.5 size-5"
+                initial={{ x: 0, y: 0, scale: 0.3, opacity: 1 }}
+                animate={{ x: Math.cos(a) * 52, y: Math.sin(a) * 52, scale: 1, opacity: 0 }}
+                transition={{ duration: 0.9, ease: "easeOut", delay: 0.05 * k }}
+              />
+            );
+          })}
+        </>
       )}
       <span
         className={`relative grid size-14 place-items-center rounded-full border-[3px] shadow-flutuante ${!livre ? "opacity-60" : ""} ${

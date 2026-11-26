@@ -12,6 +12,7 @@ Plataforma de alfabetização com tema de animais para uma criança com autismo 
 - Agentes do time (em `.claude/agents/`, terminais no canvas): `ilustrador` / Nanquim (arte, skill `ilustracao`), `ui-designer` / Faísca (telas e motion, skills `ui-design` e `motion`) e `modelador-3d` / Cinzel (mundo 3D e desempenho, skill `modelagem-3d`).
 - Jogos novos: `docs/COMO-CRIAR-UM-JOGO.md`.
 - Animais vêm sempre de `src/content/animais.ts`, no bioma do país onde vivem de verdade (ex.: pinguim não vive no Ártico). Curiosidades precisam ser verdadeiras.
+- Voz: siga `docs/FALAS.md` (mapa de todas as falas). Toda fala nova é pré-gerada com `scripts/gerar-vozes.mts`; nunca deixar voz do sistema. Nunca usar o Magnific.
 - Banco: Prisma 7 (versão estável; o "latest" do npm é um RC do 8). Credenciais em `.env`, nunca commitar.
 - `cacheComponents` está ligado: params de rota dinâmica são lidos dentro de `<Suspense>`.
 - Textos da interface em português do Brasil.
