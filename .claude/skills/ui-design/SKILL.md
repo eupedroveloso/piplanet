@@ -19,6 +19,8 @@ App de alfabetização para uma criança com autismo leve e hiperfoco em animais
 
 ## Princípios
 
+0. **A ferramenta é para quem NÃO SABE LER.** Todo botão e toda instrução funcionam sem leitura: ícone grande e claro + fala da Juju ao tocar ou ao aparecer. Rótulos podem existir, mas ícone e voz vêm primeiro; texto nunca é o único meio de entender algo.
+
 1. **Uma ação principal por tela**, grande e óbvia. O resto em segundo plano.
 2. **Hierarquia clara**: título roxo Baloo → conteúdo → ação. O que a criança lê usa `font-leitura` (Andika), grande.
 3. **Nada amontoado**: respiro generoso, elementos nunca se sobrepõem por acidente. Confira em 1024×768 (tablet deitado), 768×1024 (em pé) e 390×844 (celular) com `maestri portal resize`.
@@ -41,3 +43,8 @@ App de alfabetização para uma criança com autismo leve e hiperfoco em animais
 - 2026-11-26: mapa em tabs e mapa em "quadradinho" foram rejeitados; a ilha é tela cheia com dois níveis de zoom.
 - 2026-11-26: o mapa com 9 fases por território ficou "tudo em cima um do outro"; espaçamento entre elementos é prioridade.
 - 2026-11-26: o portal "Pietro Games" é compartilhado com o time; outro terminal pode trocar a URL no meio do teste. Para automatizar uma rodada inteira, rode um script curto no `evaluate` e confira o resultado no fim.
+- 2026-11-26: o dono achou o rodapé enorme (barra de largura toda, alta, itens longe). Rodapé é pílula flutuante centralizada, só do tamanho do conteúdo (ícone + rótulo lado a lado, 48 px), com safe-area.
+- 2026-11-26: CONTRASTE sobre o 3D: placa com texto direto sobre o mapa ficou ilegível (neve, mar, floresta). Toda etiqueta sobre o 3D tem fundo SÓLIDO (`bg-branco`/`bg-amarelo`) + contorno e sombra (`shadow-flutuante`). Confira no planeta escuro e nas ilhas no mar.
+- 2026-11-26: neste projeto o `@utility` do Tailwind 4 não foi gerado (a classe saiu sem estilo e as placas ficaram transparentes). Para classes próprias, use `@layer components { .classe {} }` e confira o estilo computado no portal.
+- 2026-11-26: PRINCÍPIO NOVO do dono: "essa ferramenta é para quem NÃO SABE LER". Aplicado: placas com bicho como ícone, botões do jogo com ícone (▶, ↻, bandeira, troféu, lupa no lugar de "+"), `BotaoRedondo` fala o aria-label, rodapé/placar/avatar/álbum falam ao tocar, instrução do jogo é falada ao aparecer.
+- 2026-11-26: visual refinado = menos peso: superfície `vidro` (branco 90% com desfoque, contorno fino) para o que flutua; relevo grosso só nos botões de ação.

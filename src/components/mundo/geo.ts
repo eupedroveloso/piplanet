@@ -55,9 +55,17 @@ export interface Silhueta {
 }
 
 /** Projeta o contorno num plano e escala para caber num quadrado de `tamanho`. */
-export function silhueta(paisId: PaisId, tamanho = 26): Silhueta {
+export function silhueta(paisId: PaisId, tamanhoPadrao = 26): Silhueta {
   const pais = PAISES.find((p) => p.id === paisId)!;
-  const anel = contornoPais(pais);
+  const tamanho = pais.tamanhoIlha ?? tamanhoPadrao;
+  // Destino no mar (sem país): uma ilhota arredondada e irregular no meio do oceano
+  const anel: Anel = pais.iso.length
+    ? contornoPais(pais)
+    : Array.from({ length: 41 }, (_, i) => {
+        const a = (i / 40) * Math.PI * 2;
+        const r = 1 + 0.18 * Math.sin(a * 3 + 1) + 0.1 * Math.sin(a * 5 + 2);
+        return [pais.lon + Math.cos(a) * r, pais.lat + Math.sin(a) * r] as [number, number];
+      });
   let lons = anel.map((p) => p[0]);
   // Contornos que cruzam a linha de 180° (ex.: Rússia): passa tudo para 0..360
   if (Math.max(...lons) - Math.min(...lons) > 180) lons = lons.map((l) => (l < 0 ? l + 360 : l));
@@ -117,6 +125,21 @@ export function texturaGlobo(liberados: Record<PaisId, boolean>, largura = 2048)
     for (const p of PAISES) if (p.iso.includes(id)) return liberados[p.id] ? p.cor : "#c9c4d8";
     return null;
   };
+
+  // Destinos no mar (ex.: Oceano): mancha turquesa clara com recife
+  for (const p of PAISES.filter((x) => !x.iso.length)) {
+    const cx = px(p.lon);
+    const cy = py(p.lat);
+    const r = W * 0.045;
+    const grad = g.createRadialGradient(cx, cy, r * 0.1, cx, cy, r);
+    grad.addColorStop(0, liberados[p.id] ? "#b7f5ea" : "#cfd6e6");
+    grad.addColorStop(0.6, liberados[p.id] ? "#5fdcd0" : "#a9b4cc");
+    grad.addColorStop(1, "rgba(58,166,221,0)");
+    g.fillStyle = grad;
+    g.beginPath();
+    g.ellipse(cx, cy, r * 1.3, r, 0, 0, Math.PI * 2);
+    g.fill();
+  }
 
   const fc = feature(topo, paises) as unknown as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
   for (const f of fc.features) {

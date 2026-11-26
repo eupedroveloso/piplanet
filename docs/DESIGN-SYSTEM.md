@@ -8,6 +8,8 @@ Visual infantil e ilustrado: ilustração flat em tons pastel, formas arredondad
 
 ## Regras
 
+**PRINCÍPIO: a ferramenta é para quem NÃO SABE LER.** Todo botão e toda instrução funcionam sem leitura: ícone grande e claro + fala da Juju ao tocar ou ao aparecer. Texto pode existir, mas nunca é o único meio de entender algo (ícone e voz vêm primeiro).
+
 0. **REGRA DURA: tudo tem micro-interação.** Todo elemento tocável responde a hover, toque e resultado; toda entrada, saída ou mudança de estado é animada. Receitas e limites (suave, previsível, um foco por vez) em `.claude/skills/motion/SKILL.md`.
 1. Nunca use cor, raio ou sombra solta. Sempre um token (`bg-roxo`, `rounded-lg`, `shadow-suave`...).
 2. Antes de criar algo novo, procure um componente pronto. Se não existir, crie em `src/components/ui/`, exporte no `index.ts` e adicione na vitrine.
@@ -36,27 +38,30 @@ Coloque `data-territorio="fazenda|floresta|savana|oceano"` num contêiner e use 
 ### Raios, sombras e animações
 
 - Raios: `rounded-sm` (12), `rounded-md` (20), `rounded-lg` (28), `rounded-xl` (40), `rounded-full`
-- Sombras: `shadow-suave` (flutuante), `shadow-relevo` (bloco). Botões usam relevo colorido: `shadow-[0_6px_0_var(--cor-escura)]`
+- Sombras: `shadow-suave` (flutuante), `shadow-relevo` (bloco), `shadow-flutuante` (contorno fino + sombra macia, para o que fica sobre o 3D).
+- Superfície `vidro` (classe em `globals.css`): base de cabeçalho, rodapé e controles sobre o mapa. Em etiquetas com texto, combine com `bg-branco`/`bg-amarelo` sólido para garantir contraste. Botões usam relevo colorido: `shadow-[0_6px_0_var(--cor-escura)]`
 - Animações: `animate-flutuar` (mascote), `animate-pulsar` (chamar atenção)
 
 ## Componentes
 
 | Componente | Para quê |
 |---|---|
-| `Botao` / `BotaoLink` | ação principal; cores `roxo, amarelo, verde, coral, branco`; tamanhos `md, lg` |
-| `BotaoRedondo` / `BotaoRedondoLink` | ícone circular (voltar, zoom); sempre com `aria-label` |
+| `Botao` / `BotaoLink` | ação principal; cores `roxo, amarelo, verde, coral, branco`; tamanhos `md, lg`; `icone` (sempre que possível) e `fala` (a Juju lê ao tocar) |
+| `BotaoRedondo` / `BotaoRedondoLink` | ícone circular de vidro, 48 px (voltar, zoom); a Juju lê o `aria-label` ao tocar (`fala` troca a frase, `fala={false}` cala) |
 | `BotaoSom` | liga/desliga a voz |
 | `Arte` | ilustração do acervo; `silhueta` para o que ainda não foi conquistado |
-| `Contador` | pílula de placar (ícone + número, `total` opcional); o número sobe contando e o ícone pula quando aumenta |
+| `Contador` | pílula de placar (ícone + número, `total` opcional); o número sobe contando e o ícone pula quando aumenta; tocar fala o valor |
 | `NumeroAnimado` | número que sobe contando até o valor (`de` = valor inicial) |
 | `Estrelas` | 0 a 3 estrelas, entram em cascata (`atraso` em segundos) |
 | `Bolinhas` | progresso da rodada |
 | `Peca` / `Casinha` | bloco de sílaba e encaixe; mesmo `layoutId` nas duas faz a peça voar até a casinha |
 | `Comemoracao` | brilhos em roda, uma vez, no centro do pai (`relative`); some com "reduzir movimento" |
 | `Mascote` | coruja Juju com balão de fala (toque lê em voz alta) |
+| `CenarioFundo` | cenário do bioma atrás das telas de exercício (`public/arte/cenarios/<tipo>.svg`); fade de entrada + parallax leve, sem parallax com reduzir movimento |
 | `Painel` | superfície branca arredondada |
-| `Cabecalho` | topo: avatar, saudação, placar, som |
-| `NavInferior` | navegação do rodapé (Jornada, Álbum); pílula do ativo desliza |
+| `Cabecalho` | topo: cartão de vidro com avatar (fala ao tocar), saudação e placar; `estreito` para telas de conteúdo |
+| `NavInferior` | pílula de vidro flutuante e centralizada (só do tamanho do conteúdo, respeita safe-area); fala ao tocar; pílula do ativo desliza |
+| `CLASSE_ETIQUETA` | placas sobre o 3D (país, bioma): ícone de bicho primeiro, 40 px com toque de 48 px |
 | `ProvedorMovimento` | no `layout.tsx`: liga `reducedMotion="user"` em todo o Motion |
 | `MOLA_TOQUE`, `MOLA_ENTRADA`, `BALANCO`, `TOQUE_RELEVO` | molas e receitas padrão de motion (use em vez de números soltos) |
 

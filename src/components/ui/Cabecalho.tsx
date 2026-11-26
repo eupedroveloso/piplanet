@@ -3,31 +3,46 @@
 import { NOME_JOGADOR } from "@/config";
 import { ANIMAIS } from "@/content/animais";
 import { totalEstrelas, useProgress } from "@/lib/progress";
+import { motion } from "motion/react";
+import { speak } from "@/lib/speech";
 import { Arte } from "./Arte";
 import { BotaoSom } from "./BotaoSom";
 import { Contador } from "./Contador";
+import { MOLA_ENTRADA, MOLA_TOQUE } from "./movimento";
 
 /** Topo das telas principais: avatar, saudação, placar e botão de som. */
-export function Cabecalho() {
+/** `estreito`: alinha com telas de conteúdo (ex.: álbum); padrão é largo, para o mapa em tela cheia. */
+export function Cabecalho({ estreito = false }: { estreito?: boolean }) {
   const p = useProgress();
   return (
-    <header className="mx-auto flex w-full max-w-3xl items-center gap-3 px-4 pt-4 pb-3">
-      <span className="grid size-16 shrink-0 place-items-center rounded-md bg-amarelo-claro shadow-[0_5px_0_var(--color-amarelo)]">
-        <Arte nome="animais/coruja" className="size-11" />
-      </span>
-      <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <h1 className="w-fit truncate rounded-full bg-branco/90 px-3 text-2xl font-extrabold text-roxo shadow-suave">Oi, {NOME_JOGADOR}!</h1>
-        <div className="flex flex-wrap gap-2">
-          <Contador icone="ui/estrela" valor={totalEstrelas(p)} rotulo="estrelas" />
-          <Contador icone="ui/patinhas" valor={p.patinhas} rotulo="patinhas" />
-          <Contador
-            icone="ui/album"
-            valor={p.animaisColetados.length}
-            total={ANIMAIS.length}
-            rotulo="figurinhas"
-          />
+    <header className={`mx-auto flex w-full ${estreito ? "max-w-3xl" : "max-w-6xl"} items-start justify-between gap-3 px-4 pt-[max(env(safe-area-inset-top),1rem)] pb-3`}>
+      {/* Cartão de vidro: avatar + saudação + placar, tudo junto e leve */}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={MOLA_ENTRADA}
+        className="flex min-w-0 items-center gap-3 rounded-[2rem] py-2 pr-3 pl-2 vidro"
+      >
+        <motion.button
+          type="button"
+          aria-label={`Oi, ${NOME_JOGADOR}!`}
+          onClick={() => speak(`Oi, ${NOME_JOGADOR}! Toque nos bichos do mapa para jogar.`)}
+          whileHover={{ rotate: -6, scale: 1.05 }}
+          whileTap={{ scale: 0.9 }}
+          transition={MOLA_TOQUE}
+          className="grid size-12 shrink-0 place-items-center rounded-full bg-amarelo-claro ring-2 ring-amarelo"
+        >
+          <Arte nome="animais/coruja" className="size-9" />
+        </motion.button>
+        <div className="flex min-w-0 flex-col gap-1">
+          <h1 className="truncate px-1 text-lg leading-tight font-extrabold text-roxo">Oi, {NOME_JOGADOR}!</h1>
+          <div className="flex flex-wrap gap-1.5">
+            <Contador icone="ui/estrela" valor={totalEstrelas(p)} rotulo="estrelas" />
+            <Contador icone="ui/patinhas" valor={p.patinhas} rotulo="patinhas" />
+            <Contador icone="ui/album" valor={p.animaisColetados.length} total={ANIMAIS.length} rotulo="figurinhas" />
+          </div>
         </div>
-      </div>
+      </motion.div>
       <BotaoSom />
     </header>
   );

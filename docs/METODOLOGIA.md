@@ -50,6 +50,8 @@ Nada de ranking, tempo, vidas ou perda de pontos.
 
 ## 4. Adaptações para autismo leve
 
+- **Para quem ainda não lê:** toda instrução é falada pela Juju e todo botão tem ícone; o texto nunca é o único caminho. Só o exercício de leitura em si depende de ler, e mesmo nele tocar numa peça lê o que está escrito.
+
 - **Sem punição.** Nada de vidas, tempo ou som de erro. A peça errada só balança e a sílaba é lida.
 - **Aprendizagem sem erro (errorless):** depois de 2 tentativas erradas, a peça certa brilha. A dica aparece sozinha, sem ele pedir.
 - **Previsibilidade:** mesmo layout em todas as telas, rodadas curtas (5 bichos), bolinhas de progresso mostrando quanto falta, fim claro.

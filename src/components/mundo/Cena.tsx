@@ -1,10 +1,10 @@
 "use client";
 
-import { Canvas, useThree, type ThreeEvent } from "@react-three/fiber";
-import { CameraControls, Instance, Instances } from "@react-three/drei";
+import { Canvas, useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
+import { CameraControls, Instance, Instances, PerformanceMonitor } from "@react-three/drei";
 import { EffectComposer, N8AO } from "@react-three/postprocessing";
 import CameraControlsImpl from "camera-controls";
-import { useEffect, useMemo, useRef, type RefObject } from "react";
+import { createContext, Suspense, useContext, useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import * as THREE from "three";
 import { chaveFase, faseDesbloqueada, TERRITORIOS } from "@/content/jornada";
 import type { Progress } from "@/lib/progress";
@@ -12,6 +12,9 @@ import { speak } from "@/lib/speech";
 import { IlhaContexto } from "./contexto";
 import { montarMundo, type Peca } from "./decoracao";
 import { GEOMETRIAS, type Forma } from "./formas";
+import { fundir } from "./fundir";
+import { Modelos } from "./DecoracaoModelos";
+import { modelosLigados } from "./modelos";
 import { geometriaFita, geometriaTerreno, misturar, type Ilha } from "./ilha";
 import {
   Balao,
@@ -51,18 +54,37 @@ export interface CenaProps {
   balaoRef: RefObject<THREE.Group | null>;
 }
 
+/**
+ * Qualidade adaptativa (tablet Android): começa no médio e o PerformanceMonitor sobe ou desce.
+ * alto = sombra 2048 + N8AO + dpr até 2 · médio = sombra 1024, sem AO, dpr 1,5 · baixo = sem sombra, dpr 1, menos miudezas.
+ */
+export type Qualidade = "alto" | "medio" | "baixo";
+const ORDEM: Qualidade[] = ["baixo", "medio", "alto"];
+const DPR: Record<Qualidade, number> = { alto: 2, medio: 1.5, baixo: 1 };
+const QualidadeContexto = createContext<Qualidade>("medio");
+
 /** Canvas 3D: a ilha (com a silhueta do país) no meio do oceano. */
 export default function Cena(props: CenaProps) {
+  const [q, setQ] = useState<Qualidade>("medio");
+  const mudar = (passo: number) => setQ((atual) => ORDEM[Math.max(0, Math.min(2, ORDEM.indexOf(atual) + passo))]);
+  const dpr = Math.min(DPR[q], typeof window !== "undefined" ? window.devicePixelRatio : 1);
+  useEffect(() => {
+    // em desenvolvimento: window.__pgQualidade("baixo") força um nível para medir
+    if (process.env.NODE_ENV !== "production") (window as unknown as { __pgQualidade: (q: Qualidade) => void }).__pgQualidade = setQ;
+  }, []);
   return (
-    <Canvas shadows dpr={[1, 2]} gl={{ antialias: true, alpha: true }} camera={{ fov: 38, position: [0, 30, 38], near: 0.1, far: 240 }}>
+    <Canvas shadows dpr={dpr} gl={{ antialias: true, alpha: true }} camera={{ fov: 38, position: [0, 30, 38], near: 0.1, far: 240 }}>
+      <PerformanceMonitor flipflops={3} onIncline={() => mudar(1)} onDecline={() => mudar(-1)} onFallback={() => setQ("baixo")} />
+      <Medidor q={q} />
       <fog attach="fog" args={["#bfeef0", 55, 130]} />
       <hemisphereLight args={["#ffffff", "#9fe3dc", 1.05]} />
       <directionalLight
+        key={q}
         position={[14, 26, 10]}
         intensity={1.6}
         color="#fff3e2"
-        castShadow
-        shadow-mapSize={[2048, 2048]}
+        castShadow={q !== "baixo"}
+        shadow-mapSize={q === "alto" ? [2048, 2048] : [1024, 1024]}
         shadow-camera-left={-22}
         shadow-camera-right={22}
         shadow-camera-top={22}
@@ -71,15 +93,61 @@ export default function Cena(props: CenaProps) {
         shadow-bias={-0.0006}
         shadow-normalBias={0.03}
       />
-      <IlhaContexto.Provider value={props.ilha}>
-        <Mundo {...props} />
-      </IlhaContexto.Provider>
-      {/* Oclusão de ambiente: sombra macia onde as coisas se encostam (cara de maquete) */}
-      <EffectComposer multisampling={4}>
-        <N8AO aoRadius={1.6} distanceFalloff={1.2} intensity={2.2} color="#2b3550" halfRes />
-      </EffectComposer>
+      <QualidadeContexto.Provider value={q}>
+        <IlhaContexto.Provider value={props.ilha}>
+          <Mundo {...props} />
+        </IlhaContexto.Provider>
+      </QualidadeContexto.Provider>
+      {/* Oclusão de ambiente (cara de maquete): só no nível alto */}
+      {q === "alto" && (
+        <EffectComposer multisampling={4}>
+          <N8AO aoRadius={1.6} distanceFalloff={1.2} intensity={2.2} color="#2b3550" halfRes />
+        </EffectComposer>
+      )}
     </Canvas>
   );
+}
+
+/** Em desenvolvimento, expõe números de desempenho em window.__pgDesempenho (para medir no portal). */
+function Medidor({ q }: { q: Qualidade }) {
+  const gl = useThree((st) => st.gl);
+  const cena = useThree((st) => st.scene);
+  const quadro = useRef({ triangulos: 0, drawCalls: 0 });
+  // soma todos os passes do quadro (sombra, cena, pós) — o info zera a cada render se autoReset
+  useFrame((st) => {
+    if (process.env.NODE_ENV === "production") return;
+    const info = st.gl.info;
+    info.autoReset = false;
+    quadro.current.triangulos = info.render.triangles;
+    quadro.current.drawCalls = info.render.calls;
+    info.reset();
+  }, -100);
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") return;
+    (window as unknown as { __pgDesempenho: () => object }).__pgDesempenho = () => {
+      let meshes = 0;
+      let instanciados = 0;
+      let comSombra = 0;
+      cena.traverseVisible((o) => {
+        const m = o as THREE.Mesh;
+        if (!m.isMesh) return;
+        meshes++;
+        if ((m as THREE.InstancedMesh).isInstancedMesh) instanciados++;
+        if (m.castShadow) comSombra++;
+      });
+      return {
+        qualidade: q,
+        dpr: gl.getPixelRatio(),
+        triangulos: quadro.current.triangulos,
+        drawCalls: quadro.current.drawCalls,
+        geometrias: gl.info.memory.geometries,
+        meshes,
+        instanciados,
+        comSombra,
+      };
+    };
+  }, [gl, cena, q]);
+  return null;
 }
 
 /** Primeira fase liberada e ainda não concluída. */
@@ -128,7 +196,10 @@ function Mundo({ ilha, progresso, liberados, foco, onFocar, hover, onHover, camR
   const terreno = useMemo(() => geometriaTerreno(ilha, liberados), [ilha, liberados]);
 
   const pecas = useMemo(
-    () => Object.entries(mundo.pecasPorBioma).flatMap(([id, lista]) => (livre(id) ? lista : lista.map((pc) => ({ ...pc, c: misturar(pc.c, CINZA, 0.6) })))),
+    () =>
+      Object.entries(mundo.pecasPorBioma).flatMap(([id, lista]) =>
+        livre(id) ? lista : lista.map((pc) => (pc.m ? { ...pc, d: true } : { ...pc, c: misturar(pc.c, CINZA, 0.6) })),
+      ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [mundo, liberados],
   );
@@ -199,16 +270,15 @@ function Mundo({ ilha, progresso, liberados, foco, onFocar, hover, onHover, camR
       <Pier ilha={ilha} liberados={liberados} />
 
       {/* Plataformas (mirantes) das fases em terra */}
-      {ilha.fases
-        .filter((f) => ilha.altura(f.pos.x, f.pos.z) >= 0.42)
-        .map((f) => (
-          <mesh key={`${f.territorio}-${f.fase}`} position={[f.pos.x, f.pos.y + 0.08, f.pos.z]} castShadow receiveShadow>
-            <cylinderGeometry args={[0.42, 0.48, 0.16, 18]} />
-            <meshStandardMaterial color={liberados[f.territorio] ? "#ffffff" : "#e3e1ec"} />
-          </mesh>
-        ))}
+      <Mirantes ilha={ilha} liberados={liberados} />
 
-      <Pecas pecas={pecas} />
+      <Pecas pecas={pecas.filter((p) => !p.m)} />
+      {/* Árvores, pedras, flores... modelos prontos do pacote do país (baixado sob demanda) */}
+      {modelosLigados() && (
+        <Suspense fallback={null}>
+          <ModelosDaQualidade pais={ilha.pais} pecas={pecas.filter((p) => p.m)} />
+        </Suspense>
+      )}
 
       {mundo.especiais.map((e, i) => {
         if (e.tipo === "moinho") return <Moinho key={i} p={e.p} />;
@@ -262,26 +332,50 @@ function Mundo({ ilha, progresso, liberados, foco, onFocar, hover, onHover, camR
 // ── Trilha ──────────────────────────────────────────────────────────────────
 
 function Trilha({ ilha, liberados }: { ilha: Ilha; liberados: Record<string, boolean> }) {
-  const trechos = useMemo(
-    () => ilha.trechos.map((t) => ({ ...t, borda: geometriaFita(ilha, t.pontos, 0.78, 0.04), piso: geometriaFita(ilha, t.pontos, 0.58, 0.07) })),
-    [ilha],
-  );
+  // Todos os trechos numa malha para a borda e outra para o piso (cor por vértice: liberado ou desbotado)
+  const { borda, piso } = useMemo(() => {
+    const juntar = (largura: number, sobe: number, cor: string) => {
+      const partes = ilha.trechos.map((t) => ({
+        geo: geometriaFita(ilha, t.pontos, largura, sobe),
+        pos: [0, 0, 0] as [number, number, number],
+        cor: liberados[t.territorio] ? cor : misturar(cor, CINZA, 0.6),
+      }));
+      const g = fundir(partes);
+      partes.forEach((pt) => pt.geo.dispose());
+      return g;
+    };
+    return { borda: juntar(0.78, 0.04, "#d9b874"), piso: juntar(0.58, 0.07, "#fbeec6") };
+  }, [ilha, liberados]);
+  useEffect(() => () => { borda.dispose(); piso.dispose(); }, [borda, piso]);
   return (
     <>
-      {trechos.map((t, i) => {
-        const livre = liberados[t.territorio];
-        return (
-          <group key={i}>
-            <mesh geometry={t.borda} receiveShadow>
-              <meshStandardMaterial color={livre ? "#d9b874" : misturar("#d9b874", CINZA, 0.6)} side={THREE.DoubleSide} polygonOffset polygonOffsetFactor={-2} />
-            </mesh>
-            <mesh geometry={t.piso} receiveShadow>
-              <meshStandardMaterial color={livre ? "#fbeec6" : misturar("#fbeec6", CINZA, 0.6)} side={THREE.DoubleSide} polygonOffset polygonOffsetFactor={-4} />
-            </mesh>
-          </group>
-        );
-      })}
+      <mesh geometry={borda} receiveShadow>
+        <meshStandardMaterial vertexColors side={THREE.DoubleSide} polygonOffset polygonOffsetFactor={-2} />
+      </mesh>
+      <mesh geometry={piso} receiveShadow>
+        <meshStandardMaterial vertexColors side={THREE.DoubleSide} polygonOffset polygonOffsetFactor={-4} />
+      </mesh>
     </>
+  );
+}
+
+/** Plataformas (mirantes) das fases em terra: uma malha só. */
+function Mirantes({ ilha, liberados }: { ilha: Ilha; liberados: Record<string, boolean> }) {
+  const geo = useMemo(() => {
+    const disco = new THREE.CylinderGeometry(0.42, 0.48, 0.16, 18);
+    const g = fundir(
+      ilha.fases
+        .filter((f) => ilha.altura(f.pos.x, f.pos.z) >= 0.42)
+        .map((f) => ({ geo: disco, pos: [f.pos.x, f.pos.y + 0.08, f.pos.z] as [number, number, number], cor: liberados[f.territorio] ? "#ffffff" : "#e3e1ec" })),
+    );
+    disco.dispose();
+    return g;
+  }, [ilha, liberados]);
+  useEffect(() => () => geo.dispose(), [geo]);
+  return (
+    <mesh geometry={geo} castShadow receiveShadow>
+      <meshStandardMaterial vertexColors />
+    </mesh>
   );
 }
 
@@ -362,12 +456,24 @@ function Pier({ ilha, liberados }: { ilha: Ilha; liberados: Record<string, boole
 // ── Decoração instanciada ───────────────────────────────────────────────────
 
 
+/** Modelos com a qualidade atual: no baixo, sem sombra e sem miudezas (tufos, flores, cogumelos). */
+function ModelosDaQualidade({ pais, pecas }: { pais: Ilha["pais"]; pecas: Peca[] }) {
+  const q = useContext(QualidadeContexto);
+  const lista = useMemo(() => (q === "baixo" ? pecas.filter((p) => !/^(grass|flower|mushroom)/.test(p.m!)) : pecas), [pecas, q]);
+  return <Modelos pais={pais} pecas={lista} sombra={q !== "baixo"} />;
+}
+
 function Pecas({ pecas }: { pecas: Peca[] }) {
+  const q = useContext(QualidadeContexto);
   const grupos = useMemo(() => {
     const m = new Map<Forma, Peca[]>();
-    for (const p of pecas) m.set(p.f, [...(m.get(p.f) ?? []), p]);
+    for (const p of pecas) {
+      // no nível baixo, ficam de fora as miudezas (tufos, flores, pedrinhas)
+      if (q === "baixo" && Math.max(...p.s) < 0.14) continue;
+      m.set(p.f, [...(m.get(p.f) ?? []), p]);
+    }
     return [...m.entries()];
-  }, [pecas]);
+  }, [pecas, q]);
   const geos = useMemo(
     () => Object.fromEntries(Object.entries(GEOMETRIAS).map(([k, f]) => [k, f()])) as Record<Forma, THREE.BufferGeometry>,
     [],

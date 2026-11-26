@@ -5,7 +5,8 @@ import { ANIMAIS, type Animal } from "@/content/animais";
 import type { Territorio } from "@/content/jornada";
 import { shuffle } from "@/lib/random";
 import { speak } from "@/lib/speech";
-import { Casinha, Peca } from "@/components/ui";
+import { fraseDe, PALAVRAS_EXTRAS } from "@/content/frases";
+import { Arte, BotaoRedondo, Casinha, Peca } from "@/components/ui";
 import { CirculoBicho, JogoFase, type RodadaProps } from "../comum/JogoFase";
 
 /**
@@ -15,13 +16,16 @@ import { CirculoBicho, JogoFase, type RodadaProps } from "../comum/JogoFase";
  * - letras: ele forma cada sílaba com letras (G + A = GA), uma sílaba por vez,
  *   e a palavra vai se completando. É o passo da letra para a sílaba (método fônico).
  *
+ * - frase: as peças são PALAVRAS; ele ouve a frase e coloca as palavras na ordem
+ *   (O · GATO · MIA). Para quem ainda não lê, a frase pode ser ouvida quantas vezes quiser.
+ *
  * Toda peça tocada é lida. Erro só balança a peça. Após 2 erros na mesma casa, a peça certa pula.
  */
 
 const ERROS_ATE_DICA = 2;
 const LETRAS_EXTRAS = "abcdefgijlmnoprstuvz";
 
-type Modo = "silabas" | "letras";
+type Modo = "silabas" | "letras" | "frase";
 type Tile = { id: string; text: string; used: boolean };
 
 export function MontaOBicho({ territorio, faseIdx, modo }: { territorio: Territorio; faseIdx: number; modo: Modo }) {
@@ -41,15 +45,31 @@ function pecasDeLetras(silaba: string, distratores: number, n: number): Tile[] {
   return shuffle([...letras, ...extras]).map((text, i) => ({ id: `l${n}-${i}-${text}`, text, used: false }));
 }
 
+function pecasDePalavras(palavras: string[], distratores: number): Tile[] {
+  const extras = shuffle(PALAVRAS_EXTRAS.filter((p) => !palavras.includes(p))).slice(0, distratores);
+  return shuffle([...palavras, ...extras]).map((text, i) => ({ id: `w${i}-${text}`, text, used: false }));
+}
+
 function RodadaMontar({ animal, fase, acertou, errar, acertar, modo }: RodadaProps & { modo: Modo }) {
-  // Unidades a encaixar, em ordem, e a que sílaba cada uma pertence
-  const unidades = modo === "silabas" ? animal.silabas : animal.silabas.flatMap((s) => [...s]);
+  // Unidades a encaixar, em ordem, e a que grupo (sílaba ou palavra) cada uma pertence
+  const palavras = modo === "frase" ? fraseDe(animal, fase.frase ?? "curta") : [];
+  const grupos = modo === "frase" ? palavras : animal.silabas;
+  const unidades = modo === "silabas" ? animal.silabas : modo === "frase" ? palavras : animal.silabas.flatMap((s) => [...s]);
   const grupoDe =
-    modo === "silabas" ? animal.silabas.map((_, i) => i) : animal.silabas.flatMap((s, i) => [...s].map(() => i));
+    modo === "letras" ? animal.silabas.flatMap((s, i) => [...s].map(() => i)) : unidades.map((_, i) => i);
 
   const [pecas, setPecas] = useState<Tile[]>(() =>
-    modo === "silabas" ? pecasDeSilabas(animal, fase.distratores) : pecasDeLetras(animal.silabas[0], fase.distratores, 0),
+    modo === "silabas"
+      ? pecasDeSilabas(animal, fase.distratores)
+      : modo === "frase"
+        ? pecasDePalavras(palavras, fase.distratores)
+        : pecasDeLetras(animal.silabas[0], fase.distratores, 0),
   );
+  const [ouviuFrase, setOuviuFrase] = useState(false);
+  const ouvirFrase = () => {
+    setOuviuFrase(true);
+    speak(palavras.join(" "));
+  };
   const [feitas, setFeitas] = useState(0);
   const [errosCasa, setErrosCasa] = useState(0);
   const [balancando, setBalancando] = useState<string | null>(null);
@@ -84,19 +104,35 @@ function RodadaMontar({ animal, fase, acertou, errar, acertar, modo }: RodadaPro
         if (total < unidades.length) setPecas(pecasDeLetras(animal.silabas[g + 1], fase.distratores, g + 1));
       }
     }
-    if (total === unidades.length) acertar();
+    if (total === unidades.length) {
+      if (modo === "frase") await speak(palavras.join(" "));
+      acertar();
+    }
   }
 
   const dica = errosCasa >= ERROS_ATE_DICA ? pecas.find((p) => !p.used && p.text === unidades[feitas])?.id : undefined;
-  const pequeno = modo === "letras";
+  const pequeno = modo !== "silabas";
 
   return (
     <>
-      <CirculoBicho animal={animal} acertou={acertou} />
+      <div className="flex items-center gap-4">
+        <CirculoBicho animal={animal} acertou={acertou} />
+        {modo === "frase" && (
+          // Ouvir a frase inteira (apoio para quem ainda não lê); pulsa até ser tocado
+          <BotaoRedondo
+            aria-label="Ouvir a frase"
+            fala={false}
+            onClick={ouvirFrase}
+            className={`size-16 ${ouviuFrase ? "" : "animate-pulsar ring-4 ring-amarelo"}`}
+          >
+            <Arte nome="ui/som-ligado" className="size-9" />
+          </BotaoRedondo>
+        )}
+      </div>
 
       {/* Casinhas, agrupadas por sílaba */}
       <div className="flex flex-wrap justify-center gap-5">
-        {animal.silabas.map((_, g) => {
+        {grupos.map((_, g) => {
           const membros = unidades.map((u, i) => ({ u, i })).filter(({ i }) => grupoDe[i] === g);
           const pronta = membros.every(({ i }) => i < feitas);
           const atual = !pronta && membros.some(({ i }) => i === feitas);

@@ -1,4 +1,5 @@
 import { ANIMAIS, type Animal, type Dificuldade, type TerritorioId } from "./animais";
+import type { TamanhoFrase } from "./frases";
 import { PAISES, type PaisId, type TipoBioma } from "./paises";
 
 /**
@@ -8,7 +9,7 @@ import { PAISES, type PaisId, type TipoBioma } from "./paises";
  * As fases se desbloqueiam em sequência, atravessando os territórios.
  */
 
-export type JogoId = "le-e-acha" | "monta-o-bicho" | "monta-a-silaba";
+export type JogoId = "le-e-acha" | "monta-o-bicho" | "monta-a-silaba" | "monta-a-frase";
 
 /** Os três exercícios, intercalados nessa ordem em cada nível de dificuldade. */
 export const JOGOS: Record<JogoId, { nome: string; icone: string; instrucao: string }> = {
@@ -27,6 +28,11 @@ export const JOGOS: Record<JogoId, { nome: string; icone: string; instrucao: str
     icone: "ui/letras",
     instrucao: "Junte as letras e forme as sílabas!",
   },
+  "monta-a-frase": {
+    nome: "Monta a Frase",
+    icone: "ui/frase",
+    instrucao: "Ouça a frase e coloque as palavras na ordem!",
+  },
 };
 const ORDEM_JOGOS: JogoId[] = ["le-e-acha", "monta-o-bicho", "monta-a-silaba"];
 
@@ -37,8 +43,10 @@ export interface Fase {
   exemplo: string;
   jogo: JogoId;
   dificuldades: Dificuldade[];
-  /** Peças "intrusas" (sílabas ou letras) ou bichos errados a mais, conforme o jogo. */
+  /** Peças "intrusas" (sílabas, letras ou palavras) ou bichos errados a mais, conforme o jogo. */
   distratores: number;
+  /** Só no "Monta a Frase": tamanho da frase. */
+  frase?: TamanhoFrase;
 }
 
 /** Cada nível de dificuldade vira 3 fases: ler pronto → montar sílabas → montar letras. */
@@ -72,6 +80,9 @@ export interface Territorio {
  * Territórios = biomas com fases, na ordem da jornada:
  * país por país (Brasil primeiro), bioma por bioma.
  */
+/** Quantos territórios do começo da jornada usam a frase curta; depois, frase com lugar. */
+const TERRITORIOS_FRASE_CURTA = 3;
+
 export const TERRITORIOS: Territorio[] = PAISES.flatMap((p) =>
   p.biomas
     .filter((b) => !b.decorativo && b.niveis)
@@ -84,7 +95,19 @@ export const TERRITORIOS: Territorio[] = PAISES.flatMap((p) =>
       boasVindas: b.boasVindas ?? `Bem-vindo a ${b.nome}!`,
       fases: fasesIntercaladas(b.niveis!),
     })),
-);
+).map((t, i) => {
+  // Cada bioma termina com uma fase de frase, que cresce conforme a jornada avança
+  const tamanho: TamanhoFrase = i < TERRITORIOS_FRASE_CURTA ? "curta" : "media";
+  const frase: Fase = {
+    titulo: `Fase ${t.fases.length + 1}`,
+    exemplo: tamanho === "curta" ? "o gato mia" : "o sapo pula no lago",
+    jogo: "monta-a-frase",
+    dificuldades: [1, 2, 3],
+    distratores: tamanho === "curta" ? 0 : 1,
+    frase: tamanho,
+  };
+  return { ...t, fases: [...t.fases, frase] };
+});
 
 export const territoriosDoPais = (pais: PaisId) => TERRITORIOS.filter((t) => t.pais === pais);
 

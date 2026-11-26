@@ -2,6 +2,7 @@
 
 import { animate, motion, useAnimate, useMotionValue, useTransform } from "motion/react";
 import { useEffect, useState, useSyncExternalStore } from "react";
+import { speak } from "@/lib/speech";
 import { Arte } from "./Arte";
 
 /** Último valor que a criança viu em cada placar, para contar só a diferença ao voltar de um jogo. */
@@ -56,19 +57,26 @@ export function Contador({
   }, [valor, pronto, rotulo, animar, escopo]);
 
   return (
-    <motion.span
-      initial={{ opacity: 0, y: -8 }}
+    <motion.button
+      type="button"
+      initial={{ opacity: 0, y: -6 }}
       animate={{ opacity: 1, y: 0 }}
-      className="inline-flex h-10 items-center gap-1.5 rounded-full bg-branco pl-1.5 pr-4 text-lg font-bold text-tinta shadow-suave"
+      whileHover={{ y: -1 }}
+      whileTap={{ scale: 0.92 }}
+      onClick={() => {
+        animar(escopo.current, { y: [0, -6, 0], scale: [1, 1.15, 1] }, { duration: 0.45, ease: "easeOut" });
+        speak(`Você tem ${valor}${total !== undefined ? ` de ${total}` : ""} ${rotulo}.`);
+      }}
+      className="relative inline-flex h-8 items-center gap-1 rounded-full bg-roxo-claro pr-3 pl-1 text-base font-bold text-tinta before:absolute before:-inset-2 before:content-['']"
       aria-label={`${valor}${total !== undefined ? ` de ${total}` : ""} ${rotulo}`}
     >
       <span ref={escopo} className="inline-grid">
-        <Arte nome={icone} className="size-7" />
+        <Arte nome={icone} className="size-6" />
       </span>
       <span aria-hidden>
         <NumeroAnimado valor={valor} de={inicio ?? 0} />
         {total !== undefined && `/${total}`}
       </span>
-    </motion.span>
+    </motion.button>
   );
 }

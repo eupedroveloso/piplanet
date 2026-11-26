@@ -516,11 +516,11 @@ export function criarIlha(paisId: PaisId): Ilha {
     // Camadas de maquete na costa: praia larga e lisa → degrau de terra → platô de grama.
     // Em alguns trechos a praia some e o degrau vira falésia.
     const falesia = smooth(0.6, 0.72, fbm(x * 0.16 + 11, z * 0.16, seed + 17));
-    const larg = (0.75 + fbm(x * 0.3, z * 0.3, seed + 19) * 0.9) * (1 - falesia * 0.8);
+    const larg = (0.4 + fbm(x * 0.3, z * 0.3, seed + 19) * 0.75) * (1 - falesia * 0.8);
     const praia = Math.min(d / larg, 1) * TOPO_PRAIA;
-    const topo = 0.62 + falesia * 0.55;
+    const topo = 0.72 + falesia * 0.55;
     const k = smooth(larg, larg + 2.6, d);
-    const degrau = smooth(larg, larg + 0.3 + 0.3 * (1 - falesia), d);
+    const degrau = smooth(larg, larg + 0.22 + 0.13 * (1 - falesia), d);
     const subir = (bruto: number) =>
       praia + (smax(topo + (bruto - topo) * k, 0.5, 0.2) - praia) * degrau;
     const plano = subir(base + colinas * 0.35);
@@ -537,7 +537,7 @@ export function criarIlha(paisId: PaisId): Ilha {
   const altura = (x: number, z: number) => {
     const p = partes(x, z);
     const dt = distTrilha(x, z);
-    const w = 1 - smooth(0.7, 1.8, dt);
+    const w = 1 - smooth(0.7, 2.5, dt);
     let h = p.agua ? p.final : p.final * (1 - w) + p.plano * w;
     // a trilha em terra nunca desce à areia (senão vira píer): rampa suave sobre a praia
     if (!p.agua) h += (Math.max(h, NIVEL_PIER + 0.04) - h) * w * smooth(0, 0.25, p.d);
@@ -612,7 +612,7 @@ export function criarIlha(paisId: PaisId): Ilha {
 
 const COR_AREIA = new THREE.Color("#f3dba0");
 const COR_AREIA_MOLHADA = new THREE.Color("#dfc187");
-const COR_SEIXO = new THREE.Color("#cfd5da");
+const COR_SEIXO = new THREE.Color("#b9c3cc");
 const COR_RASO = new THREE.Color("#c9ecd2");
 const COR_RECIFE = new THREE.Color("#ddf3cf");
 const COR_FUNDO = new THREE.Color("#5cc4b5");
@@ -624,7 +624,7 @@ const CINZA = new THREE.Color("#c4c7dc");
 const Y_PLATAFORMA = -0.5; // borda do raso claro
 const Y_MOLHADO = 0.07; // faixa de areia molhada na beira d'água
 const Y_AREIA = TOPO_PRAIA + 0.03; // acima disso acaba a praia
-const G_TERRA = 0.85; // inclinação a partir da qual aparece a borda de terra
+const G_TERRA = 0.95; // inclinação a partir da qual aparece a borda de terra
 const G_ROCHA = 1.6; // inclinação de rocha (falésias, serras íngremes)
 const MANCHAS = [0.42, 0.6]; // manchas grandes de tom na grama
 const ESTRATOS = [0.95, 1.35, 1.75, 2.15, 2.55, 2.95]; // faixas nas encostas de terra/rocha
@@ -660,9 +660,10 @@ export function geometriaTerreno(
       (H(i, j + 1) * (1 - u) + H(i + 1, j + 1) * u) * v
     );
   };
+  // inclinação medida numa janela de 0,4 (suaviza o contorno das faixas de terra/rocha)
   const incl = (x: number, z: number) =>
-    Math.hypot(hb(x + s, z) - hb(x - s, z), hb(x, z + s) - hb(x, z - s)) /
-    (2 * s);
+    Math.hypot(hb(x + 2 * s, z) - hb(x - 2 * s, z), hb(x, z + 2 * s) - hb(x, z - 2 * s)) /
+    (4 * s);
   const mares = ilha.biomas.filter((b) => b.noMar);
   const pertoDoMar = (x: number, z: number) =>
     mares.some((m) => Math.hypot(x - m.x, z - m.z) < RAIO_MAR);
@@ -996,7 +997,7 @@ export function geometriaTerreno(
     } else {
       const b = ilha.biomaEm(cx, cz);
       const pal = tons(b);
-      const fria = b.tipo === "tundra" || b.tipo === "taiga";
+      const fria = b.tipo === "tundra";
       if (cy < Y_MOLHADO) c.copy(fria ? COR_SEIXO : COR_AREIA_MOLHADA);
       else if (cy < Y_AREIA) c.copy(fria ? COR_SEIXO : COR_AREIA);
       else {
@@ -1063,80 +1064,101 @@ export function geometriaFita(
 
 /**
  * Linha de espuma seguindo a costa: contorno do nível `nivel` da distância à costa
- * (marching squares), desenhado como uma fita fina.
+ * (marching squares), encadeado em linhas contínuas, suavizado (Chaikin) e desenhado
+ * como uma fita de largura constante (sem serrilhado).
  */
 export function geometriaEspuma(ilha: Ilha, nivel: number, largura: number) {
-  const pos: number[] = [];
-  const passo = 0.22;
+  const passo = 0.25;
   const n = Math.round(42 / passo);
-  const f = (i: number, j: number) =>
-    ilha.dist(-21 + i * passo, -21 + j * passo) - nivel;
   const linha = new Float32Array((n + 1) * (n + 1));
   for (let j = 0; j <= n; j++)
-    for (let i = 0; i <= n; i++) linha[j * (n + 1) + i] = f(i, j);
+    for (let i = 0; i <= n; i++)
+      linha[j * (n + 1) + i] = ilha.dist(-21 + i * passo, -21 + j * passo) - nivel;
   const v = (i: number, j: number) => linha[j * (n + 1) + i];
-  const meio = (
-    x1: number,
-    z1: number,
-    a: number,
-    x2: number,
-    z2: number,
-    b: number,
-  ) => {
-    const t = a / (a - b);
-    return [x1 + (x2 - x1) * t, z1 + (z2 - z1) * t] as const;
-  };
-  for (let j = 0; j < n; j++) {
-    for (let i = 0; i < n; i++) {
+  // pontos de cruzamento identificados pela aresta da grade (para emendar os segmentos)
+  const ponto = new Map<number, [number, number]>();
+  const viz = new Map<number, number[]>();
+  const cruz = (i: number, j: number, vertical: boolean) => {
+    const id = (j * (n + 1) + i) * 2 + (vertical ? 1 : 0);
+    if (!ponto.has(id)) {
       const a = v(i, j);
-      const b = v(i + 1, j);
-      const c = v(i + 1, j + 1);
-      const d = v(i, j + 1);
-      const x = -21 + i * passo;
-      const z = -21 + j * passo;
-      const cruz: (readonly [number, number])[] = [];
-      if (a > 0 !== b > 0) cruz.push(meio(x, z, a, x + passo, z, b));
-      if (b > 0 !== c > 0)
-        cruz.push(meio(x + passo, z, b, x + passo, z + passo, c));
-      if (c > 0 !== d > 0)
-        cruz.push(meio(x + passo, z + passo, c, x, z + passo, d));
-      if (d > 0 !== a > 0) cruz.push(meio(x, z + passo, d, x, z, a));
-      for (let k = 0; k + 1 < cruz.length; k += 2) {
-        const [x1, z1] = cruz[k];
-        const [x2, z2] = cruz[k + 1];
-        const dx = x2 - x1;
-        const dz = z2 - z1;
-        const len = Math.hypot(dx, dz) || 1;
-        const px = (-dz / len) * (largura / 2);
-        const pz = (dx / len) * (largura / 2);
-        // estende um pouco as pontas para os segmentos se emendarem
-        const ex = (dx / len) * (largura / 2);
-        const ez = (dz / len) * (largura / 2);
-        const A = [x1 - ex + px, z1 - ez + pz];
-        const B = [x1 - ex - px, z1 - ez - pz];
-        const C = [x2 + ex + px, z2 + ez + pz];
-        const D = [x2 + ex - px, z2 + ez - pz];
-        pos.push(
-          A[0],
-          0,
-          A[1],
-          B[0],
-          0,
-          B[1],
-          C[0],
-          0,
-          C[1],
-          C[0],
-          0,
-          C[1],
-          B[0],
-          0,
-          B[1],
-          D[0],
-          0,
-          D[1],
-        );
+      const b = vertical ? v(i, j + 1) : v(i + 1, j);
+      const t = a / (a - b);
+      ponto.set(id, [
+        -21 + (i + (vertical ? 0 : t)) * passo,
+        -21 + (j + (vertical ? t : 0)) * passo,
+      ]);
+    }
+    return id;
+  };
+  const ligar = (a: number, b: number) => {
+    viz.set(a, [...(viz.get(a) ?? []), b]);
+    viz.set(b, [...(viz.get(b) ?? []), a]);
+  };
+  for (let j = 0; j < n; j++)
+    for (let i = 0; i < n; i++) {
+      const a = v(i, j) > 0;
+      const b = v(i + 1, j) > 0;
+      const c = v(i + 1, j + 1) > 0;
+      const d = v(i, j + 1) > 0;
+      const ids: number[] = [];
+      if (a !== b) ids.push(cruz(i, j, false));
+      if (b !== c) ids.push(cruz(i + 1, j, true));
+      if (c !== d) ids.push(cruz(i, j + 1, false));
+      if (d !== a) ids.push(cruz(i, j, true));
+      for (let k = 0; k + 1 < ids.length; k += 2) ligar(ids[k], ids[k + 1]);
+    }
+  // encadeia em linhas
+  const visto = new Set<number>();
+  const linhas: { pts: [number, number][]; fechada: boolean }[] = [];
+  const pontas = [...viz.keys()].sort(
+    (a, b) => (viz.get(a)!.length === 1 ? 0 : 1) - (viz.get(b)!.length === 1 ? 0 : 1),
+  );
+  for (const ini of pontas) {
+    if (visto.has(ini)) continue;
+    const pts: [number, number][] = [];
+    let atual: number | undefined = ini;
+    let ant = -1;
+    while (atual !== undefined && !visto.has(atual)) {
+      visto.add(atual);
+      pts.push(ponto.get(atual)!);
+      const prox: number | undefined = viz.get(atual)!.find((x) => x !== ant && !visto.has(x));
+      ant = atual;
+      atual = prox;
+    }
+    const fechada = viz.get(ant)?.includes(ini) ?? false;
+    if (pts.length > 3) linhas.push({ pts, fechada });
+  }
+  const pos: number[] = [];
+  for (const l of linhas) {
+    let p = l.pts;
+    for (let it = 0; it < 2; it++) {
+      const q: [number, number][] = [];
+      const m = p.length;
+      for (let k = 0; k < (l.fechada ? m : m - 1); k++) {
+        const a = p[k];
+        const b = p[(k + 1) % m];
+        q.push([a[0] * 0.75 + b[0] * 0.25, a[1] * 0.75 + b[1] * 0.25]);
+        q.push([a[0] * 0.25 + b[0] * 0.75, a[1] * 0.25 + b[1] * 0.75]);
       }
+      p = l.fechada ? q : [p[0], ...q, p[m - 1]];
+    }
+    const m = p.length;
+    const lados = p.map((pt, k) => {
+      const a = p[l.fechada ? (k - 1 + m) % m : Math.max(0, k - 1)];
+      const b = p[l.fechada ? (k + 1) % m : Math.min(m - 1, k + 1)];
+      const dx = b[0] - a[0];
+      const dz = b[1] - a[1];
+      const len = Math.hypot(dx, dz) || 1;
+      const ox = (-dz / len) * (largura / 2);
+      const oz = (dx / len) * (largura / 2);
+      return [pt[0] + ox, pt[1] + oz, pt[0] - ox, pt[1] - oz];
+    });
+    for (let k = 0; k < (l.fechada ? m : m - 1); k++) {
+      const A = lados[k];
+      const B = lados[(k + 1) % m];
+      pos.push(A[0], 0, A[1], A[2], 0, A[3], B[0], 0, B[1]);
+      pos.push(B[0], 0, B[1], A[2], 0, A[3], B[2], 0, B[3]);
     }
   }
   const geo = new THREE.BufferGeometry();

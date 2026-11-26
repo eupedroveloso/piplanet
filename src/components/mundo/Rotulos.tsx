@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import * as THREE from "three";
 import { arteDoAnimal, type TerritorioId } from "@/content/animais";
-import { animaisDaFase, chaveFase, faseDesbloqueada, JOGOS, TERRITORIOS } from "@/content/jornada";
+import { animaisDaFase, animaisDoTerritorio, chaveFase, faseDesbloqueada, JOGOS, TERRITORIOS } from "@/content/jornada";
 import type { Progress } from "@/lib/progress";
 import { speak } from "@/lib/speech";
-import { BALANCO, MOLA_ENTRADA, MOLA_TOQUE } from "@/components/ui";
+import { BALANCO, CLASSE_ETIQUETA, MOLA_ENTRADA, MOLA_TOQUE } from "@/components/ui";
 import type { Ilha } from "./ilha";
 
 /**
@@ -147,11 +147,12 @@ function Placa({
   const t = TERRITORIOS.find((x) => x.id === id)!;
   const feitas = t.fases.filter((_, i) => chaveFase(id, i) in progresso.fases).length;
   const completo = feitas === t.fases.length;
+  const capa = animaisDoTerritorio(id)[0];
   return (
     <motion.button
       type="button"
       onClick={() => {
-        speak(liberada ? t.nome : `${t.nome}. Ainda trancado.`);
+        speak(liberada ? t.nome : `${t.nome}. Ainda trancado. Termine as fases de antes para abrir.`);
         onTocar();
       }}
       initial={{ opacity: 0, y: 12, scale: 0.8 }}
@@ -159,13 +160,20 @@ function Placa({
       whileHover={{ y: -4, scale: 1.06 }}
       whileTap={{ scale: 0.92 }}
       transition={MOLA_ENTRADA}
-      className="flex items-center gap-2 rounded-full bg-branco px-4 py-2 whitespace-nowrap shadow-[0_5px_0_rgb(61_53_81/0.18)]"
+      className={`${CLASSE_ETIQUETA} bg-branco ${destaque ? "outline-2 outline-amarelo" : ""}`}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      {!liberada && <img src="/arte/ui/cadeado.svg" alt="" className="size-6" />}
-      <span className="text-lg font-extrabold tracking-wide text-roxo uppercase">{t.nome}</span>
+      {/* Ícone primeiro: um bicho do bioma (ou o cadeado), para quem ainda não lê */}
+      <span className="relative grid size-8 place-items-center rounded-full bg-roxo-claro">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={capa ? arteDoAnimal(capa) : "/arte/ui/cadeado.svg"} alt="" className={`size-6 ${liberada ? "" : "opacity-40 grayscale"}`} />
+        {!liberada && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src="/arte/ui/cadeado.svg" alt="" className="absolute -right-1 -bottom-1 size-4" />
+        )}
+      </span>
+      <span className={`text-sm font-extrabold tracking-[0.08em] uppercase ${liberada ? "text-roxo" : "text-tinta"}`}>{t.nome}</span>
       {liberada && (
-        <span className="flex items-center gap-1 rounded-full bg-amarelo-claro px-2 text-sm font-bold text-tinta">
+        <span className="flex h-6 items-center gap-1 rounded-full bg-amarelo-claro px-2 text-xs font-bold text-tinta">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={completo ? "/arte/ui/medalha.svg" : "/arte/ui/estrela.svg"} alt="" className="size-4" />
           {feitas}/{t.fases.length}
@@ -208,6 +216,7 @@ function NoFase({ territorio, fase, progresso, atual }: { territorio: Territorio
           speak("Essa fase ainda está trancada.");
           return;
         }
+        speak(JOGOS[f.jogo].nome);
         setTimeout(() => router.push(`/jogar/${territorio}/${fase}`), 160);
       }}
       className="relative flex flex-col items-center"
@@ -218,13 +227,13 @@ function NoFase({ territorio, fase, progresso, atual }: { territorio: Territorio
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           transition={MOLA_TOQUE}
-          className="mb-1 rounded-full bg-amarelo px-3 text-xs font-extrabold text-roxo shadow-[0_3px_0_var(--color-amarelo-escuro)]"
+          className="mb-1 rounded-full bg-amarelo px-2.5 py-0.5 text-[11px] font-extrabold tracking-[0.1em] text-roxo shadow-[0_2px_0_var(--color-amarelo-escuro)]"
         >
-          JOGAR
+          ▶ JOGAR
         </motion.span>
       )}
       <span
-        className={`relative grid size-14 place-items-center rounded-full border-4 shadow-[0_5px_0_rgb(61_53_81/0.2)] ${
+        className={`relative grid size-14 place-items-center rounded-full border-[3px] shadow-flutuante ${
           resultado ? "border-coral bg-branco" : atual ? "border-amarelo bg-branco" : livre ? "border-roxo bg-branco" : "border-bloqueado bg-[#efedf5]"
         }`}
       >

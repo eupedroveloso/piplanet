@@ -7,6 +7,7 @@ import { animaisDoTerritorio, TERRITORIOS } from "@/content/jornada";
 import { paisPorId, TEMAS } from "@/content/paises";
 import { useProgress } from "@/lib/progress";
 import { speak } from "@/lib/speech";
+import { FichaBicho } from "./FichaBicho";
 import { Arte, BALANCO, MOLA_ENTRADA, MOLA_TOQUE } from "@/components/ui";
 
 /**
@@ -18,6 +19,7 @@ export function Album() {
   const { animaisColetados } = useProgress();
   const [lendo, setLendo] = useState<string | null>(null);
   const [balancando, setBalancando] = useState<string | null>(null);
+  const [aberto, setAberto] = useState<Animal | null>(null);
 
   async function tocar(b: Animal, ok: boolean) {
     if (!ok) {
@@ -26,14 +28,15 @@ export function Album() {
       speak("Essa figurinha ainda vai chegar. Continue jogando!");
       return;
     }
+    // abre a ficha com a foto real (a ficha fala o nome e uma curiosidade)
     setLendo(b.id);
-    await speak(b.nome);
-    await speak(b.curiosidade, { rate: 0.95 });
-    setLendo((x) => (x === b.id ? null : x));
+    setAberto(b);
+    setTimeout(() => setLendo((x) => (x === b.id ? null : x)), 600);
   }
 
   return (
     <div className="flex flex-col gap-6">
+      <FichaBicho animal={aberto} onFechar={() => setAberto(null)} />
       {TERRITORIOS.map((t, ti) => {
         const bichos = animaisDoTerritorio(t.id);
         const tem = bichos.filter((b) => animaisColetados.includes(b.id)).length;
@@ -52,15 +55,27 @@ export function Album() {
             transition={{ ...MOLA_ENTRADA, delay: ti * 0.1 }}
             className="rounded-xl bg-t-fundo p-4 sm:p-5"
           >
-            <header className="mb-3 flex items-baseline justify-between px-1">
-              <h2 className="flex flex-col text-2xl leading-tight font-extrabold text-t-destaque uppercase">
+            <motion.button
+              type="button"
+              onClick={() => speak(`${t.nome}. Você tem ${tem} de ${bichos.length} figurinhas.`)}
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              transition={MOLA_TOQUE}
+              className="mb-3 flex w-full items-center justify-between gap-3 rounded-lg px-1 text-left"
+            >
+              {/* Ícone primeiro: o primeiro bicho do bioma */}
+              <span className="grid size-12 shrink-0 place-items-center rounded-full bg-branco/70">
+                <Arte src={arteDoAnimal(bichos[0])} className="size-9" />
+              </span>
+              <h2 className="flex flex-1 flex-col text-2xl leading-tight font-extrabold text-t-destaque uppercase">
                 <span className="text-sm font-bold tracking-wide opacity-80">{paisPorId(t.pais).nome}</span>
                 {t.nome}
               </h2>
-              <span className="text-lg font-bold text-t-destaque">
+              <span className="flex items-center gap-1 text-lg font-bold text-t-destaque">
+                <Arte nome="ui/album" className="size-6" />
                 {tem}/{bichos.length}
               </span>
-            </header>
+            </motion.button>
             <motion.div
               className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5"
               initial="fora"

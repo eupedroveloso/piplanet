@@ -1,7 +1,137 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M17.4889 5.3447C17.7732 4.67235 17.7502 3.88017 17.3598 3.19996C16.6598 1.98996 15.0798 1.62996 13.9198 2.41996L8.64818 6.02814C5.99365 6.31089 3.7108 7.71568 2.62948 10.0965C2.5729 10.2211 2.51779 10.3533 2.46987 10.4683L2.46692 10.4754L1.41929 12.9997C1.13231 13.6642 1 14.3783 1 15.08C1 17.7923 3.20772 20 5.92 20H8.03003V27.1718C6.86681 27.5852 6.03003 28.698 6.03003 30V30C6.03003 30.5523 6.47774 31 7.03003 31C12.01 31 16.99 31 21.9699 31C24.2099 31 26.1996 29.5657 26.9168 27.4518C27.0999 26.9131 27.2868 26.3708 27.4745 25.8261C27.875 24.664 28.2796 23.4901 28.6588 22.3171L28.6634 22.3028L28.6676 22.2883C28.8821 21.5493 29 20.7842 29 20C29 19.3731 28.9167 18.701 28.7792 18.0963C28.7446 17.9444 28.7054 17.7912 28.6612 17.6396C30.0414 17.0087 31 15.6167 31 14C31 11.7908 29.2091 9.99999 27 9.99999C25.3782 9.99999 23.9825 10.9647 23.3545 12.3519C22.6099 12.123 21.819 12 21 12H19.6146C21.4802 11.9921 23 10.4674 23 8.60002C23 6.62149 21.3179 5.0476 19.3327 5.20301L19.3317 5.20309L17.4889 5.3447Z" fill="#9B9B9B"/>
-<path d="M9 7.00003L19.41 6.20003C20.81 6.09003 22 7.20003 22 8.60003C22 9.92003 20.92 11 19.6 11H14.66C14.88 11.63 15 12.3 15 13H21C22.0819 13 23.1048 13.2447 24.0167 13.6812C24.1759 12.1742 25.4508 11 27 11C28.6569 11 30 12.3431 30 14C30 15.5519 28.8216 16.8286 27.3107 16.9841C27.7073 17.61 28 18.9104 28 20C28 20.683 27.8974 21.3543 27.7073 22.0096C27.1531 23.7238 26.5498 25.424 25.97 27.13C25.39 28.84 23.78 30 21.97 30C21.97 30 15.031 30 14 30C14 28.9 14.9 28 16 28H16.7C16.87 28 17.01 27.86 17.01 27.69V27H14.03L13.32 29.12C13.14 29.65 12.65 30 12.1 30H7.03003C7.03003 28.9 7.93003 28 9.03003 28V19H5.92C3.76 19 2 17.24 2 15.08C2 14.5 2.11 13.92 2.34 13.39L3.39 10.86C3.44 10.74 3.49 10.62 3.54 10.51C4.48 8.44003 6.52 7.19003 9 7.00003Z" fill="white"/>
-<path d="M19.49 7.18994H19.6C20.39 7.18994 21.03 7.84994 20.99 8.64994C20.96 9.40994 20.31 9.99994 19.55 9.99994H12.51C12.22 9.99994 12 9.71994 12.07 9.42994C12.31 8.43994 13.16 7.67994 14.22 7.59994L19.49 7.18994Z" fill="#FF8687"/>
-<path d="M2 15.08C2.12 15.03 2.25 15 2.38 15C2.94 15 3.38 15.45 3.38 16C3.38 16.51 3 16.93 2.5 16.99C2.18 16.43 2 15.78 2 15.08Z" fill="#FF8687"/>
-<path d="M6.81 14.62C7.25735 14.62 7.62 14.2574 7.62 13.81C7.62 13.3626 7.25735 13 6.81 13C6.36265 13 6 13.3626 6 13.81C6 14.2574 6.36265 14.62 6.81 14.62Z" fill="#1C1C1C"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="coelho-pelo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f0cfab"/>
+      <stop offset="0.55" stop-color="#d6a679"/>
+      <stop offset="1" stop-color="#ac7850"/>
+    </linearGradient>
+    <linearGradient id="coelho-escuro" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d9a97c"/>
+      <stop offset="1" stop-color="#a26e46"/>
+    </linearGradient>
+    <radialGradient id="coelho-cabeca" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#f6dbbb"/>
+      <stop offset="0.65" stop-color="#dcae82"/>
+      <stop offset="1" stop-color="#b8845a"/>
+    </radialGradient>
+    <linearGradient id="coelho-creme" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fffaf2"/>
+      <stop offset="1" stop-color="#ecdcc6"/>
+    </linearGradient>
+    <linearGradient id="coelho-orelha" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffc4c4"/>
+      <stop offset="1" stop-color="#ee98a0"/>
+    </linearGradient>
+    <linearGradient id="coelho-cenoura" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffb04a"/>
+      <stop offset="0.6" stop-color="#f58a24"/>
+      <stop offset="1" stop-color="#d0661a"/>
+    </linearGradient>
+    <radialGradient id="coelho-algodao" cx="0.35" cy="0.3" r="0.75">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e6ddd0"/>
+    </radialGradient>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="146" cy="237" rx="70" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="rabo">
+    <circle cx="208" cy="196" r="17.5" fill="#a89a86"/>
+    <circle cx="200" cy="186" r="12.5" fill="#a89a86"/>
+    <circle cx="208" cy="196" r="15" fill="url(#coelho-algodao)"/>
+    <circle cx="200" cy="186" r="10" fill="url(#coelho-algodao)"/>
+    <path d="M204 184 q6 -2 10 2" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+
+  <g id="corpo" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M104 110 C82 128 76 180 88 212 C96 228 120 232 150 230 C188 228 206 210 206 180 C206 148 184 120 150 110 Z"
+          fill="url(#coelho-pelo)" stroke="#8a5a34" stroke-width="2.5"/>
+    <!-- barriga creme -->
+    <path d="M100 124 C88 146 86 186 96 212 C104 224 120 226 132 222 C138 196 136 150 122 124 Z" fill="url(#coelho-creme)"/>
+    <!-- coxa grande -->
+    <path d="M138 176 C146 150 182 146 198 166 C212 186 204 218 180 226 C162 230 142 224 136 210 C132 200 134 188 138 176 Z" fill="url(#coelho-escuro)" stroke="#8a5a34" stroke-width="2.5"/>
+    <path d="M150 166 Q166 154 184 160" fill="none" stroke="#f4d6b4" stroke-width="3.5" opacity="0.85"/>
+    <path d="M136 120 Q156 116 172 128" fill="none" stroke="#f6dcbc" stroke-width="4" opacity="0.8"/>
+    <g fill="none" stroke="#a87a52" stroke-width="1.5" opacity="0.7">
+      <path d="M160 132 l4 5 M176 144 l4 4 M150 146 l4 5 M170 196 l4 4 M184 206 l4 4 M158 208 l4 4"/>
+    </g>
+    <g fill="none" stroke="#d8c4a8" stroke-width="1.4">
+      <path d="M104 190 l3 5 M114 202 l3 5 M100 206 l3 5"/>
+    </g>
+  </g>
+
+  <g id="patas" stroke-linejoin="round" stroke-linecap="round">
+    <!-- pé traseiro comprido -->
+    <path d="M126 222 C142 216 186 218 196 224 C202 232 194 236 182 236 L130 236 C118 236 116 226 126 222 Z" fill="url(#coelho-creme)" stroke="#8a5a34" stroke-width="2.5"/>
+    <path d="M128 228 v6 M135 227 v8 M142 227 v8" stroke="#c4a888" stroke-width="1.6"/>
+    <!-- pé da frente -->
+    <path d="M94 216 C94 224 92 230 92 232 Q104 238 116 232 C116 226 114 220 112 214 Z" fill="url(#coelho-pelo)"/>
+    <path d="M94 218 C94 224 92 230 92 232 M116 232 C116 226 114 220 112 216" fill="none" stroke="#8a5a34" stroke-width="2.2"/>
+    <path d="M88 230 Q92 224 102 225 Q114 225 118 232 Q112 237 102 237 Q90 237 88 230 Z" fill="url(#coelho-creme)" stroke="#8a5a34" stroke-width="2.2"/>
+    <path d="M97 231 v5 M104 231 v5" stroke="#c4a888" stroke-width="1.5"/>
+  </g>
+
+  <g id="cenoura" stroke-linejoin="round" stroke-linecap="round">
+    <!-- folhas -->
+    <path d="M118 146 C120 132 128 124 138 122 C136 132 130 140 122 148 Z" fill="#5dbb85" stroke="#2f7a50" stroke-width="2"/>
+    <path d="M120 148 C130 140 142 140 150 146 C142 152 130 154 122 152 Z" fill="#4aa874" stroke="#2f7a50" stroke-width="2"/>
+    <path d="M116 146 C112 134 114 124 120 118 C124 128 122 138 118 148 Z" fill="#6fcc94" stroke="#2f7a50" stroke-width="2"/>
+    <!-- raiz -->
+    <path d="M110 146 C118 140 128 146 126 156 C116 172 90 196 70 206 C66 208 64 206 66 202 C76 184 96 158 110 146 Z" fill="url(#coelho-cenoura)" stroke="#b25416" stroke-width="2.5"/>
+    <path d="M100 162 l6 5 M90 176 l6 4 M80 190 l5 3" fill="none" stroke="#c8641c" stroke-width="1.8"/>
+    <path d="M106 152 Q96 162 86 176" fill="none" stroke="#ffd38a" stroke-width="2.5" opacity="0.9"/>
+  </g>
+
+  <g id="maos" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M96 150 C104 146 114 150 114 158 C114 166 104 170 96 166 C90 162 90 154 96 150 Z" fill="url(#coelho-pelo)" stroke="#8a5a34" stroke-width="2.2"/>
+    <path d="M110 162 C118 158 128 162 128 170 C128 178 118 182 110 178 C104 174 104 166 110 162 Z" fill="url(#coelho-pelo)" stroke="#8a5a34" stroke-width="2.2"/>
+    <path d="M96 156 l4 2 M98 162 l4 1 M110 168 l4 2 M112 174 l4 1" stroke="#a87a52" stroke-width="1.4"/>
+  </g>
+
+  <g id="orelhas" stroke-linejoin="round" stroke-linecap="round">
+    <!-- orelha dobrada, de lá -->
+    <path d="M96 54 C98 36 106 22 120 16 C134 12 148 20 150 32 C138 28 126 30 116 38 C110 44 108 52 108 58 Z" fill="url(#coelho-escuro)" stroke="#8a5a34" stroke-width="2.5"/>
+    <path d="M102 50 C104 38 110 28 120 24 C130 20 140 24 144 28 C134 26 124 28 116 34 C110 40 108 46 107 52 Z" fill="url(#coelho-orelha)"/>
+    <!-- orelha em pé, de cá -->
+    <path d="M70 58 C60 38 58 14 68 6 C80 2 90 24 90 54 Z" fill="url(#coelho-pelo)" stroke="#8a5a34" stroke-width="2.5"/>
+    <path d="M73 50 C66 34 65 18 70 12 C78 12 84 30 84 50 Z" fill="url(#coelho-orelha)"/>
+    <path d="M66 26 Q66 14 70 10" fill="none" stroke="#fff4e6" stroke-width="2" opacity="0.9"/>
+  </g>
+
+  <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M88 46 C116 46 128 66 128 86 C128 104 120 114 112 120 C104 126 96 128 88 128 C80 128 70 126 62 120 C54 114 48 104 48 86 C48 66 62 46 88 46 Z"
+          fill="url(#coelho-cabeca)" stroke="#8a5a34" stroke-width="2.5"/>
+    <path d="M60 70 Q70 54 88 52" fill="none" stroke="#fff0dc" stroke-width="4.5" opacity="0.8"/>
+    <!-- tufos das bochechas -->
+    <path d="M50 108 l-5 4 l7 1 M126 106 l5 4 l-7 1" fill="none" stroke="#8a5a34" stroke-width="2"/>
+    <!-- focinho claro -->
+    <path d="M84 98 C74 94 62 100 62 110 C62 120 74 124 84 120 C94 124 106 120 106 110 C106 100 94 94 84 98 Z" fill="url(#coelho-creme)" stroke="#d8c0a0" stroke-width="1.8"/>
+    <ellipse cx="62" cy="102" rx="8" ry="5" fill="#f4908a" opacity="0.55"/>
+    <ellipse cx="112" cy="100" rx="8" ry="5" fill="#f4908a" opacity="0.55"/>
+  </g>
+
+  <g id="olhos">
+    <ellipse cx="70" cy="82" rx="9" ry="10.5" fill="#2b1d16"/>
+    <ellipse cx="104" cy="80" rx="9" ry="10.5" fill="#2b1d16"/>
+    <circle cx="66.5" cy="77.5" r="4.2" fill="#fff"/>
+    <circle cx="74" cy="86.5" r="2" fill="#fff"/>
+    <circle cx="100.5" cy="75.5" r="4.2" fill="#fff"/>
+    <circle cx="108" cy="84.5" r="2" fill="#fff"/>
+  </g>
+
+  <g id="rosto" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M78 99 Q84 96 90 99 Q88 105 84 106 Q80 105 78 99 Z" fill="#f28a9a" stroke="#c45a6c" stroke-width="1.8"/>
+    <path d="M81 99.5 Q84 98 87 99" fill="none" stroke="#ffd0d8" stroke-width="1.5"/>
+    <path d="M84 106 v3 M84 109 q-4 5 -9 2 M84 109 q4 5 9 2" fill="none" stroke="#8a5a34" stroke-width="2"/>
+    <!-- dentinhos -->
+    <path d="M80 111 L80 118 Q82.5 120 84 118 L84 112 Z M84 112 L84 118 Q85.5 120 88 118 L88 111 Z" fill="#fffdf6" stroke="#b8a48c" stroke-width="1.4"/>
+    <!-- bigodes -->
+    <g fill="none" stroke="#8a6a52" stroke-width="1.5" opacity="0.8">
+      <path d="M68 106 Q52 102 36 104"/><path d="M68 110 Q52 112 38 118"/>
+      <path d="M100 106 Q114 102 130 104"/><path d="M100 110 Q114 112 128 118"/>
+    </g>
+    <g fill="#b8845a" opacity="0.7"><circle cx="74" cy="104" r="1.2"/><circle cx="72" cy="109" r="1.2"/><circle cx="94" cy="104" r="1.2"/><circle cx="96" cy="109" r="1.2"/></g>
+  </g>
 </svg>

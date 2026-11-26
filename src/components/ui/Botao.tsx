@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion, type HTMLMotionProps } from "motion/react";
 import type { ComponentProps, ReactNode } from "react";
+import { speak } from "@/lib/speech";
 import { MOLA_TOQUE } from "./movimento";
 
 /**
@@ -43,18 +44,37 @@ export const TOQUE_RELEVO = {
 
 const MotionLink = motion.create(Link);
 
-type Base = { cor?: CorBotao; tamanho?: keyof typeof TAMANHOS; icone?: ReactNode; children: ReactNode };
+type Base = {
+  cor?: CorBotao;
+  tamanho?: keyof typeof TAMANHOS;
+  /** Ícone grande à esquerda: quem não sabe ler entende pelo ícone. */
+  icone?: ReactNode;
+  /** A Juju fala isto ao tocar (quem não sabe ler ouve o que o botão faz). */
+  fala?: string;
+  children: ReactNode;
+};
 
 export function Botao({
   cor,
   tamanho,
   icone,
+  fala,
   children,
   className = "",
+  onClick,
   ...props
 }: Base & Omit<HTMLMotionProps<"button">, "children">) {
   return (
-    <motion.button type="button" {...TOQUE_RELEVO} className={`${classesBotao(cor, tamanho)} ${className}`} {...props}>
+    <motion.button
+      type="button"
+      {...TOQUE_RELEVO}
+      className={`${classesBotao(cor, tamanho)} ${className}`}
+      onClick={(e) => {
+        if (fala) speak(fala);
+        onClick?.(e);
+      }}
+      {...props}
+    >
       {icone}
       {children}
     </motion.button>
@@ -65,12 +85,22 @@ export function BotaoLink({
   cor,
   tamanho,
   icone,
+  fala,
   children,
   className = "",
+  onClick,
   ...props
 }: Base & Omit<ComponentProps<typeof MotionLink>, "children">) {
   return (
-    <MotionLink {...TOQUE_RELEVO} className={`${classesBotao(cor, tamanho)} ${className}`} {...props}>
+    <MotionLink
+      {...TOQUE_RELEVO}
+      className={`${classesBotao(cor, tamanho)} ${className}`}
+      onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+        if (fala) speak(fala);
+        onClick?.(e);
+      }}
+      {...props}
+    >
       {icone}
       {children}
     </MotionLink>

@@ -231,3 +231,76 @@ export function Cometa() {
     </group>
   );
 }
+
+/**
+ * Criaturas do mar nadando pelos oceanos do globo (baleias e golfinhos).
+ * Cada uma segue um caminho em alto-mar e acompanha a curva do planeta.
+ */
+const ROTAS_MAR: { lon: number; lat0: number; lat1: number; tipo: "baleia" | "golfinho"; vel: number }[] = [
+  { lon: -30, lat0: -45, lat1: 30, tipo: "baleia", vel: 0.05 },
+  { lon: -150, lat0: -40, lat1: 35, tipo: "baleia", vel: 0.04 },
+  { lon: 75, lat0: -40, lat1: -5, tipo: "golfinho", vel: 0.08 },
+  { lon: -10, lat0: -40, lat1: -10, tipo: "golfinho", vel: 0.09 },
+  { lon: 165, lat0: -40, lat1: 20, tipo: "golfinho", vel: 0.07 },
+];
+
+export function CriaturasDoMar({ raio }: { raio: number }) {
+  return (
+    <>
+      {ROTAS_MAR.map((r, i) => (
+        <CriaturaGlobo key={i} {...r} raio={raio} fase={i * 1.3} />
+      ))}
+    </>
+  );
+}
+
+function CriaturaGlobo({ lon, lat0, lat1, tipo, vel, raio, fase }: (typeof ROTAS_MAR)[number] & { raio: number; fase: number }) {
+  const ref = useRef<THREE.Group>(null);
+  const corpo = useRef<THREE.Group>(null);
+  const p = useMemo(() => new THREE.Vector3(), []);
+  const q = useMemo(() => new THREE.Vector3(), []);
+  const ponto = (lat: number, lo: number, r: number, alvo: THREE.Vector3) => {
+    const phi = ((lo + 180) * Math.PI) / 180;
+    const th = ((90 - lat) * Math.PI) / 180;
+    return alvo.set(-r * Math.cos(phi) * Math.sin(th), r * Math.cos(th), r * Math.sin(phi) * Math.sin(th));
+  };
+  useFrame((st) => {
+    const g = ref.current;
+    if (!g) return;
+    const t = (Math.sin(st.clock.elapsedTime * vel + fase) + 1) / 2;
+    const lat = lat0 + (lat1 - lat0) * t;
+    const lo = lon + Math.sin(st.clock.elapsedTime * vel * 2 + fase) * 6;
+    ponto(lat, lo, raio * 1.005, p);
+    ponto(lat + (Math.cos(st.clock.elapsedTime * vel + fase) >= 0 ? 0.6 : -0.6), lo, raio * 1.005, q);
+    g.position.copy(p);
+    g.up.copy(p).normalize();
+    g.lookAt(q);
+    // golfinho pula; baleia sobe e desce de leve
+    if (corpo.current) {
+      const pulo = tipo === "golfinho" ? Math.max(0, Math.sin(st.clock.elapsedTime * 2.2 + fase)) * 0.22 : Math.sin(st.clock.elapsedTime + fase) * 0.03;
+      corpo.current.position.y = pulo;
+    }
+  });
+  const cor = tipo === "baleia" ? "#4f73a6" : "#7f9fc2";
+  const s = tipo === "baleia" ? 0.32 : 0.18;
+  return (
+    <group ref={ref}>
+      <group ref={corpo} scale={s}>
+        <mesh scale={[0.55, 0.35, 1.3]}>
+          <icosahedronGeometry args={[0.7, 1]} />
+          <meshStandardMaterial color={cor} flatShading />
+        </mesh>
+        <mesh position={[0, 0, -1]} rotation={[Math.PI / 2, 0, 0]} scale={[1.2, 0.3, 0.5]}>
+          <coneGeometry args={[0.4, 0.7, 3]} />
+          <meshStandardMaterial color={cor} flatShading />
+        </mesh>
+        {tipo === "golfinho" && (
+          <mesh position={[0, 0.3, 0]} rotation={[-0.4, 0, 0]}>
+            <coneGeometry args={[0.12, 0.4, 4]} />
+            <meshStandardMaterial color={cor} flatShading />
+          </mesh>
+        )}
+      </group>
+    </group>
+  );
+}

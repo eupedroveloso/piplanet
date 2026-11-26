@@ -1,15 +1,162 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M5.43 13.3609C5.15 13.3609 4.93 13.1409 4.93 12.8609V12.0009C4.93 11.2909 4.53 10.6509 3.89 10.3309L3.22 9.95086C2.97 9.83086 2.87 9.53086 2.99 9.28086C3.11 9.03086 3.41 8.93086 3.66 9.05086L4.34 9.43086C5.32 9.92086 5.93 10.9009 5.93 12.0009V12.8609C5.93 13.1409 5.71 13.3609 5.43 13.3609Z" fill="#212121"/>
-<path d="M24.3 27.001H22.83C21.81 27.001 20.99 26.171 20.99 25.161V21.801C20.99 21.391 21.33 21.051 21.74 21.051C22.15 21.051 22.49 21.391 22.49 21.801V25.151C22.49 25.341 22.64 25.491 22.83 25.491H24.3C24.71 25.491 25.05 25.831 25.05 26.241C25.05 26.651 24.71 27.001 24.3 27.001Z" fill="#212121"/>
-<path d="M9.79999 28.981C9.60999 28.981 9.41999 28.911 9.26999 28.761C8.97999 28.471 8.97999 27.991 9.26999 27.701L9.91999 27.051C10.28 26.691 10.48 26.201 10.48 25.691V23.801C10.48 23.391 10.82 23.051 11.23 23.051C11.64 23.051 11.98 23.391 11.98 23.801V25.691C11.98 26.601 11.62 27.461 10.98 28.111L10.33 28.761C10.18 28.911 9.98999 28.981 9.79999 28.981Z" fill="#212121"/>
-<path d="M18.64 28.761C18.79 28.911 18.98 28.981 19.17 28.981C19.36 28.981 19.55 28.911 19.7 28.761C19.99 28.471 19.99 27.991 19.7 27.701L19.05 27.051C18.69 26.691 18.49 26.201 18.49 25.691V23.801C18.49 23.391 18.15 23.051 17.74 23.051C17.33 23.051 16.99 23.391 16.99 23.801V25.691C16.99 26.601 17.34 27.461 17.99 28.111L18.64 28.761Z" fill="#212121"/>
-<path d="M28 16.3608L29.78 16.7408C30.07 16.8008 30.07 17.2108 29.78 17.2808L28 17.6608L27 17L28 16.3608Z" fill="#212121"/>
-<path d="M17 25.001H19.11C19.7574 25.001 20.3925 24.9115 21 24.7411L23.5 17L21 9.28089C20.3925 9.11047 19.7574 9.021 19.11 9.021H17L15 17L17 25.001Z" fill="#FFB02E"/>
-<path d="M12 9.14654C10.0597 9.49848 8.36278 10.5504 7.18115 12.0314L7.5 13.5V20.5L7.19434 22.0071C8.37538 23.4794 10.0669 24.5248 12 24.8755L14.5 17L12 9.14654Z" fill="#FFB02E"/>
-<path d="M24.5 17L26 13.6231L28 16.3775V17.6445L26 20.3989L24.5 17Z" fill="#FFB02E"/>
-<path d="M16.98 9.021H13.21C12.79 9.031 12.38 9.081 11.98 9.151V24.871C12.38 24.941 12.79 24.991 13.21 25.001H16.98V9.021Z" fill="#533566"/>
-<path d="M8.37 13.381C8.37 12.631 7.77 12.031 7.03 12.021H6.95C4.21 12.021 2 14.261 2 17.021C2 19.781 4.22 22.021 6.95 22.021H7.03C7.78 22.001 8.37 21.401 8.37 20.651V13.381Z" fill="#533566"/>
-<path d="M25.04 12.301L25.98 13.601V20.401L25.04 21.701C24.1 23.201 22.64 24.271 20.98 24.731V9.271C22.65 9.741 24.1 10.801 25.04 12.301Z" fill="#533566"/>
-<path d="M14.94 4.74094C15.78 3.66094 17.09 2.97094 18.57 3.00094C20.96 3.04094 22.92 4.99094 22.98 7.38094C23.04 9.91094 21.01 11.9809 18.49 11.9809H10.9C10.35 11.9809 10.04 11.3509 10.36 10.9109L14.86 4.85094C14.88 4.82094 14.9 4.80094 14.92 4.77094L14.94 4.74094Z" fill="#AEDDFF"/>
-<path d="M5.44 18.001C5.99229 18.001 6.44 17.5533 6.44 17.001C6.44 16.4487 5.99229 16.001 5.44 16.001C4.88772 16.001 4.44 16.4487 4.44 17.001C4.44 17.5533 4.88772 18.001 5.44 18.001Z" fill="#212121"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="abelha-ambar" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffd36a"/>
+      <stop offset="0.55" stop-color="#f2a92e"/>
+      <stop offset="1" stop-color="#c9781a"/>
+    </linearGradient>
+    <linearGradient id="abelha-listra" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6a4630"/>
+      <stop offset="1" stop-color="#3a2416"/>
+    </linearGradient>
+    <radialGradient id="abelha-torax" cx="0.38" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#e2a85c"/>
+      <stop offset="0.6" stop-color="#b47634"/>
+      <stop offset="1" stop-color="#7e4c20"/>
+    </radialGradient>
+    <radialGradient id="abelha-cabeca" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#f6c97a"/>
+      <stop offset="0.65" stop-color="#d9973e"/>
+      <stop offset="1" stop-color="#a86a26"/>
+    </radialGradient>
+    <linearGradient id="abelha-asa" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#bfe2fa" stop-opacity="0.55"/>
+    </linearGradient>
+    <linearGradient id="abelha-petala" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbd2ec"/>
+      <stop offset="1" stop-color="#e48cc0"/>
+    </linearGradient>
+    <linearGradient id="abelha-caule" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7fd39f"/>
+      <stop offset="1" stop-color="#3f9a66"/>
+    </linearGradient>
+    <clipPath id="abelha-clip-abdome">
+      <ellipse cx="170" cy="138" rx="48" ry="36" transform="rotate(22 170 138)"/>
+    </clipPath>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="128" cy="237" rx="72" ry="8" fill="#3b2a1a" opacity="0.18"/>
+    <ellipse cx="160" cy="237" rx="34" ry="5" fill="#3b2a1a" opacity="0.12"/>
+  </g>
+
+  <g id="flor" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M70 236 C72 222 70 210 66 198" fill="none" stroke="#2f7a50" stroke-width="7"/>
+    <path d="M70 236 C72 222 70 210 66 198" fill="none" stroke="url(#abelha-caule)" stroke-width="3.5"/>
+    <path d="M70 226 C80 214 96 212 104 218 C96 228 82 230 70 226 Z" fill="url(#abelha-caule)" stroke="#2f7a50" stroke-width="2.2"/>
+    <path d="M76 224 Q88 218 98 219" fill="none" stroke="#2f7a50" stroke-width="1.4"/>
+    <path d="M70 218 C60 206 44 206 38 212 C46 222 60 222 70 218 Z" fill="url(#abelha-caule)" stroke="#2f7a50" stroke-width="2.2"/>
+    <g fill="url(#abelha-petala)" stroke="#b95a92" stroke-width="2.2">
+      <ellipse cx="66" cy="178" rx="9" ry="14"/>
+      <ellipse cx="66" cy="178" rx="9" ry="14" transform="rotate(72 66 192)"/>
+      <ellipse cx="66" cy="178" rx="9" ry="14" transform="rotate(144 66 192)"/>
+      <ellipse cx="66" cy="178" rx="9" ry="14" transform="rotate(216 66 192)"/>
+      <ellipse cx="66" cy="178" rx="9" ry="14" transform="rotate(288 66 192)"/>
+    </g>
+    <circle cx="66" cy="192" r="9.5" fill="#ffc935" stroke="#c98a10" stroke-width="2.2"/>
+    <g fill="#d99a10"><circle cx="63" cy="190" r="1.4"/><circle cx="69" cy="191" r="1.4"/><circle cx="66" cy="196" r="1.4"/></g>
+    <circle cx="63" cy="189" r="2.4" fill="#fff4c2"/>
+  </g>
+
+  <g id="patas-de-la" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M112 136 L106 152 L110 166" stroke="#2a180e" stroke-width="4.5"/>
+    <path d="M128 140 L130 158 L124 172" stroke="#2a180e" stroke-width="4.5"/>
+    <path d="M142 140 L152 160 L148 180" stroke="#2a180e" stroke-width="4.5"/>
+  </g>
+
+  <g id="asas-de-la" stroke-linejoin="round">
+    <path d="M128 92 C134 64 160 40 186 36 C204 34 210 48 200 62 C186 80 158 92 128 96 Z" fill="url(#abelha-asa)" stroke="#8ab4d6" stroke-width="2" opacity="0.7"/>
+  </g>
+
+  <g id="abdome" stroke-linejoin="round" stroke-linecap="round">
+    <!-- ferrão -->
+    <path d="M206 160 L222 170 L204 168 Z" fill="#5a3a26" stroke="#2a180e" stroke-width="1.8"/>
+    <ellipse cx="170" cy="138" rx="48" ry="36" transform="rotate(22 170 138)" fill="url(#abelha-ambar)"/>
+    <g clip-path="url(#abelha-clip-abdome)" fill="url(#abelha-listra)">
+      <path d="M150 96 C140 116 136 140 140 172 L158 178 C152 150 156 120 168 100 Z"/>
+      <path d="M182 108 C174 126 170 150 174 182 L190 182 C186 156 190 132 200 116 Z"/>
+      <path d="M210 126 C204 142 202 162 206 184 L230 184 L230 126 Z"/>
+    </g>
+    <!-- pelinhos -->
+    <g clip-path="url(#abelha-clip-abdome)" fill="none" stroke="#fff1c4" stroke-width="1.4" opacity="0.8">
+      <path d="M134 128 l3 4 M132 142 l4 3 M138 156 l3 4 M166 124 l3 4 M164 140 l3 4 M196 150 l3 4"/>
+    </g>
+    <ellipse cx="170" cy="138" rx="48" ry="36" transform="rotate(22 170 138)" fill="none" stroke="#7a4a1a" stroke-width="2.5"/>
+    <path d="M140 112 Q156 102 176 106" fill="none" stroke="#fff4c2" stroke-width="4" opacity="0.8"/>
+    <!-- penugem na borda -->
+    <g fill="none" stroke="#7a4a1a" stroke-width="1.6">
+      <path d="M150 104 l-1 -4 M162 101 l0 -4 M176 102 l1 -4 M190 108 l2 -4 M204 118 l3 -3 M214 132 l4 -2 M182 174 l1 4 M168 172 l-1 4 M154 166 l-2 4"/>
+    </g>
+    <g clip-path="url(#abelha-clip-abdome)" fill="none" stroke="#8a6046" stroke-width="1.4">
+      <path d="M150 130 l3 3 M148 146 l3 3 M182 136 l3 3 M180 152 l3 3 M212 152 l3 3"/>
+    </g>
+  </g>
+
+  <g id="torax" stroke-linejoin="round" stroke-linecap="round">
+    <!-- contorno peludo -->
+    <path d="M118 80 l5 2 l5 -1 l4 4 l5 1 l2 5 l5 3 l0 5 l3 4 l-2 5 l2 5 l-4 4 l0 5 l-5 3 l-2 5 l-5 0 l-4 4 l-5 -1 l-5 2 l-5 -3 l-5 0 l-3 -4 l-5 -2 l-1 -5 l-4 -4 l1 -5 l-2 -5 l3 -4 l0 -5 l4 -3 l2 -5 l5 -1 l4 -4 l5 1 Z"
+          fill="url(#abelha-torax)" stroke="#5a3418" stroke-width="2.2"/>
+    <g fill="none" stroke="#f0c27e" stroke-width="1.5" opacity="0.8">
+      <path d="M104 98 l3 -3 M114 92 l3 -3 M124 94 l3 -3 M108 108 l3 -3 M120 104 l3 -3 M132 108 l3 -3"/>
+    </g>
+    <g fill="none" stroke="#6e4220" stroke-width="1.5" opacity="0.7">
+      <path d="M118 126 l2 3 M128 122 l2 3 M108 122 l2 3"/>
+    </g>
+  </g>
+
+  <g id="patas-de-ca" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M104 132 L96 148 L100 162" stroke="#5a3418" stroke-width="5.5"/>
+    <path d="M104 132 L96 148 L100 162" stroke="#7e4c20" stroke-width="2.5"/>
+    <path d="M120 136 L118 156 L112 168" stroke="#5a3418" stroke-width="5.5"/>
+    <path d="M120 136 L118 156 L112 168" stroke="#7e4c20" stroke-width="2.5"/>
+    <path d="M134 136 L144 156 L140 178" stroke="#5a3418" stroke-width="6"/>
+    <path d="M134 136 L144 156 L140 178" stroke="#7e4c20" stroke-width="3"/>
+  </g>
+
+  <g id="polen" stroke-linejoin="round">
+    <!-- cestinhas de pólen nas patas de trás -->
+    <ellipse cx="143" cy="164" rx="7" ry="9" fill="#ffc935" stroke="#c98a10" stroke-width="2"/>
+    <circle cx="141" cy="161" r="2.4" fill="#fff4c2"/>
+    <ellipse cx="149" cy="168" rx="5.5" ry="7.5" fill="#f2b62a" stroke="#c98a10" stroke-width="1.8" opacity="0.9"/>
+  </g>
+
+  <g id="asas" stroke-linejoin="round" stroke-linecap="round">
+    <!-- asa de trás (menor) -->
+    <path d="M124 94 C142 80 172 74 190 82 C200 88 196 98 182 102 C164 106 142 102 124 98 Z" fill="url(#abelha-asa)" stroke="#7aa6cc" stroke-width="2"/>
+    <path d="M132 96 C150 90 168 88 184 90 M150 92 L160 100" fill="none" stroke="#9cc4e2" stroke-width="1.3"/>
+    <!-- asa da frente (maior) -->
+    <path d="M118 88 C116 58 132 26 158 16 C178 10 188 24 182 42 C174 64 148 84 118 92 Z" fill="url(#abelha-asa)" stroke="#7aa6cc" stroke-width="2"/>
+    <path d="M122 86 C130 64 146 40 168 26 M132 76 C146 66 160 56 176 46 M144 48 L152 66 M156 36 L164 54" fill="none" stroke="#9cc4e2" stroke-width="1.3"/>
+    <path d="M136 46 Q146 30 162 22" fill="none" stroke="#ffffff" stroke-width="3" opacity="0.9"/>
+    <!-- movimento -->
+    <path d="M196 30 q8 4 10 12 M204 64 q8 2 12 8" fill="none" stroke="#9cc4e2" stroke-width="2.2" opacity="0.8"/>
+  </g>
+
+  <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
+    <!-- antenas dobradas (cotovelo) -->
+    <path d="M70 80 L62 58 L46 50" fill="none" stroke="#3a2416" stroke-width="3.5"/>
+    <circle cx="45" cy="49.5" r="3.6" fill="#5a3a26"/>
+    <path d="M88 78 L92 54 L80 42" fill="none" stroke="#3a2416" stroke-width="3.5"/>
+    <circle cx="79" cy="41.5" r="3.6" fill="#5a3a26"/>
+    <path d="M63 60 L61 56 M91 56 L92 52" stroke="#8a6a52" stroke-width="1.3"/>
+    <!-- cabeça -->
+    <path d="M80 74 C104 74 112 92 110 110 C108 128 96 136 80 136 C64 136 50 128 50 108 C50 88 60 74 80 74 Z" fill="url(#abelha-cabeca)" stroke="#7a4a1a" stroke-width="2.5"/>
+    <path d="M60 92 Q66 80 80 78" fill="none" stroke="#fff0c4" stroke-width="4" opacity="0.8"/>
+    <!-- pelinhos no topo -->
+    <path d="M72 76 l-2 -4 M80 75 l0 -4 M88 76 l2 -4" stroke="#7a4a1a" stroke-width="1.6"/>
+    <ellipse cx="60" cy="118" rx="7.5" ry="4.8" fill="#f4908a" opacity="0.55"/>
+    <ellipse cx="100" cy="118" rx="7.5" ry="4.8" fill="#f4908a" opacity="0.5"/>
+    <!-- boca -->
+    <path d="M72 124 Q80 130 88 124" fill="none" stroke="#5a3418" stroke-width="2.2"/>
+  </g>
+
+  <g id="olhos">
+    <ellipse cx="66" cy="104" rx="9" ry="10.5" fill="#2b1d16"/>
+    <ellipse cx="96" cy="104" rx="9" ry="10.5" fill="#2b1d16"/>
+    <circle cx="62.5" cy="99.5" r="4.2" fill="#fff"/>
+    <circle cx="70" cy="108.5" r="2" fill="#fff"/>
+    <circle cx="92.5" cy="99.5" r="4.2" fill="#fff"/>
+    <circle cx="100" cy="108.5" r="2" fill="#fff"/>
+  </g>
 </svg>

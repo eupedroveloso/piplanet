@@ -1,10 +1,146 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M28 8.44127C28.01 9.30127 27.82 10.1113 27.48 10.8413C27.33 11.1713 27.38 11.5513 27.61 11.8313C29.1 13.6513 30 15.9713 30 18.5013C30 19.2031 29.9312 19.8887 29.7999 20.5519C29.8103 20.4984 29.3839 20.6055 29.3936 20.5519L27.57 21.8068L15.8216 25.7988L4.40001 21.8068L2.41797 20.5742C2.42529 20.6145 2.18475 20.472 2.19227 20.5122C2.06609 19.8614 2 19.1891 2 18.5013C2 15.9713 2.9 13.6513 4.39 11.8313C4.62 11.5513 4.67 11.1613 4.52 10.8313C4.18 10.1113 3.99 9.29127 4 8.43127C4.04 5.48127 6.43 3.07127 9.38 3.00127C12.21 2.94127 14.57 5.02127 14.94 7.73127C14.96 7.88127 15.09 8.00127 15.25 8.00127H16.74C16.9 8.00127 17.03 7.88127 17.05 7.73127C17.43 5.01127 19.79 2.94127 22.62 3.00127C25.57 3.07127 27.96 5.48127 28 8.44127Z" fill="#00D26A"/>
-<path d="M13 8.5C13 10.433 11.433 12 9.5 12C7.567 12 6 10.433 6 8.5C6 6.567 7.567 5 9.5 5C11.433 5 13 6.567 13 8.5Z" fill="#FFF478"/>
-<path d="M26 8.5C26 10.433 24.433 12 22.5 12C20.567 12 19 10.433 19 8.5C19 6.567 20.567 5 22.5 5C24.433 5 26 6.567 26 8.5Z" fill="#FFF478"/>
-<path d="M12 8.5C12 9.88071 10.8807 11 9.5 11C8.11929 11 7 9.88071 7 8.5C7 7.11929 8.11929 6 9.5 6C10.8807 6 12 7.11929 12 8.5Z" fill="#1C1C1C"/>
-<path d="M25 8.50122C25 9.88193 23.8807 11.0012 22.5 11.0012C21.1193 11.0012 20 9.88193 20 8.50122C20 7.12051 21.1193 6.00122 22.5 6.00122C23.8807 6.00122 25 7.12051 25 8.50122Z" fill="#1C1C1C"/>
-<path d="M17.5 14.0012C17.7761 14.0012 18 13.7774 18 13.5012C18 13.2251 17.7761 13.0012 17.5 13.0012C17.2239 13.0012 17 13.2251 17 13.5012C17 13.7774 17.2239 14.0012 17.5 14.0012Z" fill="#1C1C1C"/>
-<path d="M15 13.5012C15 13.7774 14.7761 14.0012 14.5 14.0012C14.2239 14.0012 14 13.7774 14 13.5012C14 13.2251 14.2239 13.0012 14.5 13.0012C14.7761 13.0012 15 13.2251 15 13.5012Z" fill="#1C1C1C"/>
-<path d="M27.57 20.3913C26.39 20.3913 25.3 19.9913 24.42 19.3313C22.11 17.4813 19.18 16.3813 15.99 16.3813C12.77 16.3813 9.82001 17.5013 7.50001 19.3813V19.3713C6.64001 20.0113 5.56001 20.3913 4.40001 20.3913H2.17001C3.06001 25.2913 7.35001 29.0013 12.5 29.0013H19.5C24.65 29.0013 28.94 25.2913 29.83 20.3913H27.57Z" fill="#FCD53F"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="sapo-pele" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#bba567"/>
+      <stop offset="0.55" stop-color="#9a8350"/>
+      <stop offset="1" stop-color="#6f5b33"/>
+    </linearGradient>
+    <linearGradient id="sapo-perna" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a48c55"/>
+      <stop offset="1" stop-color="#6a5630"/>
+    </linearGradient>
+    <radialGradient id="sapo-cabeca" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#c9b47a"/>
+      <stop offset="0.6" stop-color="#a08a55"/>
+      <stop offset="1" stop-color="#7a6439"/>
+    </radialGradient>
+    <linearGradient id="sapo-barriga" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbf0d4"/>
+      <stop offset="1" stop-color="#ddc796"/>
+    </linearGradient>
+    <linearGradient id="sapo-glandula" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d4b874"/>
+      <stop offset="1" stop-color="#9a7a45"/>
+    </linearGradient>
+    <radialGradient id="sapo-iris" cx="0.4" cy="0.35" r="0.7">
+      <stop offset="0" stop-color="#ffe08a"/>
+      <stop offset="1" stop-color="#d79a1e"/>
+    </radialGradient>
+    <clipPath id="sapo-clip-corpo"><path d="M128 100 C180 100 206 132 204 176 C202 214 172 230 128 230 C84 230 54 214 52 176 C50 132 76 100 128 100 Z"/></clipPath>
+    <clipPath id="sapo-clip-cabeca"><path d="M128 52 C172 52 198 72 200 102 C202 130 172 148 128 148 C84 148 54 130 56 102 C58 72 84 52 128 52 Z"/></clipPath>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="128" cy="237" rx="92" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="patas-tras" stroke-linejoin="round" stroke-linecap="round" stroke="#4f4024" stroke-width="2.5">
+    <!-- coxas dobradas -->
+    <path d="M70 160 C42 166 34 200 46 220 C56 232 82 232 96 224 C104 206 96 172 70 160 Z" fill="url(#sapo-perna)"/>
+    <path d="M186 160 C214 166 222 200 210 220 C200 232 174 232 160 224 C152 206 160 172 186 160 Z" fill="url(#sapo-perna)"/>
+    <!-- pés com dedos -->
+    <path d="M58 224 C46 222 30 224 20 230 Q18 236 26 235 Q22 238 30 238 Q32 236 40 236 Q38 239 46 238 L66 234 Z" fill="url(#sapo-perna)"/>
+    <path d="M198 224 C210 222 226 224 236 230 Q238 236 230 235 Q234 238 226 238 Q224 236 216 236 Q218 239 210 238 L190 234 Z" fill="url(#sapo-perna)"/>
+    <g fill="#c9b47a" stroke="none">
+      <circle cx="21" cy="232" r="2.2"/><circle cx="29" cy="236" r="2"/><circle cx="43" cy="236.5" r="2"/>
+      <circle cx="235" cy="232" r="2.2"/><circle cx="227" cy="236" r="2"/><circle cx="213" cy="236.5" r="2"/>
+    </g>
+    <g fill="#5e4e2a" stroke="none" opacity="0.7">
+      <circle cx="56" cy="186" r="4"/><circle cx="70" cy="204" r="3"/><circle cx="52" cy="210" r="2.5"/><circle cx="80" cy="182" r="2.5"/>
+      <circle cx="200" cy="186" r="4"/><circle cx="186" cy="204" r="3"/><circle cx="204" cy="210" r="2.5"/><circle cx="176" cy="182" r="2.5"/>
+    </g>
+    <path d="M52 178 Q60 168 72 168" fill="none" stroke="#cdb983" stroke-width="3" opacity="0.8"/>
+  </g>
+
+  <g id="corpo" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M128 100 C180 100 206 132 204 176 C202 214 172 230 128 230 C84 230 54 214 52 176 C50 132 76 100 128 100 Z"
+          fill="url(#sapo-pele)" stroke="#4f4024" stroke-width="2.5"/>
+    <g clip-path="url(#sapo-clip-corpo)">
+      <ellipse cx="128" cy="194" rx="44" ry="40" fill="url(#sapo-barriga)"/>
+      <g fill="#e2cfa0" opacity="0.9">
+        <circle cx="110" cy="190" r="2"/><circle cx="124" cy="200" r="2"/><circle cx="142" cy="188" r="2"/><circle cx="134" cy="212" r="2"/><circle cx="116" cy="210" r="1.8"/><circle cx="148" cy="204" r="1.8"/>
+      </g>
+      <!-- verrugas do corpo -->
+      <g fill="#6a5630">
+        <circle cx="66" cy="150" r="4.5"/><circle cx="192" cy="150" r="4.5"/><circle cx="74" cy="172" r="3.5"/><circle cx="184" cy="174" r="3.5"/>
+      </g>
+      <g fill="#c4ae73">
+        <circle cx="64" cy="148" r="1.8"/><circle cx="190" cy="148" r="1.8"/>
+        <circle cx="82" cy="158" r="3"/><circle cx="176" cy="160" r="3"/><circle cx="62" cy="190" r="3"/><circle cx="196" cy="192" r="3"/>
+      </g>
+      <g fill="#584826"><circle cx="100" cy="128" r="3.2"/><circle cx="156" cy="126" r="3.2"/><circle cx="58" cy="168" r="2.6"/><circle cx="198" cy="170" r="2.6"/></g>
+      <g fill="#e0cc94"><circle cx="99" cy="127" r="1.1"/><circle cx="155" cy="125" r="1.1"/><circle cx="73" cy="171" r="1.2"/><circle cx="183" cy="173" r="1.2"/></g>
+      <g fill="#a0703f">
+        <circle cx="90" cy="148" r="2.6"/><circle cx="170" cy="146" r="2.6"/><circle cx="68" cy="206" r="2.4"/><circle cx="190" cy="206" r="2.4"/>
+      </g>
+    </g>
+    <path d="M60 168 Q64 136 92 118" fill="none" stroke="#cdb983" stroke-width="3.5" opacity="0.7"/>
+  </g>
+
+  <g id="patas-frente" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M90 150 C86 176 84 202 88 222 L106 222 C106 200 108 176 112 154 Z" fill="url(#sapo-pele)"/>
+    <path d="M90 154 C86 176 84 202 88 222 M106 222 C106 200 108 176 112 156" fill="none" stroke="#4f4024" stroke-width="2.5"/>
+    <path d="M166 150 C170 176 172 202 168 222 L150 222 C150 200 148 176 144 154 Z" fill="url(#sapo-perna)"/>
+    <path d="M166 154 C170 176 172 202 168 222 M150 222 C150 200 148 176 144 156" fill="none" stroke="#4f4024" stroke-width="2.5"/>
+    <!-- mãos de 4 dedos -->
+    <path d="M86 220 Q76 224 72 232 Q76 236 80 232 Q80 237 86 236 Q88 232 92 232 Q94 237 100 236 Q102 232 104 230 Q110 234 114 230 Q110 222 104 220 Z" fill="url(#sapo-pele)" stroke="#4f4024" stroke-width="2.2"/>
+    <path d="M170 220 Q180 224 184 232 Q180 236 176 232 Q176 237 170 236 Q168 232 164 232 Q162 237 156 236 Q154 232 152 230 Q146 234 142 230 Q146 222 152 220 Z" fill="url(#sapo-perna)" stroke="#4f4024" stroke-width="2.2"/>
+    <g fill="#d8c48c">
+      <circle cx="74" cy="232" r="1.8"/><circle cx="84" cy="235" r="1.8"/><circle cx="98" cy="235" r="1.8"/><circle cx="112" cy="230" r="1.8"/>
+      <circle cx="182" cy="232" r="1.8"/><circle cx="172" cy="235" r="1.8"/><circle cx="158" cy="235" r="1.8"/><circle cx="144" cy="230" r="1.8"/>
+    </g>
+    <g fill="#6a5630" opacity="0.8"><circle cx="96" cy="176" r="2.5"/><circle cx="100" cy="196" r="2"/><circle cx="158" cy="178" r="2.5"/><circle cx="156" cy="198" r="2"/></g>
+  </g>
+
+  <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M128 52 C172 52 198 72 200 102 C202 130 172 148 128 148 C84 148 54 130 56 102 C58 72 84 52 128 52 Z"
+          fill="url(#sapo-cabeca)" stroke="#4f4024" stroke-width="2.5"/>
+    <g clip-path="url(#sapo-clip-cabeca)">
+      <!-- verrugas da cabeça em vários tons -->
+      <g fill="#6f5b33"><circle cx="128" cy="62" r="3"/><circle cx="114" cy="72" r="2.4"/><circle cx="142" cy="72" r="2.4"/><circle cx="64" cy="128" r="3"/><circle cx="192" cy="128" r="3"/></g>
+      <g fill="#cbb57a"><circle cx="122" cy="80" r="2"/><circle cx="136" cy="82" r="2"/><circle cx="104" cy="58" r="2"/><circle cx="154" cy="58" r="2"/></g>
+      <g fill="#a26f42" opacity="0.9"><circle cx="128" cy="74" r="1.8"/><circle cx="72" cy="80" r="2.2"/><circle cx="184" cy="80" r="2.2"/></g>
+    </g>
+    <path d="M78 74 Q96 58 118 56" fill="none" stroke="#dcc996" stroke-width="4.5" opacity="0.7"/>
+    <!-- glândulas paratoides atrás dos olhos, descendo para os ombros -->
+    <path d="M74 86 C62 90 54 106 58 124 C60 134 70 138 76 130 C84 118 86 98 74 86 Z" fill="url(#sapo-glandula)" stroke="#4f4024" stroke-width="2.2"/>
+    <path d="M182 86 C194 90 202 106 198 124 C196 134 186 138 180 130 C172 118 170 98 182 86 Z" fill="url(#sapo-glandula)" stroke="#4f4024" stroke-width="2.2"/>
+    <g fill="#7a5f34" opacity="0.8">
+      <circle cx="70" cy="98" r="1.5"/><circle cx="66" cy="108" r="1.5"/><circle cx="74" cy="112" r="1.4"/><circle cx="64" cy="120" r="1.4"/><circle cx="72" cy="124" r="1.3"/>
+      <circle cx="186" cy="98" r="1.5"/><circle cx="190" cy="108" r="1.5"/><circle cx="182" cy="112" r="1.4"/><circle cx="192" cy="120" r="1.4"/><circle cx="184" cy="124" r="1.3"/>
+    </g>
+    <path d="M62 104 Q64 94 72 90 M194 104 Q192 94 184 90" fill="none" stroke="#efdca6" stroke-width="2" opacity="0.9"/>
+    <!-- calombos dos olhos (pálpebras) -->
+    <circle cx="97" cy="74" r="22" fill="url(#sapo-cabeca)" stroke="#4f4024" stroke-width="2.5"/>
+    <circle cx="159" cy="74" r="22" fill="url(#sapo-cabeca)" stroke="#4f4024" stroke-width="2.5"/>
+    <!-- cristas ósseas sobre os olhos -->
+    <path d="M76 62 Q94 44 116 54 M140 54 Q162 44 180 62" fill="none" stroke="#5e4e2a" stroke-width="3.5"/>
+    <path d="M82 58 Q94 50 106 52" fill="none" stroke="#e2cf9a" stroke-width="1.8" opacity="0.9"/>
+    <!-- boca larga sorrindo -->
+    <path d="M70 120 Q128 150 186 120" fill="none" stroke="#4f4024" stroke-width="2.5"/>
+    <path d="M70 120 q-4 -2 -6 -6 M186 120 q4 -2 6 -6" fill="none" stroke="#4f4024" stroke-width="2"/>
+    <!-- narinas -->
+    <ellipse cx="119" cy="104" rx="2.4" ry="1.8" fill="#4f4024"/>
+    <ellipse cx="137" cy="104" rx="2.4" ry="1.8" fill="#4f4024"/>
+    <!-- bochechas -->
+    <ellipse cx="88" cy="118" rx="9" ry="5.5" fill="#f4908a" opacity="0.5"/>
+    <ellipse cx="168" cy="118" rx="9" ry="5.5" fill="#f4908a" opacity="0.5"/>
+  </g>
+
+  <g id="olhos">
+    <circle cx="97" cy="76" r="17" fill="url(#sapo-iris)" stroke="#9c6c12" stroke-width="2"/>
+    <circle cx="159" cy="76" r="17" fill="url(#sapo-iris)" stroke="#9c6c12" stroke-width="2"/>
+    <g stroke="#b9821a" stroke-width="1.2" opacity="0.6" fill="none">
+      <path d="M86 70 l4 3 M108 70 l-4 3 M86 84 l4 -3 M108 84 l-4 -3"/>
+      <path d="M148 70 l4 3 M170 70 l-4 3 M148 84 l4 -3 M170 84 l-4 -3"/>
+    </g>
+    <ellipse cx="98" cy="77" rx="10.5" ry="7" fill="#2b1d16"/>
+    <ellipse cx="160" cy="77" rx="10.5" ry="7" fill="#2b1d16"/>
+    <circle cx="94.5" cy="72.5" r="4.2" fill="#fff"/>
+    <circle cx="102" cy="81.5" r="2" fill="#fff"/>
+    <circle cx="156.5" cy="72.5" r="4.2" fill="#fff"/>
+    <circle cx="164" cy="81.5" r="2" fill="#fff"/>
+    <path d="M84 64 Q97 54 110 64" fill="none" stroke="#fff3c4" stroke-width="1.8" stroke-linecap="round" opacity="0.6"/>
+    <path d="M146 64 Q159 54 172 64" fill="none" stroke="#fff3c4" stroke-width="1.8" stroke-linecap="round" opacity="0.6"/>
+  </g>
 </svg>

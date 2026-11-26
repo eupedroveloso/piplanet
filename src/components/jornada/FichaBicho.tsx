@@ -1,0 +1,115 @@
+"use client";
+
+/* eslint-disable @next/next/no-img-element -- fotos locais já otimizadas (640 px) */
+import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useState } from "react";
+import { arteDoAnimal, type Animal } from "@/content/animais";
+import { FOTOS } from "@/content/fotos";
+import { curiosidadesDe, falarSobre } from "@/lib/falar-bicho";
+import { speak } from "@/lib/speech";
+import { Arte, BotaoRedondo, MOLA_ENTRADA } from "@/components/ui";
+
+/**
+ * FICHA DO BICHO (abre ao tocar numa figurinha do álbum)
+ * Foto real grande + ilustração + nome em sílabas. A Juju fala o nome e uma curiosidade;
+ * a lâmpada fala a próxima curiosidade. Crédito da foto embaixo (licença livre).
+ */
+export function FichaBicho({ animal, onFechar }: { animal: Animal | null; onFechar: () => void }) {
+  const [vez, setVez] = useState(0);
+  const foto = animal ? FOTOS[animal.id] : undefined;
+
+  useEffect(() => {
+    if (animal) falarSobre(animal);
+  }, [animal]);
+
+  const total = animal ? curiosidadesDe(animal).length : 0;
+
+  return (
+    <AnimatePresence>
+      {animal && (
+        <motion.div
+          key={animal.id}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-tinta/40 p-4 backdrop-blur-sm"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onFechar}
+        >
+          <motion.div
+            initial={{ scale: 0.85, y: 30 }}
+            animate={{ scale: 1, y: 0 }}
+            exit={{ scale: 0.9, y: 20, opacity: 0 }}
+            transition={MOLA_ENTRADA}
+            onClick={(e) => e.stopPropagation()}
+            className="relative flex w-full max-w-2xl flex-col overflow-hidden rounded-xl bg-branco shadow-[0_12px_0_rgb(61_53_81/0.15)] sm:flex-row"
+          >
+            {/* Foto real */}
+            <div className="relative aspect-[4/3] w-full overflow-hidden bg-roxo-claro sm:aspect-auto sm:min-h-80 sm:w-1/2">
+              {foto ? (
+                <>
+                  {/* a mesma foto desfocada preenche o fundo; a foto inteira fica por cima, sem cortes */}
+                  <img src={foto.arquivo} alt="" aria-hidden className="absolute inset-0 size-full scale-110 object-cover opacity-60 blur-xl" />
+                  <motion.img
+                    src={foto.arquivo}
+                    alt={`Foto de ${animal.nome}`}
+                    loading="lazy"
+                    initial={{ opacity: 0, scale: 1.05 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="absolute inset-0 size-full object-contain"
+                  />
+                </>
+              ) : (
+                <div className="grid size-full place-items-center">
+                  <Arte src={arteDoAnimal(animal)} className="size-40" />
+                </div>
+              )}
+              <span className="absolute bottom-2 left-2 rounded-full bg-branco/90 p-1.5 shadow-suave">
+                <Arte src={arteDoAnimal(animal)} className="size-12" />
+              </span>
+            </div>
+
+            {/* Nome, voz e curiosidades */}
+            <div className="flex flex-1 flex-col items-center justify-center gap-4 p-6 text-center">
+              <button type="button" onClick={() => speak(animal.nome)} className="font-leitura text-5xl font-bold text-roxo uppercase">
+                {animal.silabas.join("·")}
+              </button>
+              <div className="flex gap-3">
+                <BotaoRedondo aria-label="Ouvir o nome" onClick={() => speak(animal.nome)} className="size-16">
+                  <Arte nome="ui/som-ligado" className="size-9" />
+                </BotaoRedondo>
+                <BotaoRedondo
+                  aria-label="Ouvir outra curiosidade"
+                  onClick={() => {
+                    setVez((v) => v + 1);
+                    falarSobre(animal, { comNome: false });
+                  }}
+                  className="size-16 ring-4 ring-amarelo"
+                >
+                  <motion.span key={vez} initial={{ rotate: -20, scale: 0.6 }} animate={{ rotate: 0, scale: 1 }} transition={MOLA_ENTRADA}>
+                    <Arte nome="ui/lampada" className="size-9" />
+                  </motion.span>
+                </BotaoRedondo>
+              </div>
+              {/* bolinhas: quantas curiosidades existem */}
+              <div className="flex gap-1.5" aria-hidden>
+                {Array.from({ length: total }, (_, i) => (
+                  <span key={i} className={`size-2.5 rounded-full ${i === vez % total ? "bg-amarelo" : "bg-linha"}`} />
+                ))}
+              </div>
+              {foto && (
+                <a href={foto.fonte} target="_blank" rel="noreferrer" className="mt-2 text-[10px] leading-tight text-tinta-suave">
+                  Foto: {foto.autor} · {foto.licenca} · Wikimedia Commons
+                </a>
+              )}
+            </div>
+
+            <BotaoRedondo aria-label="Fechar" onClick={onFechar} className="absolute top-3 right-3">
+              <span className="text-2xl font-extrabold text-roxo">×</span>
+            </BotaoRedondo>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}

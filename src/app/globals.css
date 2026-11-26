@@ -53,6 +53,8 @@
   /* ── Sombras ───────────────────────────────────────────────────────────── */
   --shadow-suave: 0 4px 14px rgb(61 53 81 / 0.08);
   --shadow-relevo: 0 6px 0 rgb(61 53 81 / 0.12);
+  /* Peças que flutuam sobre o mapa (contorno fino + sombra macia; lê bem no espaço e no mar) */
+  --shadow-flutuante: 0 0 0 1px rgb(61 53 81 / 0.06), 0 2px 0 rgb(61 53 81 / 0.08), 0 8px 20px rgb(20 16 48 / 0.18);
 
   /* ── Animações ─────────────────────────────────────────────────────────── */
   --animate-flutuar: flutuar 3s ease-in-out infinite;
@@ -161,4 +163,14 @@ img {
 @keyframes ilha-onda {
   0%, 100% { transform: translateX(0); opacity: 0.45; }
   50% { transform: translateX(6px); opacity: 0.8; }
+}
+
+/* Superfície de vidro: base de tudo que flutua sobre o mapa 3D (cabeçalho, rodapé, placas, controles) */
+@layer components {
+.vidro {
+  background-color: rgb(255 255 255 / 0.9);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  backdrop-filter: blur(12px) saturate(1.4);
+  box-shadow: var(--shadow-flutuante);
+}
 }

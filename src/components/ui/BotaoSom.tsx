@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import { settingsStore, useSettings } from "@/lib/settings";
-import { stopSpeaking } from "@/lib/speech";
+import { speak, stopSpeaking } from "@/lib/speech";
 import { Arte } from "./Arte";
 import { BotaoRedondo } from "./BotaoRedondo";
 import { MOLA_ENTRADA } from "./movimento";
@@ -14,9 +14,11 @@ export function BotaoSom() {
     <BotaoRedondo
       aria-label={voz ? "Desligar voz" : "Ligar voz"}
       aria-pressed={voz}
+      fala={false}
       onClick={() => {
         if (voz) stopSpeaking();
         settingsStore.write((s) => ({ ...s, voz: !s.voz }));
+        if (!voz) speak("Oba! Agora eu falo com você.");
       }}
     >
       <AnimatePresence mode="wait" initial={false}>
@@ -28,7 +30,7 @@ export function BotaoSom() {
           transition={MOLA_ENTRADA}
           className="grid place-items-center"
         >
-          <Arte nome={voz ? "ui/som-ligado" : "ui/som-desligado"} className="size-8" />
+          <Arte nome={voz ? "ui/som-ligado" : "ui/som-desligado"} className="size-7" />
         </motion.span>
       </AnimatePresence>
     </BotaoRedondo>

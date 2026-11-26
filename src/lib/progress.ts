@@ -16,16 +16,33 @@ export interface ResultadoFase {
   vezes: number;
 }
 
+/** Resultado de um nivelamento (teste de leitura). nível 1..6; acertos por nível: [certos, total]. */
+export interface Nivelamento {
+  data: string;
+  nivel: number;
+  acertos: Record<number, [number, number]>;
+}
+
+/** Flashcard com repetição espaçada (caixas de Leitner). */
+export interface Carta {
+  caixa: number;
+  proxima: number;
+}
+
 export interface Progress {
   patinhas: number;
   animaisColetados: string[];
   fases: Record<string, ResultadoFase>;
+  nivelamentos: Nivelamento[];
+  cartas: Record<string, Carta>;
 }
 
 export const progressStore = createPersistentStore<Progress>("pg:progress:v3", {
   patinhas: 0,
   animaisColetados: [],
   fases: {},
+  nivelamentos: [],
+  cartas: {},
 });
 
 export const useProgress = progressStore.useStore;
@@ -79,4 +96,21 @@ export function concluirFase(chave: string, estrelas: 1 | 2 | 3, pontos: number)
 
 export function totalEstrelas(p: Progress) {
   return Object.values(p.fases).reduce((s, f) => s + f.estrelas, 0);
+}
+
+export function registrarNivelamento(n: Nivelamento) {
+  progressStore.write((p) => ({ ...p, nivelamentos: [...p.nivelamentos, n].slice(-30) }));
+}
+
+const DIA = 24 * 60 * 60 * 1000;
+/** Intervalo até a carta voltar, por caixa: 1 = já, 2 = amanhã, 3 = 2 dias, 4 = 4 dias, 5 = 8 dias. */
+const INTERVALOS = [0, 0, DIA, 2 * DIA, 4 * DIA, 8 * DIA];
+
+/** Atualiza a carta: leu sozinho → sobe de caixa (volta mais tarde); senão → volta para a caixa 1. */
+export function avaliarCarta(id: string, leuSozinho: boolean) {
+  progressStore.write((p) => {
+    const atual = p.cartas[id]?.caixa ?? 1;
+    const caixa = leuSozinho ? Math.min(5, atual + 1) : 1;
+    return { ...p, cartas: { ...p.cartas, [id]: { caixa, proxima: Date.now() + INTERVALOS[caixa] } } };
+  });
 }

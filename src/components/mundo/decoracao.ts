@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import type { TipoBioma } from "@/content/paises";
 import { NIVEL_PIER, prng, type Ilha } from "./ilha";
+import { MODELOS, modelosLigados, type NomeModelo } from "./modelos";
 
 /**
  * DECORAÇÃO DO MUNDO
@@ -16,6 +17,10 @@ export type { Forma };
 
 export interface Peca {
   f: Forma;
+  /** Modelo pronto (modelos.ts). Quando presente, `f` é ignorado e a peça vira instância do modelo. */
+  m?: NomeModelo;
+  /** Desbotada (bioma trancado): o shader dos modelos clareia e tira a cor. */
+  d?: boolean;
   p: [number, number, number];
   s: [number, number, number];
   r?: [number, number, number];
@@ -54,7 +59,7 @@ function galho(x0: number, y0: number, z0: number, comp: number, ang: number, in
 }
 
 /** Árvore frondosa: tronco que se divide em galhos, cada um com um cacho de copas facetadas. */
-function arvoreRedonda(rnd: R, x: number, z: number, s: number, verdes: string[]): Peca[] {
+function arvoreRedondaProc(rnd: R, x: number, z: number, s: number, verdes: string[]): Peca[] {
   const cor = escolha(rnd, TRONCO);
   const alt = (0.85 + rnd() * 0.35) * s;
   const out: Peca[] = [{ f: "cilindro", p: [x, alt / 2, z], s: [0.13 * s, alt, 0.13 * s], c: cor }];
@@ -83,7 +88,7 @@ function arvoreRedonda(rnd: R, x: number, z: number, s: number, verdes: string[]
 }
 
 /** Pinheiro em vários andares, levemente tortos. */
-function pinheiro(rnd: R, x: number, z: number, s: number, verdes: string[], neve = false): Peca[] {
+function pinheiroProc(rnd: R, x: number, z: number, s: number, verdes: string[], neve = false): Peca[] {
   const out: Peca[] = [{ f: "cilindro", p: [x, 0.22 * s, z], s: [0.12 * s, 0.44 * s, 0.12 * s], c: escolha(rnd, TRONCO) }];
   const andares = 5 + Math.floor(rnd() * 4);
   const altura = (1.6 + rnd() * 0.8) * s;
@@ -104,7 +109,7 @@ function pinheiro(rnd: R, x: number, z: number, s: number, verdes: string[], nev
   return out;
 }
 
-function cipreste(rnd: R, x: number, z: number, s: number, verdes: string[]): Peca[] {
+function cipresteProc(rnd: R, x: number, z: number, s: number, verdes: string[]): Peca[] {
   const out: Peca[] = [{ f: "cilindro", p: [x, 0.15 * s, z], s: [0.1 * s, 0.3 * s, 0.1 * s], c: escolha(rnd, TRONCO) }];
   for (let i = 0; i < 4; i++)
     out.push({ f: copaF(rnd), p: [x, (0.45 + i * 0.38) * s, z], s: [(0.55 - i * 0.08) * s, 0.6 * s, (0.55 - i * 0.08) * s], r: giro(rnd), c: escolha(rnd, verdes) });
@@ -112,14 +117,14 @@ function cipreste(rnd: R, x: number, z: number, s: number, verdes: string[]): Pe
 }
 
 /** Bétula: tronco branco com marcas e copas amareladas em cachos. */
-function betula(rnd: R, x: number, z: number, s: number): Peca[] {
+function betulaProc(rnd: R, x: number, z: number, s: number): Peca[] {
   const verdes = ["#a9cf5a", "#bcd86a", "#d6dd72", "#93c254"];
   const out = arvoreRedonda(rnd, x, z, s * 0.9, verdes).map((p) => (TRONCO.includes(p.c) ? { ...p, c: "#efe9df" } : p));
   for (let i = 0; i < 3; i++) out.push({ f: "caixa", p: [x, (0.2 + i * 0.22) * s, z], s: [0.125 * s, 0.03 * s, 0.125 * s], c: "#4a4253" });
   return out;
 }
 
-function acacia(rnd: R, x: number, z: number, s: number): Peca[] {
+function acaciaProc(rnd: R, x: number, z: number, s: number): Peca[] {
   const cor = "#7a4e33";
   const out: Peca[] = [{ f: "cilindro", p: [x, 0.45 * s, z], s: [0.12 * s, 0.9 * s, 0.12 * s], c: cor }];
   const verdes = ["#8fb04a", "#7fa340", "#9cbc52", "#a8c65e"];
@@ -132,7 +137,7 @@ function acacia(rnd: R, x: number, z: number, s: number): Peca[] {
   return out;
 }
 
-function palmeira(rnd: R, x: number, z: number, s: number): Peca[] {
+function palmeiraProc(rnd: R, x: number, z: number, s: number): Peca[] {
   const out: Peca[] = [];
   const inc = entre(rnd, 0.1, 0.3);
   for (let i = 0; i < 5; i++)
@@ -151,12 +156,12 @@ function palmeira(rnd: R, x: number, z: number, s: number): Peca[] {
 
 // ── Plantas, pedras e miudezas ──────────────────────────────────────────────
 
-const arbusto = (rnd: R, x: number, z: number, s: number, verdes: string[]): Peca[] => [
+const arbustoProc = (rnd: R, x: number, z: number, s: number, verdes: string[]): Peca[] => [
   { f: "icosa", p: [x, 0.22 * s, z], s: [0.55 * s, 0.42 * s, 0.55 * s], r: [rnd(), rnd(), rnd()], c: escolha(rnd, verdes) },
   { f: "icosa", p: [x + 0.25 * s, 0.16 * s, z + 0.1 * s], s: [0.35 * s, 0.3 * s, 0.35 * s], r: [rnd(), rnd(), rnd()], c: escolha(rnd, verdes) },
 ];
 
-const tufo = (rnd: R, x: number, z: number, cor: string): Peca[] =>
+const tufoProc = (rnd: R, x: number, z: number, cor: string): Peca[] =>
   [0, 1, 2].map((i) => ({
     f: "cone" as const,
     p: [x + (i - 1) * 0.06, 0.08, z + (rnd() - 0.5) * 0.06] as [number, number, number],
@@ -165,14 +170,14 @@ const tufo = (rnd: R, x: number, z: number, cor: string): Peca[] =>
     c: cor,
   }));
 
-const flor = (rnd: R, x: number, z: number): Peca[] => [
+const florProc = (rnd: R, x: number, z: number): Peca[] => [
   { f: "cilindro", p: [x, 0.08, z], s: [0.015, 0.16, 0.015], c: "#4f9a45" },
   { f: "esfera", p: [x, 0.18, z], s: [0.09, 0.07, 0.09], c: escolha(rnd, ["#ff8fb1", "#ffffff", "#ffd34d", "#b48cff", "#ff7a6b"]) },
   { f: "esfera", p: [x, 0.19, z], s: [0.04, 0.04, 0.04], c: "#ffc935" },
 ];
 
 /** Grupinho de pedras angulosas (2 a 4 tamanhos), como nas maquetes. */
-function pedra(rnd: R, x: number, z: number, s: number, cores: string[]): Peca[] {
+function pedraProc(rnd: R, x: number, z: number, s: number, cores: string[]): Peca[] {
   const n = 1 + Math.floor(rnd() * 3);
   const out: Peca[] = [];
   for (let i = 0; i < n; i++) {
@@ -190,18 +195,18 @@ function pedra(rnd: R, x: number, z: number, s: number, cores: string[]): Peca[]
   return out;
 }
 
-const cogumelo = (rnd: R, x: number, z: number, s: number): Peca[] => [
+const cogumeloProc = (rnd: R, x: number, z: number, s: number): Peca[] => [
   { f: "cilindro", p: [x, 0.1 * s, z], s: [0.08 * s, 0.2 * s, 0.08 * s], c: "#fff3e0" },
   { f: "esfera", p: [x, 0.22 * s, z], s: [0.26 * s, 0.14 * s, 0.26 * s], c: escolha(rnd, ["#e85d5d", "#f08a3c"]) },
   { f: "esfera", p: [x + 0.06 * s, 0.28 * s, z], s: [0.05 * s, 0.03 * s, 0.05 * s], c: "#ffffff" },
 ];
 
-const tronco = (rnd: R, x: number, z: number): Peca[] => [
+const troncoProc = (rnd: R, x: number, z: number): Peca[] => [
   { f: "cilindro", p: [x, 0.1, z], s: [0.18, 0.7, 0.18], r: [Math.PI / 2, rnd() * 3, 0], c: "#8a5a3b" },
   { f: "disco", p: [x, 0.1, z], s: [0.3, 0.02, 0.3], r: [Math.PI / 2, 0, 0], c: "#d9b07a" },
 ];
 
-const cacto = (rnd: R, x: number, z: number, s: number): Peca[] => [
+const cactoProc = (rnd: R, x: number, z: number, s: number): Peca[] => [
   { f: "cilindro", p: [x, 0.4 * s, z], s: [0.18 * s, 0.8 * s, 0.18 * s], c: "#5fa85a" },
   { f: "cilindro", p: [x + 0.16 * s, 0.45 * s, z], s: [0.1 * s, 0.32 * s, 0.1 * s], c: "#5fa85a" },
   { f: "cilindro", p: [x - 0.15 * s, 0.55 * s, z], s: [0.1 * s, 0.26 * s, 0.1 * s], c: "#6cb866" },
@@ -228,9 +233,9 @@ const concha = (rnd: R, x: number, z: number): Peca[] => [
 function guardaSol(rnd: R, x: number, z: number): Peca[] {
   const cor = escolha(rnd, ["#f25f5c", "#4fb0e3", "#ffc935"]);
   return [
-    { f: "cilindro", p: [x, 0.5, z], s: [0.04, 1.0, 0.04], c: "#ffffff" },
-    { f: "cone", p: [x, 1.05, z], s: [1.1, 0.3, 1.1], r: [0, rnd() * 3, 0], c: cor },
-    { f: "caixa", p: [x + 0.45, 0.06, z + 0.2], s: [0.5, 0.04, 0.9], r: [0, rnd(), 0], c: escolha(rnd, ["#ffffff", "#ffc935", "#ff8fb1"]) },
+    { f: "cilindro", p: [x, 0.36, z], s: [0.03, 0.72, 0.03], c: "#ffffff" },
+    { f: "cone", p: [x, 0.76, z], s: [0.75, 0.2, 0.75], r: [0, rnd() * 3, 0], c: cor },
+    { f: "caixa", p: [x + 0.32, 0.05, z + 0.14], s: [0.34, 0.03, 0.62], r: [0, rnd(), 0], c: escolha(rnd, ["#ffffff", "#ffc935", "#ff8fb1"]) },
   ];
 }
 
@@ -275,7 +280,7 @@ function casinha(x: number, z: number, giro: number): Peca[] {
 // ── Plantas extras ──────────────────────────────────────────────────────────
 
 /** Touceira de bambu: hastes altas com nós e folhinhas no topo. */
-function bambu(rnd: R, x: number, z: number, s: number): Peca[] {
+function bambuProc(rnd: R, x: number, z: number, s: number): Peca[] {
   const out: Peca[] = [];
   const n = 4 + Math.floor(rnd() * 4);
   for (let i = 0; i < n; i++) {
@@ -295,16 +300,65 @@ function bambu(rnd: R, x: number, z: number, s: number): Peca[] {
 
 
 /** Árvore tropical: tronco alto e copas largas em vários cachos, verde-escuro. */
-function arvoreTropical(rnd: R, x: number, z: number, s: number): Peca[] {
+function arvoreTropicalProc(rnd: R, x: number, z: number, s: number): Peca[] {
   return arvoreRedonda(rnd, x, z, s * 1.15, ["#2f8a4f", "#3a9a5a", "#277a45", "#48a865"]);
 }
 
 /** Eucalipto: tronco claro e alto, cachos de copa azulados e ralos. */
-function eucalipto(rnd: R, x: number, z: number, s: number): Peca[] {
+function eucaliptoProc(rnd: R, x: number, z: number, s: number): Peca[] {
   return arvoreRedonda(rnd, x, z, s, ["#7fa88e", "#8fb8a0", "#9cc4a8", "#86ae95"]).map((p) =>
     TRONCO.includes(p.c) ? { ...p, c: "#e9e2d4" } : p,
   );
 }
+
+// ── Versão com modelos prontos (Kenney Nature Kit, CC0; chave USAR_MODELOS em modelos.ts) ──
+// Cada gerador devolve UMA peça com `m` (nome do modelo): desenhada num BatchedMesh,
+// girada ao acaso e tingida com `c` nas partes tingíveis (folhas, grama, corpo da pedra).
+
+const mod = (rnd: R, lista: readonly NomeModelo[], x: number, z: number, s: number, cor = "#ffffff"): Peca[] => {
+  const v = entre(rnd, 0.9, 1.12);
+  return [{ f: "caixa", m: escolha(rnd, [...lista]), p: [x, 0, z], s: [s, s * v, s], r: [0, rnd() * Math.PI * 2, 0], c: cor }];
+};
+// Árvores frondosas ficam procedurais (galhos + muitos cachos de copa, como na referência
+// aprovada); as do kit pareciam genéricas e "quadradas".
+const COM_MODELO = {
+  arvoreRedonda: arvoreRedondaProc,
+  pinheiro: (rnd: R, x: number, z: number, s: number, verdes: string[], neve = false) =>
+    neve ? mod(rnd, MODELOS.pinheirosPequenos, x, z, s, "#dcefe8") : mod(rnd, MODELOS.pinheiros, x, z, s * 0.9, escolha(rnd, verdes)),
+  cipreste: (rnd: R, x: number, z: number, s: number, verdes: string[]) => mod(rnd, MODELOS.ciprestes, x, z, s * 0.85, escolha(rnd, verdes)),
+  betula: betulaProc,
+  acacia: (rnd: R, x: number, z: number, s: number) => mod(rnd, MODELOS.acacias, x, z, s * 1.05, escolha(rnd, ["#8fb04a", "#7fa340", "#9cbc52"])),
+  palmeira: (rnd: R, x: number, z: number, s: number) => mod(rnd, MODELOS.palmeiras, x, z, s, escolha(rnd, ["#3fae4f", "#5fc85e", "#4fb85a"])),
+  arbusto: (rnd: R, x: number, z: number, s: number, verdes: string[]) => mod(rnd, MODELOS.arbustos, x, z, s, escolha(rnd, verdes)),
+  tufo: (rnd: R, x: number, z: number, cor: string) => mod(rnd, MODELOS.tufos, x, z, entre(rnd, 0.8, 1.25), cor),
+  flor: (rnd: R, x: number, z: number) => mod(rnd, MODELOS.flores, x, z, entre(rnd, 0.8, 1.2)),
+  pedra: (rnd: R, x: number, z: number, s: number, cores: string[]) => mod(rnd, rnd() < 0.15 ? MODELOS.rochas : MODELOS.pedras, x, z, s, escolha(rnd, cores)),
+  cogumelo: (rnd: R, x: number, z: number, s: number) => mod(rnd, MODELOS.cogumelos, x, z, s),
+  tronco: (rnd: R, x: number, z: number) => mod(rnd, MODELOS.troncos, x, z, entre(rnd, 0.8, 1.1)),
+  cacto: (rnd: R, x: number, z: number, s: number) => mod(rnd, MODELOS.cactos, x, z, s, escolha(rnd, ["#5fa85a", "#6cb866"])),
+  bambu: (rnd: R, x: number, z: number, s: number) => mod(rnd, MODELOS.bambus, x, z, s, escolha(rnd, ["#8fc94f", "#7fb84a", "#9ad25a"])),
+  arvoreTropical: arvoreTropicalProc,
+  eucalipto: eucaliptoProc,
+};
+const PROCEDURAL = { arvoreRedonda: arvoreRedondaProc, pinheiro: pinheiroProc, cipreste: cipresteProc, betula: betulaProc, acacia: acaciaProc, palmeira: palmeiraProc, arbusto: arbustoProc, tufo: tufoProc, flor: florProc, pedra: pedraProc, cogumelo: cogumeloProc, tronco: troncoProc, cacto: cactoProc, bambu: bambuProc, arvoreTropical: arvoreTropicalProc, eucalipto: eucaliptoProc };
+/** Geradores em uso (decidido a cada montagem do mundo, pela chave). */
+const gen = () => (modelosLigados() ? COM_MODELO : PROCEDURAL);
+const arvoreRedonda: (typeof PROCEDURAL)["arvoreRedonda"] = (...a: Parameters<(typeof PROCEDURAL)["arvoreRedonda"]>) => (gen().arvoreRedonda as (...x: typeof a) => Peca[])(...a);
+const pinheiro: (typeof PROCEDURAL)["pinheiro"] = (...a: Parameters<(typeof PROCEDURAL)["pinheiro"]>) => (gen().pinheiro as (...x: typeof a) => Peca[])(...a);
+const cipreste: (typeof PROCEDURAL)["cipreste"] = (...a: Parameters<(typeof PROCEDURAL)["cipreste"]>) => (gen().cipreste as (...x: typeof a) => Peca[])(...a);
+const betula: (typeof PROCEDURAL)["betula"] = (...a: Parameters<(typeof PROCEDURAL)["betula"]>) => (gen().betula as (...x: typeof a) => Peca[])(...a);
+const acacia: (typeof PROCEDURAL)["acacia"] = (...a: Parameters<(typeof PROCEDURAL)["acacia"]>) => (gen().acacia as (...x: typeof a) => Peca[])(...a);
+const palmeira: (typeof PROCEDURAL)["palmeira"] = (...a: Parameters<(typeof PROCEDURAL)["palmeira"]>) => (gen().palmeira as (...x: typeof a) => Peca[])(...a);
+const arbusto: (typeof PROCEDURAL)["arbusto"] = (...a: Parameters<(typeof PROCEDURAL)["arbusto"]>) => (gen().arbusto as (...x: typeof a) => Peca[])(...a);
+const tufo: (typeof PROCEDURAL)["tufo"] = (...a: Parameters<(typeof PROCEDURAL)["tufo"]>) => (gen().tufo as (...x: typeof a) => Peca[])(...a);
+const flor: (typeof PROCEDURAL)["flor"] = (...a: Parameters<(typeof PROCEDURAL)["flor"]>) => (gen().flor as (...x: typeof a) => Peca[])(...a);
+const pedra: (typeof PROCEDURAL)["pedra"] = (...a: Parameters<(typeof PROCEDURAL)["pedra"]>) => (gen().pedra as (...x: typeof a) => Peca[])(...a);
+const cogumelo: (typeof PROCEDURAL)["cogumelo"] = (...a: Parameters<(typeof PROCEDURAL)["cogumelo"]>) => (gen().cogumelo as (...x: typeof a) => Peca[])(...a);
+const tronco: (typeof PROCEDURAL)["tronco"] = (...a: Parameters<(typeof PROCEDURAL)["tronco"]>) => (gen().tronco as (...x: typeof a) => Peca[])(...a);
+const cacto: (typeof PROCEDURAL)["cacto"] = (...a: Parameters<(typeof PROCEDURAL)["cacto"]>) => (gen().cacto as (...x: typeof a) => Peca[])(...a);
+const bambu: (typeof PROCEDURAL)["bambu"] = (...a: Parameters<(typeof PROCEDURAL)["bambu"]>) => (gen().bambu as (...x: typeof a) => Peca[])(...a);
+const arvoreTropical: (typeof PROCEDURAL)["arvoreTropical"] = (...a: Parameters<(typeof PROCEDURAL)["arvoreTropical"]>) => (gen().arvoreTropical as (...x: typeof a) => Peca[])(...a);
+const eucalipto: (typeof PROCEDURAL)["eucalipto"] = (...a: Parameters<(typeof PROCEDURAL)["eucalipto"]>) => (gen().eucalipto as (...x: typeof a) => Peca[])(...a);
 
 // ── Catálogo por tipo de bioma ──────────────────────────────────────────────
 
@@ -516,7 +570,9 @@ export function montarMundo(ilha: Ilha): Mundo {
     const x = (rnd() - 0.5) * 2 * 16;
     const z = (rnd() - 0.5) * 2 * 16;
     const d = dist(x, z);
-    if (d < 0.4 || d > 1.3 || distanciaTrilha(x, z) < 1 || !livre(x, z, 0.5)) continue;
+    // só na areia de verdade (abaixo do degrau de terra), não na grama
+    const hp = altura(x, z);
+    if (d < 0.15 || d > 1.6 || hp < 0.05 || hp > 0.3 || distanciaTrilha(x, z) < 1 || !livre(x, z, 0.5)) continue;
     if (rnd() > 0.12) continue;
     const frio = biomaEm(x, z).tipo === "tundra" || biomaEm(x, z).tipo === "taiga";
     ocupado.push({ x, z, r: 0.5 });

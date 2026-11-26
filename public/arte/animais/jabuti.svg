@@ -1,7 +1,132 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M9 23.5C9 24.4793 8.59777 25.3647 7.94949 26H13V28.5C13 29.3284 12.3284 30 11.5 30H6.5C5.67157 30 5 29.3284 5 28.5V26.9646C3.30385 26.7219 2 25.2632 2 23.5C2 21.567 3.567 20 5.5 20C7.433 20 9 21.567 9 23.5Z" fill="#C3EF3C"/>
-<path d="M27.5106 23.5352C27.5106 23.5352 29.4322 25.3797 29.6847 25.5999C29.9373 25.8201 30.0833 26.237 29.9491 26.5359C29.815 26.8348 29.4835 27 29.231 27H28V28.5C28 29.3284 27.3284 30 26.5 30H21.5C20.6716 30 20 29.3284 20 28.5V26H27.039L27.5106 23.5352Z" fill="#C3EF3C"/>
-<path d="M16.4226 13C9.98538 13 5 17.6684 5 24V27H28V24C28 17.6684 22.8599 13 16.4226 13Z" fill="#008463"/>
-<path d="M5 22.5C5 22.7761 4.77614 23 4.5 23C4.22386 23 4 22.7761 4 22.5C4 22.2239 4.22386 22 4.5 22C4.77614 22 5 22.2239 5 22.5Z" fill="#1C1C1C"/>
-<path d="M10.8536 16.1464C10.6583 15.9512 10.3417 15.9512 10.1464 16.1464C9.95119 16.3417 9.95119 16.6583 10.1464 16.8536C10.5722 17.2793 11.4654 17.8989 12.7512 18.3631L10.6303 22.768C9.30576 22.1974 8.32868 21.5518 7.8254 21.1204C7.61573 20.9407 7.30008 20.9649 7.12037 21.1746C6.94066 21.3843 6.96494 21.6999 7.17461 21.8796C8.41619 22.9438 11.9615 25 16.5 25C21.0385 25 24.5838 22.9438 25.8254 21.8796C26.0351 21.6999 26.0593 21.3843 25.8796 21.1746C25.6999 20.9649 25.3843 20.9407 25.1746 21.1204C24.6708 21.5522 23.6924 22.1986 22.3659 22.7696L20.2449 18.3646C21.5328 17.9002 22.4274 17.2797 22.8536 16.8536C23.0488 16.6583 23.0488 16.3417 22.8536 16.1464C22.6583 15.9512 22.3417 15.9512 22.1464 16.1464C21.5754 16.7174 19.5701 18 16.5 18C13.4299 18 11.4246 16.7174 10.8536 16.1464ZM19.2774 18.6603L21.4322 23.1357C20.0383 23.6303 18.3585 24 16.5 24C14.6397 24 12.9586 23.6296 11.5638 23.1343L13.7185 18.6593C14.5339 18.8664 15.4654 19 16.5 19C17.5329 19 18.463 18.8668 19.2774 18.6603Z" fill="#00D26A"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="jabuti-casco" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7a6248"/>
+      <stop offset="0.5" stop-color="#524032"/>
+      <stop offset="1" stop-color="#2a2019"/>
+    </linearGradient>
+    <radialGradient id="jabuti-areola" cx="0.4" cy="0.35" r="0.75">
+      <stop offset="0" stop-color="#ffd977"/>
+      <stop offset="1" stop-color="#dc9a2c"/>
+    </radialGradient>
+    <linearGradient id="jabuti-pele" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#93806f"/>
+      <stop offset="0.5" stop-color="#66554a"/>
+      <stop offset="1" stop-color="#3b2f28"/>
+    </linearGradient>
+    <linearGradient id="jabuti-pele-tras" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#57473c"/>
+      <stop offset="1" stop-color="#30261f"/>
+    </linearGradient>
+    <linearGradient id="jabuti-escama" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffa064"/>
+      <stop offset="1" stop-color="#e2552c"/>
+    </linearGradient>
+    <linearGradient id="jabuti-margem" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4f3e30"/>
+      <stop offset="1" stop-color="#2e231b"/>
+    </linearGradient>
+    <clipPath id="jabuti-clip"><path d="M70 186 C66 120 100 72 146 72 C190 72 214 120 212 186 Z"/></clipPath>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="136" cy="237" rx="94" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="patas-de-la" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M122 176 C120 198 120 214 122 230 L146 230 C146 214 146 196 144 178 Z" fill="url(#jabuti-pele-tras)" stroke="#241b16" stroke-width="2.5"/>
+    <path d="M196 176 C196 198 196 214 198 230 L220 230 C222 212 220 194 216 176 Z" fill="url(#jabuti-pele-tras)" stroke="#241b16" stroke-width="2.5"/>
+    <g fill="#c4532c" opacity="0.85">
+      <circle cx="130" cy="200" r="3.5"/><circle cx="138" cy="212" r="3"/><circle cx="204" cy="200" r="3.5"/><circle cx="212" cy="212" r="3"/>
+    </g>
+    <g fill="#d9cdb4" stroke="#8a7c62" stroke-width="1.4">
+      <path d="M124 230 q2 -6 6 0 Z M132 230 q2 -6 6 0 Z M200 230 q2 -6 6 0 Z M208 230 q2 -6 6 0 Z"/>
+    </g>
+  </g>
+
+  <g id="cauda" transform="translate(0 10)" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M206 180 C218 182 226 188 230 196 C222 196 212 194 204 190 Z" fill="url(#jabuti-pele)" stroke="#241b16" stroke-width="2.2"/>
+  </g>
+
+  <g id="cabeca" transform="translate(0 10)" stroke-linejoin="round" stroke-linecap="round">
+    <!-- pescoço -->
+    <path d="M88 150 C74 142 62 140 54 146 L60 176 C70 178 82 176 92 172 Z" fill="url(#jabuti-pele)" stroke="#241b16" stroke-width="2.5"/>
+    <path d="M64 152 q4 4 4 10 M74 150 q4 6 2 14 M82 152 q2 6 0 12" fill="none" stroke="#2f251f" stroke-width="1.5" opacity="0.7"/>
+    <!-- cabeça -->
+    <path d="M48 106 C70 104 86 120 84 142 C82 162 66 174 44 172 C24 170 8 158 8 138 C8 118 26 106 48 106 Z" fill="url(#jabuti-pele)" stroke="#241b16" stroke-width="2.5"/>
+    <!-- escamas vermelho-alaranjadas da cabeça -->
+    <path d="M22 116 C34 104 62 102 76 114 C66 124 48 126 32 124 Z" fill="url(#jabuti-escama)" stroke="#9a3418" stroke-width="1.6"/>
+    <path d="M62 128 C72 124 82 132 84 142 C76 144 68 140 62 134 Z" fill="url(#jabuti-escama)" stroke="#9a3418" stroke-width="1.6"/>
+    <path d="M12 128 C16 122 24 122 26 128 C22 132 16 132 12 128 Z" fill="url(#jabuti-escama)" stroke="#9a3418" stroke-width="1.4"/>
+    <path d="M60 156 C66 150 76 152 78 160 C72 166 64 164 60 160 Z" fill="url(#jabuti-escama)" stroke="#9a3418" stroke-width="1.4"/>
+    <path d="M44 114 L50 124 M58 112 L60 122" stroke="#9a3418" stroke-width="1.3"/>
+    <path d="M32 114 Q46 106 62 108" fill="none" stroke="#ffd0a8" stroke-width="2" opacity="0.9"/>
+    <path d="M14 140 Q14 130 22 126" fill="none" stroke="#b5a291" stroke-width="2.5" opacity="0.8"/>
+    <!-- bico e sorriso -->
+    <path d="M12 150 Q26 164 46 160 Q54 158 56 152" fill="none" stroke="#241b16" stroke-width="2.2"/>
+    <ellipse cx="13" cy="136" rx="1.8" ry="1.3" fill="#241b16"/>
+    <ellipse cx="52" cy="154" rx="8" ry="5" fill="#f4908a" opacity="0.55"/>
+    <!-- olho -->
+    <ellipse cx="42" cy="136" rx="9" ry="10.5" fill="#2b1d16"/>
+    <circle cx="38.5" cy="131.5" r="4.2" fill="#fff"/>
+    <circle cx="46" cy="140.5" r="2" fill="#fff"/>
+    <path d="M31 124 q9 -5 20 -1" fill="none" stroke="#241b16" stroke-width="1.8"/>
+  </g>
+
+  <g id="casco" transform="translate(0 10)" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M70 186 C66 120 100 72 146 72 C190 72 214 120 212 186 Z" fill="url(#jabuti-casco)" stroke="#1f1610" stroke-width="2.5"/>
+    <g clip-path="url(#jabuti-clip)">
+      <!-- escudos: anéis de crescimento e centro amarelado -->
+      <g fill="none" stroke="#7d6248" stroke-width="2">
+        <ellipse cx="101" cy="92" rx="15" ry="11"/><ellipse cx="144" cy="87" rx="16" ry="11"/><ellipse cx="184" cy="93" rx="14" ry="11"/>
+        <ellipse cx="78" cy="139" rx="17" ry="21"/><ellipse cx="122" cy="138" rx="18" ry="23"/><ellipse cx="165" cy="138" rx="17" ry="23"/><ellipse cx="205" cy="139" rx="14" ry="21"/>
+      </g>
+      <g fill="none" stroke="#6a523c" stroke-width="1.6">
+        <ellipse cx="101" cy="92" rx="10.5" ry="7.5"/><ellipse cx="144" cy="87" rx="11.5" ry="7.5"/><ellipse cx="184" cy="93" rx="10" ry="7.5"/>
+        <ellipse cx="78" cy="139" rx="12.5" ry="15"/><ellipse cx="122" cy="138" rx="13" ry="16.5"/><ellipse cx="165" cy="138" rx="12.5" ry="16.5"/><ellipse cx="205" cy="139" rx="10" ry="15"/>
+      </g>
+      <g fill="url(#jabuti-areola)" stroke="#a8701e" stroke-width="1.2">
+        <ellipse cx="101" cy="92" rx="7" ry="4.5"/><ellipse cx="144" cy="87" rx="8" ry="4.5"/><ellipse cx="184" cy="93" rx="6.5" ry="4.5"/>
+        <ellipse cx="78" cy="139" rx="8.5" ry="10"/><ellipse cx="122" cy="138" rx="9" ry="11"/><ellipse cx="165" cy="138" rx="8.5" ry="11"/><ellipse cx="205" cy="139" rx="6.5" ry="10"/>
+      </g>
+      <g fill="none" stroke="#fff0b8" stroke-width="1.6" opacity="0.8">
+        <path d="M72 134 q2 -4 6 -5 M116 132 q2 -4 6 -5 M159 132 q2 -4 6 -5 M138 86 q3 -2 6 -2"/>
+      </g>
+      <!-- divisões entre os escudos -->
+      <g fill="none" stroke="#1f1610" stroke-width="3">
+        <path d="M60 110 C100 104 180 102 220 112"/>
+        <path d="M120 108 L124 70 M164 106 L166 70"/>
+        <path d="M100 108 L98 170 M144 106 L144 170 M186 108 L188 170"/>
+        <path d="M62 168 C110 172 170 172 220 166"/>
+      </g>
+      <!-- margem do casco -->
+      <path d="M60 168 C110 172 170 172 220 166 L220 192 L60 192 Z" fill="url(#jabuti-margem)"/>
+      <path d="M86 170 v20 M104 171 v20 M122 172 v20 M140 172 v20 M158 172 v20 M176 171 v20 M194 169 v20" stroke="#1f1610" stroke-width="2"/>
+      <g fill="#e8a83c" opacity="0.9">
+        <ellipse cx="77" cy="178" rx="3.5" ry="3"/><ellipse cx="95" cy="179" rx="3.5" ry="3"/><ellipse cx="113" cy="180" rx="3.5" ry="3"/><ellipse cx="131" cy="180" rx="3.5" ry="3"/><ellipse cx="149" cy="180" rx="3.5" ry="3"/><ellipse cx="167" cy="179" rx="3.5" ry="3"/><ellipse cx="185" cy="178" rx="3.5" ry="3"/><ellipse cx="203" cy="177" rx="3.5" ry="3"/>
+      </g>
+    </g>
+    <path d="M70 186 C66 120 100 72 146 72 C190 72 214 120 212 186 Z" fill="none" stroke="#1f1610" stroke-width="2.5"/>
+    <path d="M70 186 L212 186" fill="none" stroke="#1f1610" stroke-width="2.5"/>
+    <!-- brilho no casco -->
+    <path d="M84 120 Q96 90 126 78" fill="none" stroke="#c9ad8a" stroke-width="4" opacity="0.55"/>
+  </g>
+
+  <g id="patas-de-ca" stroke-linejoin="round" stroke-linecap="round">
+    <!-- pata da frente -->
+    <path d="M82 176 C80 198 78 216 74 228 Q74 234 80 234 L114 234 Q120 234 118 228 C114 214 114 196 112 180 Z" fill="url(#jabuti-pele)" stroke="#241b16" stroke-width="2.5"/>
+    <!-- pata de trás -->
+    <path d="M168 178 C166 198 164 216 160 228 Q160 234 166 234 L200 234 Q206 234 204 228 C200 214 200 196 198 180 Z" fill="url(#jabuti-pele)" stroke="#241b16" stroke-width="2.5"/>
+    <!-- escamas grandes vermelho-alaranjadas -->
+    <g fill="url(#jabuti-escama)" stroke="#9a3418" stroke-width="1.5">
+      <path d="M86 202 q6 -6 12 0 q-6 6 -12 0 Z"/><path d="M96 210 q6 -6 12 0 q-6 6 -12 0 Z"/><path d="M84 218 q6 -6 12 0 q-6 6 -12 0 Z"/><path d="M100 222 q5 -5 10 0 q-5 5 -10 0 Z"/>
+      <path d="M172 204 q6 -6 12 0 q-6 6 -12 0 Z"/><path d="M182 212 q6 -6 12 0 q-6 6 -12 0 Z"/><path d="M170 220 q6 -6 12 0 q-6 6 -12 0 Z"/><path d="M186 222 q5 -5 10 0 q-5 5 -10 0 Z"/>
+    </g>
+    <path d="M86 198 q-2 10 -4 26 M172 200 q-2 10 -4 24" fill="none" stroke="#9c8a7a" stroke-width="2.5" opacity="0.7"/>
+    <!-- unhas -->
+    <g fill="#efe4cc" stroke="#8a7c62" stroke-width="1.4">
+      <path d="M76 234 q4 -9 9 0 Z M87 234 q4 -9 9 0 Z M98 234 q4 -9 9 0 Z"/>
+      <path d="M162 234 q4 -9 9 0 Z M173 234 q4 -9 9 0 Z M184 234 q4 -9 9 0 Z"/>
+    </g>
+  </g>
 </svg>

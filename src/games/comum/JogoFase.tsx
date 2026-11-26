@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ANIMAIS, arteDoAnimal, type Animal } from "@/content/animais";
 import {
@@ -15,6 +15,7 @@ import {
 import { calcularEstrelas, coletarAnimal, concluirFase, ganharPatinhas, PONTOS } from "@/lib/progress";
 import { shuffle } from "@/lib/random";
 import { speak } from "@/lib/speech";
+import { falarSobre } from "@/lib/falar-bicho";
 import {
   Arte,
   Bolinhas,
@@ -22,6 +23,7 @@ import {
   BotaoLink,
   BotaoRedondoLink,
   BotaoSom,
+  CenarioFundo,
   Comemoracao,
   Estrelas,
   Mascote,
@@ -151,17 +153,26 @@ export function JogoFase({
   );
 
   const tela = etapa === "fim" ? "fim" : etapa === "inicio" || !animal ? "inicio" : "jogo";
+
+  // Para quem não sabe ler: a Juju explica o jogo assim que a tela de início aparece
+  useEffect(() => {
+    if (tela !== "inicio") return;
+    const t = setTimeout(() => speak(info.instrucao), 500);
+    return () => clearTimeout(t);
+  }, [tela, info.instrucao]);
   const acertou = etapa === "acertou";
   const estrelas = calcularEstrelas(errosFase);
   const [pt, pf] = (proxChave ?? "").split("/");
 
   return (
     <div className="flex flex-1 flex-col gap-4">
-      {topo}
+      {/* Cenário do bioma atrás de tudo (início, jogo e fim) */}
+      <CenarioFundo tipo={territorio.tipo} />
+      <div className="relative z-10">{topo}</div>
       <AnimatePresence mode="wait">
         {/* ── Início ─────────────────────────────────────────────────────── */}
         {tela === "inicio" && (
-          <motion.div key="inicio" {...TELA} className="flex flex-1 flex-col items-center justify-center gap-8">
+          <motion.div key="inicio" {...TELA} className="relative z-10 flex flex-1 flex-col items-center justify-center gap-8">
             <motion.span
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -200,8 +211,8 @@ export function JogoFase({
               animate={{ scale: [1, 1.04, 1] }}
               transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
             >
-              <Botao cor="amarelo" tamanho="lg" onClick={comecar}>
-                Começar ▶
+              <Botao cor="amarelo" tamanho="lg" onClick={comecar} icone={<span aria-hidden className="grid size-9 place-items-center rounded-full bg-branco/35 text-xl leading-none">▶</span>}>
+                Começar
               </Botao>
             </motion.div>
           </motion.div>
@@ -209,7 +220,7 @@ export function JogoFase({
 
         {/* ── Fim ────────────────────────────────────────────────────────── */}
         {tela === "fim" && (
-          <motion.div key="fim" {...TELA} className="flex flex-1 items-center justify-center">
+          <motion.div key="fim" {...TELA} className="relative z-10 flex flex-1 items-center justify-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 16 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -278,10 +289,21 @@ export function JogoFase({
                   transition={{ ...MOLA_ENTRADA, delay: 1.3 }}
                   className="flex flex-wrap justify-center gap-3 pt-2"
                 >
-                  <BotaoLink href={proxChave ? `/jogar/${pt}/${pf}` : "/"} cor="verde" tamanho="lg">
-                    {proxChave ? "Próxima fase →" : "Ver o mapa"}
+                  <BotaoLink
+                    href={proxChave ? `/jogar/${pt}/${pf}` : "/"}
+                    cor="verde"
+                    tamanho="lg"
+                    fala={proxChave ? "Próxima fase!" : "Voltar para o mapa"}
+                    icone={<Arte nome={proxChave ? "ui/bandeira" : "ui/mapa"} className="size-9" />}
+                  >
+                    {proxChave ? "Próxima fase" : "Ver o mapa"}
                   </BotaoLink>
-                  <Botao cor="branco" tamanho="lg" onClick={comecar}>
+                  <Botao
+                    cor="branco"
+                    tamanho="lg"
+                    onClick={comecar}
+                    icone={<span aria-hidden className="text-3xl leading-none">↻</span>}
+                  >
                     Jogar de novo
                   </Botao>
                 </motion.div>
@@ -295,7 +317,7 @@ export function JogoFase({
           <motion.div
             key="jogo"
             {...TELA}
-            className="relative flex flex-1 flex-col items-center justify-center gap-6 pb-8"
+            className="relative z-10 flex flex-1 flex-col items-center justify-center gap-6 pb-8"
           >
             <AnimatePresence>
               {acertou && (
@@ -337,8 +359,20 @@ export function JogoFase({
                 >
                   {figurinhaNova && <SeloFigurinhaNova />}
                   <BotaoCuriosidade texto={animal.curiosidade} />
-                  <Botao cor="verde" tamanho="lg" onClick={proximo}>
-                    {indice + 1 < fila.length ? "Próximo bicho →" : "Terminar ✓"}
+                  <Botao
+                    cor="verde"
+                    tamanho="lg"
+                    onClick={proximo}
+                    fala={indice + 1 < fila.length ? "Próximo bicho!" : undefined}
+                    icone={
+                      indice + 1 < fila.length ? (
+                        <span aria-hidden className="grid size-9 place-items-center rounded-full bg-branco/35 text-xl leading-none">→</span>
+                      ) : (
+                        <Arte nome="ui/trofeu" className="size-9" />
+                      )
+                    }
+                  >
+                    {indice + 1 < fila.length ? "Próximo bicho" : "Terminar"}
                   </Botao>
                 </motion.div>
               )}
@@ -428,7 +462,7 @@ export function CirculoBicho({ animal, acertou }: { animal: Animal; acertou: boo
   return (
     <motion.button
       type="button"
-      onClick={() => speak(acertou ? animal.nome : "Que bicho é esse?")}
+      onClick={() => (acertou ? falarSobre(animal) : speak("Que bicho é esse?"))}
       initial={{ scale: 0.6, opacity: 0 }}
       animate={acertou ? { scale: [1, 1.15, 1], rotate: [0, -6, 6, 0], opacity: 1 } : { scale: 1, opacity: 1 }}
       transition={acertou ? { duration: 0.7, ease: "easeInOut" } : { type: "spring", stiffness: 200, damping: 14 }}

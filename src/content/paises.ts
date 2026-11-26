@@ -8,7 +8,7 @@
  *   u = 0 oeste … 1 leste · v = 0 norte … 1 sul. Biomas no mar ficam fora do contorno.
  */
 
-export type PaisId = "brasil" | "eua" | "russia" | "china" | "australia" | "africa";
+export type PaisId = "brasil" | "oceano" | "eua" | "russia" | "china" | "australia" | "africa";
 
 /** Aparência e relevo do bioma no mapa 3D. */
 export type TipoBioma =
@@ -45,8 +45,10 @@ export interface BiomaPais {
 export interface Pais {
   id: PaisId;
   nome: string;
-  /** Ids numéricos (ISO 3166) no world-atlas. A África junta vários. */
+  /** Ids numéricos (ISO 3166) no world-atlas. A África junta vários. Vazio = destino no mar. */
   iso: string[];
+  /** Tamanho da ilha na cena (padrão 26). O Oceano tem só uma ilhota no meio do mar. */
+  tamanhoIlha?: number;
   /** Centro aproximado para o globo (graus). */
   lat: number;
   lon: number;
@@ -96,18 +98,40 @@ export const PAISES: Pais[] = [
         ],
       },
       { id: "br-cerrado", nome: "Cerrado", tipo: "cerrado", u: 0.55, v: 0.45, decorativo: true },
+    ],
+  },
+  {
+    id: "oceano",
+    nome: "Oceano",
+    iso: [],
+    tamanhoIlha: 7,
+    lat: -28,
+    lon: -18,
+    cor: "#26c2bd",
+    biomas: [
+      { id: "oc-ilhota", nome: "Ilhota", tipo: "deserto", u: 0.5, v: 0.5, decorativo: true },
       {
-        id: "br-litoral",
-        nome: "Litoral",
+        id: "oc-recife",
+        nome: "Recife de Corais",
         tipo: "recife",
-        u: 1.06,
-        v: 0.5,
+        u: 1.75,
+        v: 0.45,
         noMar: true,
-        boasVindas: "Vamos navegar pelo mar do Brasil!",
+        boasVindas: "Vamos navegar pelo Recife de Corais!",
         niveis: [
           { dificuldades: [1, 2], exemplo: "lu·la" },
           { dificuldades: [3], exemplo: "pol·vo" },
         ],
+      },
+      {
+        id: "oc-mar",
+        nome: "Mar Aberto",
+        tipo: "recife",
+        u: -0.75,
+        v: 0.55,
+        noMar: true,
+        boasVindas: "Que imensidão! Bem-vindo ao Mar Aberto!",
+        niveis: [{ dificuldades: [3], exemplo: "ba·lei·a" }],
       },
     ],
   },
@@ -234,16 +258,6 @@ export const PAISES: Pais[] = [
         v: 0.66,
         boasVindas: "Que cheirinho de eucalipto! É a casa do coala!",
         niveis: [{ dificuldades: [2, 3], exemplo: "co·a·la" }],
-      },
-      {
-        id: "au-recife",
-        nome: "Grande Barreira de Corais",
-        tipo: "recife",
-        u: 1.02,
-        v: 0.18,
-        noMar: true,
-        boasVindas: "Vamos navegar pelo maior recife de corais do mundo!",
-        niveis: [{ dificuldades: [3], exemplo: "pin·guim" }],
       },
     ],
   },

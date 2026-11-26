@@ -65,3 +65,4 @@ Mudanças de estado (aparecer, sumir, trocar de tela, abrir painel): entrada com
 - 2026-11-26: valores com `delay` no `transition` atrasam também as animações seguintes; para entrada em cascata use variants com `staggerChildren` ou transição por propriedade.
 - 2026-11-26: placar compara com o último valor visto (memória do módulo) para contar só a diferença ao voltar do jogo e não pular na hidratação.
 - 2026-11-26: antes de navegar a partir de um toque (nó do mapa), espere ~160 ms para o squash aparecer.
+- 2026-11-26: parallax + entrada no mesmo elemento brigam pelo `y`; separe em duas camadas (pai = parallax com useSpring, filho = entrada). Cenário de fundo fica `fixed z-0` e o conteúdo `relative z-10`.

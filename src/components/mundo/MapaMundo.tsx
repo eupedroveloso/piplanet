@@ -8,18 +8,14 @@ import { chaveFase, faseDesbloqueada, paisDesbloqueado, TERRITORIOS, territorioD
 import { PAISES, type PaisId } from "@/content/paises";
 import { useProgress } from "@/lib/progress";
 import { settingsStore, useSettings } from "@/lib/settings";
-import { Arte, BotaoRedondo, MOLA_ENTRADA } from "@/components/ui";
-import { criarIlha } from "./ilha";
+import { Arte, BotaoRedondo, MOLA_ENTRADA, TelaCarregando } from "@/components/ui";
+import { useProgress as useCarga } from "@react-three/drei";
+import { criarIlha, type Ilha } from "./ilha";
 import { Rotulos } from "./Rotulos";
 
-/** O 3D só roda no navegador. */
-const carregando = () => (
-  <div className="grid h-full place-items-center">
-    <Arte nome="animais/coruja" className="size-20 animate-flutuar" />
-  </div>
-);
-const Cena = dynamic(() => import("./Cena"), { ssr: false, loading: carregando });
-const Planeta = dynamic(() => import("./Planeta").then((m) => m.Planeta), { ssr: false, loading: carregando });
+/** O 3D só roda no navegador (a tela de carregamento cobre enquanto baixa). */
+const Cena = dynamic(() => import("./Cena"), { ssr: false });
+const Planeta = dynamic(() => import("./Planeta").then((m) => m.Planeta), { ssr: false });
 
 /**
  * MAPA EM TRÊS NÍVEIS (tela cheia, 3D)
@@ -53,7 +49,39 @@ export function MapaMundo() {
   // Volta direto para o último país visitado (ex.: ao sair de um jogo)
   const pais = paisAberto ?? (ultimoPais as PaisId | null);
   const nivel: "planeta" | "pais" = pais ? "pais" : "planeta";
-  const ilha = useMemo(() => (pais ? criarIlha(pais) : null), [pais]);
+  // A ilha é gerada DEPOIS que a tela de carregamento aparece (não trava a tela no tablet)
+  const [ilhaGerada, setIlhaGerada] = useState<Ilha | null>(null);
+  const ilha = pais && ilhaGerada?.pais === pais ? ilhaGerada : null;
+  useEffect(() => {
+    if (!pais) return;
+    const t = setTimeout(() => setIlhaGerada(criarIlha(pais)), 60);
+    return () => clearTimeout(t);
+  }, [pais]);
+
+  // Tela de carregamento: some só quando o 3D baixou, a ilha existe e o primeiro quadro foi desenhado
+  const chaveCena = nivel === "planeta" ? "planeta" : `pais-${pais}`;
+  const [prontoEm, setProntoEm] = useState<string | null>(null);
+  const carregando = prontoEm !== chaveCena;
+  const carga = useCarga();
+  useEffect(() => {
+    if (!carregando) return;
+    const inicio = performance.now();
+    let raf = 0;
+    const checar = () => {
+      const canvas = document.querySelector("canvas");
+      const pronto =
+        !!canvas && !carga.active && (nivel === "planeta" || !!ilha) && performance.now() - inicio > 700;
+      if (pronto || performance.now() - inicio > 9000) {
+        // espera mais dois quadros para o primeiro desenho aparecer
+        raf = requestAnimationFrame(() => (raf = requestAnimationFrame(() => setProntoEm(chaveCena))));
+        return;
+      }
+      raf = requestAnimationFrame(checar);
+    };
+    raf = requestAnimationFrame(checar);
+    return () => cancelAnimationFrame(raf);
+  }, [carregando, chaveCena, carga.active, nivel, ilha]);
+  const progressoCarga = nivel === "pais" && !ilha ? 0.35 : carga.active ? 0.35 + (carga.progress / 100) * 0.55 : 0.95;
 
   function entrarNoPais(p: PaisId) {
     setVoandoPara(p);
@@ -95,11 +123,11 @@ export function MapaMundo() {
       }}
     >
       <AnimatePresence mode="wait">
-        {nivel === "planeta" || !ilha ? (
+        {nivel === "planeta" ? (
           <motion.div key="planeta" className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
             <Planeta liberados={paisesLivres} atual={atual.pais} progresso={progresso} alvo={voandoPara} onEscolher={entrarNoPais} />
           </motion.div>
-        ) : (
+        ) : !ilha ? null : (
           <motion.div key={`pais-${ilha.pais}`} className="absolute inset-0" initial={{ opacity: 0, scale: 1.04 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
             <Cena
               ilha={ilha}
@@ -117,7 +145,7 @@ export function MapaMundo() {
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ ...MOLA_ENTRADA, delay: 0.3 }}
-              className="pointer-events-none absolute top-28 left-1/2 -translate-x-1/2 rounded-full bg-branco/90 px-5 py-1.5 text-xl font-extrabold tracking-wide text-roxo uppercase shadow-suave"
+              className="pointer-events-none absolute top-[calc(max(env(safe-area-inset-top),1rem)+6rem)] left-1/2 lg:top-[calc(max(env(safe-area-inset-top),1rem)+0.5rem)] flex h-10 -translate-x-1/2 items-center rounded-full px-5 text-base font-extrabold tracking-[0.12em] text-roxo uppercase vidro"
             >
               {nomePais}
             </motion.div>
@@ -125,14 +153,20 @@ export function MapaMundo() {
         )}
       </AnimatePresence>
 
+      {/* Carregando: cobre tudo até a cena estar pronta de verdade */}
+      <AnimatePresence>
+        {carregando && <TelaCarregando key="carregando" progresso={progressoCarga} fundo={nivel === "planeta" ? "escuro" : "claro"} />}
+      </AnimatePresence>
+
       {/* Controles */}
-      <div className="absolute right-4 bottom-28 z-10 flex flex-col gap-3">
+      {/* No tablet ficam na mesma linha do rodapé; no celular, logo acima dele */}
+      <div className="absolute right-[max(env(safe-area-inset-right),1rem)] bottom-[calc(max(env(safe-area-inset-bottom),0.75rem)+4.25rem)] z-10 flex flex-col gap-2 sm:bottom-[max(env(safe-area-inset-bottom),0.75rem)]">
         {nivel === "pais" && (
           <>
             <BotaoRedondo aria-label="Ver o planeta" onClick={voltarAoPlaneta}>
-              <Arte nome="ui/mapa" className="size-8" />
+              <Arte nome="ui/mapa" className="size-7" />
             </BotaoRedondo>
-            <BotaoRedondo aria-label={foco ? "Ver o país todo" : "Aproximar"} onClick={() => setFoco(foco ? null : biomaAtualDoPais)}>
+            <BotaoRedondo aria-label={foco ? "Ver o país todo" : "Chegar mais perto"} onClick={() => setFoco(foco ? null : biomaAtualDoPais)}>
               <AnimatePresence mode="wait" initial={false}>
                 <motion.span
                   key={foco ? "ilha" : "perto"}
@@ -142,7 +176,7 @@ export function MapaMundo() {
                   transition={MOLA_ENTRADA}
                   className="grid place-items-center"
                 >
-                  {foco ? <Arte nome="ui/ilha" className="size-8" /> : <span className="text-3xl font-extrabold text-roxo">+</span>}
+                  <Arte nome={foco ? "ui/ilha" : "ui/lupa"} className="size-7" />
                 </motion.span>
               </AnimatePresence>
             </BotaoRedondo>
@@ -155,7 +189,7 @@ export function MapaMundo() {
             else setFoco(atual.id);
           }}
         >
-          <Arte nome="animais/coruja" className="size-8" />
+          <Arte nome="animais/coruja" className="size-7" />
         </BotaoRedondo>
       </div>
     </div>

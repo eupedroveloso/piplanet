@@ -45,11 +45,16 @@ function montarOpcoes(
   territorio: Territorio,
   n: number,
 ): Animal[] {
-  let pool = animaisDoTerritorio(territorio.id).filter(
-    (a) => a.id !== animal.id,
-  );
-  if (pool.length < n) pool = ANIMAIS.filter((a) => a.id !== animal.id);
-  return shuffle([animal, ...shuffle(pool).slice(0, n)]);
+  // nunca duas opções com o mesmo nome ou a mesma ilustração (ex.: boto e golfinho)
+  const diferente = (a: Animal) => a.id !== animal.id && a.nome !== animal.nome && arteDoAnimal(a) !== arteDoAnimal(animal);
+  let pool = animaisDoTerritorio(territorio.id).filter(diferente);
+  if (pool.length < n) pool = ANIMAIS.filter(diferente);
+  const escolhidos: Animal[] = [];
+  for (const a of shuffle(pool)) {
+    if (escolhidos.length >= n) break;
+    if (!escolhidos.some((e) => arteDoAnimal(e) === arteDoAnimal(a) || e.nome === a.nome)) escolhidos.push(a);
+  }
+  return shuffle([animal, ...escolhidos]);
 }
 
 function RodadaAchar({

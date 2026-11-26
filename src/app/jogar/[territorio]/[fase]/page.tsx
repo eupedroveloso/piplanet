@@ -35,6 +35,7 @@ async function Fase({ params }: { params: Params }) {
         {jogo === "le-e-acha" && <LeEAcha territorio={territorio} faseIdx={idx} />}
         {jogo === "monta-o-bicho" && <MontaOBicho territorio={territorio} faseIdx={idx} modo="silabas" />}
         {jogo === "monta-a-silaba" && <MontaOBicho territorio={territorio} faseIdx={idx} modo="letras" />}
+        {jogo === "monta-a-frase" && <MontaOBicho territorio={territorio} faseIdx={idx} modo="frase" />}
       </main>
     </div>
   );

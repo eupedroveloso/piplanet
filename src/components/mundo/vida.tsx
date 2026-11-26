@@ -1,9 +1,10 @@
 "use client";
 
 import { useFrame } from "@react-three/fiber";
-import { useMemo, useRef, type RefObject } from "react";
+import { useEffect, useMemo, useRef, type RefObject } from "react";
 import * as THREE from "three";
 import { useIlha } from "./contexto";
+import { fundir, type Parte } from "./fundir";
 import { geometriaEspuma, prng } from "./ilha";
 
 /**
@@ -75,51 +76,64 @@ export function Fumaca({ p }: { p: [number, number, number] }) {
 // ── Céu ─────────────────────────────────────────────────────────────────────
 
 export function Passaros() {
-  const rnd = useMemo(() => prng(77), []);
-  const aves = useMemo(
-    () =>
-      Array.from({ length: 14 }, () => {
-        const a = rnd() * Math.PI * 2;
-        const d = rnd() * 8;
-        return {
-          c: new THREE.Vector3(Math.cos(a) * d, 6 + rnd() * 3, Math.sin(a) * d),
-          r: 4 + rnd() * 6,
-          v: (0.15 + rnd() * 0.2) * (rnd() > 0.5 ? 1 : -1),
-          f: rnd() * Math.PI * 2,
-          cor: rnd() > 0.5 ? "#3d3551" : "#5b2a9c",
-        };
-      }),
-    [rnd],
-  );
-  const refs = useRef<(THREE.Group | null)[]>([]);
-  useFrame((st) => {
-    const t = st.clock.elapsedTime;
-    aves.forEach((a, i) => {
-      const g = refs.current[i];
-      if (!g) return;
-      const ang = t * a.v + a.f;
-      g.position.set(a.c.x + Math.cos(ang) * a.r, a.c.y + Math.sin(t * 0.7 + a.f) * 0.4, a.c.z + Math.sin(ang) * a.r);
-      g.rotation.y = -ang + (a.v > 0 ? 0 : Math.PI);
-      const bate = Math.sin(t * 9 + a.f) * 0.6;
-      (g.children[0] as THREE.Object3D).rotation.x = bate;
-      (g.children[1] as THREE.Object3D).rotation.x = -bate;
+  const aves = useMemo(() => {
+    const rnd = prng(77);
+    return Array.from({ length: 14 }, () => {
+      const a = rnd() * Math.PI * 2;
+      const d = rnd() * 8;
+      return {
+        c: new THREE.Vector3(Math.cos(a) * d, 6 + rnd() * 3, Math.sin(a) * d),
+        r: 4 + rnd() * 6,
+        v: (0.15 + rnd() * 0.2) * (rnd() > 0.5 ? 1 : -1),
+        f: rnd() * Math.PI * 2,
+        cor: rnd() > 0.5 ? "#3d3551" : "#5b2a9c",
+      };
     });
+  }, []);
+  // Asas instanciadas (2 por ave, 1 draw call): um "esqueleto" fora da cena calcula as matrizes
+  const ref = useRef<THREE.InstancedMesh>(null);
+  const esqueleto = useMemo(() => {
+    const corpo = new THREE.Object3D();
+    const asaA = new THREE.Object3D();
+    const asaB = new THREE.Object3D();
+    asaA.position.z = 0.12;
+    asaB.position.z = -0.12;
+    corpo.add(asaA, asaB);
+    return { corpo, asaA, asaB };
+  }, []);
+  useEffect(() => {
+    const m = ref.current;
+    if (!m) return;
+    const c = new THREE.Color();
+    aves.forEach((a, i) => {
+      m.setColorAt(i * 2, c.set(a.cor));
+      m.setColorAt(i * 2 + 1, c);
+    });
+    if (m.instanceColor) m.instanceColor.needsUpdate = true;
+  }, [aves]);
+  useFrame((st) => {
+    const m = ref.current;
+    if (!m) return;
+    const t = st.clock.elapsedTime;
+    const { corpo, asaA, asaB } = esqueleto;
+    aves.forEach((a, i) => {
+      const ang = t * a.v + a.f;
+      corpo.position.set(a.c.x + Math.cos(ang) * a.r, a.c.y + Math.sin(t * 0.7 + a.f) * 0.4, a.c.z + Math.sin(ang) * a.r);
+      corpo.rotation.y = -ang + (a.v > 0 ? 0 : Math.PI);
+      const bate = Math.sin(t * 9 + a.f) * 0.6;
+      asaA.rotation.x = bate;
+      asaB.rotation.x = -bate;
+      corpo.updateMatrixWorld(true);
+      m.setMatrixAt(i * 2, asaA.matrixWorld);
+      m.setMatrixAt(i * 2 + 1, asaB.matrixWorld);
+    });
+    m.instanceMatrix.needsUpdate = true;
   });
   return (
-    <>
-      {aves.map((a, i) => (
-        <group key={i} ref={(el) => void (refs.current[i] = el)}>
-          <mesh position={[0, 0, 0.12]}>
-            <boxGeometry args={[0.07, 0.015, 0.26]} />
-            <meshStandardMaterial color={a.cor} />
-          </mesh>
-          <mesh position={[0, 0, -0.12]}>
-            <boxGeometry args={[0.07, 0.015, 0.26]} />
-            <meshStandardMaterial color={a.cor} />
-          </mesh>
-        </group>
-      ))}
-    </>
+    <instancedMesh ref={ref} args={[undefined, undefined, aves.length * 2]} frustumCulled={false}>
+      <boxGeometry args={[0.07, 0.015, 0.26]} />
+      <meshStandardMaterial />
+    </instancedMesh>
   );
 }
 
@@ -372,31 +386,33 @@ export function Balao({ alvo, objRef }: { alvo: THREE.Vector3; objRef: RefObject
 
 /** Mar com ondas suaves (vértices animados) e cor mais clara no raso. */
 export function Mar() {
+  // Ondas no vertex shader (a GPU anima; nada de recalcular normais na CPU a cada quadro).
+  // Com flatShading, a normal de cada face sai das derivadas no fragment shader.
   const geo = useMemo(() => {
-    const g = new THREE.PlaneGeometry(160, 160, 140, 140);
+    const g = new THREE.PlaneGeometry(160, 160, 96, 96);
     g.rotateX(-Math.PI / 2);
     return g;
   }, []);
-  const base = useMemo(() => Float32Array.from(geo.attributes.position.array as Float32Array), [geo]);
-  const malha = useRef<THREE.Mesh>(null);
+  const tempo = useRef({ value: 0 });
+  const material = useMemo(() => {
+    const m = new THREE.MeshStandardMaterial({ color: "#26c2bd", transparent: true, opacity: 0.8, roughness: 0.3, metalness: 0.05, flatShading: true });
+    m.onBeforeCompile = (sh) => {
+      sh.uniforms.uTempo = tempo.current;
+      sh.vertexShader = sh.vertexShader
+        .replace("#include <common>", "#include <common>\nuniform float uTempo;")
+        .replace(
+          "#include <begin_vertex>",
+          `#include <begin_vertex>
+          transformed.y += sin(position.x * 0.32 + uTempo * 0.9) * 0.07 + cos(position.z * 0.27 + uTempo * 0.7) * 0.07 + sin((position.x + position.z) * 0.6 + uTempo * 1.6) * 0.025;`,
+        );
+    };
+    return m;
+  }, []);
+  useEffect(() => () => { geo.dispose(); material.dispose(); }, [geo, material]);
   useFrame((st) => {
-    const m = malha.current;
-    if (!m) return;
-    const pos = m.geometry.attributes.position as THREE.BufferAttribute;
-    const t = st.clock.elapsedTime;
-    for (let i = 0; i < pos.count; i++) {
-      const x = base[i * 3];
-      const z = base[i * 3 + 2];
-      pos.setY(i, Math.sin(x * 0.32 + t * 0.9) * 0.07 + Math.cos(z * 0.27 + t * 0.7) * 0.07 + Math.sin((x + z) * 0.6 + t * 1.6) * 0.025);
-    }
-    pos.needsUpdate = true;
-    m.geometry.computeVertexNormals();
+    tempo.current.value = st.clock.elapsedTime;
   });
-  return (
-    <mesh ref={malha} geometry={geo} receiveShadow>
-      <meshStandardMaterial color="#26c2bd" transparent opacity={0.8} roughness={0.3} metalness={0.05} flatShading />
-    </mesh>
-  );
+  return <mesh geometry={geo} material={material} receiveShadow />;
 }
 
 /** Espuma batendo na praia em volta da ilha toda: dois anéis que pulsam. */
@@ -540,61 +556,64 @@ export function MiudezasDoMar() {
       boias: Array.from({ length: 5 }, () => ({ p: sorteia(0.8), f: rnd() * 6 })),
     };
   }, [ilha]);
-  const boias = useRef<THREE.Group>(null);
+  // Rochas e ilhotas são estáticas: uma malha só (com sombra)
+  const estatico = useMemo(() => {
+    const dodeca = new THREE.DodecahedronGeometry(0.6, 0);
+    const gelo = new THREE.DodecahedronGeometry(0.9, 0);
+    const base = new THREE.CylinderGeometry(0.9, 1.2, 0.5, 9);
+    const caule = new THREE.CylinderGeometry(0.06, 0.09, 1.1, 6);
+    const folha = new THREE.BoxGeometry(0.65, 0.04, 0.18);
+    const partes: Parte[] = itens.rochas.map((r) => ({ geo: dodeca, pos: [r.p[0], 0, r.p[1]], rot: [0, r.r, 0], esc: [r.s, r.s * 0.8, r.s], cor: "#9b958c" }));
+    for (const il of itens.ilhotas) {
+      const [x, z] = il.p;
+      if (frio) {
+        partes.push({ geo: gelo, pos: [x, -0.1, z], esc: [1, 0.6, 1], cor: "#e8f1fa" });
+        continue;
+      }
+      // ilhota de areia com coqueiro (girada por il.r)
+      const g = (lx: number, lz: number): [number, number] => [x + Math.cos(il.r) * lx + Math.sin(il.r) * lz, z - Math.sin(il.r) * lx + Math.cos(il.r) * lz];
+      partes.push({ geo: base, pos: [x, -0.15, z], rot: [0, il.r, 0], cor: "#fbe2ad" });
+      const [cx, cz] = g(0.15, 0);
+      partes.push({ geo: caule, pos: [cx, 0.55, cz], rot: [0, il.r, -0.25], cor: "#8a5d33" });
+      for (let k = 0; k < 5; k++) {
+        const a = (k / 5) * Math.PI * 2;
+        const [fx, fz] = g(0.3 + Math.cos(a) * 0.3, Math.sin(a) * 0.3);
+        partes.push({ geo: folha, pos: [fx, 1.08, fz], rot: [0, il.r - a, -0.45], cor: "#4fae5c" });
+      }
+    }
+    return fundir(partes);
+  }, [itens, frio]);
+  // Boias balançando: uma geometria (bola vermelha + faixa branca), instanciada
+  const boiaGeo = useMemo(
+    () =>
+      fundir([
+        { geo: new THREE.SphereGeometry(0.16, 8, 6), pos: [0, 0, 0], cor: "#f25f5c" },
+        { geo: new THREE.CylinderGeometry(0.165, 0.165, 0.06, 8), pos: [0, 0.06, 0], cor: "#ffffff" },
+      ]),
+    [],
+  );
+  useEffect(() => () => { estatico.dispose(); boiaGeo.dispose(); }, [estatico, boiaGeo]);
+  const boias = useRef<THREE.InstancedMesh>(null);
+  const tmp = useMemo(() => new THREE.Object3D(), []);
   useFrame((st) => {
-    boias.current?.children.forEach((b, i) => {
-      b.position.y = 0.05 + Math.sin(st.clock.elapsedTime * 1.6 + itens.boias[i].f) * 0.06;
-      b.rotation.z = Math.sin(st.clock.elapsedTime * 1.2 + itens.boias[i].f) * 0.15;
+    const m = boias.current;
+    if (!m) return;
+    itens.boias.forEach((b, i) => {
+      tmp.position.set(b.p[0], 0.05 + Math.sin(st.clock.elapsedTime * 1.6 + b.f) * 0.06, b.p[1]);
+      tmp.rotation.set(0, 0, Math.sin(st.clock.elapsedTime * 1.2 + b.f) * 0.15);
+      tmp.updateMatrix();
+      m.setMatrixAt(i, tmp.matrix);
     });
+    m.instanceMatrix.needsUpdate = true;
   });
   return (
     <>
-      {itens.rochas.map((r, i) => (
-        <mesh key={`r${i}`} position={[r.p[0], 0, r.p[1]]} scale={[r.s, r.s * 0.8, r.s]} rotation={[0, r.r, 0]} castShadow receiveShadow>
-          <dodecahedronGeometry args={[0.6, 0]} />
-          <meshStandardMaterial color="#9b958c" flatShading />
-        </mesh>
-      ))}
-      {itens.ilhotas.map((il, i) => frio ? (
-        <mesh key={`i${i}`} position={[il.p[0], -0.1, il.p[1]]} scale={[1, 0.6, 1]} castShadow receiveShadow>
-          <dodecahedronGeometry args={[0.9, 0]} />
-          <meshStandardMaterial color="#e8f1fa" flatShading />
-        </mesh>
-      ) : (
-        <group key={`i${i}`} position={[il.p[0], 0, il.p[1]]} rotation={[0, il.r, 0]}>
-          <mesh position={[0, -0.15, 0]} receiveShadow>
-            <cylinderGeometry args={[0.9, 1.2, 0.5, 9]} />
-            <meshStandardMaterial color="#fbe2ad" flatShading />
-          </mesh>
-          <mesh position={[0.15, 0.55, 0]} rotation={[0, 0, -0.25]} castShadow>
-            <cylinderGeometry args={[0.06, 0.09, 1.1, 6]} />
-            <meshStandardMaterial color="#8a5d33" flatShading />
-          </mesh>
-          {[0, 1, 2, 3, 4].map((k) => {
-            const a = (k / 5) * Math.PI * 2;
-            return (
-              <mesh key={k} position={[0.3 + Math.cos(a) * 0.3, 1.08, Math.sin(a) * 0.3]} rotation={[0, -a, -0.45]} castShadow>
-                <boxGeometry args={[0.65, 0.04, 0.18]} />
-                <meshStandardMaterial color="#4fae5c" flatShading />
-              </mesh>
-            );
-          })}
-        </group>
-      ))}
-      <group ref={boias}>
-        {itens.boias.map((b, i) => (
-          <group key={`b${i}`} position={[b.p[0], 0, b.p[1]]}>
-            <mesh>
-              <sphereGeometry args={[0.16, 8, 6]} />
-              <meshStandardMaterial color="#f25f5c" flatShading />
-            </mesh>
-            <mesh position={[0, 0.06, 0]}>
-              <cylinderGeometry args={[0.165, 0.165, 0.06, 8]} />
-              <meshStandardMaterial color="#ffffff" />
-            </mesh>
-          </group>
-        ))}
-      </group>
+      <mesh geometry={estatico} castShadow receiveShadow>
+        <meshStandardMaterial vertexColors flatShading />
+      </mesh>
+      <instancedMesh ref={boias} args={[boiaGeo, undefined, itens.boias.length]} frustumCulled={false}>
+        <meshStandardMaterial vertexColors flatShading />
+      </instancedMesh>
     </>
   );
 }
@@ -735,33 +754,42 @@ export function BrilhosDoMar() {
   );
 }
 
-/** Silhuetas de algas no fundo do mar (aparecem através da água turquesa). */
+/** Silhuetas de algas no fundo do mar (aparecem através da água turquesa). Uma malha só. */
 export function AlgasDoFundo() {
   const ilha = useIlha();
-  const algas = useMemo(() => {
+  const geo = useMemo(() => {
     const rnd = prng(919);
-    const out: { x: number; z: number; s: number; r: number }[] = [];
+    const cone = new THREE.ConeGeometry(0.09, 1, 4);
+    const partes: Parte[] = [];
     let tent = 0;
-    while (out.length < 60 && tent++ < 4000) {
+    let n = 0;
+    while (n < 60 && tent++ < 4000) {
       const x = (rnd() - 0.5) * 50;
       const z = (rnd() - 0.5) * 50;
       const d = ilha.dist(x, z);
-      if (d < -1.8 && d > -6) out.push({ x, z, s: 0.45 + rnd() * 0.5, r: rnd() * 6 });
+      if (!(d < -1.8 && d > -6)) continue;
+      n++;
+      const esc = 0.45 + rnd() * 0.5;
+      const r = rnd() * 6;
+      const y = Math.max(-2.2, ilha.altura(x, z)) + 0.05;
+      for (let k = 0; k < 3; k++) {
+        const alt = 0.9 + k * 0.15;
+        const lx = (k - 1) * 0.18 * esc;
+        partes.push({
+          geo: cone,
+          pos: [x + Math.cos(r) * lx, y + 0.45 * esc, z - Math.sin(r) * lx],
+          rot: [0, r, (k - 1) * 0.25],
+          esc: [esc, alt * esc, esc],
+          cor: "#14958a",
+        });
+      }
     }
-    return out;
+    return fundir(partes);
   }, [ilha]);
+  useEffect(() => () => geo.dispose(), [geo]);
   return (
-    <>
-      {algas.map((a, i) => (
-        <group key={i} position={[a.x, Math.max(-2.2, ilha.altura(a.x, a.z)) + 0.05, a.z]} rotation={[0, a.r, 0]} scale={a.s}>
-          {[0, 1, 2].map((k) => (
-            <mesh key={k} position={[(k - 1) * 0.18, 0.45, 0]} rotation={[0, 0, (k - 1) * 0.25]}>
-              <coneGeometry args={[0.09, 0.9 + k * 0.15, 4]} />
-              <meshStandardMaterial color="#14958a" flatShading transparent opacity={0.75} />
-            </mesh>
-          ))}
-        </group>
-      ))}
-    </>
+    <mesh geometry={geo}>
+      <meshStandardMaterial vertexColors flatShading transparent opacity={0.75} />
+    </mesh>
   );
 }

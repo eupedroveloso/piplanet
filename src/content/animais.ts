@@ -76,17 +76,17 @@ export const ANIMAIS: Animal[] = [
   a("preguica", "pre-gui-ça", 3, "br-amazonia", "mamífero", "A preguiça desce da árvore mais ou menos uma vez por semana, só para fazer cocô.", { nome: "preguiça" }),
   a("borboleta", "bor-bo-le-ta", 3, "br-amazonia", "inseto", "A borboleta sente o gosto das coisas com os pés."),
 
-  // ── Brasil · Litoral (no mar) ─────────────────────────────────────────
-  a("lula", "lu-la", 1, "br-litoral", "molusco", "A lula-colossal tem os maiores olhos de todos os animais."),
-  a("siri", "si-ri", 1, "br-litoral", "crustáceo", "O siri tem as patas de trás achatadas, como remos, para nadar."),
-  a("medusa", "me-du-sa", 2, "br-litoral", "cnidário", "A medusa não tem cérebro nem coração."),
-  a("polvo", "pol-vo", 3, "br-litoral", "molusco", "O polvo tem três corações."),
-  a("tubarao", "tu-ba-rão", 3, "br-litoral", "peixe", "O tubarão troca de dentes a vida inteira.", { nome: "tubarão" }),
-  a("baleia", "ba-lei-a", 3, "br-litoral", "mamífero", "A baleia-azul é o maior animal que já existiu na Terra."),
-  a("camarao", "ca-ma-rão", 3, "br-litoral", "crustáceo", "O coração do camarão fica na cabeça.", { nome: "camarão" }),
-  a("lagosta", "la-gos-ta", 3, "br-litoral", "crustáceo", "A lagosta troca de casca para conseguir crescer."),
-  a("peixe", "pei-xe", 3, "br-litoral", "peixe", "Os peixes respiram pelas brânquias, que tiram o oxigênio da água."),
-  a("tartaruga", "tar-ta-ru-ga", 3, "br-litoral", "réptil", "A tartaruga-marinha volta à praia onde nasceu para botar os ovos."),
+  // ── Oceano · Recife de Corais (no mar) ────────────────────────────────
+  a("lula", "lu-la", 1, "oc-recife", "molusco", "A lula-colossal tem os maiores olhos de todos os animais."),
+  a("siri", "si-ri", 1, "oc-recife", "crustáceo", "O siri tem as patas de trás achatadas, como remos, para nadar."),
+  a("medusa", "me-du-sa", 2, "oc-recife", "cnidário", "A medusa não tem cérebro nem coração."),
+  a("polvo", "pol-vo", 3, "oc-recife", "molusco", "O polvo tem três corações."),
+  a("tubarao", "tu-ba-rão", 3, "oc-mar", "peixe", "O tubarão troca de dentes a vida inteira.", { nome: "tubarão" }),
+  a("baleia", "ba-lei-a", 3, "oc-mar", "mamífero", "A baleia-azul é o maior animal que já existiu na Terra."),
+  a("camarao", "ca-ma-rão", 3, "oc-recife", "crustáceo", "O coração do camarão fica na cabeça.", { nome: "camarão" }),
+  a("lagosta", "la-gos-ta", 3, "oc-recife", "crustáceo", "A lagosta troca de casca para conseguir crescer."),
+  a("peixe", "pei-xe", 3, "oc-recife", "peixe", "Os peixes respiram pelas brânquias, que tiram o oxigênio da água."),
+  a("tartaruga", "tar-ta-ru-ga", 3, "oc-recife", "réptil", "A tartaruga-marinha volta à praia onde nasceu para botar os ovos."),
 
   // ── Estados Unidos ────────────────────────────────────────────────────
   a("lobo", "lo-bo", 1, "us-florestas", "mamífero", "Os lobos vivem em grupos chamados alcateias."),
@@ -125,9 +125,9 @@ export const ANIMAIS: Animal[] = [
   a("aranha", "a-ra-nha", 3, "au-outback", "aracnídeo", "A aranha fabrica a própria teia com fios de seda."),
   a("coala", "co-a-la", 2, "au-eucaliptos", "mamífero", "O coala come folhas de eucalipto e dorme quase o dia todo."),
   a("morcego", "mor-ce-go", 3, "au-eucaliptos", "mamífero", "O morcego é o único mamífero que voa de verdade."),
-  a("pinguim", "pin-guim", 3, "au-recife", "ave", "O pinguim-azul, da Austrália, é o menor pinguim do mundo."),
-  a("golfinho", "gol-fi-nho", 3, "au-recife", "mamífero", "Os golfinhos conversam entre si com assobios e cliques."),
-  a("crocodilo", "cro-co-di-lo", 3, "au-recife", "réptil", "O crocodilo-de-água-salgada é o maior réptil do mundo."),
+  a("pinguim", "pin-guim", 3, "oc-mar", "ave", "O pinguim-azul, que nada nos mares do sul da Austrália, é o menor pinguim do mundo."),
+  a("golfinho", "gol-fi-nho", 3, "oc-mar", "mamífero", "Os golfinhos conversam entre si com assobios e cliques."),
+  a("crocodilo", "cro-co-di-lo", 3, "au-eucaliptos", "réptil", "O crocodilo-de-água-salgada é o maior réptil do mundo."),
 
   // ── África ────────────────────────────────────────────────────────────
   a("gorila", "go-ri-la", 2, "af-rios", "mamífero", "O gorila é o maior primata do mundo."),

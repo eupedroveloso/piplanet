@@ -7,12 +7,13 @@ import { motion } from "motion/react";
 import { useEffect, useMemo, useRef, type RefObject } from "react";
 import * as THREE from "three";
 import { PAISES, type PaisId } from "@/content/paises";
-import { territoriosDoPais } from "@/content/jornada";
+import { animaisDoTerritorio, territoriosDoPais } from "@/content/jornada";
+import { arteDoAnimal } from "@/content/animais";
 import type { Progress } from "@/lib/progress";
 import { speak } from "@/lib/speech";
-import { MOLA_ENTRADA } from "@/components/ui";
+import { CLASSE_ETIQUETA, MOLA_ENTRADA } from "@/components/ui";
 import { latLonParaVetor, texturaGlobo } from "./geo";
-import { Asteroides, Cometa, Estrelas, Foguete, Lua, Satelite } from "./Espaco";
+import { Asteroides, Cometa, CriaturasDoMar, Estrelas, Foguete, Lua, Satelite } from "./Espaco";
 import { useProjecao } from "./Rotulos";
 
 const RAIO = 6;
@@ -60,6 +61,7 @@ export function Planeta({
         <directionalLight position={[10, 12, 14]} intensity={1.6} />
         <Estrelas />
         <Globo liberados={liberados} atual={atual} alvo={alvo} camRef={camRef} />
+        <CriaturasDoMar raio={RAIO} />
         <Lua />
         <Asteroides />
         <Foguete raio={8.2} vel={0.25} fase={0} inclinacao={0.3} cor="#f25f5c" />
@@ -75,6 +77,7 @@ export function Planeta({
           const ts = territoriosDoPais(p.id);
           const total = ts.reduce((s, t) => s + t.fases.length, 0);
           const feitas = ts.reduce((s, t) => s + t.fases.filter((_, k) => `${t.id}/${k}` in progresso.fases).length, 0);
+          const capa = ts[0] ? animaisDoTerritorio(ts[0].id)[0] : undefined;
           return (
             <div key={p.id} data-ancora={`pais-${p.id}`} className="pointer-events-auto absolute top-0 left-0">
               <motion.button
@@ -92,15 +95,20 @@ export function Planeta({
                   speak(livre ? p.nome : `${p.nome}. Ainda trancado. Termine o país anterior para viajar até aqui.`);
                   if (livre) onEscolher(p.id);
                 }}
-                className={`flex items-center gap-2 rounded-full px-4 py-2 whitespace-nowrap shadow-[0_5px_0_rgb(61_53_81/0.18)] ${
-                  p.id === atual ? "bg-amarelo" : "bg-branco"
-                }`}
+                className={`${CLASSE_ETIQUETA} ${p.id === atual ? "bg-amarelo outline-2 outline-branco/80" : "bg-branco"}`}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                {!livre && <img src="/arte/ui/cadeado.svg" alt="" className="size-5" />}
-                <span className="text-base font-extrabold tracking-wide text-roxo uppercase">{p.nome}</span>
+                {/* Ícone primeiro: um bicho do país (ou o cadeado), para quem ainda não lê */}
+                <span className="relative grid size-8 place-items-center rounded-full bg-branco/80">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={capa ? arteDoAnimal(capa) : "/arte/ui/cadeado.svg"} alt="" className={`size-6 ${livre ? "" : "opacity-40 grayscale"}`} />
+                  {!livre && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src="/arte/ui/cadeado.svg" alt="" className="absolute -right-1 -bottom-1 size-4" />
+                  )}
+                </span>
+                <span className={`text-sm font-extrabold tracking-[0.08em] uppercase ${livre ? "text-roxo" : "text-tinta"}`}>{p.nome}</span>
                 {livre && (
-                  <span className="rounded-full bg-branco/80 px-2 text-xs font-bold text-tinta">
+                  <span className={`flex h-6 items-center rounded-full px-2 text-xs font-bold text-tinta ${p.id === atual ? "bg-branco/85" : "bg-roxo-claro"}`}>
                     {feitas}/{total}
                   </span>
                 )}

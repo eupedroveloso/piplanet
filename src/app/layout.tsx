@@ -33,6 +33,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  // Ocupa a tela toda no tablet; cabeçalho e rodapé respeitam a safe-area com env()
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
