@@ -14,7 +14,7 @@ export default function Erro({ error, reset }: { error: Error & { digest?: strin
 
   return (
     <div className="flex h-dvh flex-col items-center justify-center gap-6 px-6" style={{ background: "linear-gradient(180deg, #a9c1ff 0%, #cdd8ff 45%, #f1e8ff 100%)" }}>
-      <Arte nome="animais/coruja" className="size-28 animate-flutuar" />
+      <Arte nome="mascote/pietro" className="size-28 animate-flutuar" />
       <Botao cor="amarelo" tamanho="lg" aria-label="Tentar de novo" onClick={() => reset()} icone={<Arte nome="ui/play" className="size-8" />}>
         ↻
       </Botao>

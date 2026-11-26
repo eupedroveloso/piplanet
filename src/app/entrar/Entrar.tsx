@@ -8,7 +8,7 @@ import { Arte, BALANCO, BotaoRedondo, MOLA_ENTRADA, MOLA_TOQUE } from "@/compone
 
 /**
  * TELA DE ENTRADA (escolha de perfil)
- * Pietro entra com um toque. Pedro e Gabi digitam a senha num teclado numérico grande.
+ * Pietro entra com um toque. A conta Pais digita a senha num teclado numérico grande.
  * Tudo com ícone e voz (o Pietro ainda não lê).
  */
 export function Entrar() {
@@ -79,41 +79,62 @@ export function Entrar() {
           transition={MOLA_TOQUE}
           className="flex flex-col items-center gap-2"
         >
-          <Arte nome="animais/coruja" className="size-20 animate-flutuar sm:size-24" />
+          <Arte nome="mascote/pietro" className="size-20 animate-flutuar sm:size-24" />
           <h1 className="rounded-full bg-branco/90 px-5 py-1 text-2xl font-extrabold text-roxo shadow-suave sm:text-3xl">Quem vai jogar?</h1>
         </motion.button>
       </motion.div>
 
       <AnimatePresence mode="wait">
         {!escolhido ? (
-          <motion.div key="perfis" className="flex flex-wrap justify-center gap-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            {PERFIS.map((p, i) => (
+          <motion.div key="perfis" className="flex w-full max-w-sm flex-col items-center gap-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            {/* O Pietro é o foco: cartão grande, centralizado e pulsando */}
+            {PERFIS.filter((p) => !p.temSenha).map((p) => (
               <motion.button
                 key={p.id}
                 type="button"
                 aria-label={p.nome}
                 onClick={() => tocarPerfil(p)}
                 initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: p.temSenha ? 1 : [1, 1.05, 1] }}
-                transition={
-                  p.temSenha
-                    ? { ...MOLA_ENTRADA, delay: i * 0.08 }
-                    : { scale: { duration: 1.6, repeat: Infinity, ease: "easeInOut" }, default: { ...MOLA_ENTRADA, delay: i * 0.08 } }
-                }
+                animate={{ opacity: 1, y: 0, scale: [1, 1.04, 1] }}
+                transition={{ scale: { duration: 1.8, repeat: Infinity, ease: "easeInOut" }, default: MOLA_ENTRADA }}
                 whileHover={{ y: -4 }}
-                whileTap={{ scale: 0.92 }}
+                whileTap={{ scale: 0.94 }}
                 disabled={enviando}
-                className={`flex flex-col items-center gap-2 rounded-xl bg-branco px-6 pt-5 pb-4 shadow-[0_8px_0_rgb(61_53_81/0.15)] ${
-                  p.temSenha ? "w-36" : "w-44 ring-4 ring-amarelo"
-                }`}
+                className="flex w-full max-w-64 flex-col items-center gap-3 rounded-xl bg-branco px-6 pt-6 pb-5 shadow-[0_10px_0_rgb(61_53_81/0.15)] ring-4 ring-amarelo"
               >
-                <span className={`grid place-items-center rounded-full bg-amarelo-claro ${p.temSenha ? "size-20" : "size-28"}`}>
-                  <Arte nome={p.avatar} className={p.temSenha ? "size-14" : "size-20"} />
+                <span className="grid size-36 place-items-center rounded-full bg-amarelo-claro sm:size-40">
+                  <Arte nome={p.avatar} className="size-32 sm:size-36" />
                 </span>
-                <span className="text-2xl font-extrabold text-roxo">{p.nome}</span>
-                {p.temSenha && <Arte nome="ui/cadeado" className="size-5 opacity-60" />}
+                <span className="text-3xl font-extrabold text-roxo">{p.nome}</span>
+                <span className="grid size-12 place-items-center rounded-full bg-verde shadow-[0_4px_0_var(--color-verde-escuro)]">
+                  <Arte nome="ui/play" className="size-7" />
+                </span>
               </motion.button>
             ))}
+            {/* Adultos: menores, lado a lado, embaixo */}
+            <div className="flex justify-center gap-4">
+              {PERFIS.filter((p) => p.temSenha).map((p, i) => (
+                <motion.button
+                  key={p.id}
+                  type="button"
+                  aria-label={p.nome}
+                  onClick={() => tocarPerfil(p)}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ ...MOLA_ENTRADA, delay: 0.15 + i * 0.08 }}
+                  whileHover={{ y: -3 }}
+                  whileTap={{ scale: 0.92 }}
+                  disabled={enviando}
+                  className="flex min-w-32 items-center gap-2 rounded-full bg-branco/90 py-1.5 pr-3 pl-1.5 shadow-[0_4px_0_rgb(61_53_81/0.12)]"
+                >
+                  <span className="grid size-10 shrink-0 place-items-center rounded-full bg-amarelo-claro">
+                    <Arte nome={p.avatar} className="size-7" />
+                  </span>
+                  <span className="min-w-0 flex-1 truncate text-left text-base font-extrabold text-roxo">{p.nome}</span>
+                  <Arte nome="ui/cadeado" className="size-4 shrink-0 opacity-60" />
+                </motion.button>
+              ))}
+            </div>
           </motion.div>
         ) : (
           <motion.div

@@ -225,7 +225,7 @@ export function MapaMundo() {
             else setFoco(atual.id);
           }}
         >
-          <Arte nome="animais/coruja" className="size-7" />
+          <Arte nome="mascote/pietro-rosto" className="size-7" />
         </BotaoRedondo>
       </div>
     </div>
@@ -247,7 +247,7 @@ function ContinuarDaqui({ onIr }: { onIr: () => void }) {
       className="absolute bottom-24 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full bg-amarelo py-2 pr-6 pl-2 shadow-[0_6px_0_var(--color-amarelo-escuro)] ring-4 ring-branco/70"
     >
       <span className="grid size-12 place-items-center rounded-full bg-branco">
-        <Arte nome="animais/coruja" className="size-10" />
+        <Arte nome="mascote/pietro-rosto" className="size-10" />
       </span>
       <Arte nome="ui/play" className="size-10" />
     </motion.button>

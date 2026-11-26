@@ -9,7 +9,7 @@ import { speak } from "@/lib/speech";
 import { Arte } from "./Arte";
 import { MOLA_ENTRADA, MOLA_TOQUE } from "./movimento";
 
-/** Só para os adultos (Pedro e Gabi): o painel de acompanhamento, que é a tela inicial deles. */
+/** Só para a conta Pais: o painel de acompanhamento, que é a tela inicial deles. */
 const PAINEL = { href: "/painel", rotulo: "Painel", icone: "ui/nivel", fala: "Aprendizado do Pietro" };
 
 const AJUSTES = { href: "/ajustes", rotulo: "Ajustes", icone: "ui/ajustes", fala: "Ajustes" };

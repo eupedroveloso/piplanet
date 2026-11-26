@@ -11,10 +11,10 @@ import type { Progress } from "@/lib/progress";
  * - PUT com "motivo" (correção no painel): substitui tudo e marca corrigidoEm; aparelhos que ainda não viram
  *   a correção recebem a versão corrigida em vez de juntar (senão a correção seria desfeita).
  * - Cada perfil lê e grava o próprio.
- * - Pedro e Gabi (adultos) também leem e corrigem o do Pietro.
+ * - A conta Pais também lê e corrige o do Pietro.
  * Sem DATABASE_URL no ambiente, responde 503 e o app segue só com o que está no aparelho.
  */
-const ADULTOS = new Set(["pedro", "gabi"]);
+const ADULTOS = new Set(["pais"]);
 const MAX_COPIAS = 30;
 const DIA = 24 * 60 * 60 * 1000;
 

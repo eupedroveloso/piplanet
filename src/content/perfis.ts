@@ -1,10 +1,10 @@
 /**
  * PERFIS DA FAMÍLIA
- * O Pietro entra direto (sem senha). Pedro e Gabi têm senha (padrão 0001; pode ser trocada
- * com SENHA_PEDRO / SENHA_GABI no ambiente), conferida no servidor.
+ * O Pietro entra direto (sem senha). A conta Pais tem senha (padrão 0001; pode ser trocada
+ * com SENHA_PAIS no ambiente), conferida no servidor.
  * Cada perfil tem o próprio progresso salvo no aparelho.
  */
-export type PerfilId = "pietro" | "pedro" | "gabi";
+export type PerfilId = "pietro" | "pais";
 
 export interface Perfil {
   id: PerfilId;
@@ -17,9 +17,8 @@ export interface Perfil {
 }
 
 export const PERFIS: Perfil[] = [
-  { id: "pietro", nome: "Pietro", avatar: "animais/leao", temSenha: false },
-  { id: "pedro", nome: "Pedro", avatar: "animais/lobo", temSenha: true, tudoLiberado: true },
-  { id: "gabi", nome: "Gabi", avatar: "animais/raposa", temSenha: true },
+  { id: "pietro", nome: "Pietro", avatar: "mascote/pietro-rosto", temSenha: false },
+  { id: "pais", nome: "Pais", avatar: "animais/coruja", temSenha: true, tudoLiberado: true },
 ];
 
 export const perfilPorId = (id: string | null | undefined) => PERFIS.find((p) => p.id === id);

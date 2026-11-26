@@ -71,7 +71,9 @@ export function Botao({
       {...TOQUE_RELEVO}
       className={`${classesBotao(cor, tamanho)} ${className}`}
       onClick={(e) => {
-        if (fala) speak(fala);
+        // quem não sabe ler ouve o que o botão faz: a fala explícita ou, se não houver, o rótulo
+        const texto = fala ?? (props as { "aria-label"?: string })["aria-label"];
+        if (texto) speak(texto);
         onClick?.(e);
       }}
       {...props}
@@ -97,7 +99,9 @@ export function BotaoLink({
       {...TOQUE_RELEVO}
       className={`${classesBotao(cor, tamanho)} ${className}`}
       onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-        if (fala) speak(fala);
+        // quem não sabe ler ouve o que o botão faz: a fala explícita ou, se não houver, o rótulo
+        const texto = fala ?? (props as { "aria-label"?: string })["aria-label"];
+        if (texto) speak(texto);
         onClick?.(e);
       }}
       {...props}

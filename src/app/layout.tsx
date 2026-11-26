@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   title: "Pietro Games",
   description: "Uma jornada pelos territórios dos animais para aprender a ler.",
   appleWebApp: { capable: true, title: "Pietro Games", statusBarStyle: "default" },
-  icons: { icon: "/arte/animais/coruja.svg" },
+  icons: { icon: "/arte/mascote/pietro-rosto.svg" },
 };
 
 export const viewport: Viewport = {

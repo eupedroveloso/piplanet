@@ -29,7 +29,7 @@ export function TelaCarregando({ progresso, fundo = "claro" }: { progresso?: num
         transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
         className="relative"
       >
-        <Arte nome="animais/coruja" className="size-28 drop-shadow-lg" />
+        <Arte nome="mascote/pietro-lendo" className="size-28 drop-shadow-lg" />
         {[0, 1, 2].map((i) => (
           <motion.span
             key={i}

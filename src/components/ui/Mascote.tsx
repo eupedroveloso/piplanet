@@ -8,8 +8,8 @@ import { Arte } from "./Arte";
 import { MOLA_ENTRADA, MOLA_TOQUE } from "./movimento";
 
 /**
- * Mascote (coruja) com balão de fala. Tocar na coruja ou no balão lê a frase em voz alta.
- * A coruja dá um pulinho ao ser tocada e o balão brilha enquanto a frase é lida.
+ * Mascote (o Pietro explorador) com balão de fala. Tocar nele ou no balão lê a frase em voz alta.
+ * Ele dá um pulinho ao ser tocada e o balão brilha enquanto a frase é lida.
  */
 export function Mascote({
   fala,
@@ -48,7 +48,7 @@ export function Mascote({
         aria-label={fala ? `${NOME_MASCOTE}: ${fala}` : NOME_MASCOTE}
         className="shrink-0 origin-bottom"
       >
-        <Arte nome="animais/coruja" alt="" className={`${cls} animate-flutuar`} />
+        <Arte nome="mascote/pietro" alt="" className={`${cls} animate-flutuar`} />
       </motion.button>
       <AnimatePresence mode="wait">
         {fala && (

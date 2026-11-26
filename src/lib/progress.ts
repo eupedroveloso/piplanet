@@ -87,7 +87,7 @@ export const progressStore = createPersistentStore<Progress>(chaveDoPerfil("pg:p
 
 const semAssinatura = () => () => {};
 
-/** Progresso do perfil atual. `tudoLiberado` vem do perfil (ex.: Pedro tem tudo aberto). */
+/** Progresso do perfil atual. `tudoLiberado` vem do perfil (ex.: a conta Pais tem tudo aberto). */
 export function useProgress(): Progress & { tudoLiberado: boolean } {
   const p = progressStore.useStore();
   const liberado = useSyncExternalStore(semAssinatura, () => !!perfilPorId(perfilAtual())?.tudoLiberado, () => false);

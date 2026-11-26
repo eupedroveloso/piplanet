@@ -123,7 +123,7 @@ export function Rotulos({
       {/* Juju no cestinho do balão */}
       <div data-ancora="juju" className="absolute top-0 left-0">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/arte/animais/coruja.svg" alt="" className="size-10 select-none" draggable={false} />
+        <img src="/arte/mascote/pietro-rosto.svg" alt="" className="size-10 select-none" draggable={false} />
       </div>
 
       {!foco &&

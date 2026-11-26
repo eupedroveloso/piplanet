@@ -8,7 +8,6 @@ import { totalEstrelas, useProgress } from "@/lib/progress";
 import { motion } from "motion/react";
 import { speak } from "@/lib/speech";
 import { Arte } from "./Arte";
-import { BotaoRedondo } from "./BotaoRedondo";
 import { BotaoSom } from "./BotaoSom";
 import { Contador } from "./Contador";
 import { MOLA_ENTRADA, MOLA_TOQUE } from "./movimento";

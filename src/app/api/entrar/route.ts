@@ -12,13 +12,13 @@ function senhaCerta(digitada: string, certa: string | undefined) {
   return a.length === b.length && timingSafeEqual(a, b);
 }
 
-/** Entrar num perfil. Pietro não precisa de senha; Pedro e Gabi sim (SENHA_PEDRO / SENHA_GABI no .env). */
+/** Entrar num perfil. Pietro não precisa de senha; a conta Pais sim (SENHA_PAIS no ambiente). */
 export async function POST(req: Request) {
   const { perfil, senha } = (await req.json().catch(() => ({}))) as { perfil?: string; senha?: string };
   const p = perfilPorId(perfil);
   if (!p) return NextResponse.json({ ok: false, erro: "perfil" }, { status: 400 });
   if (p.temSenha) {
-    // Senha padrão 0001 (proteção simples); SENHA_PEDRO / SENHA_GABI no ambiente têm prioridade.
+    // Senha padrão 0001 (proteção simples); SENHA_PAIS no ambiente tem prioridade.
     const certa = process.env[`SENHA_${p.id.toUpperCase()}`] || "0001";
     if (!senhaCerta(String(senha ?? ""), certa)) return NextResponse.json({ ok: false, erro: "senha" }, { status: 401 });
   }

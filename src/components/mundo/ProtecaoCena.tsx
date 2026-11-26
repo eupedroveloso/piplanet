@@ -65,7 +65,7 @@ export function ProtecaoCena({ children }: { children: ReactNode }) {
       {falhas >= 2 ? (
         <div className="grid h-full place-items-center">
           <div className="flex flex-col items-center gap-4">
-            <Arte nome="animais/coruja" className="size-24 animate-flutuar" />
+            <Arte nome="mascote/pietro" className="size-24 animate-flutuar" />
             <Botao cor="amarelo" tamanho="lg" aria-label="Tentar de novo" onClick={tentar} icone={<Arte nome="ui/play" className="size-8" />}>
               ↻
             </Botao>

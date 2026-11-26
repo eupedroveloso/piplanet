@@ -4,19 +4,20 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState, type ReactNode } from "react";
 import { arteDoAnimal, ANIMAIS } from "@/content/animais";
 import { PAISES } from "@/content/paises";
-import { infoNivel } from "@/content/niveis";
-import { TERRITORIOS, chaveFase, nivelAtual } from "@/content/jornada";
+import { infoNivel, NIVEIS_JORNADA } from "@/content/niveis";
+import { chaveFase, nivelAtual, nivelDaFase, SEQUENCIA, TERRITORIOS } from "@/content/jornada";
 import { NIVEIS } from "@/games/nivelamento/Nivelamento";
 import type { Progress } from "@/lib/progress";
 import { usePerfil } from "@/lib/perfil";
 import { Arte, BotaoRedondo, MOLA_ENTRADA, MOLA_TOQUE, NavInferior } from "@/components/ui";
 import {
-  carregar, cartasParaHoje, colocarNaFase, duracao, metricas, nomeAnimal, nomeFase, nomeJogo, quando, salvar,
+  carregar, cartasParaHoje, colocarNaFase, duracao, metricas, nomeAnimal, nomeFase, quando, salvar,
   zerarCartas, zerarTudo, type Copia,
 } from "./dados";
+import { Anel, BarraEmpilhada, BarrasDias, BarrasH, Cartao, Dispersao, JornadaNiveis, KPI, LinhaEvolucao, LinhaTempo, Secoes, Tendencia } from "./graficos";
 
 /**
- * PAINEL DOS ADULTOS (Pedro e Gabi)
+ * PAINEL DOS PAIS
  * Acompanha o aprendizado do Pietro: nível de leitura, tempo, lições, palavras difíceis, cartas.
  * E permite corrigir: colocar numa fase, refazer cartas, recomeçar, voltar a uma cópia anterior.
  * Uma tela só, sem rolagem: abas e listas paginadas.
@@ -31,7 +32,6 @@ const ABAS: { id: Aba; nome: string; icone: string }[] = [
   { id: "ajustes", nome: "Ajustes", icone: "ui/cadeado" },
 ];
 
-const pct = (v: number | null) => (v === null ? "—" : `${Math.round(v * 100)}%`);
 
 export function PainelAdultos() {
   const perfil = usePerfil();
@@ -70,15 +70,26 @@ export function PainelAdultos() {
   const m = dados ? metricas(dados, agora) : null;
 
   return (
-    <div className="flex h-dvh flex-col gap-2 overflow-hidden px-3 sm:gap-3 pt-[max(env(safe-area-inset-top),0.75rem)] sm:px-6">
+    <div className="mx-auto flex h-dvh w-full max-w-6xl flex-col gap-3 overflow-hidden px-4 pt-[max(env(safe-area-inset-top),0.75rem)] sm:gap-3 sm:px-6">
       {/* Topo */}
       <div className="flex items-center gap-2">
         <div className="flex min-w-0 flex-1 items-center gap-2">
-          <Arte nome="animais/leao" className="hidden size-9 shrink-0 sm:block" />
+          <Arte nome="mascote/pietro-rosto" className="hidden size-9 shrink-0 sm:block" />
           <div className="min-w-0 leading-tight">
             <h1 className="truncate text-lg font-extrabold text-roxo sm:text-xl">Aprendizado do Pietro</h1>
-            <p className="truncate text-xs text-tinta-suave">
-              {perfil.nome} · {m?.ultima ? `última atividade ${quando(m.ultima)}` : "sem atividade registrada ainda"}
+            <p className="flex min-w-0 items-center gap-1.5 text-xs text-tinta-suave">
+              <span className="truncate">
+                {perfil.nome} · {m?.ultima ? `última atividade ${quando(m.ultima)}` : "sem atividade registrada ainda"}
+              </span>
+              {/* Só aparece em teste local (o servidor local não grava no banco, de propósito) */}
+              {!temBanco && (
+                <i
+                  role="img"
+                  aria-label="Teste local: só dados deste aparelho"
+                  title="Teste local: só dados deste aparelho"
+                  className="size-2 shrink-0 rounded-full bg-amarelo-escuro"
+                />
+              )}
             </p>
           </div>
         </div>
@@ -96,7 +107,7 @@ export function PainelAdultos() {
       </div>
 
       {/* Abas */}
-      <nav className="grid grid-cols-6 gap-1 rounded-lg bg-branco/70 p-1 shadow-suave">
+      <nav className="grid shrink-0 grid-cols-6 gap-1 rounded-xl bg-branco/80 p-1 shadow-suave">
         {ABAS.map((a) => (
           <motion.button
             key={a.id}
@@ -106,29 +117,15 @@ export function PainelAdultos() {
             whileHover={{ y: -1 }}
             whileTap={{ scale: 0.92 }}
             transition={MOLA_TOQUE}
-            className="relative flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-md py-1 text-[11px] font-bold text-roxo sm:flex-row sm:gap-2 sm:text-sm"
+            className="relative flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-lg py-1 text-xs font-bold text-roxo sm:flex-row sm:gap-2 sm:text-sm"
           >
-            {aba === a.id && <motion.span layoutId="aba-painel" className="absolute inset-0 rounded-md bg-amarelo-claro" transition={MOLA_ENTRADA} />}
+            {aba === a.id && <motion.span layoutId="aba-painel" className="absolute inset-0 rounded-lg bg-amarelo-claro" transition={MOLA_ENTRADA} />}
             <Arte nome={a.icone} className="relative size-5" />
             <span className="relative">{a.nome}</span>
           </motion.button>
         ))}
       </nav>
 
-      {!temBanco && (
-        <motion.p
-          initial={{ opacity: 0, y: -4 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={MOLA_ENTRADA}
-          title="Sem conexão com o banco: mostrando só o que o Pietro jogou neste aparelho."
-          className="flex items-center gap-1.5 truncate rounded-md bg-amarelo-claro px-2.5 py-1 text-[11px] text-tinta sm:text-xs"
-        >
-          <Arte nome="ui/cadeado" className="size-4 shrink-0" />
-          <span className="truncate">
-            Sem banco: só o que o Pietro jogou <b>neste aparelho</b>.
-          </span>
-        </motion.p>
-      )}
 
       {/* Conteúdo */}
       <div className="relative min-h-0 flex-1">
@@ -148,7 +145,7 @@ export function PainelAdultos() {
               transition={{ duration: 0.18 }}
               className="h-full"
             >
-              {aba === "resumo" && <Resumo m={m} fases={dados.fases} />}
+              {aba === "resumo" && <Resumo m={m} fases={dados.fases} agora={agora} />}
               {aba === "licoes" && <Licoes m={m} />}
               {aba === "palavras" && <Palavras m={m} />}
               {aba === "cartas" && <CartasAba m={m} agora={agora} />}
@@ -179,29 +176,6 @@ type M = ReturnType<typeof metricas>;
 
 // ── Peças ────────────────────────────────────────────────────────────────────
 
-function Cartao({ titulo, children, className = "" }: { titulo?: string; children: ReactNode; className?: string }) {
-  return (
-    <section className={`flex min-h-0 flex-col gap-1.5 rounded-lg bg-branco p-2.5 shadow-suave sm:gap-2 sm:p-3 ${className}`}>
-      {titulo && <h2 className="text-xs font-extrabold tracking-wide text-tinta-suave uppercase">{titulo}</h2>}
-      {children}
-    </section>
-  );
-}
-
-function Numero({ valor, rotulo, icone, extra }: { valor: ReactNode; rotulo: string; icone: string; extra?: ReactNode }) {
-  return (
-    <div className="flex items-center gap-2 rounded-lg bg-branco p-1.5 shadow-suave sm:p-2.5">
-      <Arte nome={icone} className="size-7 shrink-0 sm:size-8" />
-      <div className="min-w-0 leading-tight">
-        <div className="truncate text-lg font-extrabold text-roxo">{valor}</div>
-        <div className="truncate text-[11px] text-tinta-suave">{rotulo}</div>
-        {extra}
-      </div>
-    </div>
-  );
-}
-
-/** Lista paginada (sem rolagem): mostra `porPagina` itens e setas para trocar. */
 /** Altura de uma linha de lista (~44 px) e da barra de páginas (~56 px), para calcular quantas cabem. */
 const LINHA_PX = 46;
 const PAGINAS_PX = 58;
@@ -258,288 +232,328 @@ function Paginado<T>({ itens, porPagina: maximo, render, vazio }: { itens: T[]; 
   );
 }
 
-function Barras({ dados }: { dados: { rotulo: string; min: number }[] }) {
-  const max = Math.max(10, ...dados.map((d) => d.min));
-  return (
-    <div className="flex h-14 items-end gap-1 sm:h-24 [@media(max-height:700px)]:h-11">
-      {dados.map((d, i) => (
-        <div key={i} className="flex h-full flex-1 flex-col items-center justify-end gap-0.5" title={`${d.rotulo}: ${d.min} min`}>
-          <span className="text-[10px] font-bold text-roxo">{d.min > 0 ? d.min : ""}</span>
-          <div className="flex min-h-0 w-full flex-1 items-end">
-          <motion.div
-            initial={{ height: 0 }}
-            animate={{ height: `${(d.min / max) * 100}%` }}
-            transition={{ ...MOLA_ENTRADA, delay: i * 0.02 }}
-            className={`w-full rounded-t ${i === dados.length - 1 ? "bg-amarelo" : "bg-roxo-claro"}`}
-          />
-          </div>
-          <span className="text-[10px] text-tinta-suave">{d.rotulo.slice(0, 2)}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function Medidor({ valor, rotulo }: { valor: number | null; rotulo: string }) {
-  return (
-    <div className="flex flex-col gap-1">
-      <div className="flex justify-between text-xs">
-        <span className="text-tinta-suave">{rotulo}</span>
-        <b className="text-roxo">{pct(valor)}</b>
-      </div>
-      <div className="h-2 overflow-hidden rounded-full bg-linha/60">
-        <motion.div initial={{ width: 0 }} animate={{ width: `${(valor ?? 0) * 100}%` }} transition={MOLA_ENTRADA} className="h-full rounded-full bg-verde" />
-      </div>
-    </div>
-  );
-}
-
 // ── Abas ─────────────────────────────────────────────────────────────────────
+// Regra: um número grande + rótulo de 1 a 3 palavras por cartão; comparação vira chip curto;
+// uma ideia por seção (o título da seção é o único); o que não cabe vira outra seção.
 
-function Resumo({ m, fases }: { m: M; fases: Progress["fases"] }) {
-  const nj = infoNivel(nivelAtual(fases));
-  const nv = m.nivel ? NIVEIS[m.nivel.nivel - 1] : null;
-  const subiu = m.nivel && m.nivelAntes ? m.nivel.nivel - m.nivelAntes.nivel : 0;
+const DIA_MS = 86400000;
+
+function Resumo({ m, fases, agora }: { m: M; fases: Progress["fases"]; agora: number }) {
+  const nAtual = nivelAtual(fases);
+  const nj = infoNivel(nAtual);
+  const min7 = m.porDia.slice(-7).reduce((s, d) => s + d.min, 0);
+  const minAntes = m.porDia.slice(0, 7).reduce((s, d) => s + d.min, 0);
+  const feitasEm = (de: number, ate: number) => m.licoes.filter((s) => s.concluida && s.inicio >= de && s.inicio < ate).length;
+  const lic7 = feitasEm(agora - 7 * DIA_MS, agora + 1);
+  const licAntes = feitasEm(agora - 14 * DIA_MS, agora - 7 * DIA_MS);
   const evol = m.semErro !== null && m.semErroAntes !== null ? m.semErro - m.semErroAntes : null;
+  const niveis = NIVEIS_JORNADA.map((nv) => {
+    const ks = SEQUENCIA.filter((k) => nivelDaFase(k) === nv.n);
+    return { n: nv.n, icone: nv.icone, nome: nv.nome, total: ks.length, feitas: ks.filter((k) => k in fases).length };
+  });
+  const doNivel = niveis[nAtual - 1];
+
   return (
-    <div className="grid h-full grid-rows-[auto_auto_1fr] gap-1.5 sm:gap-2">
-      <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4 sm:gap-2">
-        <Numero icone={nv?.icone ?? "ui/escada"} valor={nv?.nome ?? "Sem teste"} rotulo={m.nivel ? `Nível ${m.nivel.nivel} de 6${subiu ? ` (${subiu > 0 ? "+" : ""}${subiu})` : ""}` : "Faça o nivelamento"} />
-        <Numero icone="ui/mapa" valor={`${m.concluidas}/${m.total}`} rotulo={`lições · ${m.territoriosCompletos} biomas completos`} />
-        <Numero icone="ui/sol" valor={duracao(m.tempoHoje)} rotulo={`hoje · ${duracao(m.tempo7)} em 7 dias`} />
-        <Numero icone="ui/estrela" valor={m.estrelas} rotulo={`estrelas · ${m.dominadas} palavras dominadas`} />
-      </div>
-      <Cartao titulo="Minutos por dia (14 dias)">
-        <Barras dados={m.porDia} />
-        <p className="text-[11px] text-tinta-suave [@media(max-height:700px)]:hidden">
-          Jogou em {m.diasAtivos7} dos últimos 7 dias · lição concluída leva em média {m.mediaLicao ? duracao(m.mediaLicao) : "—"}
-          {m.abandonadas ? ` · ${m.abandonadas} lições deixadas no meio` : ""}
-        </p>
-      </Cartao>
-      <div className="grid min-h-0 grid-cols-1 gap-1.5 overflow-hidden sm:grid-cols-2 sm:gap-2">
-        <Cartao titulo="Leitura (últimas 60 palavras)">
-          <Medidor valor={m.semErro} rotulo="Acertou de primeira" />
-          <Medidor valor={m.comDica === null ? null : 1 - m.comDica} rotulo="Sem precisar da dica" />
-          {evol !== null && Math.round(evol * 100) !== 0 && (
-            <p className={`text-xs font-bold ${evol >= 0 ? "text-verde-escuro" : "text-coral-escuro"}`}>
-              {evol >= 0 ? "▲" : "▼"} {Math.abs(Math.round(evol * 100))} pontos vs. as 60 anteriores
-            </p>
-          )}
-        </Cartao>
-        <Cartao titulo="Próximo passo" className="text-xs sm:text-sm">
-          <p className="flex items-center gap-1.5 text-tinta">
-            <Arte nome={nj.icone} className="size-5 shrink-0" />
-            <span>
-              Nível da jornada: <b>{nj.n} · {nj.nome}</b>
-            </span>
-          </p>
-          <p className="text-tinta">
-            {m.proxima ? (
-              <>
-                Está em <b>{nomeFase(m.proxima)}</b>.
-              </>
-            ) : (
-              "Completou toda a jornada!"
-            )}
-          </p>
-          {m.dificeis[0] && (
-            <p className="text-tinta">
-              Mais difíceis agora: <b>{m.dificeis.slice(0, 3).map((d) => nomeAnimal(d.id)).join(", ")}</b>.
-            </p>
-          )}
-          <p className="text-tinta">
-            {m.paraHoje} {m.paraHoje === 1 ? "carta" : "cartas"} para revisar hoje.
-          </p>
-        </Cartao>
-      </div>
-    </div>
+    <Secoes
+      secoes={[
+        {
+          titulo: "Esta semana",
+          conteudo: (
+            <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 min-[400px]:grid-cols-2">
+              <KPI icone="ui/sol" valor={duracao(min7 * 60000)} rotulo="Tempo" tendencia={<Tendencia delta={minAntes || min7 ? min7 - minAntes : null} texto={`${Math.abs(min7 - minAntes)} min`} />} />
+              <KPI icone="ui/mapa" valor={lic7} rotulo="Lições" tendencia={<Tendencia delta={lic7 - licAntes} texto={String(Math.abs(lic7 - licAntes))} />} />
+            </div>
+          ),
+        },
+        {
+          titulo: "Leitura",
+          conteudo: (
+            <Cartao className="flex-1 justify-center">
+              <div className="flex flex-wrap items-start justify-around gap-6">
+                <div className="flex flex-col items-center gap-2">
+                  <Anel valor={m.semErro} rotulo="De primeira" />
+                  <Tendencia delta={evol} texto={evol === null ? "" : `${Math.abs(Math.round(evol * 100))} pts`} />
+                </div>
+                <Anel valor={m.comDica === null ? null : 1 - m.comDica} rotulo="Sem dica" cor="stroke-roxo" />
+              </div>
+            </Cartao>
+          ),
+        },
+        {
+          titulo: "Jornada",
+          conteudo: (
+            <Cartao className="flex-1 justify-center gap-5">
+              <div className="flex items-center gap-3">
+                <span className="grid size-14 shrink-0 place-items-center rounded-full bg-amarelo-claro">
+                  <Arte nome={nj.icone} className="size-10" />
+                </span>
+                <div className="flex min-w-0 flex-col gap-1">
+                  <span className="text-3xl leading-none font-extrabold text-roxo">Nível {nAtual}</span>
+                  <span className="text-sm font-bold text-tinta-suave">{nj.nome}</span>
+                </div>
+              </div>
+              <JornadaNiveis niveis={niveis} atual={nAtual} />
+              <span className="w-fit rounded-full bg-roxo-claro px-2.5 py-1 text-xs font-bold text-roxo">
+                {doNivel.feitas}/{doNivel.total} do nível
+              </span>
+            </Cartao>
+          ),
+        },
+        {
+          titulo: "Minutos por dia",
+          conteudo: (
+            <Cartao className="flex-1">
+              <BarrasDias dados={m.porDia} />
+            </Cartao>
+          ),
+        },
+      ]}
+    />
   );
 }
 
 function Licoes({ m }: { m: M }) {
-  const [ver, setVer] = useState<"recentes" | "porLicao" | "tipos">("recentes");
+  const [ver, setVer] = useState<"recentes" | "porLicao">("recentes");
+  const sessoes = m.licoes.slice(-16).map((s) => ({ inicio: s.inicio, fim: s.fim, concluida: s.concluida, rotulo: `${nomeFase(s.chave)} · ${duracao(s.fim - s.inicio)}` }));
   return (
-    <div className="flex h-full flex-col gap-2">
-      <Segmentos valor={ver} onChange={setVer} opcoes={[["recentes", "Recentes"], ["porLicao", "Por lição"], ["tipos", "Por exercício"]]} />
-      <Cartao className="flex-1">
-        {ver === "recentes" && (
-          <Paginado
-            itens={[...m.licoes].reverse()}
-            porPagina={7}
-            vazio="Nenhuma lição registrada ainda."
-            render={(s, i) => (
-              <li key={i} className="flex items-center gap-2 py-1.5 text-sm">
-                <span className={`size-2 shrink-0 rounded-full ${s.concluida ? "bg-verde" : "bg-coral"}`} title={s.concluida ? "concluída" : "deixou no meio"} />
-                <div className="min-w-0 flex-1 leading-tight">
-                  <div className="truncate font-bold text-roxo">{nomeFase(s.chave)}</div>
-                  <div className="truncate text-[11px] text-tinta-suave">
-                    {quando(s.inicio)} · {nomeJogo(s.jogo)} · {s.bichos?.length ?? 0} bichos
-                  </div>
-                </div>
-                <div className="text-right text-xs leading-tight">
-                  <div className="font-bold text-tinta">{duracao(s.fim - s.inicio)}</div>
-                  <div className="text-tinta-suave">
-                    {s.erros} erros{s.estrelas ? ` · ${"★".repeat(s.estrelas)}` : ""}
-                  </div>
-                </div>
-              </li>
-            )}
-          />
-        )}
-        {ver === "porLicao" && (
-          <Paginado
-            itens={m.porLicao}
-            porPagina={7}
-            vazio="Nenhuma lição feita ainda."
-            render={(l) => (
-              <li key={l.chave} className="flex items-center gap-2 py-1.5 text-sm">
-                <div className="min-w-0 flex-1 leading-tight">
-                  <div className="truncate font-bold text-roxo">{l.nome}</div>
-                  <div className="truncate text-[11px] text-tinta-suave">
-                    {l.liberadaPeloAdulto ? "liberada no painel" : `${l.vezes}× · ${l.erros} erros no total`}
-                  </div>
-                </div>
-                <div className="text-right text-xs leading-tight">
-                  <div className="font-bold text-amarelo-escuro">{"★".repeat(l.estrelas)}{"☆".repeat(3 - l.estrelas)}</div>
-                  <div className="text-tinta-suave">{l.tempoTotal ? duracao(l.tempoTotal) : "—"}</div>
-                </div>
-              </li>
-            )}
-          />
-        )}
-        {ver === "tipos" && (
-          <ul className="flex flex-col gap-3">
-            {m.porJogo.map((j) => (
-              <li key={j.jogo} className="flex items-center gap-3">
-                <Arte nome={j.icone} className="size-8 shrink-0" />
-                <div className="flex-1">
-                  <Medidor valor={j.semErro} rotulo={`${j.nome} · ${j.bichos} palavras · ${j.tempoMedio ? duracao(j.tempoMedio) : "—"} por palavra`} />
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </Cartao>
-    </div>
+    <Secoes
+      secoes={[
+        {
+          titulo: "Acerto por exercício",
+          conteudo: (
+            <Cartao className="flex-1 justify-center">
+              <BarrasH itens={m.porJogo.map((j) => ({ chave: j.jogo, icone: j.icone, nome: j.nome, valor: j.semErro, detalhe: "" }))} />
+            </Cartao>
+          ),
+        },
+        {
+          titulo: "Últimas sessões",
+          conteudo: (
+            <Cartao className="flex-1 justify-center">
+              <LinhaTempo sessoes={sessoes} />
+            </Cartao>
+          ),
+        },
+        {
+          titulo: "Histórico",
+          conteudo: (
+            <>
+              <Segmentos valor={ver} onChange={setVer} opcoes={[["recentes", "Recentes"], ["porLicao", "Por lição"]]} />
+              <Cartao className="flex-1">
+                {ver === "recentes" ? (
+                  <Paginado
+                    itens={[...m.licoes].reverse()}
+                    porPagina={8}
+                    vazio="Nenhuma lição ainda."
+                    render={(s, i) => (
+                      <li key={i} className="flex items-center gap-3 py-2 text-sm">
+                        <span className={`size-2.5 shrink-0 rounded-full ${s.concluida ? "bg-verde" : "bg-coral"}`} />
+                        <div className="min-w-0 flex-1 leading-tight">
+                          <div className="truncate font-bold text-roxo">{nomeFase(s.chave)}</div>
+                          <div className="truncate text-xs text-tinta-suave">{quando(s.inicio)}</div>
+                        </div>
+                        <span className="text-xs font-bold text-tinta">{duracao(s.fim - s.inicio)}</span>
+                      </li>
+                    )}
+                  />
+                ) : (
+                  <Paginado
+                    itens={m.porLicao}
+                    porPagina={8}
+                    vazio="Nenhuma lição ainda."
+                    render={(l) => (
+                      <li key={l.chave} className="flex items-center gap-3 py-2 text-sm">
+                        <span className="min-w-0 flex-1 truncate font-bold text-roxo">{l.nome}</span>
+                        <span className="font-bold text-amarelo-escuro">
+                          {"★".repeat(l.estrelas)}
+                          {"☆".repeat(3 - l.estrelas)}
+                        </span>
+                      </li>
+                    )}
+                  />
+                )}
+              </Cartao>
+            </>
+          ),
+        },
+      ]}
+    />
   );
 }
+
+const corErros = (e: number) => (e >= 2 ? "bg-coral/20 text-coral-escuro" : e > 0.5 ? "bg-amarelo-claro text-amarelo-escuro" : "bg-verde/15 text-verde-escuro");
 
 function Palavras({ m }: { m: M }) {
-  const [ver, setVer] = useState<"dificeis" | "todas">("dificeis");
-  const itens = ver === "dificeis" ? m.dificeis : [...m.palavras].sort((a, b) => b.ultima - a.ultima);
   return (
-    <div className="flex h-full flex-col gap-2">
-      <Segmentos valor={ver} onChange={setVer} opcoes={[["dificeis", "Mais difíceis"], ["todas", "Todas"]]} />
-      <Cartao className="flex-1">
-        <Paginado
-          itens={itens}
-          porPagina={7}
-          vazio={ver === "dificeis" ? "Nenhuma palavra com erro. 🎉" : "Nenhuma palavra lida ainda."}
-          render={(w) => {
-            const a = ANIMAIS.find((x) => x.id === w.id);
-            return (
-              <li key={w.id} className="flex items-center gap-2 py-1.5 text-sm">
-                {a && <Arte src={arteDoAnimal(a)} className="size-8 shrink-0" />}
-                <div className="min-w-0 flex-1 leading-tight">
-                  <div className="truncate font-leitura font-bold text-roxo uppercase">{a ? a.silabas.join("·") : w.id}</div>
-                  <div className="truncate text-[11px] text-tinta-suave">
-                    {w.vezes}× · {duracao(w.mediaMs)} em média
-                  </div>
-                </div>
-                <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${w.mediaErros >= 2 ? "bg-coral/20 text-coral-escuro" : w.mediaErros > 0.5 ? "bg-amarelo-claro text-amarelo-escuro" : "bg-verde/15 text-verde-escuro"}`}>
-                  {w.mediaErros.toFixed(1)} erros
-                </span>
-              </li>
-            );
-          }}
-        />
-      </Cartao>
-    </div>
+    <Secoes
+      secoes={[
+        {
+          titulo: "Mais difíceis",
+          conteudo: (
+            <Cartao className="flex-1">
+              {m.dificeis.length ? (
+                <ul className="flex flex-wrap content-start gap-2">
+                  {m.dificeis.slice(0, 12).map((w, i) => (
+                    <motion.li
+                      key={w.id}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ ...MOLA_ENTRADA, delay: i * 0.03 }}
+                      title={`${w.mediaErros.toFixed(1)} erros em média`}
+                      className={`rounded-full px-3 py-1.5 text-sm font-bold ${corErros(w.mediaErros)}`}
+                    >
+                      {nomeAnimal(w.id)}
+                    </motion.li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="m-auto text-sm text-tinta-suave">Nenhuma com erro 🎉</p>
+              )}
+            </Cartao>
+          ),
+        },
+        {
+          titulo: "Tempo × erros",
+          conteudo: (
+            <Cartao className="flex-1">
+              <Dispersao pontos={m.palavras.map((w) => ({ id: w.id, x: w.mediaMs, y: w.mediaErros, rotulo: `${nomeAnimal(w.id)}: ${duracao(w.mediaMs)}, ${w.mediaErros.toFixed(1)} erros` }))} />
+            </Cartao>
+          ),
+        },
+        {
+          titulo: "Todas",
+          conteudo: (
+            <Cartao className="flex-1">
+              <Paginado
+                itens={[...m.palavras].sort((a, b) => b.mediaErros - a.mediaErros)}
+                porPagina={8}
+                vazio="Nenhuma palavra ainda."
+                render={(w) => {
+                  const a = ANIMAIS.find((x) => x.id === w.id);
+                  return (
+                    <li key={w.id} className="flex items-center gap-3 py-2 text-sm">
+                      {a && <Arte src={arteDoAnimal(a)} className="size-8 shrink-0" />}
+                      <span className="min-w-0 flex-1 truncate font-leitura font-bold text-roxo uppercase">{a ? a.silabas.join("·") : w.id}</span>
+                      <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${corErros(w.mediaErros)}`}>{w.mediaErros.toFixed(1)}</span>
+                    </li>
+                  );
+                }}
+              />
+            </Cartao>
+          ),
+        },
+      ]}
+    />
   );
 }
 
+const NOMES_CAIXAS = ["Nova", "1 dia", "2 dias", "4 dias", "Dominada"];
+const CORES_CAIXAS = ["bg-coral", "bg-amarelo", "bg-azul", "bg-roxo", "bg-verde"];
+
 function CartasAba({ m, agora }: { m: M; agora: number }) {
-  const nomes = ["Nova/errou", "1 dia", "2 dias", "4 dias", "Dominada"];
   const ordenadas = [...m.cartas].sort((a, b) => a.caixa - b.caixa || a.proxima - b.proxima);
-  const ultimas = m.sessoesCartas.slice(-5);
-  const lidas = ultimas.reduce((s, x) => s + (x.lidas ?? 0), 0);
-  const vistas = ultimas.reduce((s, x) => s + (x.vistas ?? 0), 0);
+  const vistas = m.cartas.reduce((s, c) => s + (c.vistas ?? 0), 0);
+  const sozinho = m.cartas.reduce((s, c) => s + (c.sozinho ?? 0), 0);
   return (
-    <div className="flex h-full flex-col gap-2">
-      <Cartao titulo={`Caixas (repetição espaçada) · ${m.paraHoje} para hoje`}>
-        <div className="grid grid-cols-5 gap-1.5">
-          {m.caixas.map((n, i) => (
-            <div key={i} className="flex flex-col items-center rounded-md bg-fundo py-1.5">
-              <span className="text-lg font-extrabold text-roxo">{n}</span>
-              <span className="text-center text-[10px] leading-tight text-tinta-suave">{nomes[i]}</span>
+    <Secoes
+      secoes={[
+        {
+          titulo: "Hoje",
+          conteudo: (
+            <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 min-[400px]:grid-cols-2">
+              <KPI icone="ui/cartas" valor={m.paraHoje} rotulo="Para revisar" />
+              <KPI icone="ui/medalha" valor={`${m.caixas[4]}/${m.cartas.length}`} rotulo="Dominadas" />
             </div>
-          ))}
-        </div>
-        <p className="text-[11px] text-tinta-suave">
-          Últimas {ultimas.length} sessões: leu sozinho {vistas ? `${lidas} de ${vistas} (${pct(lidas / vistas)})` : "—"}
-        </p>
-      </Cartao>
-      <Cartao className="flex-1">
-        <Paginado
-          itens={ordenadas}
-          porPagina={6}
-          vazio="Ainda não usou as cartas."
-          render={(c) => (
-            <li key={c.id} className="flex items-center gap-2 py-1.5 text-sm">
-              <span className="grid size-7 shrink-0 place-items-center rounded-full bg-roxo-claro text-xs font-extrabold text-roxo">{c.caixa}</span>
-              <div className="min-w-0 flex-1 leading-tight">
-                <div className="truncate font-bold text-roxo">{nomeAnimal(c.id)}</div>
-                <div className="truncate text-[11px] text-tinta-suave">
-                  vista {c.vistas ?? "?"}× · sozinho {c.vistas ? pct((c.sozinho ?? 0) / c.vistas) : "—"}
-                </div>
-              </div>
-              <span className="text-right text-[11px] text-tinta-suave">{c.proxima <= agora ? "revisar hoje" : `volta ${quando(c.proxima).slice(0, 5)}`}</span>
-            </li>
-          )}
-        />
-      </Cartao>
-    </div>
+          ),
+        },
+        {
+          titulo: "Caixas",
+          conteudo: (
+            <Cartao className="flex-1 justify-center">
+              <BarraEmpilhada valores={m.caixas} nomes={NOMES_CAIXAS} cores={CORES_CAIXAS} />
+            </Cartao>
+          ),
+        },
+        {
+          titulo: "Leu sozinho",
+          conteudo: (
+            <Cartao className="flex-1 items-center justify-center">
+              <Anel valor={vistas ? sozinho / vistas : null} rotulo={vistas ? `${sozinho} de ${vistas}` : "Sem cartas"} tamanho={136} />
+            </Cartao>
+          ),
+        },
+        {
+          titulo: "Lista",
+          conteudo: (
+            <Cartao className="flex-1">
+              <Paginado
+                itens={ordenadas}
+                porPagina={8}
+                vazio="Ainda não usou as cartas."
+                render={(c) => (
+                  <li key={c.id} className="flex items-center gap-3 py-2 text-sm">
+                    <span className={`grid size-7 shrink-0 place-items-center rounded-full text-xs font-extrabold text-branco ${CORES_CAIXAS[c.caixa - 1] ?? "bg-roxo"}`}>{c.caixa}</span>
+                    <span className="min-w-0 flex-1 truncate font-bold text-roxo">{nomeAnimal(c.id)}</span>
+                    <span className="text-xs text-tinta-suave">{c.proxima <= agora ? "hoje" : quando(c.proxima).slice(0, 5)}</span>
+                  </li>
+                )}
+              />
+            </Cartao>
+          ),
+        },
+      ]}
+    />
   );
 }
 
 function NivelAba({ m }: { m: M }) {
+  const dt = (d: string) => new Date(d).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
+  const subiu = m.nivel && m.nivelAntes ? m.nivel.nivel - m.nivelAntes.nivel : null;
+  const nv = m.nivel ? NIVEIS[m.nivel.nivel - 1] : null;
   return (
-    <div className="flex h-full flex-col gap-2">
-      <Cartao titulo="Evolução do nível de leitura">
-        {m.nivs.length ? (
-          <div className="flex h-24 items-end gap-1.5 [@media(max-height:700px)]:h-16">
-            {m.nivs.slice(-12).map((n, i) => (
-              <div key={i} className="flex h-full flex-1 flex-col items-center gap-1">
-                <span className="text-[10px] font-bold text-roxo">{n.nivel}</span>
-                <div className="flex min-h-0 w-full flex-1 items-end">
-                  <motion.div initial={{ height: 0 }} animate={{ height: `${(n.nivel / 6) * 100}%` }} transition={{ ...MOLA_ENTRADA, delay: i * 0.03 }} className="w-full rounded-t bg-roxo-claro" />
-                </div>
-                <span className="text-[10px] text-tinta-suave">{new Date(n.data).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })}</span>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-sm text-tinta-suave">Nenhum nivelamento ainda. Peça para o Pietro tocar em “Nível” no menu.</p>
-        )}
-      </Cartao>
-      <Cartao titulo="Os 6 níveis" className="flex-1">
-        <ul className="flex min-h-0 flex-1 flex-col justify-between gap-0.5">
-          {NIVEIS.map((nv) => {
-            const ac = m.nivel?.acertos[nv.n];
-            const atual = m.nivel?.nivel === nv.n;
-            return (
-              <li key={nv.n} className={`flex items-center gap-2 rounded-md px-2 py-0.5 text-sm transition-colors duration-300 [@media(min-height:701px)]:py-1 ${atual ? "bg-amarelo-claro" : ""}`}>
-                <Arte nome={nv.icone} className="size-5 [@media(min-height:701px)]:size-6" />
-                <span className="flex-1 font-bold text-roxo">
-                  {nv.n}. {nv.nome}
-                </span>
-                <span className="text-xs text-tinta-suave">{ac ? `${ac[0]}/${ac[1]} no último teste` : "—"}</span>
-              </li>
-            );
-          })}
-        </ul>
-      </Cartao>
-    </div>
+    <Secoes
+      secoes={[
+        {
+          titulo: "Último teste",
+          conteudo: (
+            <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 min-[400px]:grid-cols-2">
+              <KPI icone={nv?.icone ?? "ui/escada"} valor={m.nivel ? `Nível ${m.nivel.nivel}` : "—"} rotulo={nv?.nome ?? "Sem teste"} tendencia={<Tendencia delta={subiu} texto={subiu === null ? "" : String(Math.abs(subiu))} />} />
+              <KPI icone="ui/nivel" valor={m.nivs.length} rotulo="Testes" />
+            </div>
+          ),
+        },
+        {
+          titulo: "Evolução",
+          conteudo: (
+            <Cartao className="flex-1">
+              <LinhaEvolucao pontos={m.nivs.slice(-10).map((n) => ({ rotulo: dt(n.data), valor: n.nivel }))} max={6} />
+            </Cartao>
+          ),
+        },
+        {
+          titulo: "Por nível",
+          conteudo: (
+            <Cartao className="flex-1">
+              <ul className="flex min-h-0 flex-1 flex-col justify-around gap-1">
+                {NIVEIS.map((x) => {
+                  const ac = m.nivel?.acertos[x.n];
+                  return (
+                    <li key={x.n} className={`flex items-center gap-3 rounded-xl px-2 py-1.5 transition-colors duration-300 ${m.nivel?.nivel === x.n ? "bg-amarelo-claro" : ""}`}>
+                      <Arte nome={x.icone} className="size-7 shrink-0" />
+                      <span className="w-6 text-lg font-extrabold text-roxo">{x.n}</span>
+                      <span className="h-2 flex-1 overflow-hidden rounded-full bg-linha">
+                        <motion.span initial={{ width: 0 }} animate={{ width: `${ac ? (ac[0] / Math.max(1, ac[1])) * 100 : 0}%` }} transition={{ ...MOLA_ENTRADA, delay: x.n * 0.05 }} className="block h-full rounded-full bg-verde" />
+                      </span>
+                      <span className="w-10 text-right text-xs font-bold text-tinta-suave">{ac ? `${ac[0]}/${ac[1]}` : "—"}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </Cartao>
+          ),
+        },
+      ]}
+    />
   );
 }
 
@@ -583,7 +597,7 @@ function Ajustes({ dados, copias, aplicar }: { dados: Progress; copias: Copia[];
           <Seletor valor={tSel?.id ?? ""} onChange={(v) => { setTerr(v); setFase(0); }} opcoes={terrs.map((t) => [t.id, t.nome])} />
           <Seletor valor={String(fase)} onChange={(v) => setFase(Number(v))} opcoes={(tSel?.fases ?? []).map((f, i) => [String(i), f.titulo])} />
         </div>
-        <p className="text-[11px] text-tinta-suave [@media(max-height:700px)]:hidden">As lições antes dela ficam liberadas (estrelas já ganhas são mantidas); dela em diante voltam a ficar por fazer. Figurinhas do álbum não mudam.</p>
+        <p className="text-xs text-tinta-suave [@media(max-height:700px)]:hidden">As lições antes dela ficam liberadas (estrelas já ganhas são mantidas); dela em diante voltam a ficar por fazer. Figurinhas do álbum não mudam.</p>
         <Acao
           cor="roxo"
           onClick={() => tSel && pedir(`Colocar o Pietro em ${nomeFase(chaveFase(tSel.id, fase))}?`, () => aplicar(colocarNaFase(dados, chaveFase(tSel.id, fase)), `Colocado em ${nomeFase(chaveFase(tSel.id, fase))}`))}
@@ -593,7 +607,7 @@ function Ajustes({ dados, copias, aplicar }: { dados: Progress; copias: Copia[];
       </Cartao>
       <Cartao titulo="Outros ajustes">
         {/* uma linha só no celular, para sobrar altura com o rodapé */}
-        <div className="grid grid-cols-4 gap-1.5 [&>button]:px-1.5 [&>button]:text-[11px] [&>button]:leading-tight sm:[&>button]:px-3 sm:[&>button]:text-sm">
+        <div className="grid grid-cols-4 gap-1.5 [&>button]:px-1.5 [&>button]:text-xs [&>button]:leading-tight sm:[&>button]:px-3 sm:[&>button]:text-sm">
           <Acao onClick={() => pedir("Deixar todas as cartas para revisar hoje?", () => aplicar(cartasParaHoje(dados), "Cartas liberadas para hoje"))}>Cartas para hoje</Acao>
           <Acao onClick={() => pedir("Zerar as cartas (todas voltam para a caixa 1)?", () => aplicar(zerarCartas(dados), "Cartas zeradas"))}>Zerar cartas</Acao>
           <Acao onClick={exportar}>Baixar cópia</Acao>
@@ -615,7 +629,7 @@ function Ajustes({ dados, copias, aplicar }: { dados: Progress; copias: Copia[];
             <li key={i} className="flex items-center gap-2 py-1.5 text-sm">
               <div className="min-w-0 flex-1 leading-tight">
                 <div className="truncate font-bold text-roxo">{quando(c.data)}</div>
-                <div className="truncate text-[11px] text-tinta-suave">
+                <div className="truncate text-xs text-tinta-suave">
                   antes de: {c.motivo} · {Object.keys(c.dados?.fases ?? {}).length} lições · {c.dados?.animaisColetados?.length ?? 0} figurinhas
                 </div>
               </div>
