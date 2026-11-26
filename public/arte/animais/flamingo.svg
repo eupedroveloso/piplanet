@@ -1,9 +1,110 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M15.94 30.01H14.75C14.34 30.01 14 29.68 14 29.26C14 28.84 14.34 28.51 14.75 28.51H15.5V19C15.5 18.59 15.84 18.25 16.25 18.25C16.66 18.25 17 18.59 17 19.01V28.96C17 29.54 16.52 30.01 15.94 30.01Z" fill="#D73B9A"/>
-<path d="M11.25 24.5C10.84 24.5 10.5 24.16 10.5 23.75V23.38C10.5 22.62 11.12 22 11.88 22H20.32C20.42 22 20.47 21.94 20.49 21.89C20.51 21.84 20.53 21.77 20.47 21.69L16.55 16.67L17.73 15.75L21.65 20.77C22.05 21.28 22.12 21.96 21.84 22.54C21.56 23.13 20.94 23.5 20.28 23.5H12V23.74C12 24.17 11.66 24.5 11.25 24.5Z" fill="#F837A2"/>
-<path d="M16.26 8H16.4C21.91 8.07 26.54 12.36 26.97 17.77C27.03 18.44 26.5 19 25.84 19H10.71C7.55 19 5 16.45 5 13.29C5 11.82 5.57 10.41 6.59 9.35L10.75 5H10L9.5 3.5L10 2H11.28C12.78 2 14 3.22 14 4.72C14 5.44 13.71 6.14 13.2 6.65L8.22 11.63C7.93 11.92 7.93 12.4 8.22 12.69C8.51 12.98 8.99 12.98 9.28 12.69L12.27 9.71C13.15 8.74 14.79 8 16.26 8Z" fill="#FF6DC6"/>
-<path d="M24.76 16.71C24.42 12.72 21.23 9.58997 17.15 9.58997C14.99 9.58997 13.24 11.34 13.24 13.5C13.24 15.66 14.99 17.41 17.15 17.41C17.23 17.41 24.11 17.4 24.11 17.4C24.49 17.41 24.79 17.09 24.76 16.71Z" fill="#FFB2FF"/>
-<path d="M8.19 2C6.98 2 6 2.98 6 4.19V5.34C6 5.62 6.32 5.79 6.55 5.64L7.15 5.25C7.39 5.09 7.68 5 7.97 5H9L9.5 3.5L9 2H8.19Z" fill="#636363"/>
-<path d="M11.5 4C11.7761 4 12 3.77614 12 3.5C12 3.22386 11.7761 3 11.5 3C11.2239 3 11 3.22386 11 3.5C11 3.77614 11.2239 4 11.5 4Z" fill="#1C1C1C"/>
-<path d="M10 2H9V5H10V2Z" fill="#D3D3D3"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="flamingo-pena" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffd0dc"/>
+      <stop offset="0.55" stop-color="#f7a0b8"/>
+      <stop offset="1" stop-color="#e07090"/>
+    </linearGradient>
+    <linearGradient id="flamingo-asa" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff8eaa"/>
+      <stop offset="0.6" stop-color="#f05a82"/>
+      <stop offset="1" stop-color="#c83a64"/>
+    </linearGradient>
+    <radialGradient id="flamingo-cabeca" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#ffdce5"/>
+      <stop offset="0.65" stop-color="#f9aec2"/>
+      <stop offset="1" stop-color="#e8849e"/>
+    </radialGradient>
+    <linearGradient id="flamingo-perna" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbb4c4"/>
+      <stop offset="1" stop-color="#e07a94"/>
+    </linearGradient>
+    <linearGradient id="flamingo-bico" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff4f0"/>
+      <stop offset="1" stop-color="#f2c8cc"/>
+    </linearGradient>
+    <linearGradient id="flamingo-agua" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#bfe6fa"/>
+      <stop offset="1" stop-color="#6cc0ec"/>
+    </linearGradient>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="140" cy="237" rx="90" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="poca">
+    <ellipse cx="140" cy="230" rx="96" ry="12" fill="url(#flamingo-agua)" stroke="#3a96c8" stroke-width="2"/>
+    <ellipse cx="142" cy="228" rx="22" ry="4" fill="none" stroke="#e8f8ff" stroke-width="2"/>
+    <ellipse cx="142" cy="228" rx="36" ry="7" fill="none" stroke="#e8f8ff" stroke-width="1.5" opacity="0.7"/>
+    <path d="M60 232 q10 -3 20 0 M196 232 q10 -3 20 0" fill="none" stroke="#e8f8ff" stroke-width="1.8"/>
+  </g>
+
+  <g id="camarao" stroke-linejoin="round" stroke-linecap="round">
+    <!-- camarãozinho: a cor rosa vem do que o flamingo come -->
+    <path d="M200 222 C204 212 218 210 224 218 C228 224 224 230 218 228 C214 226 214 222 218 220" fill="none" stroke="#c4502c" stroke-width="7"/>
+    <path d="M200 222 C204 212 218 210 224 218 C228 224 224 230 218 228 C214 226 214 222 218 220" fill="none" stroke="#ff9a6a" stroke-width="4"/>
+    <path d="M208 214 l1 5 M214 212 l0 5 M220 214 l-1 5" stroke="#c4502c" stroke-width="1.2"/>
+    <path d="M200 222 l-6 -10 M201 220 l-8 -4" stroke="#c4502c" stroke-width="1.3"/>
+    <circle cx="202" cy="218" r="1.3" fill="#2b1d16"/>
+  </g>
+
+  <g id="pernas" fill="none" stroke-linejoin="round" stroke-linecap="round">
+    <!-- perna de apoio, com o "joelho ao contrário" (tornozelo) -->
+    <path d="M146 138 L144 184 L146 226" stroke="#b8486e" stroke-width="8.5"/>
+    <path d="M146 138 L144 184 L146 226" stroke="url(#flamingo-perna)" stroke-width="4"/>
+    <ellipse cx="144" cy="184" rx="5" ry="6" fill="#f290a8" stroke="#b8486e" stroke-width="2"/>
+    <path d="M146 226 L132 230 M146 226 L140 232 M146 226 L156 230" stroke="#b8486e" stroke-width="4"/>
+    <path d="M132 230 Q140 234 156 230" stroke="#f290a8" stroke-width="3"/>
+    <!-- perna dobrada para trás -->
+    <path d="M160 138 L166 168 L190 150 L196 156" stroke="#b8486e" stroke-width="8.5"/>
+    <path d="M160 138 L166 168 L190 150 L196 156" stroke="url(#flamingo-perna)" stroke-width="4"/>
+    <ellipse cx="166" cy="168" rx="5" ry="5.5" fill="#f290a8" stroke="#b8486e" stroke-width="2"/>
+    <path d="M196 156 l6 -2 M196 156 l5 4" stroke="#b8486e" stroke-width="3.5"/>
+  </g>
+
+  <g id="pescoco" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- pescoço em S -->
+    <path d="M124 110 C96 114 78 108 80 92 C82 80 98 76 96 62 C95 54 88 50 82 50" stroke="#b8486e" stroke-width="19"/>
+    <path d="M124 110 C96 114 78 108 80 92 C82 80 98 76 96 62 C95 54 88 50 82 50" stroke="url(#flamingo-pena)" stroke-width="14"/>
+    <path d="M84 96 C86 86 94 80 94 70" stroke="#fff0f4" stroke-width="3" opacity="0.85"/>
+    <path d="M100 104 q-6 2 -12 0 M86 86 q-4 -2 -2 -6" stroke="#e07090" stroke-width="1.6"/>
+  </g>
+
+  <g id="corpo" stroke-linejoin="round" stroke-linecap="round">
+    <!-- penas da cauda -->
+    <path d="M196 112 C214 112 230 124 236 138 C222 140 206 134 196 128 Z" fill="url(#flamingo-asa)" stroke="#b8486e" stroke-width="2.5"/>
+    <path d="M100 112 C100 90 128 80 158 82 C188 84 208 98 206 118 C204 138 182 146 156 146 C126 146 100 134 100 112 Z" fill="url(#flamingo-pena)" stroke="#b8486e" stroke-width="2.5"/>
+    <path d="M114 98 Q132 86 156 86" fill="none" stroke="#fff0f4" stroke-width="4" opacity="0.9"/>
+    <!-- asa: coberteiras rosa forte e pontas pretas -->
+    <path d="M206 116 C214 126 224 132 238 132 C230 140 214 142 200 138 Z" fill="#2b2228" stroke="#14100f" stroke-width="2"/>
+    <path d="M136 104 C150 92 184 92 202 104 C212 112 214 124 206 132 C192 140 168 140 150 132 C138 126 132 114 136 104 Z" fill="url(#flamingo-asa)" stroke="#b8486e" stroke-width="2.5"/>
+    <path d="M150 112 q8 6 16 4 M160 122 q8 6 16 4 M176 110 q8 6 16 4 M184 122 q6 4 12 2" fill="none" stroke="#c83a64" stroke-width="1.8"/>
+    <path d="M144 106 Q160 96 184 98" fill="none" stroke="#ffb4c8" stroke-width="3" opacity="0.9"/>
+    <path d="M190 132 C200 134 208 132 214 128 L220 134 C210 140 196 140 186 138 Z" fill="#2b2228"/>
+    <path d="M196 136 l10 -2 M204 136 l10 -3" stroke="#5a4e54" stroke-width="1.4"/>
+  </g>
+
+  <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
+    <circle cx="80" cy="44" r="25" fill="url(#flamingo-cabeca)" stroke="#b8486e" stroke-width="2.5"/>
+    <path d="M62 34 Q70 22 84 21" fill="none" stroke="#fff0f4" stroke-width="3.5" opacity="0.9"/>
+    <!-- bico curvado para baixo com a ponta preta -->
+    <path d="M70 52 C60 50 48 52 42 58 C38 64 40 74 44 82 C48 78 50 72 52 68 C56 64 64 64 72 62 Z" fill="url(#flamingo-bico)" stroke="#9a5a6a" stroke-width="2.2"/>
+    <path d="M41 62 C38 68 40 76 44 82 C48 78 50 72 52 68 C50 64 46 62 41 62 Z" fill="#2b2228" stroke="#14100f" stroke-width="2"/>
+    <path d="M70 58 C62 58 54 60 49 64" fill="none" stroke="#9a5a6a" stroke-width="1.6"/>
+    <path d="M60 54 q-6 0 -10 3" fill="none" stroke="#ffffff" stroke-width="1.8"/>
+    <ellipse cx="72" cy="58" rx="6" ry="4" fill="#f4908a" opacity="0.5"/>
+    <ellipse cx="100" cy="54" rx="6" ry="4" fill="#f4908a" opacity="0.5"/>
+  </g>
+
+  <g id="olhos">
+    <circle cx="74" cy="40" r="9.5" fill="#fff6c8" stroke="#b8486e" stroke-width="1.2"/>
+    <circle cx="96" cy="40" r="9.5" fill="#fff6c8" stroke="#b8486e" stroke-width="1.2"/>
+    <ellipse cx="74.5" cy="40.5" rx="7" ry="8" fill="#2b1d16"/>
+    <ellipse cx="96.5" cy="40.5" rx="7" ry="8" fill="#2b1d16"/>
+    <circle cx="71.5" cy="36.5" r="3.4" fill="#fff"/>
+    <circle cx="77.5" cy="44" r="1.6" fill="#fff"/>
+    <circle cx="93.5" cy="36.5" r="3.4" fill="#fff"/>
+    <circle cx="99.5" cy="44" r="1.6" fill="#fff"/>
+  </g>
 </svg>

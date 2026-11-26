@@ -1,14 +1,112 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M8.00002 22H13L10.12 29.68C10.04 29.87 9.86002 30 9.65002 30H5.72002C5.37002 30 5.13002 29.65 5.25002 29.32L8.00002 22Z" fill="#636363"/>
-<path d="M19 22H24L21.12 29.68C21.04 29.87 20.86 30 20.65 30H16.72C16.37 30 16.13 29.65 16.25 29.32L19 22Z" fill="#636363"/>
-<path d="M29.19 16.5C27.87 14.07 25.57 13 22.36 13H12.97C10.78 13 9 14.78 9 16.97V24.57C10.71 24.93 12.42 25.46 13.76 26.62C14.05 26.87 14.33 27.17 14.56 27.5H25.92C28.18 27.5 30.01 25.67 30.01 23.41V19.68C30 18.53 29.71 17.44 29.19 16.5Z" fill="#636363"/>
-<path d="M11.92 12C11.41 12 11 12.41 11 12.92V13.5237C10.5658 13.7728 10.1829 14.1016 9.87141 14.49H9V12.92C9 12.41 8.59 12 8.08 12C7.39 12 6.94 12.73 7.26 13.35L7.82 14.49H7.19C6.32 14.49 5.62 15.19 5.62 16.06V18.1634C3.57012 18.4582 2 20.2172 2 22.35C2 24.68 3.89 26.57 6.23 26.57H12V27.13C12 27.7 11.85 28.26 11.57 28.75L11.29 29.25C11.1 29.59 11.34 30 11.72 30H16.5C16.78 30 17 29.78 17 29.5V27.5L20 26L22.9897 27.4948C22.9563 27.9086 22.8426 28.3165 22.66 28.69L22.36 29.28C22.2 29.61 22.44 30 22.81 30H27.5C27.78 30 28 29.78 28 29.5V26.9329C28.3763 26.7104 28.7138 26.4292 29 26.102V26.99C29 27.27 29.22 27.49 29.5 27.49C29.78 27.49 30 27.27 30 26.99V23.6985C30.0066 23.6032 30.01 23.507 30.01 23.41V19.68C30 18.53 29.71 17.44 29.19 16.5C27.87 14.07 25.57 13 22.36 13H12.97C12.9271 13 12.8843 13.0007 12.8417 13.002C12.8864 12.4862 12.4831 12 11.92 12Z" fill="#9B9B9B"/>
-<path d="M8.08 12.9C8.07 12.32 7.19 12.3 7.16 12.88C7.15 13.03 7.18 13.19 7.26 13.35L7.82 14.49H8.08V12.9Z" fill="#FF8687"/>
-<path d="M22.33 25.33C22.76 25.76 23 26.34 23 26.95V27.49H17V25H22L22.33 25.33Z" fill="#FF8687"/>
-<path d="M12.84 12.88C12.81 12.3 11.93 12.32 11.92 12.9V14.49H12.18L12.74 13.35C12.82 13.19 12.85 13.03 12.84 12.88Z" fill="#FF8687"/>
-<path d="M3.81 21.7399C3.81 23.0799 4.9 24.1599 6.23 24.1599H13.48C14.82 24.1599 15.9 23.0799 15.9 21.7399C15.9 20.3999 14.81 19.3199 13.48 19.3199H6.23C4.9 19.3199 3.81 20.3999 3.81 21.7399Z" fill="#FF8687"/>
-<path d="M6.45002 21.67L7.01002 22.24C7.25002 22.47 7.63002 22.47 7.87002 22.24C8.11002 22.01 8.11002 21.63 7.87002 21.39L7.30002 20.82C7.07002 20.58 6.69002 20.58 6.45002 20.82C6.21002 21.05 6.21002 21.43 6.45002 21.67Z" fill="#A56953"/>
-<path d="M13.52 21.67L12.95 22.24C12.72 22.47 12.33 22.47 12.1 22.23C11.86 22 11.86 21.62 12.1 21.38L12.67 20.82C12.9 20.58 13.28 20.58 13.52 20.82C13.76 21.05 13.76 21.43 13.52 21.67Z" fill="#A56953"/>
-<path d="M8 18.5C8 18.78 8.22 19 8.5 19C8.78 19 9 18.78 9 18.5V17.87C9 17.59 8.78 17.37 8.5 17.37C8.22 17.37 8 17.59 8 17.87V18.5Z" fill="#1C1C1C"/>
-<path d="M11 18.5C11 18.78 11.22 19 11.5 19C11.78 19 12 18.78 12 18.5V17.87C12 17.59 11.78 17.37 11.5 17.37C11.22 17.37 11 17.59 11 17.87V18.5Z" fill="#1C1C1C"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="hipopotamo-pele" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c2b2c8"/>
+      <stop offset="0.55" stop-color="#9c8aa4"/>
+      <stop offset="1" stop-color="#6e5e7a"/>
+    </linearGradient>
+    <linearGradient id="hipopotamo-tras" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8e7c98"/>
+      <stop offset="1" stop-color="#65566f"/>
+    </linearGradient>
+    <radialGradient id="hipopotamo-cabeca" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#cfc0d4"/>
+      <stop offset="0.65" stop-color="#a694ae"/>
+      <stop offset="1" stop-color="#7e6c88"/>
+    </radialGradient>
+    <linearGradient id="hipopotamo-rosa" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8cdd2"/>
+      <stop offset="1" stop-color="#e0959f"/>
+    </linearGradient>
+    <linearGradient id="hipopotamo-agua" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8fd3f4"/>
+      <stop offset="1" stop-color="#4fb0e3"/>
+    </linearGradient>
+    <clipPath id="hipopotamo-clip-corpo">
+      <path d="M96 112 C110 84 170 80 206 92 C232 100 240 130 236 160 C232 186 214 204 186 204 L110 204 C96 204 90 184 90 160 C90 140 90 124 96 112 Z"/>
+    </clipPath>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="132" cy="237" rx="104" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="patas" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M136 180 L136 226 L158 226 L160 180 Z M196 176 L198 226 L220 226 L222 176 Z" fill="url(#hipopotamo-tras)" stroke="#4e4058" stroke-width="2.5"/>
+    <path d="M104 182 L104 228 L130 228 L130 182 Z M168 182 L168 228 L192 228 L192 182 Z" fill="url(#hipopotamo-pele)" stroke="#4e4058" stroke-width="2.5"/>
+  </g>
+
+  <g id="cauda" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M232 128 C240 134 242 144 240 152" fill="none" stroke="#4e4058" stroke-width="6"/>
+    <path d="M232 128 C240 134 242 144 240 152" fill="none" stroke="#9c8aa4" stroke-width="2.5"/>
+    <path d="M236 150 l4 10 l4 -9 Z" fill="#4e4058"/>
+  </g>
+
+  <g id="corpo" stroke-linejoin="round" stroke-linecap="round">
+    <!-- barril enorme -->
+    <path d="M96 112 C110 84 170 80 206 92 C232 100 240 130 236 160 C232 186 214 204 186 204 L110 204 C96 204 90 184 90 160 C90 140 90 124 96 112 Z" fill="url(#hipopotamo-pele)" stroke="#4e4058" stroke-width="2.5"/>
+    <g clip-path="url(#hipopotamo-clip-corpo)" fill="none">
+      <!-- barriga rosada -->
+      <path d="M88 176 C130 168 180 168 240 172 L240 210 L88 210 Z" fill="url(#hipopotamo-rosa)" opacity="0.55"/>
+      <!-- dobras do pescoço -->
+      <path d="M112 92 C104 120 104 150 112 176 M122 90 C116 118 116 146 122 172" stroke="#e8a8b2" stroke-width="2.2" opacity="0.9"/>
+    </g>
+    <path d="M118 100 Q150 84 190 88" fill="none" stroke="#e2d6e6" stroke-width="4" opacity="0.85"/>
+    <path d="M186 104 C212 102 228 120 226 146" fill="none" stroke="#6e5e7a" stroke-width="2" opacity="0.5"/>
+    <g fill="#6e5e7a" opacity="0.7">
+      <circle cx="160" cy="126" r="1.6"/><circle cx="176" cy="140" r="1.4"/><circle cx="150" cy="150" r="1.6"/><circle cx="204" cy="132" r="1.5"/><circle cx="196" cy="156" r="1.4"/><circle cx="214" cy="116" r="1.4"/>
+    </g>
+  </g>
+
+  <g id="agua" stroke-linejoin="round" stroke-linecap="round">
+    <!-- faixa de água: passa o dia no rio -->
+    <path d="M6 198 Q36 190 66 196 Q98 202 130 194 Q164 186 196 194 Q226 202 250 194 L250 228 Q128 242 6 228 Z" fill="url(#hipopotamo-agua)" opacity="0.96"/>
+    <path d="M6 198 Q36 190 66 196 Q98 202 130 194 Q164 186 196 194 Q226 202 250 194" fill="none" stroke="#2f86b8" stroke-width="2.5"/>
+    <path d="M86 200 Q104 194 124 198 M150 194 Q170 190 190 196 M206 198 Q222 194 236 198" fill="none" stroke="#e6f6fd" stroke-width="3"/>
+    <path d="M92 202 Q160 212 236 200" fill="none" stroke="#2f86b8" stroke-width="1.6" opacity="0.5"/>
+    <path d="M24 212 q10 -4 20 0 M70 218 q10 -4 20 0 M140 214 q10 -4 20 0 M196 218 q10 -4 20 0 M110 226 q8 -3 16 0" fill="none" stroke="#e6f6fd" stroke-width="2" opacity="0.8"/>
+  </g>
+
+  <g id="peixinho" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M36 216 C42 210 52 210 56 216 C52 222 42 222 36 216 Z M56 216 L62 211 L62 221 Z" fill="#ffc935" stroke="#c4901a" stroke-width="1.5"/>
+    <circle cx="42" cy="215" r="1.3" fill="#2b1d16"/>
+  </g>
+
+  <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
+    <!-- orelhinhas -->
+    <ellipse cx="50" cy="56" rx="7" ry="9" fill="url(#hipopotamo-cabeca)" stroke="#4e4058" stroke-width="2.2" transform="rotate(-25 50 56)"/>
+    <ellipse cx="50" cy="57" rx="3.5" ry="5" fill="#e8a0aa" transform="rotate(-25 50 57)"/>
+    <ellipse cx="110" cy="56" rx="7" ry="9" fill="url(#hipopotamo-cabeca)" stroke="#4e4058" stroke-width="2.2" transform="rotate(25 110 56)"/>
+    <ellipse cx="110" cy="57" rx="3.5" ry="5" fill="#e8a0aa" transform="rotate(25 110 57)"/>
+    <!-- crânio com os olhos no alto -->
+    <path d="M80 54 C104 54 118 68 118 88 L118 108 L42 108 L42 88 C42 68 56 54 80 54 Z" fill="url(#hipopotamo-cabeca)" stroke="#4e4058" stroke-width="2.5"/>
+    <circle cx="62" cy="72" r="15" fill="url(#hipopotamo-cabeca)" stroke="#4e4058" stroke-width="2.5"/>
+    <circle cx="98" cy="72" r="15" fill="url(#hipopotamo-cabeca)" stroke="#4e4058" stroke-width="2.5"/>
+    <circle cx="62" cy="73" r="11.5" fill="#f0b8c0"/>
+    <circle cx="98" cy="73" r="11.5" fill="#f0b8c0"/>
+    <path d="M52 62 Q58 57 66 58" fill="none" stroke="#e6dcea" stroke-width="3"/>
+    <!-- focinho largo com narinas no alto -->
+    <path d="M28 116 C28 92 132 92 132 116 C132 144 114 162 80 162 C46 162 28 144 28 116 Z" fill="url(#hipopotamo-cabeca)" stroke="#4e4058" stroke-width="2.5"/>
+    <path d="M40 106 Q56 96 76 96" fill="none" stroke="#e6dcea" stroke-width="3.5" opacity="0.9"/>
+    <ellipse cx="62" cy="106" rx="6" ry="3.5" fill="#4a3a52" transform="rotate(-15 62 106)"/>
+    <ellipse cx="98" cy="106" rx="6" ry="3.5" fill="#4a3a52" transform="rotate(15 98 106)"/>
+    <path d="M56 102 q6 -3 11 0 M93 102 q5 -3 11 0" fill="none" stroke="#c8b8cc" stroke-width="1.5"/>
+    <!-- boca um pouco aberta com duas presinhas arredondadas -->
+    <path d="M46 132 Q80 144 114 132 Q108 158 80 158 Q52 158 46 132 Z" fill="#b84e62" stroke="#4e4058" stroke-width="2.2"/>
+    <path d="M60 150 Q80 158 100 150 Q90 156 80 156 Q70 156 60 150 Z" fill="#f08a9a"/>
+    <path d="M58 150 C56 144 58 138 61 136 C64 140 66 146 65 152 Z" fill="#fffaf0" stroke="#9a8a7a" stroke-width="1.4"/>
+    <path d="M102 150 C104 144 102 138 99 136 C96 140 94 146 95 152 Z" fill="#fffaf0" stroke="#9a8a7a" stroke-width="1.4"/>
+    <g fill="#6e5e7a" opacity="0.8"><circle cx="44" cy="120" r="1.3"/><circle cx="48" cy="126" r="1.3"/><circle cx="40" cy="126" r="1.3"/><circle cx="116" cy="120" r="1.3"/><circle cx="112" cy="126" r="1.3"/><circle cx="120" cy="126" r="1.3"/></g>
+    <ellipse cx="38" cy="116" rx="8" ry="5" fill="#f4908a" opacity="0.55"/>
+    <ellipse cx="122" cy="116" rx="8" ry="5" fill="#f4908a" opacity="0.55"/>
+  </g>
+
+  <g id="olhos">
+    <ellipse cx="62" cy="74" rx="8" ry="9.5" fill="#2b1d16"/>
+    <ellipse cx="98" cy="74" rx="8" ry="9.5" fill="#2b1d16"/>
+    <circle cx="58.8" cy="69.8" r="3.8" fill="#fff"/>
+    <circle cx="65.6" cy="78" r="1.8" fill="#fff"/>
+    <circle cx="94.8" cy="69.8" r="3.8" fill="#fff"/>
+    <circle cx="101.6" cy="78" r="1.8" fill="#fff"/>
+  </g>
 </svg>

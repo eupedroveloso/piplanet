@@ -1,8 +1,124 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M4 15.22C4 15.1 3.89 15 3.76 15.01C2.77 15.13 2 15.97 2 17V18L3 18.5L4 18C4 18 4 15.91 4 15.22Z" fill="#D3D3D3"/>
-<path d="M22.73 24.73L18 20H27V29.69C27 29.86 26.86 30 26.69 30H23.31C23.14 30 23 29.86 23 29.69V25.39C23 25.14 22.9 24.9 22.73 24.73Z" fill="#636363"/>
-<path d="M14 21.92H19V29.3C19 29.69 18.69 30 18.3 30H14.7C14.31 30 14 29.69 14 29.3V21.92Z" fill="#636363"/>
-<path d="M24.82 12H20.01C19.22 12 18.47 11.64 18 11.01C17.09 9.79 15.64 9 14 9H13.85C11.37 9.07 9.42 11.15 9.42 13.63V14H8V12.76C8 12.34 7.65 12 7.23 12C6.66 12 6.29 12.6 6.56 13.11L7.0122 14.0144C5.87502 14.1423 5 15.1065 5 16.27V17.69C5 17.86 4.86 18 4.68 18H2V20.5C2 21.88 3.11 23 4.5 23H10.3608L8.04002 29.12C7.88002 29.54 8.20002 30 8.65002 30H11.99C12.4 30 12.77 29.75 12.92 29.36L14.4157 25.4143C15.5403 25.7942 16.7459 26 18 26C20.2774 26 22.3908 25.3215 24.1535 24.1535L24.73 24.73C24.9 24.9 25 25.14 25 25.39V29.69C25 29.86 25.14 30 25.31 30H29.68C29.85 30 29.99 29.86 29.99 29.69V22H30V17.17C30 14.32 27.68 12 24.82 12Z" fill="#9B9B9B"/>
-<path d="M3.5 21.03C3.22 21.03 3 20.81 3 20.53V19.98C3 19.7 3.22 19.48 3.5 19.48C3.78 19.48 4 19.7 4 19.98V20.53C4 20.8 3.78 21.03 3.5 21.03Z" fill="#636363"/>
-<path d="M6.5 18C6.77614 18 7 17.7761 7 17.5C7 17.2239 6.77614 17 6.5 17C6.22386 17 6 17.2239 6 17.5C6 17.7761 6.22386 18 6.5 18Z" fill="#1C1C1C"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="rinoceronte-pele" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#cdc7bf"/>
+      <stop offset="0.55" stop-color="#a59f96"/>
+      <stop offset="1" stop-color="#7b746b"/>
+    </linearGradient>
+    <linearGradient id="rinoceronte-tras" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#958f86"/>
+      <stop offset="1" stop-color="#6c665e"/>
+    </linearGradient>
+    <radialGradient id="rinoceronte-cabeca" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#d6d0c8"/>
+      <stop offset="0.65" stop-color="#aca69d"/>
+      <stop offset="1" stop-color="#857e75"/>
+    </radialGradient>
+    <linearGradient id="rinoceronte-chifre" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e8ddc8"/>
+      <stop offset="0.6" stop-color="#b8a684"/>
+      <stop offset="1" stop-color="#857256"/>
+    </linearGradient>
+    <linearGradient id="rinoceronte-ave" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#b08a62"/>
+      <stop offset="1" stop-color="#6e4e30"/>
+    </linearGradient>
+    <clipPath id="rinoceronte-clip-corpo">
+      <path d="M98 116 C112 92 140 86 160 94 C180 90 210 96 222 112 C234 128 234 154 226 170 C218 186 204 192 186 192 L122 192 C102 192 92 178 92 154 C92 136 92 126 98 116 Z"/>
+    </clipPath>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="140" cy="237" rx="100" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="patas-tras" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M136 176 L136 232 L156 232 L158 176 Z" fill="url(#rinoceronte-tras)" stroke="#4e4840" stroke-width="2.5"/>
+    <path d="M204 168 C218 176 222 192 218 206 L218 232 L236 232 L236 202 C240 186 232 172 218 164 Z" fill="url(#rinoceronte-tras)" stroke="#4e4840" stroke-width="2.5"/>
+    <path d="M139 230 q3 -5 6 0 M147 230 q3 -5 6 0 M221 230 q3 -5 6 0 M229 230 q3 -5 6 0" fill="#d8d0c0" stroke="#7a7266" stroke-width="1.4"/>
+    <path d="M138 204 q9 3 18 0 M220 206 q7 3 14 0" fill="none" stroke="#4e4840" stroke-width="1.5" opacity="0.6"/>
+  </g>
+
+  <g id="cauda" fill="none" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M226 132 C236 142 238 156 236 170" stroke="#4e4840" stroke-width="5"/>
+    <path d="M226 132 C236 142 238 156 236 170" stroke="#a59f96" stroke-width="2"/>
+    <path d="M236 166 l-3 10 M236 166 l0 11 M236 166 l3 10" stroke="#3a342e" stroke-width="2"/>
+  </g>
+
+  <g id="patas-frente" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M104 170 C102 194 104 212 104 232 L130 232 C130 212 132 194 132 170 Z" fill="url(#rinoceronte-pele)" stroke="#4e4840" stroke-width="2.5"/>
+    <path d="M180 166 C204 162 214 182 210 200 L210 232 L188 232 L188 206 C184 196 180 184 180 166 Z" fill="url(#rinoceronte-pele)" stroke="#4e4840" stroke-width="2.5"/>
+    <path d="M107 230 q4 -6 8 0 Z M116 230 q4 -6 8 0 Z M125 230 q2 -5 4 0 Z M191 230 q4 -6 8 0 Z M200 230 q4 -6 8 0 Z" fill="#e6dcc8" stroke="#7a7266" stroke-width="1.4"/>
+    <path d="M106 206 q12 4 24 0 M106 214 q12 4 24 0 M190 208 q9 3 18 0 M190 216 q9 3 18 0" fill="none" stroke="#4e4840" stroke-width="1.6" opacity="0.6"/>
+    <path d="M110 200 L110 218 M193 194 L193 204" stroke="#ece6de" stroke-width="2.5" opacity="0.7"/>
+  </g>
+
+  <g id="corpo" stroke-linejoin="round" stroke-linecap="round">
+    <!-- corpo pesado com corcova no pescoço -->
+    <path d="M98 116 C112 92 140 86 160 94 C180 90 210 96 222 112 C234 128 234 154 226 170 C218 186 204 192 186 192 L122 192 C102 192 92 178 92 154 C92 136 92 126 98 116 Z" fill="url(#rinoceronte-pele)" stroke="#4e4840" stroke-width="2.5"/>
+    <g clip-path="url(#rinoceronte-clip-corpo)" fill="none">
+      <!-- dobras da pele em placas -->
+      <path d="M140 92 C130 120 130 160 140 196" stroke="#4e4840" stroke-width="2.5"/>
+      <path d="M142 94 C134 122 134 160 144 196" stroke="#d8d2ca" stroke-width="2" opacity="0.7"/>
+      <path d="M190 96 C178 120 176 156 188 196" stroke="#4e4840" stroke-width="2.5"/>
+      <path d="M192 98 C182 122 180 156 192 196" stroke="#d8d2ca" stroke-width="2" opacity="0.7"/>
+      <path d="M92 182 Q160 174 232 182 L232 200 L92 200 Z" fill="#7b746b" opacity="0.35"/>
+    </g>
+    <path d="M110 106 Q132 92 156 96 M168 96 Q196 94 214 108" fill="none" stroke="#e6e0d8" stroke-width="3.5" opacity="0.85"/>
+    <!-- textura grossa -->
+    <g fill="#7b746b" opacity="0.7">
+      <circle cx="160" cy="130" r="1.6"/><circle cx="168" cy="146" r="1.4"/><circle cx="156" cy="160" r="1.6"/><circle cx="210" cy="140" r="1.6"/><circle cx="204" cy="160" r="1.4"/><circle cx="118" cy="140" r="1.4"/><circle cx="112" cy="160" r="1.6"/><circle cx="170" cy="170" r="1.4"/><circle cx="218" cy="124" r="1.3"/>
+    </g>
+  </g>
+
+  <g id="pica-boi" stroke-linejoin="round" stroke-linecap="round">
+    <!-- pica-boi-de-bico-vermelho nas costas -->
+    <path d="M196 92 L210 96 L206 100 Z" fill="#6e4e30" stroke="#3e2a18" stroke-width="1.5"/>
+    <path d="M166 92 C166 82 176 78 184 82 C192 84 198 90 198 96 C190 100 172 100 166 92 Z" fill="url(#rinoceronte-ave)" stroke="#3e2a18" stroke-width="1.8"/>
+    <path d="M178 88 Q186 86 192 92" fill="none" stroke="#5a3e24" stroke-width="1.5"/>
+    <circle cx="168" cy="82" r="7" fill="url(#rinoceronte-ave)" stroke="#3e2a18" stroke-width="1.8"/>
+    <path d="M162 80 L154 82 L162 84 Z" fill="#e2483a" stroke="#9a2a20" stroke-width="1.2"/>
+    <circle cx="166" cy="81" r="2.6" fill="#ffd24a"/>
+    <circle cx="166" cy="81" r="1.5" fill="#2b1d16"/>
+    <circle cx="165.4" cy="80.4" r="0.5" fill="#fff"/>
+    <path d="M176 98 l-1 4 M182 98 l0 4" stroke="#3e2a18" stroke-width="1.4"/>
+  </g>
+
+  <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
+    <!-- orelhas tubulares com franjinha -->
+    <path d="M46 78 C38 70 34 56 38 46 C46 48 54 58 58 70 Z" fill="url(#rinoceronte-cabeca)" stroke="#4e4840" stroke-width="2.5"/>
+    <path d="M44 66 C42 58 42 52 43 50 C47 54 50 60 52 66 Z" fill="#6c665e"/>
+    <path d="M38 46 l-2 -4 M41 46 l0 -5 M44 47 l2 -4" stroke="#4e4840" stroke-width="1.6"/>
+    <path d="M104 78 C112 70 116 56 112 46 C104 48 96 58 92 70 Z" fill="url(#rinoceronte-tras)" stroke="#4e4840" stroke-width="2.5"/>
+    <path d="M106 66 C108 58 108 52 107 50 C103 54 100 60 98 66 Z" fill="#5a544c"/>
+    <path d="M112 46 l2 -4 M109 46 l0 -5 M106 47 l-2 -4" stroke="#4e4840" stroke-width="1.6"/>
+    <!-- cabeça larga -->
+    <path d="M75 62 C104 62 120 80 120 106 C120 124 114 136 108 144 L42 144 C36 136 30 124 30 106 C30 80 46 62 75 62 Z" fill="url(#rinoceronte-cabeca)" stroke="#4e4840" stroke-width="2.5"/>
+    <path d="M46 84 Q56 68 74 66" fill="none" stroke="#ece6de" stroke-width="3.5" opacity="0.9"/>
+    <path d="M36 118 q6 4 10 10 M114 118 q-6 4 -10 10" fill="none" stroke="#6c665e" stroke-width="1.6" opacity="0.7"/>
+    <!-- lábio quadrado e largo (rinoceronte-branco) -->
+    <path d="M40 138 C40 128 110 128 110 138 L110 154 C110 166 98 172 75 172 C52 172 40 166 40 154 Z" fill="url(#rinoceronte-pele)" stroke="#4e4840" stroke-width="2.5"/>
+    <path d="M50 134 Q62 130 74 131" fill="none" stroke="#e6e0d8" stroke-width="2.5"/>
+    <path d="M54 146 q4 -5 9 -1 M87 145 q5 -4 9 1" fill="none" stroke="#3a342e" stroke-width="2.6"/>
+    <path d="M50 162 L100 162" stroke="#4e4840" stroke-width="2.2"/>
+    <path d="M60 162 Q75 167 90 162" fill="none" stroke="#4e4840" stroke-width="2"/>
+    <!-- dois chifres de queratina (mesmo material das unhas): o da frente maior -->
+    <path d="M84 134 C86 122 92 110 102 102 C103 114 102 124 102 134 Z" fill="url(#rinoceronte-chifre)" stroke="#6a5a40" stroke-width="2.2"/>
+    <path d="M92 124 q4 -1 8 0 M95 114 q3 -1 6 0" fill="none" stroke="#8a7656" stroke-width="1.3"/>
+    <path d="M60 136 C60 120 62 100 68 78 C76 94 84 116 90 136 Z" fill="url(#rinoceronte-chifre)" stroke="#6a5a40" stroke-width="2.5"/>
+    <path d="M65 126 C65 112 66 100 68 88" fill="none" stroke="#fbf4e4" stroke-width="2.5" opacity="0.9"/>
+    <path d="M63 126 q12 -2 24 0 M64 112 q9 -2 17 0 M66 98 q6 -2 10 0" fill="none" stroke="#8a7656" stroke-width="1.4" opacity="0.8"/>
+    <ellipse cx="44" cy="118" rx="7" ry="4.5" fill="#f4908a" opacity="0.5"/>
+    <ellipse cx="106" cy="118" rx="7" ry="4.5" fill="#f4908a" opacity="0.5"/>
+  </g>
+
+  <g id="olhos">
+    <ellipse cx="50" cy="98" rx="9" ry="10.5" fill="#2b1d16"/>
+    <ellipse cx="100" cy="98" rx="9" ry="10.5" fill="#2b1d16"/>
+    <circle cx="46.5" cy="93.5" r="4.2" fill="#fff"/>
+    <circle cx="54" cy="102.5" r="2" fill="#fff"/>
+    <circle cx="96.5" cy="93.5" r="4.2" fill="#fff"/>
+    <circle cx="104" cy="102.5" r="2" fill="#fff"/>
+    <path d="M41 84 q4 -4 9 -3 M109 84 q-4 -4 -9 -3" fill="none" stroke="#4e4840" stroke-width="1.8" stroke-linecap="round"/>
+  </g>
 </svg>
