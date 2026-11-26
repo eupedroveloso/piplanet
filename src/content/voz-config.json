@@ -1,5 +1,5 @@
 {
-  "modo": "sistema",
+  "modo": "ia",
   "modelo": "microsoft/mai-voice-2.1",
   "voz": "pt-BR-Caio:MAI-Voice-2.1",
   "versao": "ptbr1"
