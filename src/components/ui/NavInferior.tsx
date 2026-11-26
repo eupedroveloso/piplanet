@@ -4,15 +4,19 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { useState } from "react";
+import { usePerfil } from "@/lib/perfil";
 import { speak } from "@/lib/speech";
 import { Arte } from "./Arte";
 import { MOLA_ENTRADA, MOLA_TOQUE } from "./movimento";
+
+/** Só para os adultos (Pedro e Gabi): o painel de acompanhamento, que é a tela inicial deles. */
+const PAINEL = { href: "/painel", rotulo: "Painel", icone: "ui/nivel", fala: "Aprendizado do Pietro" };
 
 const ITENS = [
   { href: "/", rotulo: "Jornada", icone: "ui/mapa", fala: "Mapa" },
   { href: "/cartas", rotulo: "Cartas", icone: "ui/cartas", fala: "Cartas dos bichos" },
   { href: "/album", rotulo: "Álbum", icone: "ui/album", fala: "Álbum de bichos" },
-  { href: "/nivelamento", rotulo: "Nível", icone: "ui/nivel", fala: "Meu nível de leitura" },
+  { href: "/nivelamento", rotulo: "Nível", icone: "ui/escada", fala: "Meu nível de leitura" },
 ];
 
 const MotionLink = motion.create(Link);
@@ -23,7 +27,9 @@ const MotionLink = motion.create(Link);
  */
 export function NavInferior() {
   const path = usePathname();
-  const ativoRota = ITENS.find((it) => (it.href === "/" ? path === "/" : path.startsWith(it.href)))?.href;
+  const perfil = usePerfil();
+  const itens = perfil.temSenha ? [PAINEL, ...ITENS] : ITENS;
+  const ativoRota = itens.find((it) => (it.href === "/" ? path === "/" : path.startsWith(it.href)))?.href;
   const [tocado, setTocado] = useState<{ href: string; em: string } | null>(null);
   // O item tocado só vale enquanto a rota não muda
   const ativo = tocado && tocado.em === path ? tocado.href : ativoRota;
@@ -36,7 +42,7 @@ export function NavInferior() {
       aria-label="Navegação"
       className="sticky bottom-[max(env(safe-area-inset-bottom),0.75rem)] z-20 mx-auto mt-auto mb-[max(env(safe-area-inset-bottom),0.75rem)] flex w-fit max-w-[calc(100vw-1rem)] gap-0.5 rounded-[1.75rem] p-1 vidro sm:gap-1 sm:rounded-full"
     >
-      {ITENS.map((it) => {
+      {itens.map((it) => {
         const eh = ativo === it.href;
         return (
           <MotionLink

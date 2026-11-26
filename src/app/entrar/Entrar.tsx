@@ -38,7 +38,7 @@ export function Entrar() {
     if (r?.ok) {
       speak(`Oi, ${p.nome}!`);
       // recarrega a navegação inteira para o progresso do perfil certo ser lido
-      window.location.assign("/");
+      window.location.assign(p.temSenha ? "/painel" : "/");
       return;
     }
     if (!p.temSenha) {

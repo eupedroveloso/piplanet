@@ -8,6 +8,8 @@ Visual infantil e ilustrado: ilustração flat em tons pastel, formas arredondad
 
 ## Regras
 
+**REGRA DURA: NENHUMA TELA ROLA (one-page).** Toda tela cabe em 100dvh, em todos os estados (fim de fase, dica, ficha aberta, carta virada, resultados), de 360x640 ao tablet deitado. Página: `h-dvh overflow-hidden flex flex-col`; áreas internas `flex-1 min-h-0`; tamanhos que dependem da altura usam `dvh` (ex.: `size-[min(9rem,22dvh)]`); conteúdo centralizado usa `justify-center-safe`; telas baixas compactam com `sm:[@media(max-height:820px)]:`. Listas longas viram páginas (setas + deslizar + bolinhas), nunca rolagem. Nada de `min-h-dvh`.
+
 **PRINCÍPIO: a ferramenta é para quem NÃO SABE LER.** Todo botão e toda instrução funcionam sem leitura: ícone grande e claro + fala da Juju ao tocar ou ao aparecer. Texto pode existir, mas nunca é o único meio de entender algo (ícone e voz vêm primeiro).
 
 0. **REGRA DURA: tudo tem micro-interação.** Todo elemento tocável responde a hover, toque e resultado; toda entrada, saída ou mudança de estado é animada. Receitas e limites (suave, previsível, um foco por vez) em `.claude/skills/motion/SKILL.md`.

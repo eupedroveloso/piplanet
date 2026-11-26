@@ -19,6 +19,7 @@ App de alfabetização para uma criança com autismo leve e hiperfoco em animais
 
 ## Princípios
 
+00. **REGRA DURA: nenhuma tela rola.** Tudo é one-page e cabe em 100dvh em TODOS os estados (fim, dica, ficha, carta virada, resultados), de 360x640 a 1024x768. `h-dvh overflow-hidden` + `flex-1 min-h-0`; alturas em `dvh`; `justify-center-safe`; listas longas viram páginas (setas, deslizar, bolinhas). Nunca `min-h-dvh`.
 0. **A ferramenta é para quem NÃO SABE LER.** Todo botão e toda instrução funcionam sem leitura: ícone grande e claro + fala da Juju ao tocar ou ao aparecer. Rótulos podem existir, mas ícone e voz vêm primeiro; texto nunca é o único meio de entender algo.
 
 1. **Uma ação principal por tela**, grande e óbvia. O resto em segundo plano.
@@ -51,3 +52,6 @@ App de alfabetização para uma criança com autismo leve e hiperfoco em animais
 - 2026-11-26 (UX mobile): teste sempre 360x800, 390x844, 768x1024 e 1280x800. Palavra grande de leitura nunca usa tamanho fixo: `fonteQueCabe`/`fonteQueCabeEm` (RI·NO·CE·RON·TE numa linha em 360 px). Peças/casinhas são mobile primeiro (`md`/`sm`/`xs`) e crescem em `sm:`.
 - 2026-11-26: no celular, rodapé de 4 itens empilha ícone + rótulo pequeno; cabeçalho esconde a saudação (vem pela voz do avatar) e empilha os botões da direita; placas projetadas sobre o 3D são "presas" na tela (`data-prender`) para não saírem pela borda.
 - 2026-11-26: no WebKit (Safari/iPad e o portal) `backface-visibility` falha quando o contexto 3D é achatado e o verso da carta aparece espelhado. Em cartas que viram, escolha a face visível pelo ângulo (useTransform) em vez de depender de backface.
+- 2026-11-26: REGRA DURA do dono: nenhuma tela rola no celular. O álbum (5692 px) virou uma página por território com grade de linhas `1fr`, setas com voz, deslizar e bolinhas. Meça cada ESTADO, não só o inicial, em 360x640, 360x800, 390x844, 768x1024 e 1024x768 (script que compara scrollHeight e procura elementos fora da janela).
+- 2026-11-26: `justify-center` com conteúdo maior que o pai empurra o excesso para CIMA (some atrás do topo, sem rolagem para ver). Use `justify-center-safe`.
+- 2026-11-26: `@custom-variant` e `@utility` não são gerados pelo plugin `@tailwindcss/turbopack` deste projeto. Use variantes arbitrárias (`sm:[@media(max-height:820px)]:`) e classes em `@layer components`.

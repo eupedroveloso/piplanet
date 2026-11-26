@@ -13,6 +13,7 @@ import { fraseDe } from "../src/content/frases";
 import { JOGOS, TERRITORIOS } from "../src/content/jornada";
 import { PAISES } from "../src/content/paises";
 import { PERFIS } from "../src/content/perfis";
+import { NIVEIS_JORNADA } from "../src/content/niveis";
 
 const BASE = process.env.BASE_URL ?? "http://localhost:3100";
 const falas = new Set<string>();
@@ -55,6 +56,12 @@ for (const p of PERFIS) {
   add(`${p.nome}. Digite a senha.`);
   add(`Oi, ${p.nome}! Toque nos bichos do mapa para jogar.`);
 }
+for (const nv of NIVEIS_JORNADA) {
+  add(nv.fala);
+  add(`Você subiu de nível! ${nv.fala}`);
+  add(nv.nome);
+}
+add("Você subiu de nível!");
 for (const n of [1, 2, 3]) add(`Parabéns! Você ganhou ${n} ${n === 1 ? "estrela" : "estrelas"}!`);
 for (const f of NIVEIS_FALA) {
   add(f);

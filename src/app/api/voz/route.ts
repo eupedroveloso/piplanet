@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { gerarVoz, VOZ_MODELO, VOZ_VOZ } from "@/lib/voz";
+import { gerarVoz, VOZ_MODELO, VOZ_VERSAO, VOZ_VOZ } from "@/lib/voz";
 
 /**
  * VOZ DA JUJU
@@ -26,7 +26,7 @@ export async function GET(req: Request) {
   const texto = normalizar(new URL(req.url).searchParams.get("t") ?? "");
   if (!texto) return new Response("texto vazio", { status: 400 });
 
-  const chave = createHash("sha256").update(`${VOZ_MODELO}|${VOZ_VOZ}|${texto}`).digest("hex");
+  const chave = createHash("sha256").update(`${VOZ_MODELO}|${VOZ_VOZ}|${VOZ_VERSAO}|${texto}`).digest("hex");
   const temBanco = !!(process.env.DATABASE_URL_POOLED || process.env.DATABASE_URL);
   const db = temBanco ? (await import("@/lib/db")).db : null;
 

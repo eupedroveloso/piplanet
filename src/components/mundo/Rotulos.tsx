@@ -2,7 +2,7 @@
 
 import { liberadas } from "@/lib/progress";
 
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import * as THREE from "three";
@@ -72,6 +72,7 @@ export function Rotulos({
   progresso,
   liberados,
   onFocar,
+  caminhada,
 }: {
   ilha: Ilha;
   camRef: RefObject<THREE.Camera | null>;
@@ -81,7 +82,10 @@ export function Rotulos({
   progresso: Progress;
   liberados: Record<TerritorioId, boolean>;
   onFocar: (t: TerritorioId) => void;
+  /** Caminho sendo trilhado (Cinzel): a mãozinha viaja na ponta e o nó novo acende no fim. */
+  caminhada?: { andando: boolean; acender: string | null; cabeca: RefObject<THREE.Vector3 | null> };
 }) {
+  const reduzir = useReducedMotion();
   const host = useRef<HTMLDivElement>(null);
   const jogaveis = ilha.biomas.filter((b) => b.jogavel);
   const ancoras = useMemo(
@@ -92,18 +96,26 @@ export function Rotulos({
       ]),
     [ilha],
   );
+  const cabeca = caminhada?.cabeca;
   const dinamicas = useMemo(
     () => (chave: string, alvo: THREE.Vector3) => {
+      if (chave === "caminho") {
+        if (!cabeca?.current) return false;
+        alvo.copy(cabeca.current);
+        alvo.y += 0.25;
+        return true;
+      }
       if (chave !== "juju" || !balaoRef.current) return false;
       balaoRef.current.getWorldPosition(alvo);
       alvo.y -= 1.5;
       return true;
     },
-    [balaoRef],
+    [balaoRef, cabeca],
   );
   useProjecao(host, camRef, ancoras, dinamicas);
 
   const atual = faseAtual(progresso);
+  const andando = !!caminhada?.andando;
 
   return (
     <div ref={host} className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -120,12 +132,28 @@ export function Rotulos({
           </div>
         ))}
 
+      {/* Mãozinha viajando na ponta do caminho que se desenha (sem ela com movimento reduzido: aparece só no fim) */}
+      {foco && andando && !reduzir && (
+        <div data-ancora="caminho" className="absolute top-0 left-0">
+          <motion.span initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} transition={MOLA_TOQUE} className="block">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/arte/ui/mao.svg" alt="" className="size-9 -translate-y-[29px] drop-shadow" draggable={false} />
+          </motion.span>
+        </div>
+      )}
+
       {foco &&
         ilha.fases
           .filter((f) => f.territorio === foco)
           .map(({ fase: f }) => (
             <div key={`${foco}-${f}`} data-ancora={`${foco}-${f}`} className="pointer-events-auto absolute top-0 left-0">
-              <NoFase territorio={foco} fase={f} progresso={progresso} atual={atual?.t === foco && atual.i === f} />
+              <NoFase
+                territorio={foco}
+                fase={f}
+                progresso={progresso}
+                atual={!andando && atual?.t === foco && atual.i === f}
+                acendeu={!reduzir && caminhada?.acender === `${foco}-${f}`}
+              />
             </div>
           ))}
     </div>
@@ -208,7 +236,20 @@ function capasDoTerritorio(id: TerritorioId) {
   return capas;
 }
 
-function NoFase({ territorio, fase, progresso, atual }: { territorio: TerritorioId; fase: number; progresso: Progress; atual: boolean }) {
+function NoFase({
+  territorio,
+  fase,
+  progresso,
+  atual,
+  acendeu = false,
+}: {
+  territorio: TerritorioId;
+  fase: number;
+  progresso: Progress;
+  atual: boolean;
+  /** O caminho acabou de chegar aqui: um pulso extra de "acendeu". */
+  acendeu?: boolean;
+}) {
   const router = useRouter();
   const [balanca, setBalanca] = useState(false);
   const t = TERRITORIOS.find((x) => x.id === territorio)!;
@@ -264,6 +305,15 @@ function NoFase({ territorio, fase, progresso, atual }: { territorio: Territorio
           className="pointer-events-none absolute bottom-0 left-1/2 size-14 -translate-x-1/2 rounded-full ring-4 ring-amarelo"
           animate={{ scale: [1, 1.45], opacity: [0.9, 0] }}
           transition={{ duration: 1.4, repeat: Infinity, ease: "easeOut" }}
+        />
+      )}
+      {acendeu && (
+        <motion.span
+          aria-hidden
+          className="pointer-events-none absolute bottom-0 left-1/2 size-14 -translate-x-1/2 rounded-full bg-amarelo/40 ring-4 ring-amarelo"
+          initial={{ scale: 1, opacity: 0.9 }}
+          animate={{ scale: 1.8, opacity: 0 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
         />
       )}
       <span

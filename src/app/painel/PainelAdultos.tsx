@@ -8,7 +8,7 @@ import { TERRITORIOS, chaveFase } from "@/content/jornada";
 import { NIVEIS } from "@/games/nivelamento/Nivelamento";
 import type { Progress } from "@/lib/progress";
 import { trocarPerfil, usePerfil } from "@/lib/perfil";
-import { Arte, BotaoRedondo, BotaoRedondoLink, MOLA_ENTRADA, MOLA_TOQUE } from "@/components/ui";
+import { Arte, BotaoRedondo, MOLA_ENTRADA, MOLA_TOQUE, NavInferior } from "@/components/ui";
 import {
   carregar, cartasParaHoje, colocarNaFase, duracao, metricas, nomeAnimal, nomeFase, nomeJogo, quando, salvar,
   zerarCartas, zerarTudo, type Copia,
@@ -69,14 +69,11 @@ export function PainelAdultos() {
   const m = dados ? metricas(dados, agora) : null;
 
   return (
-    <div className="flex h-dvh flex-col gap-3 overflow-hidden px-3 pt-[max(env(safe-area-inset-top),0.75rem)] pb-[max(env(safe-area-inset-bottom),0.75rem)] sm:px-6">
+    <div className="flex h-dvh flex-col gap-2 overflow-hidden px-3 sm:gap-3 pt-[max(env(safe-area-inset-top),0.75rem)] sm:px-6">
       {/* Topo */}
       <div className="flex items-center gap-2">
-        <BotaoRedondoLink href="/" aria-label="Voltar ao mapa">
-          <Arte nome="ui/voltar" className="size-7" />
-        </BotaoRedondoLink>
         <div className="flex min-w-0 flex-1 items-center gap-2">
-          <Arte nome="animais/leao" className="size-9 shrink-0" />
+          <Arte nome="animais/leao" className="hidden size-9 shrink-0 sm:block" />
           <div className="min-w-0 leading-tight">
             <h1 className="truncate text-lg font-extrabold text-roxo sm:text-xl">Aprendizado do Pietro</h1>
             <p className="truncate text-xs text-tinta-suave">
@@ -85,8 +82,14 @@ export function PainelAdultos() {
           </div>
         </div>
         <BotaoRedondo aria-label="Atualizar" onClick={recarregar}>
-          <motion.span animate={carregando ? { rotate: 360 } : { rotate: 0 }} transition={carregando ? { repeat: Infinity, duration: 1, ease: "linear" } : { duration: 0 }}>
-            <Arte nome="ui/brilho" className="size-6" />
+          {/* ↻ diz "atualizar" melhor que um brilho; gira enquanto carrega */}
+          <motion.span
+            aria-hidden
+            animate={carregando ? { rotate: 360 } : { rotate: 0 }}
+            transition={carregando ? { repeat: Infinity, duration: 1, ease: "linear" } : MOLA_TOQUE}
+            className="grid place-items-center text-2xl leading-none font-extrabold text-roxo"
+          >
+            ↻
           </motion.span>
         </BotaoRedondo>
         <BotaoRedondo aria-label="Trocar de perfil" onClick={trocarPerfil}>
@@ -101,9 +104,11 @@ export function PainelAdultos() {
             key={a.id}
             type="button"
             onClick={() => setAba(a.id)}
+            aria-current={aba === a.id ? "page" : undefined}
+            whileHover={{ y: -1 }}
             whileTap={{ scale: 0.92 }}
             transition={MOLA_TOQUE}
-            className="relative flex flex-col items-center gap-0.5 rounded-md py-1.5 text-[11px] font-bold text-roxo sm:flex-row sm:justify-center sm:gap-2 sm:text-sm"
+            className="relative flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-md py-1 text-[11px] font-bold text-roxo sm:flex-row sm:gap-2 sm:text-sm"
           >
             {aba === a.id && <motion.span layoutId="aba-painel" className="absolute inset-0 rounded-md bg-amarelo-claro" transition={MOLA_ENTRADA} />}
             <Arte nome={a.icone} className="relative size-5" />
@@ -113,9 +118,18 @@ export function PainelAdultos() {
       </nav>
 
       {!temBanco && (
-        <p className="rounded-md bg-amarelo-claro px-3 py-1.5 text-xs text-tinta">
-          Sem conexão com o banco: mostrando só o que o Pietro jogou <b>neste aparelho</b>.
-        </p>
+        <motion.p
+          initial={{ opacity: 0, y: -4 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={MOLA_ENTRADA}
+          title="Sem conexão com o banco: mostrando só o que o Pietro jogou neste aparelho."
+          className="flex items-center gap-1.5 truncate rounded-md bg-amarelo-claro px-2.5 py-1 text-[11px] text-tinta sm:text-xs"
+        >
+          <Arte nome="ui/cadeado" className="size-4 shrink-0" />
+          <span className="truncate">
+            Sem banco: só o que o Pietro jogou <b>neste aparelho</b>.
+          </span>
+        </motion.p>
       )}
 
       {/* Conteúdo */}
@@ -158,6 +172,7 @@ export function PainelAdultos() {
           )}
         </AnimatePresence>
       </div>
+      <NavInferior />
     </div>
   );
 }
@@ -177,8 +192,8 @@ function Cartao({ titulo, children, className = "" }: { titulo?: string; childre
 
 function Numero({ valor, rotulo, icone, extra }: { valor: ReactNode; rotulo: string; icone: string; extra?: ReactNode }) {
   return (
-    <div className="flex items-center gap-2 rounded-lg bg-branco p-2 shadow-suave sm:p-2.5">
-      <Arte nome={icone} className="size-8 shrink-0" />
+    <div className="flex items-center gap-2 rounded-lg bg-branco p-1.5 shadow-suave sm:p-2.5">
+      <Arte nome={icone} className="size-7 shrink-0 sm:size-8" />
       <div className="min-w-0 leading-tight">
         <div className="truncate text-lg font-extrabold text-roxo">{valor}</div>
         <div className="truncate text-[11px] text-tinta-suave">{rotulo}</div>
@@ -199,13 +214,13 @@ function Paginado<T>({ itens, porPagina, render, vazio }: { itens: T[]; porPagin
       <ul className="flex flex-col divide-y divide-linha/60">{itens.slice(p * porPagina, (p + 1) * porPagina).map(render)}</ul>
       {total > 1 && (
         <div className="mt-auto flex items-center justify-center gap-3 pt-1">
-          <BotaoRedondo aria-label="Anterior" onClick={() => setPag(Math.max(0, p - 1))} className="size-9" disabled={p === 0}>
+          <BotaoRedondo aria-label="Anterior" onClick={() => setPag(Math.max(0, p - 1))} className="disabled:opacity-40" disabled={p === 0}>
             <span className="text-lg font-extrabold text-roxo">‹</span>
           </BotaoRedondo>
           <span className="text-xs font-bold text-tinta-suave">
             {p + 1} / {total}
           </span>
-          <BotaoRedondo aria-label="Próxima" onClick={() => setPag(Math.min(total - 1, p + 1))} className="size-9" disabled={p >= total - 1}>
+          <BotaoRedondo aria-label="Próxima" onClick={() => setPag(Math.min(total - 1, p + 1))} className="disabled:opacity-40" disabled={p >= total - 1}>
             <span className="text-lg font-extrabold text-roxo">›</span>
           </BotaoRedondo>
         </div>
@@ -217,10 +232,10 @@ function Paginado<T>({ itens, porPagina, render, vazio }: { itens: T[]; porPagin
 function Barras({ dados }: { dados: { rotulo: string; min: number }[] }) {
   const max = Math.max(10, ...dados.map((d) => d.min));
   return (
-    <div className="flex h-16 items-end gap-1 sm:h-24">
+    <div className="flex h-14 items-end gap-1 sm:h-24 [@media(max-height:700px)]:h-11">
       {dados.map((d, i) => (
         <div key={i} className="flex h-full flex-1 flex-col items-center justify-end gap-0.5" title={`${d.rotulo}: ${d.min} min`}>
-          <span className="text-[9px] font-bold text-roxo">{d.min > 0 ? d.min : ""}</span>
+          <span className="text-[10px] font-bold text-roxo">{d.min > 0 ? d.min : ""}</span>
           <div className="flex min-h-0 w-full flex-1 items-end">
           <motion.div
             initial={{ height: 0 }}
@@ -229,7 +244,7 @@ function Barras({ dados }: { dados: { rotulo: string; min: number }[] }) {
             className={`w-full rounded-t ${i === dados.length - 1 ? "bg-amarelo" : "bg-roxo-claro"}`}
           />
           </div>
-          <span className="text-[8px] text-tinta-suave">{d.rotulo.slice(0, 2)}</span>
+          <span className="text-[10px] text-tinta-suave">{d.rotulo.slice(0, 2)}</span>
         </div>
       ))}
     </div>
@@ -257,8 +272,8 @@ function Resumo({ m }: { m: M }) {
   const subiu = m.nivel && m.nivelAntes ? m.nivel.nivel - m.nivelAntes.nivel : 0;
   const evol = m.semErro !== null && m.semErroAntes !== null ? m.semErro - m.semErroAntes : null;
   return (
-    <div className="grid h-full grid-rows-[auto_auto_1fr] gap-2">
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+    <div className="grid h-full grid-rows-[auto_auto_1fr] gap-1.5 sm:gap-2">
+      <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4 sm:gap-2">
         <Numero icone={nv?.icone ?? "ui/escada"} valor={nv?.nome ?? "Sem teste"} rotulo={m.nivel ? `Nível ${m.nivel.nivel} de 6${subiu ? ` (${subiu > 0 ? "+" : ""}${subiu})` : ""}` : "Faça o nivelamento"} />
         <Numero icone="ui/mapa" valor={`${m.concluidas}/${m.total}`} rotulo={`lições · ${m.territoriosCompletos} biomas completos`} />
         <Numero icone="ui/sol" valor={duracao(m.tempoHoje)} rotulo={`hoje · ${duracao(m.tempo7)} em 7 dias`} />
@@ -266,12 +281,12 @@ function Resumo({ m }: { m: M }) {
       </div>
       <Cartao titulo="Minutos por dia (14 dias)">
         <Barras dados={m.porDia} />
-        <p className="text-[11px] text-tinta-suave">
+        <p className="text-[11px] text-tinta-suave [@media(max-height:700px)]:hidden">
           Jogou em {m.diasAtivos7} dos últimos 7 dias · lição concluída leva em média {m.mediaLicao ? duracao(m.mediaLicao) : "—"}
           {m.abandonadas ? ` · ${m.abandonadas} lições deixadas no meio` : ""}
         </p>
       </Cartao>
-      <div className="grid min-h-0 grid-cols-1 gap-2 overflow-hidden sm:grid-cols-2">
+      <div className="grid min-h-0 grid-cols-1 gap-1.5 overflow-hidden sm:grid-cols-2 sm:gap-2">
         <Cartao titulo="Leitura (últimas 60 palavras)">
           <Medidor valor={m.semErro} rotulo="Acertou de primeira" />
           <Medidor valor={m.comDica === null ? null : 1 - m.comDica} rotulo="Sem precisar da dica" />
@@ -420,7 +435,7 @@ function CartasAba({ m, agora }: { m: M; agora: number }) {
           {m.caixas.map((n, i) => (
             <div key={i} className="flex flex-col items-center rounded-md bg-fundo py-1.5">
               <span className="text-lg font-extrabold text-roxo">{n}</span>
-              <span className="text-center text-[9px] leading-tight text-tinta-suave">{nomes[i]}</span>
+              <span className="text-center text-[10px] leading-tight text-tinta-suave">{nomes[i]}</span>
             </div>
           ))}
         </div>
@@ -461,7 +476,7 @@ function NivelAba({ m }: { m: M }) {
               <div key={i} className="flex flex-1 flex-col items-center gap-1">
                 <span className="text-[10px] font-bold text-roxo">{n.nivel}</span>
                 <motion.div initial={{ height: 0 }} animate={{ height: `${(n.nivel / 6) * 60}px` }} transition={{ ...MOLA_ENTRADA, delay: i * 0.03 }} className="w-full rounded-t bg-roxo-claro" />
-                <span className="text-[8px] text-tinta-suave">{new Date(n.data).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })}</span>
+                <span className="text-[10px] text-tinta-suave">{new Date(n.data).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })}</span>
               </div>
             ))}
           </div>
@@ -530,7 +545,7 @@ function Ajustes({ dados, copias, aplicar }: { dados: Progress; copias: Copia[];
           <Seletor valor={tSel?.id ?? ""} onChange={(v) => { setTerr(v); setFase(0); }} opcoes={terrs.map((t) => [t.id, t.nome])} />
           <Seletor valor={String(fase)} onChange={(v) => setFase(Number(v))} opcoes={(tSel?.fases ?? []).map((f, i) => [String(i), f.titulo])} />
         </div>
-        <p className="text-[11px] text-tinta-suave">As lições antes dela ficam liberadas (estrelas já ganhas são mantidas); dela em diante voltam a ficar por fazer. Figurinhas do álbum não mudam.</p>
+        <p className="text-[11px] text-tinta-suave [@media(max-height:700px)]:hidden">As lições antes dela ficam liberadas (estrelas já ganhas são mantidas); dela em diante voltam a ficar por fazer. Figurinhas do álbum não mudam.</p>
         <Acao
           cor="roxo"
           onClick={() => tSel && pedir(`Colocar o Pietro em ${nomeFase(chaveFase(tSel.id, fase))}?`, () => aplicar(colocarNaFase(dados, chaveFase(tSel.id, fase)), `Colocado em ${nomeFase(chaveFase(tSel.id, fase))}`))}
@@ -539,7 +554,8 @@ function Ajustes({ dados, copias, aplicar }: { dados: Progress; copias: Copia[];
         </Acao>
       </Cartao>
       <Cartao titulo="Outros ajustes">
-        <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4">
+        {/* uma linha só no celular, para sobrar altura com o rodapé */}
+        <div className="grid grid-cols-4 gap-1.5 [&>button]:px-1.5 [&>button]:text-[11px] [&>button]:leading-tight sm:[&>button]:px-3 sm:[&>button]:text-sm">
           <Acao onClick={() => pedir("Deixar todas as cartas para revisar hoje?", () => aplicar(cartasParaHoje(dados), "Cartas liberadas para hoje"))}>Cartas para hoje</Acao>
           <Acao onClick={() => pedir("Zerar as cartas (todas voltam para a caixa 1)?", () => aplicar(zerarCartas(dados), "Cartas zeradas"))}>Zerar cartas</Acao>
           <Acao onClick={exportar}>Baixar cópia</Acao>
@@ -613,7 +629,7 @@ function Acao({ children, onClick, cor = "neutro" }: { children: ReactNode; onCl
         ? "bg-coral/15 text-coral-escuro shadow-[0_3px_0_rgb(61_53_81/0.12)]"
         : "bg-fundo text-roxo shadow-[0_3px_0_var(--color-linha)]";
   return (
-    <motion.button type="button" onClick={onClick} whileHover={{ y: -1 }} whileTap={{ scale: 0.95, y: 2 }} transition={MOLA_TOQUE} className={`rounded-md px-3 py-2 text-xs font-bold ${estilo}`}>
+    <motion.button type="button" onClick={onClick} whileHover={{ y: -1 }} whileTap={{ scale: 0.95, y: 2 }} transition={MOLA_TOQUE} className={`min-h-12 rounded-md px-3 py-1.5 text-xs font-bold sm:text-sm ${estilo}`}>
       {children}
     </motion.button>
   );
@@ -621,7 +637,7 @@ function Acao({ children, onClick, cor = "neutro" }: { children: ReactNode; onCl
 
 function Seletor({ valor, onChange, opcoes }: { valor: string; onChange: (v: string) => void; opcoes: [string, string][] }) {
   return (
-    <select value={valor} onChange={(e) => onChange(e.target.value)} className="min-w-0 rounded-md border border-linha bg-fundo px-2 py-2 text-xs font-bold text-roxo transition-shadow focus:ring-2 focus:ring-amarelo focus:outline-none">
+    <select value={valor} onChange={(e) => onChange(e.target.value)} className="h-12 min-w-0 rounded-md border border-linha bg-fundo px-2 text-xs font-bold text-roxo transition-[box-shadow,translate] duration-150 hover:-translate-y-px hover:shadow-suave focus:ring-2 focus:ring-amarelo focus:outline-none active:translate-y-px sm:text-sm">
       {opcoes.map(([v, n]) => (
         <option key={v} value={v}>
           {n}

@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Telas de pouca altura (tablet deitado): use a variante arbitrária `sm:[@media(max-height:820px)]:` para compactar.
+ * (@custom-variant e @utility não são gerados pelo plugin de Turbopack deste projeto.) */
+
 /* ═══════════════════════════════════════════════════════════════════════════
  * PIETRO GAMES · DESIGN SYSTEM · TOKENS
  * Documentação: docs/DESIGN-SYSTEM.md · Vitrine viva: /design-system

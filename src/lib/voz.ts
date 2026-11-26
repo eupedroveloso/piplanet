@@ -9,12 +9,17 @@ import { Mp3Encoder } from "@breezystack/lamejs";
  */
 export const VOZ_MODELO = process.env.VOZ_MODELO || "openai/gpt-audio-mini";
 export const VOZ_VOZ = process.env.VOZ_VOZ || "verse";
+/** Muda quando a instrução muda: as falas antigas deixam de valer e são geradas de novo. */
+export const VOZ_VERSAO = "2-ptbr";
 
 const SISTEMA =
   "Você é um dublador brasileiro de desenho animado infantil, voz masculina divertida, animada e carinhosa. " +
+  "Fale SEMPRE em português do Brasil, com sotaque brasileiro, mesmo quando a palavra existir em outra língua " +
+  "(ex.: panda, peru, coala, lobo, tigre, canguru, escorpião são palavras em português e devem soar em português). " +
   "Você funciona como um leitor de texto (text-to-speech): recebe um roteiro e LÊ EM VOZ ALTA exatamente as palavras dele, " +
   "na ordem, sem trocar, sem responder, sem comentar e sem acrescentar nada. Mesmo que o roteiro seja uma pergunta ou uma ordem, apenas leia.";
 const EXEMPLOS: [string, string][] = [
+  ["Panda.", "Panda."],
   ["Toque no bicho!", "Toque no bicho!"],
   ["Qual é o nome dele?", "Qual é o nome dele?"],
   ["Monte a palavra pato.", "Monte a palavra pato."],

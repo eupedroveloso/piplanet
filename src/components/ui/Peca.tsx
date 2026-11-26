@@ -14,10 +14,10 @@ import { BALANCO, MOLA_ENTRADA, MOLA_TOQUE } from "./movimento";
 
 /** Mobile primeiro: cabe em 360 px; cresce no tablet (sm). Toque sempre ≥ 56 px. */
 const BLOCOS = {
-  md: "grid h-20 min-w-20 place-items-center rounded-md px-3 font-leitura text-4xl font-bold uppercase sm:h-28 sm:min-w-28 sm:px-4 sm:text-6xl",
-  sm: "grid h-16 min-w-14 place-items-center rounded-md px-2 font-leitura text-3xl font-bold uppercase sm:h-24 sm:min-w-20 sm:px-3 sm:text-5xl",
+  md: "grid h-20 min-w-20 place-items-center rounded-md px-3 font-leitura text-4xl font-bold uppercase sm:h-28 sm:min-w-28 sm:px-4 sm:text-6xl sm:[@media(max-height:820px)]:h-22 sm:[@media(max-height:820px)]:min-w-22 sm:[@media(max-height:820px)]:text-5xl",
+  sm: "grid h-16 min-w-14 place-items-center rounded-md px-2 font-leitura text-3xl font-bold uppercase sm:h-24 sm:min-w-20 sm:px-3 sm:text-5xl sm:[@media(max-height:820px)]:h-18 sm:[@media(max-height:820px)]:min-w-16 sm:[@media(max-height:820px)]:text-4xl",
   /** Palavras de 5+ sílabas (RI·NO·CE·RON·TE): cabem numa linha em 360 px. */
-  xs: "grid h-16 min-w-12 place-items-center rounded-md px-1.5 font-leitura text-[1.6rem] font-bold uppercase sm:h-24 sm:min-w-20 sm:px-3 sm:text-5xl",
+  xs: "grid h-16 min-w-12 place-items-center rounded-md px-1.5 font-leitura text-[1.6rem] font-bold uppercase sm:h-24 sm:min-w-20 sm:px-3 sm:text-5xl sm:[@media(max-height:820px)]:h-18 sm:[@media(max-height:820px)]:min-w-16 sm:[@media(max-height:820px)]:text-4xl",
 };
 
 export type TamanhoBloco = keyof typeof BLOCOS;

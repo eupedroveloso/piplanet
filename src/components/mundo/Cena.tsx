@@ -11,6 +11,7 @@ import * as THREE from "three";
 import { chaveFase, faseDesbloqueada, TERRITORIOS } from "@/content/jornada";
 import type { Progress } from "@/lib/progress";
 import { speak } from "@/lib/speech";
+import { DURACAO_CAMINHO, type Caminho } from "./caminhada";
 import { IlhaContexto } from "./contexto";
 import { montarMundo, type Peca } from "./decoracao";
 import { GEOMETRIAS, type Forma } from "./formas";
@@ -54,6 +55,10 @@ export interface CenaProps {
   /** Câmera e balão expostos para a camada de etiquetas (HTML) acompanhar o 3D. */
   camRef: RefObject<THREE.Camera | null>;
   balaoRef: RefObject<THREE.Group | null>;
+  /** Trecho da trilha já feito (e o que está se desenhando agora). */
+  caminho?: Caminho | null;
+  /** Ponta do caminho que se desenha (a mãozinha HTML acompanha). */
+  cabeca?: RefObject<THREE.Vector3 | null>;
 }
 
 /**
@@ -160,7 +165,7 @@ function faseAtual(p: Progress) {
   return null;
 }
 
-function Mundo({ ilha, progresso, liberados, foco, onFocar, hover, onHover, camRef, balaoRef }: CenaProps) {
+function Mundo({ ilha, progresso, liberados, foco, onFocar, hover, onHover, camRef, balaoRef, caminho, cabeca }: CenaProps) {
   const mundo = useMemo(() => montarMundo(ilha), [ilha]);
   const controles = useRef<CameraControlsImpl>(null);
   const camera = useThree((st) => st.camera);
@@ -269,6 +274,7 @@ function Mundo({ ilha, progresso, liberados, foco, onFocar, hover, onHover, camR
       </mesh>
 
       <Trilha ilha={ilha} liberados={liberados} />
+      {caminho && <TrilhaFeita ilha={ilha} caminho={caminho} cabeca={cabeca} controles={controles} />}
       <Pier ilha={ilha} liberados={liberados} />
 
       {/* Plataformas (mirantes) das fases em terra */}
@@ -359,6 +365,85 @@ function Trilha({ ilha, liberados }: { ilha: Ilha; liberados: Record<string, boo
       </mesh>
     </>
   );
+}
+
+/** Suaviza o começo e o fim (sem tranco: previsível). */
+const suave = (t: number) => t * t * (3 - 2 * t);
+
+/**
+ * Trecho já percorrido da trilha: uma fita coral por cima do piso, cortada no shader até `uFeito`
+ * (posição em amostras da trilha). Um draw call; a animação só muda um uniform.
+ * Enquanto se desenha, a ponta brilha e a câmera desliza de leve atrás dela.
+ */
+function TrilhaFeita({
+  ilha,
+  caminho,
+  cabeca,
+  controles,
+}: {
+  ilha: Ilha;
+  caminho: Caminho;
+  cabeca?: RefObject<THREE.Vector3 | null>;
+  controles: RefObject<CameraControlsImpl | null>;
+}) {
+  const geo = useMemo(() => {
+    const g = geometriaFita(ilha, ilha.trilha, 0.36, 0.085);
+    // posição ao longo da trilha: 2 vértices por amostra
+    const n = g.attributes.position.count;
+    const s = new Float32Array(n);
+    for (let i = 0; i < n; i++) s[i] = Math.floor(i / 2);
+    g.setAttribute("aS", new THREE.BufferAttribute(s, 1));
+    return g;
+  }, [ilha]);
+  useEffect(() => () => geo.dispose(), [geo]);
+  const u = useRef({ uFeito: { value: caminho.de }, uBrilho: { value: 0 } });
+  const material = useMemo(() => {
+    const m = new THREE.MeshStandardMaterial({
+      color: misturar("#f25f5c", "#fbeec6", 0.32),
+      roughness: 0.8,
+      side: THREE.DoubleSide,
+      polygonOffset: true,
+      polygonOffsetFactor: -6,
+    });
+    m.onBeforeCompile = (sh) => {
+      Object.assign(sh.uniforms, u.current);
+      sh.vertexShader = sh.vertexShader
+        .replace("#include <common>", "#include <common>\nattribute float aS;\nvarying float vS;")
+        .replace("#include <begin_vertex>", "#include <begin_vertex>\nvS = aS;");
+      sh.fragmentShader = sh.fragmentShader
+        .replace("#include <common>", "#include <common>\nuniform float uFeito;\nuniform float uBrilho;\nvarying float vS;")
+        .replace("#include <clipping_planes_fragment>", "#include <clipping_planes_fragment>\nif (vS > uFeito) discard;")
+        .replace(
+          "#include <emissivemap_fragment>",
+          "#include <emissivemap_fragment>\ntotalEmissiveRadiance += vec3(1.0, 0.9, 0.6) * uBrilho * smoothstep(uFeito - 10.0, uFeito, vS);",
+        );
+    };
+    return m;
+  }, []);
+  useEffect(() => () => material.dispose(), [material]);
+
+  const base = useRef<{ t0: number; alvo: THREE.Vector3; ponta: THREE.Vector3 } | null>(null);
+  const reduzir = useMemo(() => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches, []);
+  useFrame(() => {
+    const { de, ate, t0 } = caminho;
+    const t = t0 === null ? 0 : Math.min(1, (performance.now() - t0) / DURACAO_CAMINHO);
+    const feito = de + (ate - de) * suave(t);
+    u.current.uFeito.value = feito;
+    u.current.uBrilho.value = t0 !== null && t < 1 ? 0.55 : Math.max(0, u.current.uBrilho.value - 0.03);
+    const i = Math.min(ilha.trilha.length - 2, Math.floor(feito));
+    const ponta = ilha.trilha[Math.max(0, i)].clone().lerp(ilha.trilha[Math.max(0, i) + 1], feito - i);
+    cabeca?.current?.copy(ponta);
+    // câmera acompanha de leve (40% do deslocamento da ponta), suavizada pelo CameraControls
+    const c = controles.current;
+    if (!c || t0 === null || reduzir || de === ate) return;
+    if (base.current?.t0 !== t0) base.current = { t0, alvo: c.getTarget(new THREE.Vector3()), ponta: ponta.clone() };
+    if (t < 1) {
+      const b = base.current;
+      const alvo = b.alvo.clone().addScaledVector(ponta.sub(b.ponta), 0.4);
+      c.moveTo(alvo.x, alvo.y, alvo.z, true);
+    }
+  });
+  return <mesh geometry={geo} material={material} receiveShadow />;
 }
 
 /** Plataformas (mirantes) das fases em terra: uma malha só. */

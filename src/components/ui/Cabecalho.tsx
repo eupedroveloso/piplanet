@@ -6,7 +6,7 @@ import { totalEstrelas, useProgress } from "@/lib/progress";
 import { motion } from "motion/react";
 import { speak } from "@/lib/speech";
 import { Arte } from "./Arte";
-import { BotaoRedondo, BotaoRedondoLink } from "./BotaoRedondo";
+import { BotaoRedondo } from "./BotaoRedondo";
 import { BotaoSom } from "./BotaoSom";
 import { Contador } from "./Contador";
 import { MOLA_ENTRADA, MOLA_TOQUE } from "./movimento";
@@ -47,11 +47,6 @@ export function Cabecalho({ estreito = false }: { estreito?: boolean }) {
         </div>
       </motion.div>
       <div className="flex flex-col gap-2 sm:flex-row">
-        {perfil.temSenha && (
-          <BotaoRedondoLink href="/painel" aria-label="Aprendizado do Pietro">
-            <Arte nome="ui/nivel" className="size-7" />
-          </BotaoRedondoLink>
-        )}
         <BotaoRedondo aria-label="Trocar de perfil" onClick={trocarPerfil}>
           <Arte nome="ui/casa" className="size-7" />
         </BotaoRedondo>

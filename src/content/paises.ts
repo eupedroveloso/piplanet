@@ -7,6 +7,7 @@
  * Âncoras (u, v): posição do bioma dentro do retângulo da silhueta.
  *   u = 0 oeste … 1 leste · v = 0 norte … 1 sul. Biomas no mar ficam fora do contorno.
  */
+import type { NivelJornada } from "./niveis";
 
 export type PaisId = "brasil" | "oceano" | "eua" | "russia" | "china" | "australia" | "africa";
 
@@ -39,7 +40,11 @@ export interface BiomaPais {
   decorativo?: boolean;
   boasVindas?: string;
   /** Níveis de leitura (cada um vira 3 fases intercaladas). */
-  niveis?: { dificuldades: (1 | 2 | 3)[]; exemplo: string }[];
+  /**
+   * Os degraus de leitura do bioma (níveis da jornada, ver content/niveis.ts). Cada degrau vira 3 fases.
+   * Ao longo da jornada a sequência nunca desce: o Pietro sempre avança para palavras mais complexas.
+   */
+  niveis?: NivelJornada[];
 }
 
 export interface Pais {
@@ -78,11 +83,7 @@ export const PAISES: Pais[] = [
         u: 0.62,
         v: 0.72,
         boasVindas: "Bem-vindo à Fazenda! Vamos ler os bichos daqui?",
-        niveis: [
-          { dificuldades: [1], exemplo: "ga·to" },
-          { dificuldades: [1, 2], exemplo: "ca·va·lo" },
-          { dificuldades: [3], exemplo: "o·ve·lha" },
-        ],
+        niveis: [1, 1, 2],
       },
       {
         id: "br-amazonia",
@@ -91,13 +92,65 @@ export const PAISES: Pais[] = [
         u: 0.3,
         v: 0.28,
         boasVindas: "Chegamos nas florestas do Brasil: a Amazônia e a Mata Atlântica!",
-        niveis: [
-          { dificuldades: [1], exemplo: "sa·po" },
-          { dificuldades: [2], exemplo: "a·ra·ra" },
-          { dificuldades: [3], exemplo: "co·bra" },
-        ],
+        niveis: [2, 3, 3],
       },
       { id: "br-cerrado", nome: "Cerrado", tipo: "cerrado", u: 0.55, v: 0.45, decorativo: true },
+    ],
+  },
+  {
+    id: "russia",
+    nome: "Rússia",
+    iso: ["643"],
+    lat: 62,
+    lon: 95,
+    cor: "#b48cff",
+    biomas: [
+      {
+        id: "ru-tundra",
+        nome: "Tundra",
+        tipo: "tundra",
+        u: 0.55,
+        v: 0.22,
+        boasVindas: "Brrr! Que frio! Bem-vindo à Tundra!",
+        niveis: [3, 3],
+      },
+      {
+        id: "ru-taiga",
+        nome: "Taiga",
+        tipo: "taiga",
+        u: 0.35,
+        v: 0.68,
+        boasVindas: "A Taiga é a maior floresta de pinheiros do mundo!",
+        niveis: [3, 3],
+      },
+    ],
+  },
+  {
+    id: "china",
+    nome: "China",
+    iso: ["156"],
+    lat: 35,
+    lon: 104,
+    cor: "#f25f5c",
+    biomas: [
+      {
+        id: "cn-bambuzal",
+        nome: "Bambuzal",
+        tipo: "bambuzal",
+        u: 0.5,
+        v: 0.72,
+        boasVindas: "Bem-vindo ao Bambuzal, a casa do panda!",
+        niveis: [3, 3],
+      },
+      {
+        id: "cn-gobi",
+        nome: "Deserto de Gobi",
+        tipo: "deserto",
+        u: 0.55,
+        v: 0.3,
+        boasVindas: "Que calor! Chegamos no Deserto de Gobi!",
+        niveis: [3],
+      },
     ],
   },
   {
@@ -118,10 +171,7 @@ export const PAISES: Pais[] = [
         v: 0.45,
         noMar: true,
         boasVindas: "Vamos navegar pelo Recife de Corais!",
-        niveis: [
-          { dificuldades: [1, 2], exemplo: "lu·la" },
-          { dificuldades: [3], exemplo: "pol·vo" },
-        ],
+        niveis: [3, 4],
       },
       {
         id: "oc-mar",
@@ -131,7 +181,7 @@ export const PAISES: Pais[] = [
         v: 0.55,
         noMar: true,
         boasVindas: "Que imensidão! Bem-vindo ao Mar Aberto!",
-        niveis: [{ dificuldades: [3], exemplo: "ba·lei·a" }],
+        niveis: [4],
       },
     ],
   },
@@ -150,10 +200,7 @@ export const PAISES: Pais[] = [
         u: 0.78,
         v: 0.35,
         boasVindas: "Bem-vindo às florestas dos Estados Unidos!",
-        niveis: [
-          { dificuldades: [1, 3], exemplo: "lo·bo" },
-          { dificuldades: [3], exemplo: "cas·tor" },
-        ],
+        niveis: [4, 4],
       },
       {
         id: "us-pradaria",
@@ -162,75 +209,10 @@ export const PAISES: Pais[] = [
         u: 0.45,
         v: 0.45,
         boasVindas: "Que campo enorme! É a Pradaria!",
-        niveis: [{ dificuldades: [1, 3], exemplo: "bi·são" }],
+        niveis: [4],
       },
       { id: "us-deserto", nome: "Deserto", tipo: "deserto", u: 0.15, v: 0.7, decorativo: true },
       { id: "us-montanhas", nome: "Montanhas", tipo: "taiga", u: 0.2, v: 0.25, decorativo: true },
-    ],
-  },
-  {
-    id: "russia",
-    nome: "Rússia",
-    iso: ["643"],
-    lat: 62,
-    lon: 95,
-    cor: "#b48cff",
-    biomas: [
-      {
-        id: "ru-tundra",
-        nome: "Tundra",
-        tipo: "tundra",
-        u: 0.55,
-        v: 0.22,
-        boasVindas: "Brrr! Que frio! Bem-vindo à Tundra!",
-        niveis: [
-          { dificuldades: [1, 2], exemplo: "fo·ca" },
-          { dificuldades: [1, 2, 3], exemplo: "ma·mu·te" },
-        ],
-      },
-      {
-        id: "ru-taiga",
-        nome: "Taiga",
-        tipo: "taiga",
-        u: 0.35,
-        v: 0.68,
-        boasVindas: "A Taiga é a maior floresta de pinheiros do mundo!",
-        niveis: [
-          { dificuldades: [2, 3], exemplo: "ja·va·li" },
-          { dificuldades: [3], exemplo: "ti·gre" },
-        ],
-      },
-    ],
-  },
-  {
-    id: "china",
-    nome: "China",
-    iso: ["156"],
-    lat: 35,
-    lon: 104,
-    cor: "#f25f5c",
-    biomas: [
-      {
-        id: "cn-bambuzal",
-        nome: "Bambuzal",
-        tipo: "bambuzal",
-        u: 0.5,
-        v: 0.72,
-        boasVindas: "Bem-vindo ao Bambuzal, a casa do panda!",
-        niveis: [
-          { dificuldades: [2, 3], exemplo: "bú·fa·lo" },
-          { dificuldades: [3], exemplo: "pan·da" },
-        ],
-      },
-      {
-        id: "cn-gobi",
-        nome: "Deserto de Gobi",
-        tipo: "deserto",
-        u: 0.55,
-        v: 0.3,
-        boasVindas: "Que calor! Chegamos no Deserto de Gobi!",
-        niveis: [{ dificuldades: [2, 3], exemplo: "ca·me·lo" }],
-      },
     ],
   },
   {
@@ -248,7 +230,7 @@ export const PAISES: Pais[] = [
         u: 0.42,
         v: 0.5,
         boasVindas: "Bem-vindo ao Outback, o deserto vermelho da Austrália!",
-        niveis: [{ dificuldades: [3], exemplo: "can·gu·ru" }],
+        niveis: [4],
       },
       {
         id: "au-eucaliptos",
@@ -257,7 +239,7 @@ export const PAISES: Pais[] = [
         u: 0.82,
         v: 0.66,
         boasVindas: "Que cheirinho de eucalipto! É a casa do coala!",
-        niveis: [{ dificuldades: [2, 3], exemplo: "co·a·la" }],
+        niveis: [4],
       },
     ],
   },
@@ -277,7 +259,7 @@ export const PAISES: Pais[] = [
         u: 0.42,
         v: 0.55,
         boasVindas: "Bem-vindo aos rios e florestas da África!",
-        niveis: [{ dificuldades: [2, 3], exemplo: "go·ri·la" }],
+        niveis: [5],
       },
       {
         id: "af-savana",
@@ -286,10 +268,7 @@ export const PAISES: Pais[] = [
         u: 0.7,
         v: 0.66,
         boasVindas: "Que calor! Bem-vindo à Savana africana!",
-        niveis: [
-          { dificuldades: [2, 3], exemplo: "gi·ra·fa" },
-          { dificuldades: [3], exemplo: "ze·bra" },
-        ],
+        niveis: [5, 5],
       },
     ],
   },

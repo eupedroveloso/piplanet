@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import type * as THREE from "three";
+import * as THREE from "three";
 import { chaveFase, faseDesbloqueada, paisDesbloqueado, TERRITORIOS, territorioDesbloqueado } from "@/content/jornada";
 import { PAISES, type PaisId } from "@/content/paises";
 import { useProgress, liberadas } from "@/lib/progress";
@@ -14,6 +14,7 @@ import { Arte, BotaoRedondo, MOLA_ENTRADA, TelaCarregando } from "@/components/u
 import { useProgress as useCarga } from "@react-three/drei";
 import { criarIlha, type Ilha } from "./ilha";
 import { Rotulos } from "./Rotulos";
+import { useCaminhada } from "./caminhada";
 
 /** O 3D só roda no navegador (a tela de carregamento cobre enquanto baixa). */
 import { ProtecaoCena } from "./ProtecaoCena";
@@ -85,6 +86,17 @@ export function MapaMundo() {
     raf = requestAnimationFrame(checar);
     return () => cancelAnimationFrame(raf);
   }, [carregando, chaveCena, carga.active, nivel, ilha]);
+  // Caminho sendo trilhado: ao voltar de uma fase concluída (ou abrir um país novo)
+  const [pontaInicial] = useState(() => new THREE.Vector3());
+  const cabeca = useRef<THREE.Vector3 | null>(pontaInicial);
+  // começa quando a câmera foi para o bioma (ou, sem foco, 2,5 s depois de carregar: ilha inteira)
+  const [esperouEm, setEsperouEm] = useState<string | null>(null);
+  useEffect(() => {
+    if (carregando) return;
+    const t = setTimeout(() => setEsperouEm(chaveCena), 2500);
+    return () => clearTimeout(t);
+  }, [carregando, chaveCena]);
+  const caminhada = useCaminhada(ilha, progresso, !carregando && nivel === "pais" && (foco !== null || esperouEm === chaveCena));
   const progressoCarga = nivel === "pais" && !ilha ? 0.35 : carga.active ? 0.35 + (carga.progress / 100) * 0.55 : 0.95;
 
   function entrarNoPais(p: PaisId) {
@@ -146,9 +158,14 @@ export function MapaMundo() {
               onHover={setHover}
               camRef={camRef}
               balaoRef={balaoRef}
+              caminho={caminhada.caminho}
+              cabeca={cabeca}
             />
             </ProtecaoCena>
-            <Rotulos ilha={ilha} camRef={camRef} balaoRef={balaoRef} foco={foco} hover={hover} progresso={progresso} liberados={liberados} onFocar={setFoco} />
+            <Rotulos ilha={ilha} camRef={camRef} balaoRef={balaoRef} foco={foco} hover={hover} progresso={progresso} liberados={liberados}
+              onFocar={setFoco}
+              caminhada={{ andando: caminhada.andando, acender: caminhada.acender, cabeca }}
+            />
             <motion.div
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}

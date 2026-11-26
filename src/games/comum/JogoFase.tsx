@@ -185,7 +185,7 @@ export function JogoFase({
       <AnimatePresence mode="wait">
         {/* ── Início ─────────────────────────────────────────────────────── */}
         {tela === "inicio" && (
-          <motion.div key="inicio" {...TELA} className="relative z-10 flex flex-1 flex-col items-center justify-center gap-5 sm:gap-8">
+          <motion.div key="inicio" {...TELA} className="relative z-10 flex min-h-0 flex-1 flex-col items-center justify-center-safe gap-5 sm:gap-8 sm:[@media(max-height:820px)]:gap-5">
             <motion.span
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -233,7 +233,7 @@ export function JogoFase({
 
         {/* ── Fim ────────────────────────────────────────────────────────── */}
         {tela === "fim" && (
-          <motion.div key="fim" {...TELA} className="relative z-10 flex flex-1 items-center justify-center">
+          <motion.div key="fim" {...TELA} className="relative z-10 flex min-h-0 flex-1 items-center justify-center-safe">
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 16 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -333,7 +333,7 @@ export function JogoFase({
           <motion.div
             key="jogo"
             {...TELA}
-            className="relative z-10 flex min-h-0 flex-1 flex-col items-center justify-center gap-3 pb-1 sm:gap-6 sm:pb-8"
+            className="relative z-10 flex min-h-0 flex-1 flex-col items-center justify-center-safe gap-3 pb-1 sm:gap-6 sm:pb-8 sm:[@media(max-height:820px)]:gap-3 sm:[@media(max-height:820px)]:pb-2"
           >
             <AnimatePresence>
               {acertou && (
@@ -358,7 +358,7 @@ export function JogoFase({
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -40, transition: { duration: 0.2 } }}
                 transition={MOLA_ENTRADA}
-                className="flex w-full flex-col items-center gap-3 sm:gap-6"
+                className="flex w-full flex-col items-center gap-3 sm:gap-6 sm:[@media(max-height:820px)]:gap-3"
               >
                 {rodada({ animal, territorio, fase, acertou, errar, acertar })}
               </motion.div>
@@ -371,7 +371,7 @@ export function JogoFase({
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, transition: { duration: 0.15 } }}
                   transition={{ ...MOLA_ENTRADA, delay: 0.5 }}
-                  className="flex w-full max-w-xl flex-col items-center gap-2.5 sm:gap-4"
+                  className="flex w-full max-w-xl flex-col items-center gap-2.5 sm:gap-4 sm:[@media(max-height:820px)]:gap-2.5"
                 >
                   {figurinhaNova && <SeloFigurinhaNova />}
                   <BotaoCuriosidade texto={animal.curiosidade} />
@@ -484,12 +484,12 @@ export function CirculoBicho({ animal, acertou }: { animal: Animal; acertou: boo
       transition={acertou ? { duration: 0.7, ease: "easeInOut" } : { type: "spring", stiffness: 200, damping: 14 }}
       whileHover={{ y: -3 }}
       whileTap={{ scale: 0.95 }}
-      className={`relative grid size-[min(9rem,22dvh)] shrink-0 place-items-center rounded-full bg-branco transition-shadow duration-300 sm:size-52 ${
+      className={`relative grid size-[min(9rem,22dvh)] shrink-0 place-items-center rounded-full bg-branco transition-shadow duration-300 sm:size-[min(13rem,24dvh)] ${
         acertou ? "shadow-[0_8px_0_var(--color-verde-escuro)] ring-4 ring-verde" : "shadow-[0_8px_0_var(--t-chao)]"
       }`}
       aria-label={acertou ? animal.nome : "Que bicho é esse?"}
     >
-      <Arte src={arteDoAnimal(animal)} className="size-[66%] sm:size-36" />
+      <Arte src={arteDoAnimal(animal)} className="size-[66%]" />
       {acertou && <Comemoracao raio={140} />}
     </motion.button>
   );
