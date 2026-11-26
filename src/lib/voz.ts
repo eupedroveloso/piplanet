@@ -15,6 +15,8 @@ export const VOZ_VERSAO = "tts1";
 
 /** Modelo que OUVE o áudio gerado e transcreve (barato), para conferir se a fala saiu certa. */
 const VOZ_OUVINTE = process.env.VOZ_OUVINTE || "google/gemini-2.5-flash-lite";
+/** Ouvinte mais preciso, usado quando o barato devolve vazio ou lixo. */
+const VOZ_OUVINTE_BOM = process.env.VOZ_OUVINTE_BOM || "google/gemini-2.5-flash";
 
 export interface VozGerada {
   audio: Uint8Array<ArrayBuffer>;
@@ -45,15 +47,25 @@ async function falar(texto: string, chave: string): Promise<Uint8Array<ArrayBuff
   return new Uint8Array(await r.arrayBuffer());
 }
 
+/** Resposta do ouvinte que não serve como transcrição (vazia, marcação de tempo, comentário). */
+const lixo = (t: string) => !t.trim() || /-->|\d\d:\d\d:\d\d|^\[?(silêncio|silencio|música|musica)\]?$/i.test(t.trim());
+
 /** Transcreve o MP3 (o que realmente foi falado). null se não conseguir ouvir. */
 export async function ouvir(mp3: Uint8Array): Promise<string | null> {
+  const t = await ouvirCom(VOZ_OUVINTE, mp3);
+  if (t !== null && !lixo(t)) return t;
+  const t2 = await ouvirCom(VOZ_OUVINTE_BOM, mp3);
+  return t2 !== null && !lixo(t2) ? t2 : null;
+}
+
+async function ouvirCom(modelo: string, mp3: Uint8Array): Promise<string | null> {
   const chave = process.env.OPENROUTER_API_KEY;
   if (!chave) return null;
   const r = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
     headers: { Authorization: `Bearer ${chave}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      model: VOZ_OUVINTE,
+      model: modelo,
       temperature: 0,
       messages: [
         {

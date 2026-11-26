@@ -63,7 +63,7 @@ export async function POST(req: Request) {
   }
   if (acao === "conferir" && achado) {
     const guardado = await db.vozCache.findUnique({ where: { chave }, select: { audio: true, status: true } });
-    if (guardado?.status === "aprovada") return NextResponse.json({ ok: true, status: "aprovada" });
+    if (guardado?.status === "aprovada" || guardado?.status === "conferida") return NextResponse.json({ ok: true, status: guardado.status });
     const ouvido = guardado ? await ouvir(guardado.audio) : null;
     if (ouvido !== null && ouvidoConfere(item.texto, ouvido)) {
       await db.vozCache.update({ where: { chave }, data: { status: "conferida", transcricao: ouvido } });

@@ -138,6 +138,7 @@ function falarNatural(text: string, rate: number): Promise<Resultado> {
       if (feito) return;
       feito = true;
       clearTimeout(limite);
+      clearTimeout(teto);
       limpar();
       encerrarAtual = null;
       resolve(r);
@@ -146,6 +147,12 @@ function falarNatural(text: string, rate: number): Promise<Resultado> {
       audio.pause();
       fim("ok");
     };
+    // trava de segurança: nenhum áudio prende a fila por mais de 20 s (ex.: começou e a rede parou no meio)
+    const teto = setTimeout(() => {
+      if (feito) return;
+      audio.pause();
+      fim(audio.currentTime > 0 ? "ok" : "falhou");
+    }, 20000);
     // a voz natural pode levar alguns segundos na PRIMEIRA vez de uma frase (ela é gerada e guardada)
     const limite = setTimeout(() => {
       if (audio.currentTime === 0) {

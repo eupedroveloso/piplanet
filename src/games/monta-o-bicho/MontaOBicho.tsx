@@ -78,7 +78,7 @@ function RodadaMontar({ animal, fase, acertou, errar, acertar, modo }: RodadaPro
   const [encaixes, setEncaixes] = useState<string[]>([]);
   const idVoo = (tileId: string) => `peca-${animal.id}-${tileId}`;
 
-  async function tocar(tile: Tile) {
+  function tocar(tile: Tile) {
     if (acertou || tile.used) return;
     if (tile.text !== unidades[feitas]) {
       setErrosCasa((e) => e + 1);
@@ -95,19 +95,24 @@ function RodadaMontar({ animal, fase, acertou, errar, acertar, modo }: RodadaPro
     setEncaixes((e) => [...e, tile.id]);
     setErrosCasa(0);
 
-    await speak(modo === "letras" ? falaDaLetra(tile.text) : modo === "silabas" ? falaDaSilaba(tile.text) : tile.text);
+    // A fala entra na fila e toca inteira; o JOGO NÃO ESPERA a voz (as peças aparecem no tempo certo,
+    // mesmo se o áudio demorar). Pequenas pausas só para a criança ver a peça encaixar.
+    speak(modo === "letras" ? falaDaLetra(tile.text) : modo === "silabas" ? falaDaSilaba(tile.text) : tile.text);
 
     if (modo === "letras") {
       const g = grupoDe[feitas];
       const fimDaSilaba = total === unidades.length || grupoDe[total] !== g;
       if (fimDaSilaba) {
-        await speak(falaDaSilaba(animal.silabas[g]));
-        if (total < unidades.length) setPecas(pecasDeLetras(animal.silabas[g + 1], fase.distratores, g + 1));
+        speak(falaDaSilaba(animal.silabas[g]));
+        if (total < unidades.length) {
+          const proxima = g + 1;
+          setTimeout(() => setPecas(pecasDeLetras(animal.silabas[proxima], fase.distratores, proxima)), 700);
+        }
       }
     }
     if (total === unidades.length) {
-      if (modo === "frase") await speak(palavras.join(" "));
-      acertar();
+      if (modo === "frase") speak(palavras.join(" "));
+      setTimeout(acertar, 600);
     }
   }
 
