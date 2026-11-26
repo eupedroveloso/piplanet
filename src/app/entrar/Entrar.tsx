@@ -1,10 +1,10 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PERFIS, type Perfil } from "@/content/perfis";
 import { speak } from "@/lib/speech";
-import { Arte, BALANCO, MOLA_ENTRADA, MOLA_TOQUE } from "@/components/ui";
+import { Arte, BALANCO, BotaoRedondo, MOLA_ENTRADA, MOLA_TOQUE } from "@/components/ui";
 
 /**
  * TELA DE ENTRADA (escolha de perfil)
