@@ -25,7 +25,15 @@ import { falaDaLetra, falaDaSilaba, TODAS_AS_LETRAS } from "../src/content/letra
 
 const BASE = process.env.BASE_URL ?? "http://localhost:3100";
 const falas = new Set<string>();
-const add = (t: string | undefined) => t && falas.add(t.replace(/\s+/g, " ").trim().toLowerCase());
+/** Tipo de cada fala (para o documento exportado com --exportar). */
+const tipo = new Map<string, string>();
+let tipoAtual = "Interface e avisos";
+const add = (t: string | undefined) => {
+  if (!t) return;
+  const n = t.replace(/\s+/g, " ").trim().toLowerCase();
+  falas.add(n);
+  if (!tipo.has(n)) tipo.set(n, tipoAtual);
+};
 
 const NIVEIS_FALA = [
   "Você está aprendendo as sílabas!",
@@ -37,19 +45,27 @@ const NIVEIS_FALA = [
 ];
 
 for (const a of ANIMAIS) {
+  tipoAtual = "Nomes dos bichos";
   add(a.nome);
+  tipoAtual = "Interface e avisos";
   add(`Esse é ${a.nome}.`);
+  tipoAtual = "Curiosidades";
   add(a.curiosidade);
   for (const c of CURIOSIDADES[a.id] ?? []) add(c);
+  tipoAtual = "Sílabas";
   for (const s of a.silabas) add(falaDaSilaba(s));
+  tipoAtual = "Palavras soletradas (cartas)";
   add(a.silabas.map(falaDaSilaba).join(", ") + ". " + a.nome);
+  tipoAtual = "Frases dos exercícios";
   add(fraseDe(a, "curta").join(" "));
   add(fraseDe(a, "media").join(" "));
 }
+tipoAtual = "Instruções dos jogos";
 for (const j of Object.values(JOGOS)) {
   add(j.nome);
   add(j.instrucao);
 }
+tipoAtual = "Lugares (países e biomas)";
 for (const t of TERRITORIOS) {
   add(t.nome);
   add(`${t.nome}. Ainda trancado. Termine as fases de antes para abrir.`);
@@ -64,6 +80,7 @@ for (const p of PERFIS) {
   add(`${p.nome}. Digite a senha.`);
   add(`Oi, ${p.nome}! Toque nos bichos do mapa para jogar.`);
 }
+tipoAtual = "Níveis";
 for (const nv of NIVEIS_JORNADA) {
   add(nv.fala);
   add(`Você subiu de nível! ${nv.fala}`);
@@ -87,6 +104,7 @@ for (const f of NIVEIS_FALA) {
   "Apagar", "Entrar", "Tentar de novo",
 ].forEach(add);
 
+tipoAtual = "Interface e avisos";
 // ── Falas fixas extraídas do código ─────────────────────────────────────────
 function arquivos(dir: string): string[] {
   return readdirSync(dir).flatMap((n) => {
@@ -156,7 +174,11 @@ for (const t of TERRITORIOS) {
   add(`${t.nome}. Ainda trancado.`);
 }
 for (const nv of NIVEIS_JORNADA) add(`${nv.fala} Ainda trancado.`);
+tipoAtual = "Curiosidades";
+add("Você sabia?");
+tipoAtual = "Letras";
 for (const l of TODAS_AS_LETRAS) add(falaDaLetra(l));
+tipoAtual = "Interface e avisos";
 
 // ── Mapa de falas (docs/FALAS.md) ───────────────────────────────────────────
 function atualizarMapa() {
@@ -173,6 +195,26 @@ function atualizarMapa() {
 }
 atualizarMapa();
 if (process.argv.includes("--mapa")) process.exit(0);
+
+// --exportar arquivo.json: lista de todas as falas com tipo e status do áudio (lê o banco)
+if (process.argv.includes("--exportar")) {
+  const destino = process.argv[process.argv.indexOf("--exportar") + 1];
+  const { createHash } = await import("node:crypto");
+  const { PrismaPg } = await import("@prisma/adapter-pg");
+  const { PrismaClient } = await import("../src/generated/prisma/client");
+  const db = new PrismaClient({ adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL_POOLED ?? process.env.DATABASE_URL! }) });
+  const chaveDe = (t: string) => createHash("sha256").update(`elevenlabs/eleven-flash-v2.5|will|tts1|${t}`).digest("hex");
+  const linhas = await db.vozCache.findMany({ where: { modelo: { contains: "eleven" } }, select: { chave: true, status: true, transcricao: true } });
+  const porChave = new Map(linhas.map((l) => [l.chave, l]));
+  const saida = [...falas].map((t) => {
+    const l = porChave.get(chaveDe(t));
+    return { texto: t, tipo: tipo.get(t) ?? "Interface e avisos", status: l?.status ?? "falta gerar", ouvido: l?.transcricao ?? "" };
+  });
+  writeFileSync(destino, JSON.stringify(saida, null, 1));
+  console.log(`${saida.length} falas exportadas para ${destino}`);
+  await db.$disconnect();
+  process.exit(0);
+}
 
 // --conferir: OUVE cada fala (modelo ouvinte); as que saíram erradas são refeitas; as que faltam são geradas
 if (process.argv.includes("--conferir")) {

@@ -8,7 +8,7 @@ import { EffectComposer, N8AO } from "@react-three/postprocessing";
 import CameraControlsImpl from "camera-controls";
 import { createContext, Suspense, useContext, useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import * as THREE from "three";
-import { chaveFase, faseDesbloqueada, TERRITORIOS } from "@/content/jornada";
+import { chaveFase, faseDesbloqueada, nivelDaFase, nivelQueComeca, TERRITORIOS } from "@/content/jornada";
 import type { Progress } from "@/lib/progress";
 import { speak } from "@/lib/speech";
 import { DURACAO_CAMINHO, type Caminho } from "./caminhada";
@@ -200,22 +200,86 @@ function Mundo({ ilha, progresso, liberados, foco, onFocar, hover, onHover, camR
   };
 
   // Câmera: dois níveis (o país todo / um bioma de perto, olhando de fora para dentro)
+  const tela = useThree((st) => st.size);
   useEffect(() => {
     const c = controles.current;
     if (!c) return;
-    const k = typeof window !== "undefined" && window.innerWidth < window.innerHeight ? 1.45 : 1;
+    const k = tela.width < tela.height ? 1.45 : 1;
     if (!foco) {
       c.setLookAt(1, 25 * k, 32 * k, 1, 0.5, 2, true);
-    } else {
-      const alvo = ilha.centro(foco);
-      const fora = new THREE.Vector3(alvo.x, 0, alvo.z);
-      if (fora.length() < 2) fora.set(0, 0, 1);
-      fora.normalize();
-      const lado = new THREE.Vector3(-fora.z, 0, fora.x).multiplyScalar(2.5);
-      const cam = alvo.clone().add(fora.multiplyScalar(12 * k)).add(lado).add(new THREE.Vector3(0, 11.5 * k, 0));
-      c.setLookAt(cam.x, cam.y, cam.z, alvo.x, alvo.y, alvo.z, true);
+      return;
     }
-  }, [foco, ilha]);
+    const pe = tela.width < tela.height;
+    const doBioma = ilha.fases.filter((f) => f.territorio === foco);
+    // Em pé (celular), cabe só o NÍVEL ATUAL (os 5 nós em volta da próxima fase): a criança arrasta para ver o resto.
+    // Encaixar o bioma inteiro afastava tanto a câmera que os nós se sobrepunham.
+    const prox = doBioma.find((f) => !(chaveFase(f.territorio, f.fase) in progresso.fases)) ?? doBioma[doBioma.length - 1];
+    const nivelProx = prox ? nivelDaFase(chaveFase(prox.territorio, prox.fase)) : 0;
+    const nos = pe ? doBioma.filter((f) => nivelDaFase(chaveFase(f.territorio, f.fase)) === nivelProx) : doBioma;
+    const alvo = ilha.centro(foco);
+    const fora = new THREE.Vector3(alvo.x, 0, alvo.z);
+    if (fora.length() < 2) fora.set(0, 0, 1);
+    fora.normalize();
+    const lado = new THREE.Vector3(-fora.z, 0, fora.x).multiplyScalar(2.5);
+    // em pé, câmera mais de cima: a profundidade se abre na tela e os nós de um nível não se encavalam
+    const dir = fora.clone().multiplyScalar(12).add(lado).add(new THREE.Vector3(0, pe ? 17 : 11.5, 0));
+    const base = dir.length();
+    dir.normalize();
+    let dist = base;
+    if (nos.length) {
+      const caixa = new THREE.Box3().setFromPoints(nos.map((f) => f.pos));
+      const meio = caixa.getCenter(new THREE.Vector3());
+      alvo.set(meio.x, alvo.y, meio.z);
+      // Encaixe na TELA (em px): projeta os nós com uma câmera de teste e corrige alvo e distância.
+      // Cada nó ocupa ~56 px acima da âncora (+ estrelas embaixo); a 1ª fase de um nível tem a placa "Nível" ~90 px à esquerda.
+      const teste = (camera as THREE.PerspectiveCamera).clone();
+      teste.aspect = tela.width / Math.max(1, tela.height);
+      teste.updateProjectionMatrix();
+      const W = tela.width;
+      const H = tela.height;
+      // área livre: laterais 14 px; topo abaixo do placar; rodapé acima dos botões (no celular, mais alto)
+      // rodapé: acima do botão amarelo "Continuar" (topo em ~H-170 no tablet, ~H-165 no celular)
+      const livre = { x0: 14, x1: W - 14, y0: pe ? 150 : 90, y1: H - (pe ? 190 : 180) };
+      // direita da tela no chão = frente × cima, com frente = -dir → (dir.z, 0, -dir.x)
+      const plano = new THREE.Vector3(dir.z, 0, -dir.x).normalize();
+      const fundo = new THREE.Vector3(dir.x, 0, dir.z).normalize(); // "para baixo" na tela, no chão
+      const v = new THREE.Vector3();
+      for (let it = 0; it < 6; it++) {
+        teste.position.copy(alvo).addScaledVector(dir, dist);
+        teste.lookAt(alvo);
+        teste.updateMatrixWorld();
+        let [x0, x1, y0, y1] = [Infinity, -Infinity, Infinity, -Infinity];
+        for (const f of nos) {
+          v.copy(f.pos).setY(f.pos.y + 0.25).project(teste);
+          const x = ((v.x + 1) / 2) * W;
+          const y = ((1 - v.y) / 2) * H;
+          const placa = nivelQueComeca(chaveFase(f.territorio, f.fase)) ? 96 : 0;
+          x0 = Math.min(x0, x - 30 - placa);
+          x1 = Math.max(x1, x + 30);
+          y0 = Math.min(y0, y - 64);
+          y1 = Math.max(y1, y + 24);
+        }
+        // desloca o alvo para centrar a caixa na área livre (px → mundo na distância atual)
+        const mundoPorPx = (2 * dist * Math.tan(THREE.MathUtils.degToRad(teste.fov / 2))) / H;
+        const dx = (x0 + x1) / 2 - (livre.x0 + livre.x1) / 2;
+        const dy = (y0 + y1) / 2 - (livre.y0 + livre.y1) / 2;
+        alvo.addScaledVector(plano, dx * mundoPorPx).addScaledVector(fundo, dy * mundoPorPx * 1.3);
+        // trava: o alvo nunca sai de perto dos nós (se a conta divergir, a tela não vira só mar)
+        const desvio = alvo.clone().sub(meio).setY(0);
+        if (desvio.length() > 6) {
+          const y = alvo.y;
+          alvo.copy(meio).add(desvio.setLength(6)).setY(y);
+        }
+        // e afasta/aproxima até caber (nunca mais perto que a câmera de antes)
+        const escala = Math.max((x1 - x0) / (livre.x1 - livre.x0), (y1 - y0) / (livre.y1 - livre.y0));
+        dist = Math.min(base * 2.2, Math.max(base, dist * (pe ? escala : Math.max(1, escala))));
+        if (!Number.isFinite(dist)) dist = base;
+      }
+    }
+    const cam = alvo.clone().addScaledVector(dir, dist);
+    c.setLookAt(cam.x, cam.y, cam.z, alvo.x, alvo.y, alvo.z, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [foco, ilha, tela.width, tela.height, camera]);
 
   const terreno = useMemo(() => geometriaTerreno(ilha, liberados), [ilha, liberados]);
 

@@ -20,7 +20,7 @@ import { settingsStore } from "@/lib/settings";
 import { usePerfil } from "@/lib/perfil";
 import { shuffle } from "@/lib/random";
 import { falarEmSequencia, speak, stopSpeaking } from "@/lib/speech";
-import { falarSobre } from "@/lib/falar-bicho";
+import { falarSobre, VOCE_SABIA } from "@/lib/falar-bicho";
 import { infoNivel } from "@/content/niveis";
 import {
   Arte,
@@ -126,7 +126,7 @@ export function JogoFase({
     setFigurinhaNova(nova);
     if (nova) setNovas((n) => [...n, animal.id]);
     setEtapa("acertou");
-    await falarEmSequencia([animal.nome, { texto: animal.curiosidade, rate: 0.95 }]);
+    await falarEmSequencia([animal.nome, VOCE_SABIA, { texto: animal.curiosidade, rate: 0.95 }]);
   }
 
   function proximo() {
@@ -531,7 +531,7 @@ function BotaoCuriosidade({ texto }: { texto: string }) {
       type="button"
       onClick={async () => {
         setFalando(true);
-        await speak(texto, { rate: 0.95 });
+        await falarEmSequencia([VOCE_SABIA, { texto, rate: 0.95 }]);
         setFalando(false);
       }}
       whileHover={{ y: -2 }}

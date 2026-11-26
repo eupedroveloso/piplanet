@@ -2,7 +2,7 @@
 # Confere se as telas principais CARREGAM (mapa/planeta 3D, exercícios, cartas, álbum, nível, ajustes, painel)
 # com cada perfil, sem erro no console. Usa um portal do Maestri.
 # Uso: scripts/conferir-telas.sh "Nome do Portal" [http://localhost:3100]
-P="${1:-Mundo Claude}"; U="${2:-http://localhost:3100}"
+P="${1:-Mundo QA}"; U="${2:-http://localhost:3100}"
 falhas=0
 for perfil in pietro perola pais; do
   corpo='{"perfil":"'$perfil'"'; [ "$perfil" = pais ] && corpo="$corpo"',"senha":"0001"'; corpo="$corpo}"

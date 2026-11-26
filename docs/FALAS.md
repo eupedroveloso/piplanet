@@ -48,7 +48,7 @@
 ## Pontos de fala no código
 
 <!-- MAPA:INICIO -->
-_Gerado por `scripts/gerar-vozes.mts` em 26/11/2026, 17:45:19. 102 pontos de fala, 1382 falas únicas._
+_Gerado por `scripts/gerar-vozes.mts` em 26/11/2026, 18:38:43. 102 pontos de fala, 1384 falas únicas._
 
 | Onde | Tipo | O que fala |
 |---|---|---|
@@ -59,13 +59,13 @@ _Gerado por `scripts/gerar-vozes.mts` em 26/11/2026, 17:45:19. 102 pontos de fal
 | `src/app/ajustes/Ajustes.tsx:58` | aria-label (botão fala o rótulo) | Mais devagar |
 | `src/app/ajustes/Ajustes.tsx:61` | aria-label (botão fala o rótulo) | Velocidade |
 | `src/app/ajustes/Ajustes.tsx:77` | aria-label (botão fala o rótulo) | Mais rápido |
-| `src/app/entrar/Entrar.tsx:29` | speak | Quem vai jogar? Toque no seu bicho. |
+| `src/app/entrar/Entrar.tsx:29` | speak | Quem vai jogar? Toque no seu explorador. |
 | `src/app/entrar/Entrar.tsx:48` | speak | `Oi, ${p.nome}!`) (montado na hora) |
-| `src/app/entrar/Entrar.tsx:54` | speak | Ops! Toque de novo no seu bicho. |
+| `src/app/entrar/Entrar.tsx:54` | speak | Ops! Toque de novo no seu explorador. |
 | `src/app/entrar/Entrar.tsx:59` | speak | Senha errada. Tente de novo. |
 | `src/app/entrar/Entrar.tsx:68` | speak | `${p.nome}. Digite a senha.`) (montado na hora) |
 | `src/app/entrar/Entrar.tsx:95` | aria-label (botão fala o rótulo) | Quem vai jogar? |
-| `src/app/entrar/Entrar.tsx:96` | speak | Quem vai jogar? Toque no seu bicho. |
+| `src/app/entrar/Entrar.tsx:96` | speak | Quem vai jogar? Toque no seu explorador. |
 | `src/app/entrar/Entrar.tsx:211` | aria-label (botão fala o rótulo) | Voltar |
 | `src/app/entrar/Entrar.tsx:212` | fala | Voltar |
 | `src/app/error.tsx:11` | speak | Ops! Toque no botão para tentar de novo. |
@@ -80,18 +80,18 @@ _Gerado por `scripts/gerar-vozes.mts` em 26/11/2026, 17:45:19. 102 pontos de fal
 | `src/components/jornada/FichaBicho.tsx:98` | aria-label (botão fala o rótulo) | Ouvir outra curiosidade |
 | `src/components/jornada/FichaBicho.tsx:123` | aria-label (botão fala o rótulo) | Fechar |
 | `src/components/mundo/caminhada.ts:115` | speak | Oba! Caminho novo! |
-| `src/components/mundo/Cena.tsx:219` | speak | `${b.nome}. Ainda trancado.`) (montado na hora) |
+| `src/components/mundo/Cena.tsx:298` | speak | `${b.nome}. Ainda trancado.`) (montado na hora) |
 | `src/components/mundo/MapaMundo.tsx:186` | speak | Vamos continuar! |
 | `src/components/mundo/MapaMundo.tsx:202` | aria-label (botão fala o rótulo) | Ver o planeta |
 | `src/components/mundo/MapaMundo.tsx:222` | aria-label (botão fala o rótulo) | Onde estou |
 | `src/components/mundo/MapaMundo.tsx:240` | aria-label (botão fala o rótulo) | Continuar daqui |
-| `src/components/mundo/Planeta.tsx:95` | speak | livre ? p.nome : `${p.nome}. Ainda trancado. Termine o país anterior  (montado na hora) |
-| `src/components/mundo/ProtecaoCena.tsx:58` | speak | Vamos tentar de novo! |
-| `src/components/mundo/ProtecaoCena.tsx:69` | aria-label (botão fala o rótulo) | Tentar de novo |
-| `src/components/mundo/Rotulos.tsx:199` | speak | liberada ? t.nome : `${t.nome}. Ainda trancado. Termine as fases de a (montado na hora) |
-| `src/components/mundo/Rotulos.tsx:258` | speak | livre ? info.fala : `${info.fala} Ainda trancado.`) (montado na hora) |
-| `src/components/mundo/Rotulos.tsx:327` | speak | Essa fase ainda está trancada. |
-| `src/components/mundo/Rotulos.tsx:330` | speak | JOGOS[f.jogo].nome) (montado na hora) |
+| `src/components/mundo/Planeta.tsx:100` | speak | livre ? p.nome : `${p.nome}. Ainda trancado. Termine o país anterior  (montado na hora) |
+| `src/components/mundo/ProtecaoCena.tsx:74` | speak | Vamos tentar de novo! |
+| `src/components/mundo/ProtecaoCena.tsx:85` | aria-label (botão fala o rótulo) | Tentar de novo |
+| `src/components/mundo/Rotulos.tsx:198` | speak | liberada ? t.nome : `${t.nome}. Ainda trancado. Termine as fases de a (montado na hora) |
+| `src/components/mundo/Rotulos.tsx:257` | speak | livre ? info.fala : `${info.fala} Ainda trancado.`) (montado na hora) |
+| `src/components/mundo/Rotulos.tsx:326` | speak | Essa fase ainda está trancada. |
+| `src/components/mundo/Rotulos.tsx:329` | speak | JOGOS[f.jogo].nome) (montado na hora) |
 | `src/components/ui/Botao.tsx:76` | speak | texto) (montado na hora) |
 | `src/components/ui/Botao.tsx:104` | speak | texto) (montado na hora) |
 | `src/components/ui/BotaoRedondo.tsx:44` | speak | fala ?? props["aria-label"]) (montado na hora) |
@@ -100,7 +100,7 @@ _Gerado por `scripts/gerar-vozes.mts` em 26/11/2026, 17:45:19. 102 pontos de fal
 | `src/components/ui/Cabecalho.tsx:34` | speak | `Oi, ${perfil.nome}! Toque nos bichos do mapa para jogar.`) (montado na hora) |
 | `src/components/ui/Cabecalho.tsx:70` | speak | info.fala) (montado na hora) |
 | `src/components/ui/Contador.tsx:68` | speak | `Você tem ${valor}${total !== undefined ? ` de ${total}` : ""} ${rotu (montado na hora) |
-| `src/components/ui/Mascote.tsx:31` | speak | fala) (montado na hora) |
+| `src/components/ui/Mascote.tsx:30` | speak | fala) (montado na hora) |
 | `src/components/ui/NavInferior.tsx:45` | aria-label (botão fala o rótulo) | Navegação |
 | `src/components/ui/NavInferior.tsx:56` | speak | it.fala) (montado na hora) |
 | `src/components/ui/TelaCarregando.tsx:64` | aria-label (botão fala o rótulo) | Carregando |
@@ -132,10 +132,10 @@ _Gerado por `scripts/gerar-vozes.mts` em 26/11/2026, 17:45:19. 102 pontos de fal
 | `src/games/le-e-acha/LeEAcha.tsx:93` | speak | `Esse é ${a.nome}.`) (montado na hora) |
 | `src/games/monta-o-bicho/MontaOBicho.tsx:72` | speak | palavras.join(" ")) (montado na hora) |
 | `src/games/monta-o-bicho/MontaOBicho.tsx:88` | speak | letras · silabas |
-| `src/games/monta-o-bicho/MontaOBicho.tsx:98` | speak | letras · silabas |
-| `src/games/monta-o-bicho/MontaOBicho.tsx:104` | speak | falaDaSilaba(animal.silabas[g])) (montado na hora) |
-| `src/games/monta-o-bicho/MontaOBicho.tsx:109` | speak | palavras.join(" ")) (montado na hora) |
-| `src/games/monta-o-bicho/MontaOBicho.tsx:126` | aria-label (botão fala o rótulo) | Ouvir a frase |
+| `src/games/monta-o-bicho/MontaOBicho.tsx:100` | speak | letras · silabas |
+| `src/games/monta-o-bicho/MontaOBicho.tsx:106` | speak | falaDaSilaba(animal.silabas[g])) (montado na hora) |
+| `src/games/monta-o-bicho/MontaOBicho.tsx:114` | speak | palavras.join(" ")) (montado na hora) |
+| `src/games/monta-o-bicho/MontaOBicho.tsx:131` | aria-label (botão fala o rótulo) | Ouvir a frase |
 | `src/games/nivelamento/Nivelamento.tsx:79` | speak | Vamos ver como está sua leitura! Não tem certo nem errado.  |
 | `src/games/nivelamento/Nivelamento.tsx:89` | speak | Obrigado! · Muito bem! · Vamos para a próxima! |
 | `src/games/nivelamento/Nivelamento.tsx:105` | speak | `Prontinho! ${NIVEIS[final - 1].fala}`) (montado na hora) |
@@ -151,7 +151,7 @@ _Gerado por `scripts/gerar-vozes.mts` em 26/11/2026, 17:45:19. 102 pontos de fal
 | `src/games/nivelamento/Nivelamento.tsx:260` | speak | nv.fala) (montado na hora) |
 | `src/lib/speech.ts:49` | speak | u) (montado na hora) |
 | `src/lib/speech.ts:107` | speak | p.text, { rate: p.rate }) (montado na hora) |
-| `src/lib/speech.ts:182` | speak | text: string, opts: { rate?: number } = {}) (montado na hora) |
-| `src/lib/speech.ts:228` | speak | f) (montado na hora) |
-| `src/lib/speech.ts:228` | speak | f.texto, { rate: f.rate }) (montado na hora) |
+| `src/lib/speech.ts:189` | speak | text: string, opts: { rate?: number } = {}) (montado na hora) |
+| `src/lib/speech.ts:235` | speak | f) (montado na hora) |
+| `src/lib/speech.ts:235` | speak | f.texto, { rate: f.rate }) (montado na hora) |
 <!-- MAPA:FIM -->

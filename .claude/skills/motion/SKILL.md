@@ -69,3 +69,4 @@ Mudanças de estado (aparecer, sumir, trocar de tela, abrir painel): entrada com
 - 2026-11-26: explorador andando = `ui/Explorador` (quadros pietro-andando-1..4 a 125 ms; reduzir movimento = quadro 2 parado; `feliz` ao chegar). Trilhinha do jogo, cartão de nível, loading e mapa usam o mesmo sprite e a mesma curva de pulo y [0,-10,0,-6,0] em 0,9 s.
 - 2026-11-26: `pathLength` do Motion não combina com `vectorEffect="non-scaling-stroke"` (o traço sai picotado). Use espessura em unidades do SVG e um quadro com a mesma proporção do viewBox.
 - 2026-11-26: sprite em elemento absoluto perto da borda direita encolhe (shrink-to-fit + `max-width:100%` do img). Use `w-max` no wrapper e `max-w-none` no img.
+- 2026-11-26: o dono achou o loading da trilha complexo demais. Loading = UMA ilustração (rosto do explorador do perfil) balançando de leve + anel fino (progresso real enche; sem progresso, um arco gira devagar). Menos é mais em telas de espera.
