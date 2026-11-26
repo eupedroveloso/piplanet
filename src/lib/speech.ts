@@ -3,10 +3,16 @@
 import { settingsStore } from "./settings";
 
 /**
- * Voz em português usando a Web Speech API do próprio navegador (grátis, sem servidor).
- * A qualidade varia por aparelho. No iPad/iPhone e no Chrome costuma ser boa.
- * Futuro: trocar por áudios gravados (ver docs/METODOLOGIA.md, seção "Áudio").
+ * VOZ DA JUJU
+ * 1º: voz natural da ElevenLabs (/api/voz — cada frase é gerada uma vez e reaproveitada).
+ * Se não der (sem internet, sem crédito, não configurada): voz do próprio navegador (Web Speech).
+ * `speak` devolve uma Promise que termina quando a fala acaba (os jogos esperam por ela).
  */
+
+let atual: HTMLAudioElement | null = null;
+let encerrarAtual: (() => void) | null = null;
+/** Depois de uma falha da voz natural, usa a do navegador por um tempo (evita esperar a cada fala). */
+let semVozNaturalAte = 0;
 
 function pickVoice(): SpeechSynthesisVoice | null {
   const voices = window.speechSynthesis.getVoices();
@@ -19,16 +25,13 @@ function pickVoice(): SpeechSynthesisVoice | null {
   );
 }
 
-export function speak(text: string, opts: { rate?: number } = {}): Promise<void> {
+function falarNavegador(text: string, rate: number): Promise<void> {
   return new Promise((resolve) => {
-    if (typeof window === "undefined" || !("speechSynthesis" in window)) return resolve();
-    const { voz, velocidadeVoz } = settingsStore.read();
-    if (!voz) return resolve();
-
+    if (!("speechSynthesis" in window)) return resolve();
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text.toLowerCase());
     u.lang = "pt-BR";
-    u.rate = opts.rate ?? velocidadeVoz;
+    u.rate = rate;
     const voice = pickVoice();
     if (voice) u.voice = voice;
     // Alguns aparelhos nunca disparam onend: o tempo limite evita que o jogo trave.
@@ -46,8 +49,57 @@ export function speak(text: string, opts: { rate?: number } = {}): Promise<void>
   });
 }
 
-export function stopSpeaking() {
-  if (typeof window !== "undefined" && "speechSynthesis" in window) {
-    window.speechSynthesis.cancel();
+function falarNatural(text: string, rate: number): Promise<boolean> {
+  return new Promise((resolve) => {
+    const audio = new Audio(`/api/voz?t=${encodeURIComponent(text.replace(/\s+/g, " ").trim().toLowerCase())}`);
+    audio.preservesPitch = true;
+    audio.playbackRate = Math.min(1.3, Math.max(0.6, rate));
+    atual = audio;
+    let feito = false;
+    const fim = (ok: boolean) => {
+      if (feito) return;
+      feito = true;
+      clearTimeout(limite);
+      if (atual === audio) {
+        atual = null;
+        encerrarAtual = null;
+      }
+      resolve(ok);
+    };
+    encerrarAtual = () => {
+      audio.pause();
+      fim(true);
+    };
+    // se demorar demais para começar, desiste e usa a voz do navegador
+    const limite = setTimeout(() => {
+      if (audio.currentTime === 0) {
+        audio.pause();
+        fim(false);
+      }
+    }, 2500);
+    audio.onended = () => fim(true);
+    audio.onerror = () => fim(false);
+    audio.play().catch(() => fim(false));
+  });
+}
+
+export async function speak(text: string, opts: { rate?: number } = {}): Promise<void> {
+  if (typeof window === "undefined" || !text.trim()) return;
+  const { voz, velocidadeVoz } = settingsStore.read();
+  if (!voz) return;
+  stopSpeaking();
+  const rate = opts.rate ?? velocidadeVoz;
+
+  if (Date.now() > semVozNaturalAte) {
+    const ok = await falarNatural(text, rate);
+    if (ok) return;
+    semVozNaturalAte = Date.now() + 60_000;
   }
+  await falarNavegador(text, rate);
+}
+
+export function stopSpeaking() {
+  if (typeof window === "undefined") return;
+  encerrarAtual?.();
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
 }

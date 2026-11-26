@@ -39,3 +39,12 @@ model ProgressoPerfil {
   copias       Json     @default("[]")
   atualizadoEm DateTime @updatedAt
 }
+
+/// Áudios da voz da Juju gerados na ElevenLabs. Cada frase é gerada UMA vez e reaproveitada para sempre.
+model VozCache {
+  /// sha256(modelo | voz | texto)
+  chave    String   @id
+  texto    String
+  audio    Bytes
+  criadoEm DateTime @default(now())
+}
