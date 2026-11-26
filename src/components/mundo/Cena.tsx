@@ -19,7 +19,9 @@ import { fundir } from "./fundir";
 import { Modelos } from "./DecoracaoModelos";
 import { modelosLigados } from "./modelos";
 import { dprMaximo, ehCelular, modoLeve } from "./modoLeve";
-import { geometriaFita, geometriaTerreno, misturar, type Ilha } from "./ilha";
+import { geometriaFita, misturar, type Ilha } from "./ilha";
+import { AvisarPronto } from "./AvisarPronto";
+import { terrenoEmCache } from "./precarregar";
 import {
   Balao,
   AlgasDoFundo,
@@ -60,6 +62,8 @@ export interface CenaProps {
   caminho?: Caminho | null;
   /** Ponta do caminho que se desenha (a mãozinha HTML acompanha). */
   cabeca?: RefObject<THREE.Vector3 | null>;
+  /** Cena completa (modelos baixados, shaders compilados, primeiros quadros desenhados). */
+  onPronto?: () => void;
 }
 
 /**
@@ -181,7 +185,7 @@ function faseAtual(p: Progress) {
   return null;
 }
 
-function Mundo({ ilha, progresso, liberados, foco, onFocar, hover, onHover, camRef, balaoRef, caminho, cabeca }: CenaProps) {
+function Mundo({ ilha, progresso, liberados, foco, onFocar, hover, onHover, camRef, balaoRef, caminho, cabeca, onPronto }: CenaProps) {
   const mundo = useMemo(() => montarMundo(ilha), [ilha]);
   const controles = useRef<CameraControlsImpl>(null);
   const leve = useContext(LeveContexto);
@@ -281,7 +285,9 @@ function Mundo({ ilha, progresso, liberados, foco, onFocar, hover, onHover, camR
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [foco, ilha, tela.width, tela.height, camera]);
 
-  const terreno = useMemo(() => geometriaTerreno(ilha, liberados), [ilha, liberados]);
+  const terreno = useMemo(() => terrenoEmCache(ilha, liberados), [ilha, liberados]);
+  // ao trocar (bioma liberado) ou sair, libera os buffers da GPU; o objeto continua no cache e é reenviado se voltar
+  useEffect(() => () => terreno.dispose(), [terreno]);
 
   const pecas = useMemo(
     () =>
@@ -363,11 +369,11 @@ function Mundo({ ilha, progresso, liberados, foco, onFocar, hover, onHover, camR
 
       <Pecas pecas={pecas.filter((p) => !p.m)} />
       {/* Árvores, pedras, flores... modelos prontos do pacote do país (baixado sob demanda) */}
-      {modelosLigados() && (
-        <Suspense fallback={null}>
-          <ModelosDaQualidade pais={ilha.pais} pecas={pecas.filter((p) => p.m)} />
-        </Suspense>
-      )}
+      {/* o aviso de "pronto" fica no mesmo Suspense dos modelos: só monta quando eles chegaram */}
+      <Suspense fallback={null}>
+        {modelosLigados() && <ModelosDaQualidade pais={ilha.pais} pecas={pecas.filter((p) => p.m)} />}
+        <AvisarPronto onPronto={onPronto} />
+      </Suspense>
 
       {mundo.especiais.map((e, i) => {
         if (e.tipo === "moinho") return <Moinho key={i} p={e.p} />;

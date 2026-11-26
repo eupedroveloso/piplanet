@@ -8,7 +8,7 @@ import { registrarNivelamento, registrarSessao, useProgress } from "@/lib/progre
 import { shuffle } from "@/lib/random";
 import { speak } from "@/lib/speech";
 import { falaDaSilaba } from "@/content/letras";
-import { Arte, Botao, BotaoLink, BotaoRedondo, BotaoRedondoLink, BotaoSom, Mascote, MOLA_ENTRADA, Painel, fonteQueCabe } from "@/components/ui";
+import { Arte, Botao, BotaoLink, BotaoRedondo, BotaoRedondoLink, BotaoSom, Esqueleto, Mascote, MOLA_ENTRADA, Painel, fonteQueCabe, useImagensProntas } from "@/components/ui";
 
 /**
  * NIVELAMENTO (teste de leitura adaptativo)
@@ -60,6 +60,8 @@ export function Nivelamento() {
   const [nivel, setNivel] = useState(2);
   const [n, setN] = useState(0);
   const [pergunta, setPergunta] = useState<Pergunta | null>(null);
+  // as opções com figura só aparecem com as imagens prontas (nada pela metade)
+  const imagensProntas = useImagensProntas(pergunta?.tipo === "figura" ? pergunta.opcoes.map(arteDoAnimal) : []);
   const [usados, setUsados] = useState<Set<string>>(new Set());
   const [acertos, setAcertos] = useState<Record<number, [number, number]>>({});
   const [resultado, setResultado] = useState(1);
@@ -207,6 +209,13 @@ export function Nivelamento() {
             )}
           </div>
 
+          {p.tipo === "figura" && !imagensProntas ? (
+            <div role="status" aria-label="Carregando" className="flex flex-wrap justify-center gap-3 sm:gap-4">
+              {p.opcoes.map((a) => (
+                <Esqueleto key={a.id} className="size-36 rounded-xl sm:size-40" />
+              ))}
+            </div>
+          ) : (
           <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
             {p.tipo === "silaba"
               ? p.opcoes.map((s) => (
@@ -241,6 +250,7 @@ export function Nivelamento() {
                   </motion.button>
                 ))}
           </div>
+          )}
         </motion.div>
       </AnimatePresence>
     </div>

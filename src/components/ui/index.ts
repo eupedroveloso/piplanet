@@ -8,6 +8,7 @@ export { Botao, BotaoLink, classesBotao, TOQUE_RELEVO, type CorBotao } from "./B
 export { BotaoRedondo, BotaoRedondoLink } from "./BotaoRedondo";
 export { BotaoSom } from "./BotaoSom";
 export { Cabecalho } from "./Cabecalho";
+export { Esqueleto, Espera, ImagemSuave, useImagensProntas } from "./carregando";
 export { CenarioFundo } from "./CenarioFundo";
 export { Comemoracao } from "./Comemoracao";
 export { Casinha, Peca } from "./Peca";

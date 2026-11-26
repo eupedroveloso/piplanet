@@ -110,3 +110,9 @@ O dono exige que abra leve num tablet Android (GPUs Mali/Adreno intermediárias,
   - **Iteração:** a caixa é centrada na área livre (abaixo do placar, acima do "Continuar") e a distância é ajustada em 6 iterações.
   - **Em pé:** encaixe só do nível atual, com a câmera mais de cima (altura 17 em vez de 11,5). Assim a profundidade se abre na tela e os nós não se encavalam.
   - **Armadilha:** a direita da tela no chão é `(dir.z, 0, -dir.x)`, com `dir` = do alvo para a câmera. Com o sinal trocado, o laço diverge e a tela vira só mar. Ponha trava no desvio do alvo e na distância.
+- **Carregamento completo e rápido (aprovado pelo Faro, 2026-11-26):**
+  - **Sinal de pronto:** a TelaCarregando só sai com o aviso do `AvisarPronto`. Ele fica no MESMO Suspense dos modelos GLB, faz `gl.compileAsync(cena, camera)` com trava de 4 s e espera 2 quadros. Não use polling por `document.querySelector("canvas")` e `useProgress`: esse método deixava pedaços surgirem depois.
+  - **Geração e cache:** a ilha é gerada em etapas, cedendo o quadro (`precarregar.ts`), e o terreno tem cache por país.
+  - **Pré-carregamento ocioso:** do GLB (`useGLTF.preload` com os MESMOS argumentos do `useGLTF`) e da ilha do próximo país. Só CPU e rede.
+  - **Limites:** shaders não dá para pré-compilar entre contextos, porque o programa é por contexto WebGL. A 1ª compilação pode custar ~1,5 s a mais no dev.
+  - **Medição:** `window.__pgTempos`. No portal 393 ios, abrir do zero leva ~0,9 a 1,3 s, ir do planeta ao Brasil ~0,8 s, voltar da fase ~0,4 s, e o modo leve ~0,3 s na volta.

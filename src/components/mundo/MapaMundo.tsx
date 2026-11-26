@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { chaveFase, faseDesbloqueada, paisDesbloqueado, TERRITORIOS, territorioDesbloqueado } from "@/content/jornada";
 import { PAISES, type PaisId } from "@/content/paises";
@@ -12,7 +12,9 @@ import { speak } from "@/lib/speech";
 import { settingsStore, useSettings } from "@/lib/settings";
 import { Arte, ArteMascote, BotaoRedondo, MOLA_ENTRADA, TelaCarregando } from "@/components/ui";
 import { useProgress as useCarga } from "@react-three/drei";
-import { criarIlha, type Ilha } from "./ilha";
+import type { Ilha } from "./ilha";
+import { modoLeve } from "./modoLeve";
+import { gerarIlhaEmEtapas, precarregarPais } from "./precarregar";
 import { Rotulos } from "./Rotulos";
 import { useCaminhada } from "./caminhada";
 
@@ -59,33 +61,42 @@ export function MapaMundo() {
   const ilha = pais && ilhaGerada?.pais === pais ? ilhaGerada : null;
   useEffect(() => {
     if (!pais) return;
-    const t = setTimeout(() => setIlhaGerada(criarIlha(pais)), 60);
-    return () => clearTimeout(t);
+    let vivo = true;
+    // em etapas (relevo → decoração → terreno), cedendo o quadro: a tela de carregamento não congela
+    gerarIlhaEmEtapas(pais, liberados).then((i) => vivo && setIlhaGerada(i));
+    return () => {
+      vivo = false;
+    };
+    // o terreno com outro "liberados" é refeito na Cena (cache por país)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pais]);
 
-  // Tela de carregamento: some só quando o 3D baixou, a ilha existe e o primeiro quadro foi desenhado
+  // Tela de carregamento: some só quando a cena avisa que está COMPLETA (AvisarPronto: modelos baixados,
+  // shaders compilados e dois quadros desenhados), sem pedaços surgindo depois.
   const chaveCena = nivel === "planeta" ? "planeta" : `pais-${pais}`;
   const [prontoEm, setProntoEm] = useState<string | null>(null);
   const carregando = prontoEm !== chaveCena;
   const carga = useCarga();
+  const inicioCarga = useRef(0);
   useEffect(() => {
     if (!carregando) return;
-    const inicio = performance.now();
-    let raf = 0;
-    const checar = () => {
-      const canvas = document.querySelector("canvas");
-      const pronto =
-        !!canvas && !carga.active && (nivel === "planeta" || !!ilha) && performance.now() - inicio > 700;
-      if (pronto || performance.now() - inicio > 9000) {
-        // espera mais dois quadros para o primeiro desenho aparecer
-        raf = requestAnimationFrame(() => (raf = requestAnimationFrame(() => setProntoEm(chaveCena))));
-        return;
-      }
-      raf = requestAnimationFrame(checar);
-    };
-    raf = requestAnimationFrame(checar);
-    return () => cancelAnimationFrame(raf);
-  }, [carregando, chaveCena, carga.active, nivel, ilha]);
+    inicioCarga.current = performance.now();
+    // trava: se o aviso não vier (erro na cena), não prende a criança na tela de carregamento
+    const t = setTimeout(() => setProntoEm(chaveCena), 15000);
+    return () => clearTimeout(t);
+  }, [carregando, chaveCena]);
+  const cenaPronta = (chave: string) => {
+    if (chave !== chaveCena || !carregando) return;
+    // medição (o Faro lê no console ou em window.__pgTempos): tempo até a cena aparecer completa
+    const registro = { cena: chave, ms: Math.round(performance.now() - inicioCarga.current), leve: modoLeve() };
+    const w = window as unknown as { __pgTempos?: object[] };
+    (w.__pgTempos ??= []).push(registro);
+    console.info("[3D] pronto", registro);
+    setProntoEm(chave);
+  };
+  // Com cacheComponents a rota fica escondida (<Activity>) durante o jogo e o Canvas é desmontado (ProtecaoCena):
+  // na volta a cena é refeita, então a tela de carregamento cobre de novo até ela avisar que está pronta.
+  useLayoutEffect(() => () => setProntoEm(null), []);
   // Caminho sendo trilhado: ao voltar de uma fase concluída (ou abrir um país novo)
   const [pontaInicial] = useState(() => new THREE.Vector3());
   const cabeca = useRef<THREE.Vector3 | null>(pontaInicial);
@@ -117,6 +128,19 @@ export function MapaMundo() {
     setFoco(null);
   }
 
+  // Pré-carrega em segundo plano (ocioso) o próximo país liberado; no planeta, o país atual
+  useEffect(() => {
+    if (carregando) return;
+    if (nivel === "planeta") {
+      precarregarPais(atual.pais, liberados);
+      return;
+    }
+    const i = PAISES.findIndex((p) => p.id === pais);
+    const depois = [...PAISES.slice(i + 1), ...PAISES.slice(0, i)];
+    const prox = depois.find((p) => paisesLivres[p.id]) ?? PAISES[i + 1];
+    if (prox) precarregarPais(prox.id, liberados);
+  }, [carregando, nivel, pais, atual.pais, liberados, paisesLivres]);
+
   const biomaAtualDoPais = ilha ? (atual.pais === ilha.pais ? atual.id : ilha.biomas.find((b) => b.jogavel)!.id) : null;
 
   // Ao abrir direto num país (app aberto do zero ou voltando de um jogo), aproxima no bioma atual
@@ -147,7 +171,14 @@ export function MapaMundo() {
         {nivel === "planeta" ? (
           <motion.div key="planeta" className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
             <ProtecaoCena>
-              <Planeta liberados={paisesLivres} atual={atual.pais} progresso={progresso} alvo={voandoPara} onEscolher={entrarNoPais} />
+              <Planeta
+                liberados={paisesLivres}
+                atual={atual.pais}
+                progresso={progresso}
+                alvo={voandoPara}
+                onEscolher={entrarNoPais}
+                onPronto={() => cenaPronta("planeta")}
+              />
             </ProtecaoCena>
           </motion.div>
         ) : !ilha ? null : (
@@ -165,6 +196,7 @@ export function MapaMundo() {
               balaoRef={balaoRef}
               caminho={caminhada.caminho}
               cabeca={cabeca}
+              onPronto={() => cenaPronta(`pais-${ilha.pais}`)}
             />
             </ProtecaoCena>
             <Rotulos ilha={ilha} camRef={camRef} balaoRef={balaoRef} foco={foco} hover={hover} progresso={progresso} liberados={liberados}

@@ -21,6 +21,8 @@ import {
   MOLA_ENTRADA,
   MOLA_TOQUE,
   NavInferior,
+  Esqueleto,
+  Espera,
 } from "@/components/ui";
 import {
   carregar,
@@ -86,11 +88,17 @@ export function PainelAdultos() {
   const [alvo, setAlvo] = useState(alvoAtual());
   const crianca = perfilPorId(alvo) ?? CRIANCAS()[0];
 
+  // título da aba acompanha a criança escolhida
+  useEffect(() => {
+    document.title = `Aprendizado ${noGenero(crianca.genero, "do", "da")} ${crianca.nome} · Pietro Games`;
+  }, [crianca]);
+
   /** Troca a criança acompanhada (Pietro ou Pérola) e recarrega os dados dela. */
   async function trocarCrianca(id: string) {
     if (id === alvo) return;
     escolherAlvo(id);
     setAlvo(id);
+    setDados(null); // não mostra números da outra criança enquanto carrega
     setCarregando(true);
     aplicarCarregado(await carregar(), agoraMs());
   }
@@ -241,8 +249,20 @@ export function PainelAdultos() {
       {/* Conteúdo */}
       <div className="relative min-h-0 flex-1">
         {carregando && !dados ? (
-          <div className="grid h-full place-items-center text-tinta-suave">
-            Carregando…
+          // Esqueleto dos cartões enquanto os dados chegam (nunca "—" ou vazio pela metade)
+          <div
+            role="status"
+            aria-label="Carregando"
+            className="grid content-start gap-3 md:grid-cols-2 md:gap-4"
+          >
+            <div className="grid grid-cols-2 gap-3">
+              {[0, 1, 2, 3].map((i) => (
+                <Esqueleto key={i} className="h-[5.25rem]" />
+              ))}
+            </div>
+            <Esqueleto className="h-44" />
+            <Esqueleto className="hidden h-44 md:block" />
+            <Esqueleto className="hidden h-44 md:block" />
           </div>
         ) : (
           <AnimatePresence mode="wait">
@@ -916,6 +936,7 @@ function Ajustes({
     acao: () => Promise<void>;
   }>(null);
   const tSel = TERRITORIOS.find((t) => t.id === terr) ?? terrs[0];
+  const [esperando, setEsperando] = useState(false);
 
   function pedir(texto: string, acao: () => Promise<void>) {
     setConfirmar({ texto, acao });
@@ -1080,7 +1101,7 @@ function Ajustes({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setConfirmar(null)}
+            onClick={() => !esperando && setConfirmar(null)}
           >
             <motion.div
               initial={{ scale: 0.9, y: 20 }}
@@ -1095,13 +1116,22 @@ function Ajustes({
                 Uma cópia do estado atual é guardada antes, para poder voltar.
               </p>
               <div className="grid grid-cols-2 gap-2">
-                <Acao onClick={() => setConfirmar(null)}>Cancelar</Acao>
+                <Acao onClick={() => !esperando && setConfirmar(null)}>
+                  Cancelar
+                </Acao>
                 <Acao
                   cor="roxo"
+                  esperando={esperando}
                   onClick={async () => {
-                    const c = confirmar;
-                    setConfirmar(null);
-                    await c.acao();
+                    // fica aberto e desabilitado até terminar (sem toque duplo)
+                    if (esperando) return;
+                    setEsperando(true);
+                    try {
+                      await confirmar.acao();
+                    } finally {
+                      setEsperando(false);
+                      setConfirmar(null);
+                    }
                   }}
                 >
                   Confirmar
@@ -1119,10 +1149,13 @@ function Acao({
   children,
   onClick,
   cor = "neutro",
+  esperando = false,
 }: {
   children: ReactNode;
   onClick: () => void;
   cor?: "neutro" | "roxo" | "perigo";
+  /** Ação assíncrona em andamento: desabilita (sem toque duplo) e mostra o indicador. */
+  esperando?: boolean;
 }) {
   const estilo =
     cor === "roxo"
@@ -1134,11 +1167,14 @@ function Acao({
     <motion.button
       type="button"
       onClick={onClick}
-      whileHover={{ y: -1 }}
-      whileTap={{ scale: 0.95, y: 2 }}
+      disabled={esperando}
+      aria-busy={esperando}
+      whileHover={esperando ? undefined : { y: -1 }}
+      whileTap={esperando ? undefined : { scale: 0.95, y: 2 }}
       transition={MOLA_TOQUE}
-      className={`min-h-12 rounded-md px-3 py-1.5 text-xs font-bold sm:text-sm ${estilo}`}
+      className={`flex min-h-12 items-center justify-center gap-2 rounded-md px-3 py-1.5 text-xs font-bold disabled:cursor-wait disabled:opacity-80 sm:text-sm ${estilo}`}
     >
+      {esperando && <Espera className="size-4" />}
       {children}
     </motion.button>
   );

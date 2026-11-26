@@ -1,13 +1,12 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element -- fotos locais já otimizadas (640 px) */
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { arteDoAnimal, type Animal } from "@/content/animais";
 import { FOTOS } from "@/content/fotos";
 import { curiosidadesDe, falarSobre } from "@/lib/falar-bicho";
 import { speak } from "@/lib/speech";
-import { Arte, BotaoRedondo, fonteQueCabe, fonteQueCabeEm, MOLA_ENTRADA, MOLA_TOQUE } from "@/components/ui";
+import { Arte, BotaoRedondo, Esqueleto, ImagemSuave, fonteQueCabe, fonteQueCabeEm, MOLA_ENTRADA, MOLA_TOQUE } from "@/components/ui";
 
 /**
  * FICHA DO BICHO (abre ao tocar numa figurinha do álbum)
@@ -47,16 +46,23 @@ export function FichaBicho({ animal, onFechar }: { animal: Animal | null; onFech
             <div className="relative aspect-[4/3] max-h-[40dvh] w-full shrink overflow-hidden bg-roxo-claro sm:aspect-auto sm:max-h-none sm:min-h-80 sm:w-1/2">
               {foto ? (
                 <>
-                  {/* a mesma foto desfocada preenche o fundo; a foto inteira fica por cima, sem cortes */}
-                  <img src={foto.arquivo} alt="" aria-hidden className="absolute inset-0 size-full scale-110 object-cover opacity-60 blur-xl" />
-                  <motion.img
+                  {/* espaço já reservado (aspect 4/3): esqueleto suave com a ilustração até a foto chegar, depois fade */}
+                  <ImagemSuave
+                    src={foto.arquivo}
+                    ajuste="object-cover"
+                    className="absolute inset-0 scale-110 opacity-60 blur-xl"
+                    placeholder={<span className="size-full bg-roxo-claro" />}
+                  />
+                  <ImagemSuave
                     src={foto.arquivo}
                     alt={`Foto de ${animal.nome}`}
-                    loading="lazy"
-                    initial={{ opacity: 0, scale: 1.05 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="absolute inset-0 size-full object-contain"
+                    className="absolute inset-0"
+                    placeholder={
+                      <span className="grid size-full place-items-center">
+                        <Esqueleto className="absolute inset-0 rounded-none" />
+                        <Arte src={arteDoAnimal(animal)} className="relative size-28 opacity-60" />
+                      </span>
+                    }
                   />
                 </>
               ) : (
@@ -114,9 +120,10 @@ export function FichaBicho({ animal, onFechar }: { animal: Animal | null; onFech
                 ))}
               </div>
               {foto && (
-                <a href={foto.fonte} target="_blank" rel="noreferrer" className="mt-2 text-[10px] leading-tight text-tinta-suave">
+                // crédito em texto, sem link: uma criança não pode sair do app por aqui (fonte em public/fotos/CREDITOS.md)
+                <p className="mt-2 text-[10px] leading-tight text-tinta-suave">
                   Foto: {foto.autor} · {foto.licenca} · Wikimedia Commons
-                </a>
+                </p>
               )}
             </div>
 

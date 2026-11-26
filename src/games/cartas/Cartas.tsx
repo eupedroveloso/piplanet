@@ -11,7 +11,7 @@ import { falaDaSilaba } from "@/content/letras";
 import { noGenero } from "@/content/perfis";
 import { usePerfil } from "@/lib/perfil";
 import { falarSobre } from "@/lib/falar-bicho";
-import { Arte, Botao, BotaoLink, BotaoRedondo, BotaoRedondoLink, BotaoSom, Mascote, MOLA_ENTRADA, MOLA_TOQUE, Painel, fonteQueCabeEm } from "@/components/ui";
+import { Arte, Botao, BotaoLink, BotaoRedondo, BotaoRedondoLink, BotaoSom, Esqueleto, Mascote, MOLA_ENTRADA, MOLA_TOQUE, Painel, fonteQueCabeEm, useImagensProntas } from "@/components/ui";
 
 /**
  * CARTAS (flashcards com repetição espaçada)
@@ -184,6 +184,9 @@ function CartaVirando({ carta, virada, onVirar }: { carta: Animal; virada: boole
     const c = animate(giro, virada ? 180 : 0, { duration: 0.6, ease: "easeInOut" });
     return () => c.stop();
   }, [virada, giro]);
+  // a carta só aparece com a figura do verso já carregada (nada pela metade ao virar)
+  const pronta = useImagensProntas([arteDoAnimal(carta)]);
+  if (!pronta) return <Esqueleto className="h-[min(20rem,55dvh)] w-64 rounded-xl sm:h-96 sm:w-72" />;
 
   return (
     <motion.button

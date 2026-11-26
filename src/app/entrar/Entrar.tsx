@@ -10,6 +10,7 @@ import {
   BotaoRedondo,
   MOLA_ENTRADA,
   MOLA_TOQUE,
+  Espera,
 } from "@/components/ui";
 
 /**
@@ -22,6 +23,7 @@ export function Entrar() {
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState(false);
   const [enviando, setEnviando] = useState(false);
+  const [entrandoId, setEntrandoId] = useState<string | null>(null);
 
   // Quem não sabe ler ouve a pergunta assim que a tela aparece
   useEffect(() => {
@@ -43,13 +45,15 @@ export function Entrar() {
     let r = await tentar();
     // perfil sem senha (Pietro): se falhar (rede/servidor), tenta de novo sem falar em senha
     if (!r?.ok && !p.temSenha) r = await tentar();
-    setEnviando(false);
     if (r?.ok) {
+      // continua "enviando" até a página trocar (sem toque duplo durante a navegação)
       speak(`Oi, ${p.nome}!`);
       // recarrega a navegação inteira para o progresso do perfil certo ser lido
       window.location.assign(p.temSenha ? "/painel" : "/");
       return;
     }
+    setEnviando(false);
+    setEntrandoId(null);
     if (!p.temSenha) {
       speak("Ops! Toque de novo no seu explorador.");
       return;
@@ -61,7 +65,9 @@ export function Entrar() {
   }
 
   function tocarPerfil(p: Perfil) {
+    if (enviando) return;
     if (!p.temSenha) {
+      setEntrandoId(p.id);
       entrar(p);
       return;
     }
@@ -158,7 +164,11 @@ export function Entrar() {
                     {p.nome}
                   </span>
                   <span className="grid size-12 place-items-center rounded-full bg-verde shadow-[0_4px_0_var(--color-verde-escuro)]">
-                    <Arte nome="ui/play" className="size-7" />
+                    {entrandoId === p.id ? (
+                      <Espera className="size-6 text-branco" />
+                    ) : (
+                      <Arte nome="ui/play" className="size-7" />
+                    )}
                   </span>
                 </motion.button>
               ))}
@@ -255,7 +265,11 @@ export function Entrar() {
                         : "bg-fundo text-roxo"
                     }`}
                   >
-                    {d}
+                    {d === "✓" && enviando ? (
+                      <Espera className="mx-auto size-6" />
+                    ) : (
+                      d
+                    )}
                   </motion.button>
                 ),
               )}

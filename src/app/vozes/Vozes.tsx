@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Arte, MOLA_TOQUE } from "@/components/ui";
+import { Arte, Esqueleto, Espera, MOLA_TOQUE } from "@/components/ui";
 
 /**
  * APROVAÇÃO DAS VOZES (só a conta Pais) — /vozes
@@ -22,6 +22,9 @@ export function Vozes() {
   const [puladas, setPuladas] = useState<Set<string>>(new Set());
   const [msg, setMsg] = useState("");
   const [ocupado, setOcupado] = useState(false);
+  /** Qual ação está em andamento (mostra o indicador só no botão tocado). */
+  const [fazendo, setFazendo] = useState<"aprovar" | "ruim" | "refazer" | null>(null);
+  const [carregou, setCarregou] = useState(false);
   const [filtro, setFiltro] = useState<"todas" | "revisar" | "nova" | "ruim" | "aprovada">("todas");
   const audio = useRef<HTMLAudioElement | null>(null);
 
@@ -32,7 +35,8 @@ export function Vozes() {
         setFalas(j.falas ?? []);
         setVoz(j.voz?.voz ?? "");
       })
-      .catch(() => setMsg("Não consegui carregar a lista."));
+      .catch(() => setMsg("Não consegui carregar a lista."))
+      .finally(() => setCarregou(true));
   }, []);
 
   const cont = useMemo(() => {
@@ -66,9 +70,11 @@ export function Vozes() {
 
   async function acao(f: Fala, a: "aprovar" | "ruim" | "refazer") {
     setOcupado(true);
+    setFazendo(a);
     setMsg(a === "refazer" ? "Gerando a voz de novo…" : "");
     const r = await fetch("/api/vozes", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ texto: f.texto, acao: a }) }).catch(() => null);
     setOcupado(false);
+    setFazendo(null);
     if (!r?.ok) {
       const j = await r?.json().catch(() => ({}));
       setMsg(`⚠️ ${j?.erro ?? "falhou"}${a === "refazer" ? " (crédito do OpenRouter?)" : ""}`);
@@ -126,14 +132,23 @@ export function Vozes() {
           <Arte nome="ui/som-ligado" className="size-7" /> Vozes do jogo
         </a>
         <div className="min-w-56 flex-1">
-          <div className="flex h-3 overflow-hidden rounded-full bg-linha">
-            <span className="bg-verde transition-all" style={{ width: `${(cont.aprovada / total) * 100}%` }} />
-            <span className="bg-amarelo transition-all" style={{ width: `${(cont.revisar / total) * 100}%` }} />
-            <span className="bg-coral transition-all" style={{ width: `${(cont.ruim / total) * 100}%` }} />
-          </div>
-          <p className="mt-1 text-xs text-tinta-suave">
-            {cont.aprovada} aprovadas de {falas.length} · {cont.revisar} para ouvir · {cont.ruim} ruins · {cont.nova} não geradas · voz: {voz.split(":")[0]}
-          </p>
+          {carregou ? (
+            <>
+              <div className="flex h-3 overflow-hidden rounded-full bg-linha">
+                <span className="bg-verde transition-all" style={{ width: `${(cont.aprovada / total) * 100}%` }} />
+                <span className="bg-amarelo transition-all" style={{ width: `${(cont.revisar / total) * 100}%` }} />
+                <span className="bg-coral transition-all" style={{ width: `${(cont.ruim / total) * 100}%` }} />
+              </div>
+              <p className="mt-1 text-xs text-tinta-suave">
+                {cont.aprovada} aprovadas de {falas.length} · {cont.revisar} para ouvir · {cont.ruim} ruins · {cont.nova} não geradas · voz: {voz.split(":")[0]}
+              </p>
+            </>
+          ) : (
+            <div className="flex flex-col gap-1.5">
+              <Esqueleto className="h-3 rounded-full" />
+              <Esqueleto className="h-3 w-2/3 rounded-full" />
+            </div>
+          )}
         </div>
       </header>
 
@@ -145,11 +160,11 @@ export function Vozes() {
               <span className="text-xs font-bold tracking-wide text-tinta-suave uppercase">{atual.tipo}</span>
               <p className="text-3xl font-extrabold break-words text-roxo">{atual.texto}</p>
               <div className="flex flex-wrap justify-center gap-2">
-                <Botao cor="bg-verde text-branco" onClick={aprovar} disabled={ocupado}>✓ Aprovar (A)</Botao>
-                <Botao cor="bg-amarelo text-tinta" onClick={refazer} disabled={ocupado}>↻ Refazer (R)</Botao>
+                <Botao cor="bg-verde text-branco" onClick={aprovar} disabled={ocupado} esperando={fazendo === "aprovar"}>✓ Aprovar (A)</Botao>
+                <Botao cor="bg-amarelo text-tinta" onClick={refazer} disabled={ocupado} esperando={fazendo === "refazer"}>↻ Refazer (R)</Botao>
                 <Botao cor="bg-roxo-claro text-roxo" onClick={() => tocar(atual)} disabled={ocupado}>🔊 Ouvir</Botao>
                 <Botao cor="bg-roxo-claro text-roxo" onClick={pular} disabled={ocupado}>Pular →</Botao>
-                <Botao cor="bg-coral/15 text-coral-escuro" onClick={ruim} disabled={ocupado}>✗ Ruim (X)</Botao>
+                <Botao cor="bg-coral/15 text-coral-escuro" onClick={ruim} disabled={ocupado} esperando={fazendo === "ruim"}>✗ Ruim (X)</Botao>
               </div>
             </>
           ) : (
@@ -169,6 +184,21 @@ export function Vozes() {
             ))}
           </div>
           <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+            {!carregou && (
+              // esqueleto das falas enquanto a lista chega
+              <div role="status" aria-label="Carregando" className="flex flex-col gap-4">
+                {[0, 1, 2].map((g) => (
+                  <div key={g} className="flex flex-col gap-2">
+                    <Esqueleto className="h-4 w-32 rounded-full" />
+                    <div className="flex flex-wrap gap-1.5">
+                      {Array.from({ length: 9 }, (_, i) => (
+                        <Esqueleto key={i} className={`h-7 rounded-full ${["w-20", "w-28", "w-16", "w-24"][i % 4]}`} />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
             {ORDEM.map((tipo) => {
               const xs = falas.filter((f) => f.tipo === tipo);
               const vis = xs.filter((f) => filtro === "todas" || st(f) === filtro);
@@ -202,9 +232,19 @@ export function Vozes() {
   );
 }
 
-function Botao({ cor, children, onClick, disabled }: { cor: string; children: React.ReactNode; onClick: () => void; disabled?: boolean }) {
+function Botao({ cor, children, onClick, disabled, esperando = false }: { cor: string; children: React.ReactNode; onClick: () => void; disabled?: boolean; esperando?: boolean }) {
   return (
-    <motion.button type="button" onClick={onClick} disabled={disabled} whileTap={{ scale: 0.95 }} transition={MOLA_TOQUE} className={`rounded-lg px-4 py-2 text-sm font-bold disabled:opacity-50 ${cor}`}>
+    <motion.button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-busy={esperando}
+      whileHover={disabled ? undefined : { y: -1 }}
+      whileTap={disabled ? undefined : { scale: 0.95 }}
+      transition={MOLA_TOQUE}
+      className={`flex min-h-12 items-center gap-2 rounded-lg px-4 py-2 text-sm font-bold disabled:opacity-60 ${esperando ? "disabled:opacity-90" : ""} ${cor}`}
+    >
+      {esperando && <Espera className="size-4" />}
       {children}
     </motion.button>
   );

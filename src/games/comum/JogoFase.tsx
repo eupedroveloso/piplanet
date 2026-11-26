@@ -5,6 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ANIMAIS, arteDoAnimal, type Animal } from "@/content/animais";
 import {
   animaisDaFase,
+  animaisDoTerritorio,
   BICHOS_POR_FASE,
   chaveFase,
   JOGOS,
@@ -17,6 +18,7 @@ import {
 import { calcularEstrelas, coletarAnimal, concluirFase, ganharPatinhas, PONTOS } from "@/lib/progress";
 import { RastreioLicao } from "@/lib/rastreio";
 import { settingsStore } from "@/lib/settings";
+import { preCarregarDepois, usePreCarregar } from "@/lib/precarregar";
 import { usePerfil } from "@/lib/perfil";
 import { shuffle } from "@/lib/random";
 import { falarEmSequencia, speak, stopSpeaking } from "@/lib/speech";
@@ -68,6 +70,8 @@ export function JogoFase({
   rodada: (p: RodadaProps) => ReactNode;
 }) {
   const fase = territorio.fases[faseIdx];
+  // Ilustrações de todos os bichos do bioma (usados nas rodadas e nas opções) prontas antes de começar
+  const artesProntas = usePreCarregar(animaisDoTerritorio(territorio.id).map(arteDoAnimal));
   const { genero } = usePerfil();
   const info = JOGOS[fase.jogo];
   const chave = chaveFase(territorio.id, faseIdx);
@@ -155,6 +159,10 @@ export function JogoFase({
     ganharPatinhas(PONTOS.fase);
     setPontosFase(total);
     concluirFase(chave, estrelas, total);
+    if (proxChave) {
+      const prox = territorioPorId(proxChave.split("/")[0]);
+      if (prox) preCarregarDepois(animaisDoTerritorio(prox.id).map(arteDoAnimal));
+    }
     rastreio.fechar(true, estrelas);
     setEtapa("fim");
     const novoNivel = proxChave ? nivelQueComeca(proxChave) : null;
@@ -253,7 +261,21 @@ export function JogoFase({
               animate={{ scale: [1, 1.04, 1] }}
               transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
             >
-              <Botao cor="amarelo" tamanho="lg" onClick={comecar} icone={<span aria-hidden className="grid size-9 place-items-center rounded-full bg-branco/35 text-xl leading-none">▶</span>}>
+              <Botao
+                cor="amarelo"
+                tamanho="lg"
+                onClick={comecar}
+                disabled={!artesProntas}
+                aria-label="Começar"
+                icone={
+                  artesProntas ? (
+                    <span aria-hidden className="grid size-9 place-items-center rounded-full bg-branco/35 text-xl leading-none">▶</span>
+                  ) : (
+                    // ilustrações dos bichos ainda carregando: espera um instante (nada aparece pela metade)
+                    <motion.span aria-hidden className="block size-9 rounded-full border-4 border-branco/40 border-t-branco" animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.9, ease: "linear" }} />
+                  )
+                }
+              >
                 Começar
               </Botao>
             </motion.div>

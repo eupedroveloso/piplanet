@@ -14,6 +14,7 @@ import { speak } from "@/lib/speech";
 import { CLASSE_ETIQUETA, MOLA_ENTRADA } from "@/components/ui";
 import { latLonParaVetor, texturaGlobo } from "./geo";
 import { Asteroides, Cometa, CriaturasDoMar, Estrelas, Foguete, Lua, Satelite } from "./Espaco";
+import { AvisarPronto } from "./AvisarPronto";
 import { dprMaximo, modoLeve } from "./modoLeve";
 import { useProjecao } from "./Rotulos";
 
@@ -33,6 +34,7 @@ export function Planeta({
   progresso,
   alvo,
   onEscolher,
+  onPronto,
 }: {
   liberados: Record<PaisId, boolean>;
   atual: PaisId;
@@ -40,6 +42,8 @@ export function Planeta({
   /** País para onde a câmera está voando (antes de trocar para a ilha). */
   alvo: PaisId | null;
   onEscolher: (p: PaisId) => void;
+  /** Globo completo (shaders compilados, primeiros quadros desenhados). */
+  onPronto?: () => void;
 }) {
   const camRef = useRef<THREE.Camera | null>(null);
   const host = useRef<HTMLDivElement>(null);
@@ -73,6 +77,7 @@ export function Planeta({
         <Foguete raio={9.4} vel={-0.18} fase={2.5} inclinacao={-0.5} cor="#ffc935" />
         {!leve && <Satelite />}
         {!leve && <Cometa />}
+        <AvisarPronto onPronto={onPronto} />
       </Canvas>
 
       {/* Placas dos países (escondem quando estão do outro lado do globo) */}

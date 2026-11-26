@@ -8,7 +8,7 @@ import { paisPorId, TEMAS } from "@/content/paises";
 import { useProgress, type Progress, liberadas } from "@/lib/progress";
 import { speak } from "@/lib/speech";
 import { FichaBicho } from "./FichaBicho";
-import { Arte, BALANCO, BotaoRedondo, fonteQueCabeEm, MOLA_ENTRADA, MOLA_TOQUE } from "@/components/ui";
+import { Arte, BALANCO, BotaoRedondo, Esqueleto, fonteQueCabeEm, ImagemSuave, MOLA_ENTRADA, MOLA_TOQUE } from "@/components/ui";
 
 /** Território onde a criança está jogando agora (o álbum abre nele). */
 function indiceAtual(p: Progress) {
@@ -162,7 +162,14 @@ export function Album() {
                       } ${falando ? "ring-4" : "ring-0"}`}
                       aria-label={ok ? b.nome : "Figurinha ainda não conquistada"}
                     >
-                      <Arte src={arteDoAnimal(b)} silhueta={!ok} className="min-h-0 w-auto max-w-[80%] flex-1 object-contain" />
+                      {/* espaço reservado (não pula o layout) e fade ao carregar */}
+                      <span className="relative block min-h-0 w-[80%] flex-1">
+                        <ImagemSuave
+                          src={arteDoAnimal(b)}
+                          className={ok ? "" : "brightness-0 opacity-15"}
+                          placeholder={<Esqueleto className="aspect-square h-[70%] rounded-full" />}
+                        />
+                      </span>
                       <span
                         style={{ fontSize: fonteQueCabeEm(70, ok ? b.nome.length : 1, 0, 1) }}
                         className="max-w-full shrink-0 font-leitura font-bold whitespace-nowrap text-roxo uppercase"
