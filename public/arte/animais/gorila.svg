@@ -1,10 +1,123 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M11.52 3.85C11.05 2.76 9.95997 2 8.69997 2C7.44997 2 6.35997 2.76 5.88997 3.84C5.72997 4.21 4.15997 7.5 4.15997 8.84C4.15997 11.35 6.18997 13.38 8.69997 13.38C11.21 13.38 13.24 11.35 13.24 8.84C13.24 7.5 11.68 4.22 11.52 3.85Z" fill="#636363"/>
-<path d="M7.49519 7.13338C7.66928 6.85732 7.77 6.53037 7.77 6.17989C7.77 5.1913 6.96859 4.38989 5.98 4.38989C4.99141 4.38989 4.19 5.1913 4.19 6.17989C4.19 6.53037 4.29073 6.85732 4.46481 7.13338C3.588 7.65212 3 8.60738 3 9.69997C3 11.3458 4.33419 12.68 5.98 12.68C7.62581 12.68 8.96 11.3458 8.96 9.69997C8.96 8.60738 8.372 7.65212 7.49519 7.13338Z" fill="#9B9B9B"/>
-<path d="M23.74 29.9999H28.8C29.35 29.9999 29.8 29.5499 29.79 28.9999V27.8899H25.85C24.69 27.8899 23.74 28.8299 23.74 29.9999Z" fill="#9B9B9B"/>
-<path d="M13.72 29.9999H10.94V27.8899H11.61C12.78 27.8899 13.72 28.8299 13.72 29.9999Z" fill="#9B9B9B"/>
-<path d="M27.3 11.3199C25.97 10.3299 24.81 10.2799 23.74 10.4799V10.4699C23.735 10.4699 23.73 10.4724 23.725 10.4749C23.72 10.4774 23.715 10.4799 23.71 10.4799C23.6633 10.4866 23.6167 10.5021 23.57 10.5177C23.5467 10.5255 23.5233 10.5333 23.5 10.5399C22.42 10.8499 21.48 10.8799 20.69 10.7499C20.2 10.6899 19.98 10.5999 19.55 10.4199C18.51 9.98992 17.84 9.30992 17.5 8.88992C17.43 8.77992 17.35 8.67992 17.27 8.57992C17.25 8.54992 17.24 8.52992 17.24 8.52992H17.23C15.92 6.85992 13.77 5.86992 11.42 6.20992C10.87 6.28992 10.36 6.48992 9.89999 6.78992C6.54999 8.94992 6.11999 10.7099 6.11999 12.3699H6.10999V24.9099C6.10999 27.7199 8.38999 29.9999 11.2 29.9999H12.33V21.0099L23.74 21.5499V23.9499C23.74 26.9099 25.87 29.3799 28.68 29.8999C29.26 30.0099 29.8 29.5299 29.8 28.9399V16.4899C29.79 14.4699 28.91 12.5199 27.3 11.3199Z" fill="#636363"/>
-<path d="M3 9C2.72386 9 2.5 9.22386 2.5 9.5C2.5 9.77614 2.72386 10 3 10H4.73C5.00614 10 5.23 9.77614 5.23 9.5C5.23 9.22386 5.00614 9 4.73 9H3Z" fill="#636363"/>
-<path d="M23.74 21.4999C23.74 20.5299 22.97 19.7299 22 19.6799C19.65 19.5599 16.79 19.1099 14.42 17.0199C13.61 16.2999 12.33 16.8399 12.33 17.9299V21.01C13.57 22.9699 15.73 24.2699 18.22 24.2699C20.47 24.2699 22.46 23.1999 23.74 21.5499L23.74 21.4999Z" fill="#9B9B9B"/>
-<path d="M5.75125 6.72003C6.07986 6.72003 6.34625 6.45364 6.34625 6.12503C6.34625 5.79642 6.07986 5.53003 5.75125 5.53003C5.42264 5.53003 5.15625 5.79642 5.15625 6.12503C5.15625 6.45364 5.42264 6.72003 5.75125 6.72003Z" fill="#212121"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="gorila-pelo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#76717c"/>
+      <stop offset="0.55" stop-color="#4c4852"/>
+      <stop offset="1" stop-color="#2c2a31"/>
+    </linearGradient>
+    <linearGradient id="gorila-tras" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4a4650"/>
+      <stop offset="1" stop-color="#26242a"/>
+    </linearGradient>
+    <radialGradient id="gorila-cabeca" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#7a7480"/>
+      <stop offset="0.65" stop-color="#4e4a54"/>
+      <stop offset="1" stop-color="#302e35"/>
+    </radialGradient>
+    <linearGradient id="gorila-prata" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e2e2e8"/>
+      <stop offset="0.55" stop-color="#b4b4be"/>
+      <stop offset="1" stop-color="#80808c"/>
+    </linearGradient>
+    <radialGradient id="gorila-rosto" cx="0.4" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#6e6670"/>
+      <stop offset="0.65" stop-color="#4a444c"/>
+      <stop offset="1" stop-color="#322e34"/>
+    </radialGradient>
+    <radialGradient id="gorila-iris" cx="0.4" cy="0.35" r="0.7">
+      <stop offset="0" stop-color="#d6a46a"/>
+      <stop offset="1" stop-color="#8a5a2e"/>
+    </radialGradient>
+    <clipPath id="gorila-clip-corpo">
+      <path d="M94 96 C106 62 158 60 190 82 C214 98 230 124 228 150 C226 176 210 190 188 190 L140 190 C116 190 98 172 94 150 C92 130 90 110 94 96 Z"/>
+    </clipPath>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="146" cy="237" rx="96" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="membros-de-la" stroke-linejoin="round" stroke-linecap="round">
+    <!-- braço de lá -->
+    <path d="M132 124 C126 154 128 190 132 214 L160 214 C160 190 164 160 168 132 Z" fill="url(#gorila-tras)" stroke="#18161a" stroke-width="2.5"/>
+    <path d="M128 212 C126 226 130 234 140 234 L158 234 C166 234 166 222 160 212 Z" fill="#3a363c" stroke="#18161a" stroke-width="2.2"/>
+    <!-- perna de trás de lá -->
+    <path d="M206 156 C222 162 230 182 226 204 L226 224 L208 224 C206 206 200 188 202 170 Z" fill="url(#gorila-tras)" stroke="#18161a" stroke-width="2.5"/>
+    <path d="M204 222 C204 230 208 234 214 234 L232 234 C236 232 234 224 228 222 Z" fill="#3a363c" stroke="#18161a" stroke-width="2.2"/>
+  </g>
+
+  <g id="corpo" stroke-linejoin="round" stroke-linecap="round">
+    <!-- costas arqueadas: ombros altos, garupa mais baixa -->
+    <path d="M94 96 C106 62 158 60 190 82 C214 98 230 124 228 150 C226 176 210 190 188 190 L140 190 C116 190 98 172 94 150 C92 130 90 110 94 96 Z" fill="url(#gorila-pelo)" stroke="#18161a" stroke-width="2.5"/>
+    <g clip-path="url(#gorila-clip-corpo)">
+      <!-- dorso prateado do macho costas-prateadas -->
+      <path d="M146 70 C176 70 208 88 222 112 C234 132 232 150 222 162 L216 154 L212 162 L204 152 L198 158 L192 148 L184 152 L180 142 L172 144 L170 134 L162 134 L162 124 L154 122 L156 112 L148 108 L152 98 L144 94 L148 84 L140 80 Z" fill="url(#gorila-prata)"/>
+      <g fill="none" stroke="#8a8a94" stroke-width="1.6" opacity="0.9">
+        <path d="M156 86 q6 4 8 10 M176 92 q6 4 8 10 M196 104 q5 4 6 10 M168 112 q6 4 8 10 M190 126 q5 4 6 10 M210 134 q4 4 4 9 M152 104 q4 4 6 9"/>
+      </g>
+      <path d="M150 80 Q180 76 206 94" fill="none" stroke="#ffffff" stroke-width="3" opacity="0.8"/>
+    </g>
+    <path d="M120 188 l4 6 l4 -6 l4 7 l4 -7 l4 6 l4 -6 M160 188 l4 6 l4 -6 l4 6 l4 -6" fill="none" stroke="#18161a" stroke-width="2"/>
+    <path d="M110 80 Q126 66 146 66" fill="none" stroke="#8e8996" stroke-width="3.5" opacity="0.8"/>
+    <g fill="none" stroke="#24222a" stroke-width="1.6" opacity="0.8">
+      <path d="M118 124 l4 6 M130 150 l4 6 M150 160 l4 6 M176 166 l4 6 M120 160 l3 6 M140 176 l4 5"/>
+    </g>
+  </g>
+
+  <g id="perna-de-ca" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M176 150 C200 140 222 164 214 192 L212 222 L188 222 C186 206 176 190 176 150 Z" fill="url(#gorila-pelo)"/>
+    <path d="M188 222 C186 206 180 194 178 180 M212 222 L214 192 C218 176 214 162 204 152" fill="none" stroke="#18161a" stroke-width="2.5"/>
+    <path d="M196 160 Q208 162 210 176" fill="none" stroke="#8e8996" stroke-width="2.5" opacity="0.7"/>
+    <path d="M184 220 C182 230 186 234 194 234 L216 234 C222 232 220 222 214 220 Z" fill="#3e3a40" stroke="#18161a" stroke-width="2.2"/>
+    <path d="M200 228 v6 M206 228 v6" stroke="#6a646c" stroke-width="1.4"/>
+  </g>
+
+  <g id="braco-de-ca" stroke-linejoin="round" stroke-linecap="round">
+    <!-- braço comprido apoiado nos nós dos dedos -->
+    <path d="M90 116 C82 148 84 188 88 214 L124 214 C124 188 130 160 136 128 C128 112 104 106 90 116 Z" fill="url(#gorila-pelo)" stroke="#18161a" stroke-width="2.5"/>
+    <path d="M96 130 C92 156 92 182 94 204" fill="none" stroke="#8e8996" stroke-width="3" opacity="0.7"/>
+    <g fill="none" stroke="#24222a" stroke-width="1.6" opacity="0.8"><path d="M110 140 l3 6 M106 164 l3 6 M114 186 l3 6"/></g>
+    <!-- mão fechada no chão -->
+    <path d="M84 212 C82 226 86 234 98 234 L122 234 C130 234 130 222 124 212 Z" fill="url(#gorila-rosto)" stroke="#18161a" stroke-width="2.2"/>
+    <path d="M94 224 q3 -4 6 0 M102 224 q3 -4 6 0 M110 224 q3 -4 6 0" fill="none" stroke="#7a727c" stroke-width="1.6"/>
+  </g>
+
+  <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
+    <!-- orelhinhas -->
+    <ellipse cx="38" cy="98" rx="7" ry="9" fill="#4a444c" stroke="#18161a" stroke-width="2.2"/>
+    <ellipse cx="114" cy="98" rx="7" ry="9" fill="#3a3540" stroke="#18161a" stroke-width="2.2"/>
+    <!-- cabeça -->
+    <!-- cabeça com a crista alta (crista sagital) -->
+    <path d="M78 22 C90 24 100 36 104 50 C112 58 116 72 116 88 C118 108 110 128 96 136 C86 142 66 142 56 136 C42 128 34 108 36 88 C36 72 42 60 52 50 C56 36 66 24 78 22 Z" fill="url(#gorila-cabeca)" stroke="#18161a" stroke-width="2.5"/>
+    <path d="M48 70 Q54 56 62 50 Q66 34 78 28" fill="none" stroke="#8e8996" stroke-width="3.5" opacity="0.8"/>
+    <path d="M70 40 l4 6 M84 38 l-2 7 M58 58 l4 4 M98 56 l-4 4" fill="none" stroke="#24222a" stroke-width="1.6"/>
+    <!-- rosto sem pelo, cinza-escuro -->
+    <path d="M76 72 C96 72 108 80 108 96 C108 110 102 118 102 128 C100 138 90 144 76 144 C62 144 52 138 50 128 C50 118 44 110 44 96 C44 80 56 72 76 72 Z" fill="url(#gorila-rosto)" stroke="#18161a" stroke-width="2.2"/>
+    <!-- sobrancelha saliente -->
+    <path d="M46 88 C52 78 64 76 76 82 C88 76 100 78 106 88 C100 86 90 84 76 88 C62 84 52 86 46 88 Z" fill="#2a262c" stroke="#18161a" stroke-width="1.8"/>
+    <path d="M54 82 Q64 78 72 81" fill="none" stroke="#7a727c" stroke-width="1.8"/>
+    <!-- nariz largo -->
+    <path d="M62 114 C62 104 70 100 76 100 C82 100 90 104 90 114 C90 120 84 122 76 122 C68 122 62 120 62 114 Z" fill="#3a343c" stroke="#18161a" stroke-width="2"/>
+    <ellipse cx="69" cy="116" rx="4" ry="3" fill="#141214"/>
+    <ellipse cx="83" cy="116" rx="4" ry="3" fill="#141214"/>
+    <path d="M68 105 Q76 101 84 105" fill="none" stroke="#7a727c" stroke-width="1.6"/>
+    <path d="M62 132 Q76 140 90 132" fill="none" stroke="#141214" stroke-width="2.2"/>
+    <path d="M60 128 q-2 -2 -4 -1 M92 128 q2 -2 4 -1" fill="none" stroke="#141214" stroke-width="1.6"/>
+    <ellipse cx="52" cy="116" rx="6" ry="4" fill="#f4908a" opacity="0.45"/>
+    <ellipse cx="100" cy="116" rx="6" ry="4" fill="#f4908a" opacity="0.45"/>
+  </g>
+
+  <g id="olhos">
+    <!-- íris castanha com anel claro para aparecer no rosto escuro -->
+    <ellipse cx="62" cy="96" rx="10" ry="11" fill="#e8e0d6"/>
+    <ellipse cx="90" cy="96" rx="10" ry="11" fill="#e8e0d6"/>
+    <ellipse cx="62" cy="96.5" rx="8.5" ry="9.5" fill="url(#gorila-iris)"/>
+    <ellipse cx="90" cy="96.5" rx="8.5" ry="9.5" fill="url(#gorila-iris)"/>
+    <ellipse cx="62.5" cy="97" rx="5.8" ry="6.8" fill="#2b1d16"/>
+    <ellipse cx="90.5" cy="97" rx="5.8" ry="6.8" fill="#2b1d16"/>
+    <circle cx="58.5" cy="92.5" r="3.6" fill="#fff"/>
+    <circle cx="65.5" cy="100.5" r="1.8" fill="#fff"/>
+    <circle cx="86.5" cy="92.5" r="3.6" fill="#fff"/>
+    <circle cx="93.5" cy="100.5" r="1.8" fill="#fff"/>
+  </g>
 </svg>

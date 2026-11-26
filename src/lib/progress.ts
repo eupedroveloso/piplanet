@@ -71,6 +71,8 @@ export interface Progress {
   sessoes: Sessao[];
   /** Quando o progresso mudou pela última vez (ms) — usado para sincronizar aparelhos. */
   atualizadoEm: number;
+  /** Quando um adulto corrigiu o progresso no painel (hora do servidor): vale em todos os aparelhos. */
+  corrigidoEm?: number;
 }
 
 export const progressStore = createPersistentStore<Progress>(chaveDoPerfil("pg:progress:v3"), {

@@ -2,9 +2,14 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { COOKIE_SESSAO, perfilPorId } from "@/content/perfis";
 import { verificar } from "@/lib/sessao";
+import { mesclar } from "@/lib/mesclar";
+import type { Progress } from "@/lib/progress";
 
 /**
- * Progresso de cada perfil no banco (sincroniza aparelhos e alimenta o painel dos adultos).
+ * Progresso de cada perfil no banco: a versão OFICIAL, independente do aparelho.
+ * - PUT normal: o servidor junta o que veio do aparelho com o que já tinha (nada se perde) e devolve o resultado.
+ * - PUT com "motivo" (correção no painel): substitui tudo e marca corrigidoEm; aparelhos que ainda não viram
+ *   a correção recebem a versão corrigida em vez de juntar (senão a correção seria desfeita).
  * - Cada perfil lê e grava o próprio.
  * - Pedro e Gabi (adultos) também leem e corrigem o do Pietro.
  * Sem DATABASE_URL no ambiente, responde 503 e o app segue só com o que está no aparelho.
@@ -43,7 +48,7 @@ export async function GET(req: Request) {
 }
 
 export async function PUT(req: Request) {
-  const corpo = (await req.json().catch(() => ({}))) as { perfil?: string; dados?: unknown; motivo?: string; anterior?: unknown };
+  const corpo = (await req.json().catch(() => ({}))) as { perfil?: string; dados?: unknown; motivo?: string; anterior?: unknown; base?: number };
   const alvo = corpo.perfil ?? "";
   if (!pode(await quem(), alvo) || !corpo.dados || typeof corpo.dados !== "object") {
     return NextResponse.json({ erro: "proibido" }, { status: 403 });
@@ -62,11 +67,24 @@ export async function PUT(req: Request) {
     else if (atual && Date.now() - ultima > DIA) copias = [...copias, { data: Date.now(), motivo: "Cópia automática do dia", dados: atual.dados }];
     copias = copias.slice(-MAX_COPIAS);
   }
-  const dados = corpo.dados as object;
+  const agora = Date.now();
+  const recebido = corpo.dados as Progress;
+  const noBanco = atual?.dados as Progress | undefined;
+  let corrigido = false;
+  let dados: Progress;
+  if (corpo.motivo) {
+    dados = { ...recebido, corrigidoEm: agora, atualizadoEm: agora };
+  } else if (noBanco && (noBanco.corrigidoEm ?? 0) > (corpo.base ?? 0)) {
+    // este aparelho ainda não viu a correção do painel: ele recebe a versão corrigida
+    dados = noBanco;
+    corrigido = true;
+  } else {
+    dados = noBanco ? mesclar(noBanco, recebido) : recebido;
+  }
   await db.progressoPerfil.upsert({
     where: { perfil: alvo },
-    create: { perfil: alvo, dados, copias: [] },
-    update: { dados, copias: copias as unknown as object[] },
+    create: { perfil: alvo, dados: dados as object, copias: [] },
+    update: { dados: dados as object, copias: copias as unknown as object[] },
   });
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, dados, corrigido, agora });
 }

@@ -50,7 +50,8 @@ export async function carregar(): Promise<Carregado> {
   if (!r?.ok) return { dados: local, copias: copiasLocais(), temBanco: false };
   const j = (await r.json()) as { dados: Progress | null; copias: Copia[] };
   const servidor = j.dados ? { ...VAZIO, ...j.dados } : null;
-  const dados = !servidor ? local : !local ? servidor : (servidor.atualizadoEm ?? 0) >= (local.atualizadoEm ?? 0) ? servidor : local;
+  // com banco, a versão do servidor é a oficial (junta todos os aparelhos)
+  const dados = servidor ?? local;
   return { dados, copias: [...(j.copias ?? [])].reverse(), temBanco: true };
 }
 
