@@ -105,3 +105,8 @@ O dono exige que abra leve num tablet Android (GPUs Mali/Adreno intermediárias,
   - O R3F só desmonta num `useInsertionEffect`, que não roda ao esconder, então o contexto WebGL e a memória de vídeo ficavam presos durante o jogo inteiro.
   - Correção: o `ProtecaoCena` guarda `visivel` num `useLayoutEffect` (true na montagem, false na limpeza) e só renderiza o Canvas quando visível. Ao esconder, o R3F libera a GPU; ao voltar, cria um contexto limpo.
   - Conferência: em `/jogar/...`, `document.querySelectorAll('canvas').length` deve dar 0.
+- **Enquadramento do bioma no celular (aprovado pelo Faro, 2026-11-26):**
+  - **Cálculo:** o encaixe é feito na TELA, em px. Uma câmera de teste projeta os nós, e a caixa soma os 56 px do nó, as estrelas e a placa "Nível" (~96 px à esquerda da 1ª fase do nível).
+  - **Iteração:** a caixa é centrada na área livre (abaixo do placar, acima do "Continuar") e a distância é ajustada em 6 iterações.
+  - **Em pé:** encaixe só do nível atual, com a câmera mais de cima (altura 17 em vez de 11,5). Assim a profundidade se abre na tela e os nós não se encavalam.
+  - **Armadilha:** a direita da tela no chão é `(dir.z, 0, -dir.x)`, com `dir` = do alvo para a câmera. Com o sinal trocado, o laço diverge e a tela vira só mar. Ponha trava no desvio do alvo e na distância.

@@ -55,13 +55,13 @@ export function TelaCarregando({ progresso, fundo = "claro" }: { progresso?: num
           </svg>
         </motion.div>
 
-        {/* o rosto do explorador do perfil, balançando de leve */}
+        {/* o rosto do explorador do perfil (a arte já tem o próprio círculo), balançando de leve */}
         <motion.div
-          className={`absolute inset-4 grid place-items-center rounded-full shadow-suave ${escuro ? "bg-branco/10" : "bg-branco/80"}`}
+          className="absolute inset-3 grid place-items-center"
           animate={reduzir ? { y: 0, rotate: 0 } : { y: [0, -5, 0], rotate: [-3, 3, -3] }}
           transition={reduzir ? { duration: 0 } : { duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
         >
-          <ArteMascote sufixo="-rosto" className="size-[86%]" />
+          <ArteMascote sufixo="-rosto" className="size-full drop-shadow-md" />
         </motion.div>
       </div>
     </motion.div>

@@ -1,17 +1,19 @@
 import "server-only";
 import { createHash } from "node:crypto";
+import config from "@/content/voz-config.json";
 
 /**
  * VOZ DO JOGO — sempre pelo OpenRouter (chave OPENROUTER_API_KEY).
- * Leitura de texto de verdade (TTS) com a ElevenLabs: modelo eleven-flash-v2.5 (o mais barato) e voz "will"
- * (masculina, amigável e animada, escolhida pelo dono). Endpoint: /api/v1/audio/speech.
+ * Leitura de texto de verdade (TTS) com VOZ NEURAL NATIVA EM PT-BR (Microsoft MAI-Voice), endpoint /api/v1/audio/speech.
+ * Modelo e voz ficam em src/content/voz-config.json (o mesmo arquivo usado pela ferramenta de aprovação,
+ * scripts/aprovador). Vozes em inglês (ex.: ElevenLabs "will") liam "to" como "two": não usar.
  * Cada áudio é CONFERIDO OUVINDO (modelo ouvinte barato): se não bater com o texto, gera de novo ou marca suspeito.
  * Nunca usar modelos de conversa (gpt-audio) para isso: eles inventam palavras e trocam sons.
  */
-export const VOZ_MODELO = process.env.VOZ_TTS_MODELO || "elevenlabs/eleven-flash-v2.5";
-export const VOZ_VOZ = process.env.VOZ_TTS_VOZ || "will";
+export const VOZ_MODELO = process.env.VOZ_TTS_MODELO || config.modelo;
+export const VOZ_VOZ = process.env.VOZ_TTS_VOZ || config.voz;
 /** Muda quando algo da geração muda: as falas antigas deixam de valer e são geradas de novo. */
-export const VOZ_VERSAO = "tts1";
+export const VOZ_VERSAO = config.versao;
 
 /** Modelo que OUVE o áudio gerado e transcreve (barato), para conferir se a fala saiu certa. */
 const VOZ_OUVINTE = process.env.VOZ_OUVINTE || "google/gemini-2.5-flash-lite";

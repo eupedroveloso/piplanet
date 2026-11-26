@@ -193,6 +193,15 @@ function atualizarMapa() {
   writeFileSync(p, doc.includes(ini) ? doc.slice(0, doc.indexOf(ini)) + tabela + doc.slice(doc.indexOf(fim) + fim.length) : doc + "\n" + tabela + "\n");
   console.log(`docs/FALAS.md atualizado (${pontos.length} pontos).`);
 }
+// Lista de falas (texto + tipo) usada pela página /vozes (aprovação das vozes dentro do app)
+{
+  const lista = [...falas].map((t) => ({
+    texto: t,
+    tipo: /(você tem \d+|você leu \d+ cartas)/.test(t) ? "Contagens" : (tipo.get(t) ?? "Interface e avisos"),
+  }));
+  writeFileSync("src/content/falas-lista.json", JSON.stringify(lista) + "\n");
+}
+
 atualizarMapa();
 if (process.argv.includes("--mapa")) process.exit(0);
 
@@ -203,8 +212,9 @@ if (process.argv.includes("--exportar")) {
   const { PrismaPg } = await import("@prisma/adapter-pg");
   const { PrismaClient } = await import("../src/generated/prisma/client");
   const db = new PrismaClient({ adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL_POOLED ?? process.env.DATABASE_URL! }) });
-  const chaveDe = (t: string) => createHash("sha256").update(`elevenlabs/eleven-flash-v2.5|will|tts1|${t}`).digest("hex");
-  const linhas = await db.vozCache.findMany({ where: { modelo: { contains: "eleven" } }, select: { chave: true, status: true, transcricao: true } });
+  const cfg = JSON.parse(readFileSync("src/content/voz-config.json", "utf8"));
+  const chaveDe = (t: string) => createHash("sha256").update(`${cfg.modelo}|${cfg.voz}|${cfg.versao}|${t}`).digest("hex");
+  const linhas = await db.vozCache.findMany({ where: { chave: { in: [...falas].map(chaveDe) } }, select: { chave: true, status: true, transcricao: true } });
   const porChave = new Map(linhas.map((l) => [l.chave, l]));
   const saida = [...falas].map((t) => {
     const l = porChave.get(chaveDe(t));

@@ -2,7 +2,8 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { COOKIE_SESSAO } from "@/content/perfis";
 import { verificar } from "@/lib/sessao";
-import { chaveDaVoz, gerarVoz, ouvidoConfere, ouvir } from "@/lib/voz";
+import { chaveDaVoz, gerarVoz, ouvidoConfere, ouvir, VOZ_MODELO, VOZ_VOZ } from "@/lib/voz";
+import LISTA from "@/content/falas-lista.json";
 
 /**
  * CONTROLE DE QUALIDADE DOS ÁUDIOS (só a conta Pais)
@@ -28,6 +29,16 @@ export async function GET(req: Request) {
   const db = await banco();
   if (!db) return NextResponse.json({ erro: "sem banco" }, { status: 503 });
   const u = new URL(req.url);
+  // ?lista=1 → todas as falas do jogo com a situação na voz atual (página /vozes)
+  if (u.searchParams.get("lista")) {
+    const chaves = LISTA.map((f) => chaveDaVoz(f.texto));
+    const linhas = await db.vozCache.findMany({ where: { chave: { in: chaves } }, select: { chave: true, status: true } });
+    const st = new Map(linhas.map((l) => [l.chave, l.status]));
+    return NextResponse.json({
+      voz: { modelo: VOZ_MODELO, voz: VOZ_VOZ },
+      falas: LISTA.map((f, i) => ({ ...f, status: st.get(chaves[i]) ?? "nova" })),
+    });
+  }
   const status = u.searchParams.get("status") ?? "suspeita";
   const q = (u.searchParams.get("q") ?? "").toLowerCase().trim();
   const where = {

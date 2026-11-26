@@ -2,7 +2,7 @@
 
 > **Consulte este arquivo antes de criar ou mexer em qualquer fala.** O público ainda não lê:
 > tudo que a criança precisa entender é falado. Nenhuma fala pode sair na voz do sistema (robótica).
-> Voz: **sempre OpenRouter** com a ElevenLabs (`elevenlabs/eleven-flash-v2.5`, voz `will`). Nunca Magnific.
+> Voz: **sempre OpenRouter**, voz neural nativa pt-BR **Caio** (`microsoft/mai-voice-2.1`, voz `pt-BR-Caio:MAI-Voice-2.1`), configurada em `src/content/voz-config.json`. Nunca Magnific. Nunca voz em inglês ("to" virava "two").
 
 ## Como a voz funciona
 
@@ -12,8 +12,8 @@
 2. `speak` toca `/api/voz?t=<texto>` (`src/app/api/voz/route.ts`):
    - se a frase já existe no banco (tabela `VozCache`), devolve o MP3 na hora, **sem custo**;
    - senão gera **uma vez** e guarda, **sempre pelo OpenRouter** (chave `OPENROUTER_API_KEY`), endpoint
-     `/api/v1/audio/speech`, modelo **`elevenlabs/eleven-flash-v2.5`** (leitura de texto de verdade, o mais barato),
-     voz **`will`** (masculina, amigável, escolhida pelo dono). Custo: ~US$ 0,00004 por caractere.
+     `/api/v1/audio/speech`, modelo e voz de `src/content/voz-config.json` (hoje **Caio**, MAI-Voice 2.1, pt-BR,
+     escolhida pelo dono pela melhor pronúncia em português; custo não é critério).
    - **Controle de qualidade ao gerar:** o modelo ouvinte `google/gemini-2.5-flash-lite` OUVE o áudio e transcreve;
      se não bater com o texto, gera de novo; se continuar errado, marca `suspeita` para revisão.
 3. **Nunca** usar modelos de conversa (`openai/gpt-audio*`) para voz: eles inventam palavras e trocam sons
@@ -25,6 +25,9 @@
 6. Falas com gênero usam o perfil (`genero` em `content/perfis.ts`): "Explorador/Exploradora", "sozinho/sozinha".
 
 ## Controle de qualidade
+
+- **Aprovação humana:** página `/vozes` (só a conta Pais). Uma fala de cada vez: ouvir, aprovar (A), refazer (R),
+  ruim (X); mapa com check por tipo. A lista vem de `src/content/falas-lista.json` (gerada pelo `scripts/gerar-vozes.mts`).
 
 - `npx tsx scripts/gerar-vozes.mts --conferir`: ouve TODAS as falas guardadas; as erradas são refeitas.
 - `POST /api/vozes { texto | chave, acao: "conferir" | "refazer" | "aprovar" | "ruim" }` (só conta Pais).
@@ -48,7 +51,7 @@
 ## Pontos de fala no código
 
 <!-- MAPA:INICIO -->
-_Gerado por `scripts/gerar-vozes.mts` em 26/11/2026, 18:38:43. 102 pontos de fala, 1384 falas únicas._
+_Gerado por `scripts/gerar-vozes.mts` em 26/11/2026, 18:52:16. 98 pontos de fala, 1383 falas únicas._
 
 | Onde | Tipo | O que fala |
 |---|---|---|
@@ -80,7 +83,7 @@ _Gerado por `scripts/gerar-vozes.mts` em 26/11/2026, 18:38:43. 102 pontos de fal
 | `src/components/jornada/FichaBicho.tsx:98` | aria-label (botão fala o rótulo) | Ouvir outra curiosidade |
 | `src/components/jornada/FichaBicho.tsx:123` | aria-label (botão fala o rótulo) | Fechar |
 | `src/components/mundo/caminhada.ts:115` | speak | Oba! Caminho novo! |
-| `src/components/mundo/Cena.tsx:298` | speak | `${b.nome}. Ainda trancado.`) (montado na hora) |
+| `src/components/mundo/Cena.tsx:300` | speak | `${b.nome}. Ainda trancado.`) (montado na hora) |
 | `src/components/mundo/MapaMundo.tsx:186` | speak | Vamos continuar! |
 | `src/components/mundo/MapaMundo.tsx:202` | aria-label (botão fala o rótulo) | Ver o planeta |
 | `src/components/mundo/MapaMundo.tsx:222` | aria-label (botão fala o rótulo) | Onde estou |
@@ -103,9 +106,6 @@ _Gerado por `scripts/gerar-vozes.mts` em 26/11/2026, 18:38:43. 102 pontos de fal
 | `src/components/ui/Mascote.tsx:30` | speak | fala) (montado na hora) |
 | `src/components/ui/NavInferior.tsx:45` | aria-label (botão fala o rótulo) | Navegação |
 | `src/components/ui/NavInferior.tsx:56` | speak | it.fala) (montado na hora) |
-| `src/components/ui/TelaCarregando.tsx:64` | aria-label (botão fala o rótulo) | Carregando |
-| `src/components/ui/TelaCarregando.tsx:145` | aria-label (botão fala o rótulo) | Pietro explorador |
-| `src/components/ui/TelaCarregando.tsx:147` | speak | DICAS[dica]) (montado na hora) |
 | `src/games/cartas/Cartas.tsx:58` | speak | Tente ler a palavra. Depois toque na carta para virar! · Você já revisou todas as cartas de hoje! Volte amanhã. |
 | `src/games/cartas/Cartas.tsx:73` | speak | Muito bem! · Vamos treinar de novo! |
 | `src/games/cartas/Cartas.tsx:85` | aria-label (botão fala o rótulo) | Voltar ao mapa |
@@ -126,7 +126,6 @@ _Gerado por `scripts/gerar-vozes.mts` em 26/11/2026, 18:38:43. 102 pontos de fal
 | `src/games/comum/JogoFase.tsx:340` | fala | Próxima fase! · Voltar para o mapa |
 | `src/games/comum/JogoFase.tsx:410` | fala | Próximo bicho! |
 | `src/games/comum/JogoFase.tsx:471` | speak | `Você subiu de nível! ${info.fala}`) (montado na hora) |
-| `src/games/comum/JogoFase.tsx:534` | speak | texto, { rate: 0.95 }) (montado na hora) |
 | `src/games/comum/JogoFase.tsx:561` | speak | Que bicho é esse? |
 | `src/games/le-e-acha/LeEAcha.tsx:79` | speak | falaDaSilaba(s)) (montado na hora) |
 | `src/games/le-e-acha/LeEAcha.tsx:93` | speak | `Esse é ${a.nome}.`) (montado na hora) |
