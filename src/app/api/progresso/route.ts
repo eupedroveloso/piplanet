@@ -35,6 +35,9 @@ function pode(eu: string | null, alvo: string) {
 
 async function banco() {
   if (!process.env.DATABASE_URL && !process.env.DATABASE_URL_POOLED) return null;
+  // Testes no computador (next dev) não gravam no banco de verdade, para não misturar com o progresso real.
+  // Para testar a sincronia localmente, rode com SINCRONIZAR_DEV=1.
+  if (process.env.NODE_ENV !== "production" && !process.env.SINCRONIZAR_DEV) return null;
   return (await import("@/lib/db")).db;
 }
 
