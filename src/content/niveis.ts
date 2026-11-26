@@ -10,7 +10,10 @@ export type NivelJornada = 1 | 2 | 3 | 4 | 5;
 
 export interface InfoNivel {
   n: NivelJornada;
+  /** Título de explorador (o que a criança "vira" ao chegar no nível). */
   nome: string;
+  /** O que se lê neste nível (para os pais e para a fala). */
+  leitura: string;
   exemplo: string;
   /** Ilustração (public/arte/...). */
   icone: string;
@@ -19,11 +22,11 @@ export interface InfoNivel {
 }
 
 export const NIVEIS_JORNADA: InfoNivel[] = [
-  { n: 1, nome: "Palavras curtinhas", exemplo: "ga·to", icone: "animais/gato", fala: "Nível um: palavras curtinhas, como gato!" },
-  { n: 2, nome: "Palavras de três sílabas", exemplo: "ca·va·lo", icone: "animais/cavalo", fala: "Nível dois: palavras de três pedacinhos, como cavalo!" },
-  { n: 3, nome: "Sílabas diferentes", exemplo: "co·bra", icone: "animais/cobra", fala: "Nível três: sílabas diferentes, como cobra e tubarão!" },
-  { n: 4, nome: "Palavras difíceis", exemplo: "o·ve·lha", icone: "animais/ovelha", fala: "Nível quatro: palavras difíceis, como ovelha e pinguim!" },
-  { n: 5, nome: "Palavras gigantes", exemplo: "hi·po·pó·ta·mo", icone: "animais/hipopotamo", fala: "Nível cinco: palavras gigantes, como hipopótamo!" },
+  { n: 1, nome: "Explorador Iniciante", leitura: "Palavras curtinhas", exemplo: "ga·to", icone: "animais/gato", fala: "Explorador Iniciante! Palavras curtinhas, como gato!" },
+  { n: 2, nome: "Explorador Aprendiz", leitura: "Palavras de três sílabas", exemplo: "ca·va·lo", icone: "animais/cavalo", fala: "Explorador Aprendiz! Palavras de três pedacinhos, como cavalo!" },
+  { n: 3, nome: "Explorador Aventureiro", leitura: "Sílabas diferentes", exemplo: "co·bra", icone: "animais/cobra", fala: "Explorador Aventureiro! Sílabas diferentes, como cobra e tubarão!" },
+  { n: 4, nome: "Explorador Experiente", leitura: "Palavras difíceis", exemplo: "o·ve·lha", icone: "animais/ovelha", fala: "Explorador Experiente! Palavras difíceis, como ovelha e pinguim!" },
+  { n: 5, nome: "Explorador Mestre", leitura: "Palavras gigantes", exemplo: "hi·po·pó·ta·mo", icone: "animais/hipopotamo", fala: "Explorador Mestre! Palavras gigantes, como hipopótamo!" },
 ];
 
 export const infoNivel = (n: number) => NIVEIS_JORNADA[Math.min(5, Math.max(1, n)) - 1];

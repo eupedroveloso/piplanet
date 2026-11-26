@@ -4,7 +4,7 @@ import { settingsStore } from "./settings";
 
 /**
  * VOZ DA JUJU
- * 1º: voz natural da ElevenLabs (/api/voz — cada frase é gerada uma vez e reaproveitada).
+ * 1º: voz natural gerada pelo OpenRouter (/api/voz — cada frase é gerada uma vez e reaproveitada).
  * Se não der (sem internet, sem crédito, não configurada): voz do próprio navegador (Web Speech).
  * `speak` devolve uma Promise que termina quando a fala acaba (os jogos esperam por ela).
  */

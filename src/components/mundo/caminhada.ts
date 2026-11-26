@@ -65,6 +65,8 @@ export interface Caminhada {
   caminho: Caminho | null;
   /** true enquanto o trecho se desenha (a mãozinha viaja na ponta). */
   andando: boolean;
+  /** true enquanto espera para começar (o explorador fica parado no nó antigo). */
+  esperando: boolean;
   /** Nó que acabou de acender ("territorio-fase"), por ~1 s. */
   acender: string | null;
 }
@@ -120,11 +122,12 @@ export function useCaminhada(ilha: Ilha | null, progresso: Progress, pronto: boo
     return () => timers.forEach(clearTimeout);
   }, [ilha, k, plano, pronto]);
 
-  if (!ilha || !plano) return { caminho: null, andando: false, acender: null };
+  if (!ilha || !plano) return { caminho: null, andando: false, esperando: false, acender: null };
   const comecou = inicio && inicio.ilha === ilha && inicio.k === k;
   return {
     caminho: { de: plano.de, ate: plano.ate, t0: comecou ? inicio.t0 : null },
     andando: andando && !!comecou,
+    esperando: plano.animar && !comecou,
     acender,
   };
 }

@@ -164,7 +164,7 @@ export function MapaMundo() {
             </ProtecaoCena>
             <Rotulos ilha={ilha} camRef={camRef} balaoRef={balaoRef} foco={foco} hover={hover} progresso={progresso} liberados={liberados}
               onFocar={setFoco}
-              caminhada={{ andando: caminhada.andando, acender: caminhada.acender, cabeca }}
+              caminhada={{ andando: caminhada.andando, esperando: caminhada.esperando, acender: caminhada.acender, cabeca }}
             />
             <motion.div
               initial={{ opacity: 0, y: -8 }}

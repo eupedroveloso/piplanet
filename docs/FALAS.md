@@ -2,14 +2,16 @@
 
 > **Consulte este arquivo antes de criar ou mexer em qualquer fala.** O público ainda não lê:
 > tudo que a criança precisa entender é falado. Nenhuma fala pode sair na voz do sistema (robótica).
+> Voz: **sempre OpenRouter** (nunca Magnific; ElevenLabs não está disponível no OpenRouter).
 
 ## Como a voz funciona
 
 1. O app chama `speak(texto)` (`src/lib/speech.ts`).
 2. `speak` toca `/api/voz?t=<texto>` (`src/app/api/voz/route.ts`):
    - se a frase já existe no banco (tabela `VozCache`), devolve o MP3 na hora, **sem custo**;
-   - senão gera **uma vez** e guarda: **ElevenLabs** (`eleven_flash_v2_5`, o modelo mais barato) quando
-     `ELEVENLABS_API_KEY` e `ELEVENLABS_VOICE_ID` existem; senão OpenRouter (`openai/gpt-audio-mini`, voz `verse`).
+   - senão gera **uma vez** e guarda, **sempre pelo OpenRouter** (chave `OPENROUTER_API_KEY`): `openai/gpt-audio-mini`
+     (o mais barato), voz masculina `verse`, lendo exatamente o texto (conferido pela transcrição). Se o mini não
+     ler certo em 3 tentativas, usa `openai/gpt-audio` (mais caro, só nessas frases).
 3. A voz do sistema (Web Speech) só toca se a voz natural **falhar de verdade** (sem internet, sem crédito).
    Se o navegador bloquear o som (antes do primeiro toque), a fala espera e toca no primeiro toque.
 4. Um tocador só para o app inteiro (necessário no iPad/iPhone). Velocidade da voz (Ajustes) = `playbackRate`.
@@ -31,7 +33,7 @@
 ## Pontos de fala no código
 
 <!-- MAPA:INICIO -->
-_Gerado por `scripts/gerar-vozes.mts` em 26/11/2026, 16:50:08. 103 pontos de fala, 1314 falas únicas._
+_Gerado por `scripts/gerar-vozes.mts` em 26/11/2026, 16:53:27. 103 pontos de fala, 1314 falas únicas._
 
 | Onde | Tipo | O que fala |
 |---|---|---|
@@ -62,7 +64,7 @@ _Gerado por `scripts/gerar-vozes.mts` em 26/11/2026, 16:50:08. 103 pontos de fal
 | `src/components/jornada/FichaBicho.tsx:94` | aria-label (botão fala o rótulo) | Ouvir o nome |
 | `src/components/jornada/FichaBicho.tsx:98` | aria-label (botão fala o rótulo) | Ouvir outra curiosidade |
 | `src/components/jornada/FichaBicho.tsx:123` | aria-label (botão fala o rótulo) | Fechar |
-| `src/components/mundo/caminhada.ts:113` | speak | Oba! Caminho novo! |
+| `src/components/mundo/caminhada.ts:115` | speak | Oba! Caminho novo! |
 | `src/components/mundo/Cena.tsx:219` | speak | `${b.nome}. Ainda trancado.`) (montado na hora) |
 | `src/components/mundo/MapaMundo.tsx:186` | speak | Vamos continuar! |
 | `src/components/mundo/MapaMundo.tsx:202` | aria-label (botão fala o rótulo) | Ver o planeta |
@@ -71,10 +73,10 @@ _Gerado por `scripts/gerar-vozes.mts` em 26/11/2026, 16:50:08. 103 pontos de fal
 | `src/components/mundo/Planeta.tsx:95` | speak | livre ? p.nome : `${p.nome}. Ainda trancado. Termine o país anterior  (montado na hora) |
 | `src/components/mundo/ProtecaoCena.tsx:58` | speak | Vamos tentar de novo! |
 | `src/components/mundo/ProtecaoCena.tsx:69` | aria-label (botão fala o rótulo) | Tentar de novo |
-| `src/components/mundo/Rotulos.tsx:196` | speak | liberada ? t.nome : `${t.nome}. Ainda trancado. Termine as fases de a (montado na hora) |
-| `src/components/mundo/Rotulos.tsx:254` | speak | livre ? info.fala : `${info.fala} Ainda trancado.`) (montado na hora) |
-| `src/components/mundo/Rotulos.tsx:323` | speak | Essa fase ainda está trancada. |
-| `src/components/mundo/Rotulos.tsx:326` | speak | JOGOS[f.jogo].nome) (montado na hora) |
+| `src/components/mundo/Rotulos.tsx:198` | speak | liberada ? t.nome : `${t.nome}. Ainda trancado. Termine as fases de a (montado na hora) |
+| `src/components/mundo/Rotulos.tsx:256` | speak | livre ? info.fala : `${info.fala} Ainda trancado.`) (montado na hora) |
+| `src/components/mundo/Rotulos.tsx:325` | speak | Essa fase ainda está trancada. |
+| `src/components/mundo/Rotulos.tsx:328` | speak | JOGOS[f.jogo].nome) (montado na hora) |
 | `src/components/ui/Botao.tsx:76` | speak | texto) (montado na hora) |
 | `src/components/ui/Botao.tsx:104` | speak | texto) (montado na hora) |
 | `src/components/ui/BotaoRedondo.tsx:44` | speak | aria-label |
@@ -98,20 +100,20 @@ _Gerado por `scripts/gerar-vozes.mts` em 26/11/2026, 16:50:08. 103 pontos de fal
 | `src/games/cartas/Cartas.tsx:150` | speak | carta.silabas.join(" ") + ". " + carta.nome) (montado na hora) |
 | `src/games/cartas/Cartas.tsx:158` | aria-label (botão fala o rótulo) | Li sozinho |
 | `src/games/cartas/Cartas.tsx:161` | aria-label (botão fala o rótulo) | Treinar de novo |
-| `src/games/comum/JogoFase.tsx:98` | speak | info.instrucao) (montado na hora) |
-| `src/games/comum/JogoFase.tsx:118` | speak | animal.nome) (montado na hora) |
-| `src/games/comum/JogoFase.tsx:119` | speak | animal.curiosidade, { rate: 0.95 }) (montado na hora) |
-| `src/games/comum/JogoFase.tsx:139` | speak | estrela · estrelas |
-| `src/games/comum/JogoFase.tsx:140` | speak | `Você subiu de nível! ${infoNivel(novoNivel).fala}`) (montado na hora) |
-| `src/games/comum/JogoFase.tsx:146` | aria-label (botão fala o rótulo) | Voltar ao mapa |
-| `src/games/comum/JogoFase.tsx:179` | speak | info.instrucao) (montado na hora) |
-| `src/games/comum/JogoFase.tsx:221` | speak | a.nome) (montado na hora) |
-| `src/games/comum/JogoFase.tsx:303` | speak | a.nome) (montado na hora) |
-| `src/games/comum/JogoFase.tsx:323` | fala | Próxima fase! · Voltar para o mapa |
-| `src/games/comum/JogoFase.tsx:393` | fala | Próximo bicho! |
-| `src/games/comum/JogoFase.tsx:445` | speak | `Você subiu de nível! ${info.fala}`) (montado na hora) |
-| `src/games/comum/JogoFase.tsx:499` | speak | texto, { rate: 0.95 }) (montado na hora) |
-| `src/games/comum/JogoFase.tsx:526` | speak | Que bicho é esse? |
+| `src/games/comum/JogoFase.tsx:99` | speak | info.instrucao) (montado na hora) |
+| `src/games/comum/JogoFase.tsx:119` | speak | animal.nome) (montado na hora) |
+| `src/games/comum/JogoFase.tsx:120` | speak | animal.curiosidade, { rate: 0.95 }) (montado na hora) |
+| `src/games/comum/JogoFase.tsx:140` | speak | estrela · estrelas |
+| `src/games/comum/JogoFase.tsx:141` | speak | `Você subiu de nível! ${infoNivel(novoNivel).fala}`) (montado na hora) |
+| `src/games/comum/JogoFase.tsx:147` | aria-label (botão fala o rótulo) | Voltar ao mapa |
+| `src/games/comum/JogoFase.tsx:180` | speak | info.instrucao) (montado na hora) |
+| `src/games/comum/JogoFase.tsx:222` | speak | a.nome) (montado na hora) |
+| `src/games/comum/JogoFase.tsx:304` | speak | a.nome) (montado na hora) |
+| `src/games/comum/JogoFase.tsx:324` | fala | Próxima fase! · Voltar para o mapa |
+| `src/games/comum/JogoFase.tsx:394` | fala | Próximo bicho! |
+| `src/games/comum/JogoFase.tsx:454` | speak | `Você subiu de nível! ${info.fala}`) (montado na hora) |
+| `src/games/comum/JogoFase.tsx:517` | speak | texto, { rate: 0.95 }) (montado na hora) |
+| `src/games/comum/JogoFase.tsx:544` | speak | Que bicho é esse? |
 | `src/games/le-e-acha/LeEAcha.tsx:78` | speak | s) (montado na hora) |
 | `src/games/le-e-acha/LeEAcha.tsx:92` | speak | `Esse é ${a.nome}.`) (montado na hora) |
 | `src/games/monta-o-bicho/MontaOBicho.tsx:71` | speak | palavras.join(" ")) (montado na hora) |

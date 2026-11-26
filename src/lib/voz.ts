@@ -2,7 +2,8 @@ import "server-only";
 import { Mp3Encoder } from "@breezystack/lamejs";
 
 /**
- * Gera a fala da Juju com um modelo de voz via OpenRouter (o mais barato: openai/gpt-audio-mini).
+ * Gera a fala do jogo SEMPRE pelo OpenRouter (chave OPENROUTER_API_KEY): modelo mais barato openai/gpt-audio-mini,
+ * com openai/gpt-audio de reserva só quando o mini não lê a frase certinha.
  * - Voz masculina divertida ("verse"), lendo EXATAMENTE o texto (exemplos + conferência pela transcrição;
  *   se o modelo improvisar, tenta de novo).
  * - O áudio vem cru (PCM 24 kHz) e vira MP3 de 48 kbps (leve para o tablet).
@@ -44,7 +45,7 @@ function confere(texto: string, falado: string) {
   return a.some((w) => /\d/.test(w)) && Math.abs(a.length - b.length) <= 2 && semNum(a).every((w) => b.includes(w));
 }
 
-async function umaTentativa(texto: string, chave: string): Promise<{ pcm: Buffer; falado: string } | null> {
+async function umaTentativa(texto: string, chave: string, modelo: string): Promise<{ pcm: Buffer; falado: string } | null> {
   const mensagens = [{ role: "system", content: SISTEMA }];
   for (const [u, a] of EXEMPLOS) mensagens.push({ role: "user", content: `Roteiro: ${u}` }, { role: "assistant", content: a });
   mensagens.push({ role: "user", content: `Roteiro: ${texto}` });
@@ -53,7 +54,7 @@ async function umaTentativa(texto: string, chave: string): Promise<{ pcm: Buffer
     method: "POST",
     headers: { Authorization: `Bearer ${chave}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      model: VOZ_MODELO,
+      model: modelo,
       stream: true,
       modalities: ["text", "audio"],
       audio: { voice: VOZ_VOZ, format: "pcm16" },
@@ -112,36 +113,15 @@ function paraMp3(pcm: Buffer): Uint8Array<ArrayBuffer> {
   return out;
 }
 
-// ── ElevenLabs (voz principal quando houver chave) ─────────────────────────────
-/** Modelo mais barato e rápido da ElevenLabs (metade dos créditos por caractere), fala pt-BR. */
-const ELEVEN_MODELO = process.env.ELEVENLABS_MODELO || "eleven_flash_v2_5";
-export const usaElevenLabs = () => !!(process.env.ELEVENLABS_API_KEY && process.env.ELEVENLABS_VOICE_ID);
-/** Identifica a voz em uso (entra na chave do cache: trocar a voz gera tudo de novo). */
-export const vozEmUso = () =>
-  usaElevenLabs() ? `eleven|${ELEVEN_MODELO}|${process.env.ELEVENLABS_VOICE_ID}` : `${VOZ_MODELO}|${VOZ_VOZ}`;
+/** Modelo de reserva (mais obediente, mais caro): só para as frases em que o mini não lê certo. */
+const VOZ_MODELO_RESERVA = process.env.VOZ_MODELO_RESERVA || "openai/gpt-audio";
 
-async function gerarEleven(texto: string): Promise<Uint8Array<ArrayBuffer> | null> {
-  const r = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${process.env.ELEVENLABS_VOICE_ID}?output_format=mp3_44100_64`, {
-    method: "POST",
-    headers: { "xi-api-key": process.env.ELEVENLABS_API_KEY!, "Content-Type": "application/json", Accept: "audio/mpeg" },
-    body: JSON.stringify({
-      text: texto,
-      model_id: ELEVEN_MODELO,
-      language_code: "pt",
-      voice_settings: { stability: 0.45, similarity_boost: 0.8, style: 0.35, use_speaker_boost: true },
-    }),
-  }).catch(() => null);
-  if (!r?.ok) return null;
-  return new Uint8Array(await r.arrayBuffer());
-}
-
-/** Gera o MP3 da frase. ElevenLabs se houver chave; senão OpenRouter (até 3 tentativas conferindo a leitura). */
+/** Gera o MP3 da frase pelo OpenRouter: 3 tentativas com o modelo barato e 2 com o de reserva, conferindo a leitura. */
 export async function gerarVoz(texto: string): Promise<Uint8Array<ArrayBuffer> | null> {
-  if (usaElevenLabs()) return gerarEleven(texto);
   const chave = process.env.OPENROUTER_API_KEY;
   if (!chave) return null;
-  for (let i = 0; i < 3; i++) {
-    const r = await umaTentativa(texto, chave);
+  for (const modelo of [VOZ_MODELO, VOZ_MODELO, VOZ_MODELO, VOZ_MODELO_RESERVA, VOZ_MODELO_RESERVA]) {
+    const r = await umaTentativa(texto, chave, modelo);
     if (r && confere(texto, r.falado)) return paraMp3(r.pcm);
   }
   return null;

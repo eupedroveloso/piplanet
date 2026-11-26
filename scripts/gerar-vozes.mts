@@ -104,7 +104,7 @@ function argumento(src: string, ini: number, abre: string, fecha: string) {
   return "";
 }
 const literais = (trecho: string) =>
-  [...trecho.matchAll(/"([^"\n]{2,300})"|`([^`$\n]{2,300})`/g)].map((m) => m[1] ?? m[2]).filter((t) => /[a-zà-ú]/i.test(t) && !/^(use client|ui\/|animais\/|mascote\/|button|radio)/.test(t));
+  [...trecho.matchAll(/"([^"\n]{2,300})"|`([^`$\n]{2,300})`/g)].map((m) => m[1] ?? m[2]).filter((t) => /[a-zà-ú]/i.test(t) && !/^(use client|button|radio|aria-label)$|^(ui|animais|mascote)\//.test(t));
 const pontos: { arquivo: string; linha: number; tipo: string; textos: string[] }[] = [];
 for (const f of arquivos("src")) {
   const src = readFileSync(f, "utf8");

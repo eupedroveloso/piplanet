@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ANIMAIS, arteDoAnimal, type Animal } from "@/content/animais";
 import {
   animaisDaFase,
@@ -12,9 +12,11 @@ import {
   type Fase,
   type Territorio,
   nivelQueComeca,
+  territorioPorId,
 } from "@/content/jornada";
 import { calcularEstrelas, coletarAnimal, concluirFase, ganharPatinhas, PONTOS } from "@/lib/progress";
 import { RastreioLicao } from "@/lib/rastreio";
+import { settingsStore } from "@/lib/settings";
 import { shuffle } from "@/lib/random";
 import { speak } from "@/lib/speech";
 import { falarSobre } from "@/lib/falar-bicho";
@@ -27,6 +29,7 @@ import {
   BotaoRedondoLink,
   BotaoSom,
   CenarioFundo,
+  Explorador,
   Comemoracao,
   Estrelas,
   Mascote,
@@ -316,8 +319,13 @@ export function JogoFase({
                   transition={{ ...MOLA_ENTRADA, delay: 1.3 }}
                   className="flex w-full flex-col items-stretch gap-3 pt-2 sm:w-auto sm:flex-row sm:flex-wrap sm:justify-center"
                 >
+                  {/* Avançar sempre passa pelo mapa: lá o explorador anda pela trilha até a fase nova (mostra o progresso) */}
                   <BotaoLink
-                    href={proxChave ? `/jogar/${pt}/${pf}` : "/"}
+                    href="/"
+                    onClick={() => {
+                      const prox = proxChave ? territorioPorId(pt) : undefined;
+                      settingsStore.write((st) => ({ ...st, ultimoPais: prox?.pais ?? territorio.pais }));
+                    }}
                     cor="verde"
                     tamanho="lg"
                     fala={proxChave ? "Próxima fase!" : "Voltar para o mapa"}
@@ -439,6 +447,14 @@ const CASCATA = {
  */
 function CartaoSubiuNivel({ n }: { n: number }) {
   const info = infoNivel(n);
+  const reduzir = useReducedMotion();
+  // o Pietro entra andando até o selo do nível novo e, ao chegar, pula de alegria
+  const [chegou, setChegou] = useState(!!reduzir);
+  useEffect(() => {
+    if (reduzir) return;
+    const t = setTimeout(() => setChegou(true), 1200);
+    return () => clearTimeout(t);
+  }, [reduzir]);
   return (
     <motion.button
       type="button"
@@ -449,8 +465,17 @@ function CartaoSubiuNivel({ n }: { n: number }) {
       whileTap={{ scale: 0.95 }}
       transition={{ ...MOLA_ENTRADA, delay: 0.15 }}
       aria-label={`Subiu para o nível ${n}: ${info.nome}`}
-      className="relative flex items-center gap-3 rounded-xl bg-amarelo px-3 py-2 text-roxo shadow-[0_5px_0_var(--color-amarelo-escuro)] sm:px-4 sm:py-3"
+      className="relative flex items-center gap-2 rounded-xl bg-amarelo px-3 py-2 text-roxo shadow-[0_5px_0_var(--color-amarelo-escuro)] sm:gap-3 sm:px-4 sm:py-3"
     >
+      <motion.span
+        aria-hidden
+        className="-mr-1 shrink-0"
+        initial={reduzir ? false : { x: -90, opacity: 0 }}
+        animate={chegou ? { x: 0, opacity: 1, y: [0, -14, 0, -8, 0] } : { x: 0, opacity: 1 }}
+        transition={chegou ? { y: { duration: 0.9, ease: "easeOut" }, default: { duration: 0.2 } } : { duration: 1.1, ease: "easeInOut", delay: 0.2 }}
+      >
+        <Explorador andando={!chegou} feliz={chegou} className="size-14 sm:size-16" />
+      </motion.span>
       <span className="relative grid size-14 shrink-0 place-items-center rounded-full bg-branco sm:size-16">
         <Arte nome={info.icone} className="size-10 sm:size-12" />
         <Comemoracao raio={110} />

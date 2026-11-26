@@ -12,7 +12,7 @@ import { infoNivel } from "@/content/niveis";
 import type { Progress } from "@/lib/progress";
 import { speak } from "@/lib/speech";
 import { BALANCO, CLASSE_ETIQUETA, MOLA_ENTRADA } from "@/components/ui";
-import { ExploradorAndando, ExploradorParado } from "./Explorador";
+import { ExploradorAndando, ExploradorParado } from "./ExploradorNoMapa";
 import type { Ilha } from "./ilha";
 
 /**
@@ -85,7 +85,7 @@ export function Rotulos({
   liberados: Record<TerritorioId, boolean>;
   onFocar: (t: TerritorioId) => void;
   /** Caminho sendo trilhado (Cinzel): a mãozinha viaja na ponta e o nó novo acende no fim. */
-  caminhada?: { andando: boolean; acender: string | null; cabeca: RefObject<THREE.Vector3 | null> };
+  caminhada?: { andando: boolean; esperando?: boolean; acender: string | null; cabeca: RefObject<THREE.Vector3 | null> };
 }) {
   const reduzir = useReducedMotion();
   const host = useRef<HTMLDivElement>(null);
@@ -118,6 +118,7 @@ export function Rotulos({
 
   const atual = faseAtual(progresso);
   const andando = !!caminhada?.andando;
+  const esperando = !!caminhada?.esperando;
 
   return (
     <div ref={host} className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -135,9 +136,10 @@ export function Rotulos({
         ))}
 
       {/* O explorador anda na ponta do caminho que se desenha (com movimento reduzido: só aparece no nó novo) */}
-      {foco && andando && !reduzir && (
+      {/* Antes de começar, ele espera parado no nó antigo */}
+      {foco && (esperando || (andando && !reduzir)) && (
         <div data-ancora="caminho" className="absolute top-0 left-0">
-          <ExploradorAndando />
+          <ExploradorAndando parado={esperando} />
         </div>
       )}
 
@@ -155,7 +157,7 @@ export function Rotulos({
                 territorio={foco}
                 fase={f}
                 progresso={progresso}
-                atual={!andando && atual?.t === foco && atual.i === f}
+                atual={!andando && !esperando && atual?.t === foco && atual.i === f}
                 chegou={caminhada?.acender === `${foco}-${f}`}
                 marco={!!nivelQueComeca(chaveFase(foco, f))}
               />
@@ -330,7 +332,7 @@ function NoFase({
       style={{ transformOrigin: "bottom center" }}
     >
       {/* o explorador espera ao lado da próxima fase (não depende de leitura) */}
-      {atual && <ExploradorParado chegou={chegou} nivelNovo={marco} />}
+      {atual && <ExploradorParado chegou={chegou} />}
       {atual && (
         <motion.span
           aria-hidden
