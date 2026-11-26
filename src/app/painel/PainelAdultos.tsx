@@ -4,10 +4,11 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState, type ReactNode } from "react";
 import { arteDoAnimal, ANIMAIS } from "@/content/animais";
 import { PAISES } from "@/content/paises";
-import { TERRITORIOS, chaveFase } from "@/content/jornada";
+import { infoNivel } from "@/content/niveis";
+import { TERRITORIOS, chaveFase, nivelAtual } from "@/content/jornada";
 import { NIVEIS } from "@/games/nivelamento/Nivelamento";
 import type { Progress } from "@/lib/progress";
-import { trocarPerfil, usePerfil } from "@/lib/perfil";
+import { usePerfil } from "@/lib/perfil";
 import { Arte, BotaoRedondo, MOLA_ENTRADA, MOLA_TOQUE, NavInferior } from "@/components/ui";
 import {
   carregar, cartasParaHoje, colocarNaFase, duracao, metricas, nomeAnimal, nomeFase, nomeJogo, quando, salvar,
@@ -92,9 +93,6 @@ export function PainelAdultos() {
             ↻
           </motion.span>
         </BotaoRedondo>
-        <BotaoRedondo aria-label="Trocar de perfil" onClick={trocarPerfil}>
-          <Arte nome="ui/casa" className="size-6" />
-        </BotaoRedondo>
       </div>
 
       {/* Abas */}
@@ -150,7 +148,7 @@ export function PainelAdultos() {
               transition={{ duration: 0.18 }}
               className="h-full"
             >
-              {aba === "resumo" && <Resumo m={m} />}
+              {aba === "resumo" && <Resumo m={m} fases={dados.fases} />}
               {aba === "licoes" && <Licoes m={m} />}
               {aba === "palavras" && <Palavras m={m} />}
               {aba === "cartas" && <CartasAba m={m} agora={agora} />}
@@ -204,14 +202,45 @@ function Numero({ valor, rotulo, icone, extra }: { valor: ReactNode; rotulo: str
 }
 
 /** Lista paginada (sem rolagem): mostra `porPagina` itens e setas para trocar. */
-function Paginado<T>({ itens, porPagina, render, vazio }: { itens: T[]; porPagina: number; render: (t: T, i: number) => ReactNode; vazio: string }) {
+/** Altura de uma linha de lista (~44 px) e da barra de páginas (~56 px), para calcular quantas cabem. */
+const LINHA_PX = 46;
+const PAGINAS_PX = 58;
+
+function Paginado<T>({ itens, porPagina: maximo, render, vazio }: { itens: T[]; porPagina: number; render: (t: T, i: number) => ReactNode; vazio: string }) {
   const [pag, setPag] = useState(0);
+  // Sem rolagem: quantos itens cabem na altura disponível (mede o espaço real e recalcula ao girar a tela)
+  const [caixa, setCaixa] = useState<HTMLDivElement | null>(null);
+  const [cabem, setCabem] = useState(maximo);
+  useEffect(() => {
+    if (!caixa) return;
+    const medir = () => {
+      const h = caixa.clientHeight;
+      const semBarra = Math.floor(h / LINHA_PX);
+      setCabem(Math.max(2, Math.min(maximo, itens.length <= semBarra ? semBarra : Math.floor((h - PAGINAS_PX) / LINHA_PX))));
+    };
+    medir();
+    const ro = new ResizeObserver(medir);
+    ro.observe(caixa);
+    return () => ro.disconnect();
+  }, [caixa, maximo, itens.length]);
+  const porPagina = cabem;
   const total = Math.max(1, Math.ceil(itens.length / porPagina));
   const p = Math.min(pag, total - 1);
   if (!itens.length) return <p className="py-4 text-center text-sm text-tinta-suave">{vazio}</p>;
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-1.5">
-      <ul className="flex flex-col divide-y divide-linha/60">{itens.slice(p * porPagina, (p + 1) * porPagina).map(render)}</ul>
+    <div ref={setCaixa} className="flex min-h-0 flex-1 flex-col gap-1.5 overflow-hidden">
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.ul
+          key={p}
+          initial={{ opacity: 0, x: 12 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -12, transition: { duration: 0.12 } }}
+          transition={MOLA_ENTRADA}
+          className="flex flex-col divide-y divide-linha/60"
+        >
+          {itens.slice(p * porPagina, (p + 1) * porPagina).map(render)}
+        </motion.ul>
+      </AnimatePresence>
       {total > 1 && (
         <div className="mt-auto flex items-center justify-center gap-3 pt-1">
           <BotaoRedondo aria-label="Anterior" onClick={() => setPag(Math.max(0, p - 1))} className="disabled:opacity-40" disabled={p === 0}>
@@ -267,7 +296,8 @@ function Medidor({ valor, rotulo }: { valor: number | null; rotulo: string }) {
 
 // ── Abas ─────────────────────────────────────────────────────────────────────
 
-function Resumo({ m }: { m: M }) {
+function Resumo({ m, fases }: { m: M; fases: Progress["fases"] }) {
+  const nj = infoNivel(nivelAtual(fases));
   const nv = m.nivel ? NIVEIS[m.nivel.nivel - 1] : null;
   const subiu = m.nivel && m.nivelAntes ? m.nivel.nivel - m.nivelAntes.nivel : 0;
   const evol = m.semErro !== null && m.semErroAntes !== null ? m.semErro - m.semErroAntes : null;
@@ -297,6 +327,12 @@ function Resumo({ m }: { m: M }) {
           )}
         </Cartao>
         <Cartao titulo="Próximo passo" className="text-xs sm:text-sm">
+          <p className="flex items-center gap-1.5 text-tinta">
+            <Arte nome={nj.icone} className="size-5 shrink-0" />
+            <span>
+              Nível da jornada: <b>{nj.n} · {nj.nome}</b>
+            </span>
+          </p>
           <p className="text-tinta">
             {m.proxima ? (
               <>
@@ -471,11 +507,13 @@ function NivelAba({ m }: { m: M }) {
     <div className="flex h-full flex-col gap-2">
       <Cartao titulo="Evolução do nível de leitura">
         {m.nivs.length ? (
-          <div className="flex h-24 items-end gap-1.5">
+          <div className="flex h-24 items-end gap-1.5 [@media(max-height:700px)]:h-16">
             {m.nivs.slice(-12).map((n, i) => (
-              <div key={i} className="flex flex-1 flex-col items-center gap-1">
+              <div key={i} className="flex h-full flex-1 flex-col items-center gap-1">
                 <span className="text-[10px] font-bold text-roxo">{n.nivel}</span>
-                <motion.div initial={{ height: 0 }} animate={{ height: `${(n.nivel / 6) * 60}px` }} transition={{ ...MOLA_ENTRADA, delay: i * 0.03 }} className="w-full rounded-t bg-roxo-claro" />
+                <div className="flex min-h-0 w-full flex-1 items-end">
+                  <motion.div initial={{ height: 0 }} animate={{ height: `${(n.nivel / 6) * 100}%` }} transition={{ ...MOLA_ENTRADA, delay: i * 0.03 }} className="w-full rounded-t bg-roxo-claro" />
+                </div>
                 <span className="text-[10px] text-tinta-suave">{new Date(n.data).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })}</span>
               </div>
             ))}
@@ -485,13 +523,13 @@ function NivelAba({ m }: { m: M }) {
         )}
       </Cartao>
       <Cartao titulo="Os 6 níveis" className="flex-1">
-        <ul className="flex flex-col gap-1.5">
+        <ul className="flex min-h-0 flex-1 flex-col justify-between gap-0.5">
           {NIVEIS.map((nv) => {
             const ac = m.nivel?.acertos[nv.n];
             const atual = m.nivel?.nivel === nv.n;
             return (
-              <li key={nv.n} className={`flex items-center gap-2 rounded-md px-2 py-1 text-sm ${atual ? "bg-amarelo-claro" : ""}`}>
-                <Arte nome={nv.icone} className="size-6" />
+              <li key={nv.n} className={`flex items-center gap-2 rounded-md px-2 py-0.5 text-sm transition-colors duration-300 [@media(min-height:701px)]:py-1 ${atual ? "bg-amarelo-claro" : ""}`}>
+                <Arte nome={nv.icone} className="size-5 [@media(min-height:701px)]:size-6" />
                 <span className="flex-1 font-bold text-roxo">
                   {nv.n}. {nv.nome}
                 </span>

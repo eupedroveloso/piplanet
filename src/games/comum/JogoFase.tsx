@@ -11,12 +11,14 @@ import {
   SEQUENCIA,
   type Fase,
   type Territorio,
+  nivelQueComeca,
 } from "@/content/jornada";
 import { calcularEstrelas, coletarAnimal, concluirFase, ganharPatinhas, PONTOS } from "@/lib/progress";
 import { RastreioLicao } from "@/lib/rastreio";
 import { shuffle } from "@/lib/random";
 import { speak } from "@/lib/speech";
 import { falarSobre } from "@/lib/falar-bicho";
+import { infoNivel } from "@/content/niveis";
 import {
   Arte,
   Bolinhas,
@@ -133,7 +135,10 @@ export function JogoFase({
     concluirFase(chave, estrelas, total);
     rastreio.fechar(true, estrelas);
     setEtapa("fim");
-    speak(`Parabéns! Você ganhou ${estrelas} ${estrelas === 1 ? "estrela" : "estrelas"}!`);
+    const novoNivel = proxChave ? nivelQueComeca(proxChave) : null;
+    speak(`Parabéns! Você ganhou ${estrelas} ${estrelas === 1 ? "estrela" : "estrelas"}!`).then(() => {
+      if (novoNivel) speak(`Você subiu de nível! ${infoNivel(novoNivel).fala}`);
+    });
   }
 
   const topo = (
@@ -176,6 +181,7 @@ export function JogoFase({
   const acertou = etapa === "acertou";
   const estrelas = calcularEstrelas(errosFase);
   const [pt, pf] = (proxChave ?? "").split("/");
+  const nivelNovo = proxChave ? nivelQueComeca(proxChave) : null;
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-2 sm:gap-4">
@@ -241,16 +247,20 @@ export function JogoFase({
               className="w-full max-w-lg"
             >
               <Painel className="relative flex w-full flex-col items-center gap-3 p-4 text-center sm:gap-5 sm:p-8">
-                <motion.span
-                  initial={{ scale: 0, rotate: -20 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  transition={{ ...MOLA_ENTRADA, delay: 0.15 }}
-                  className="relative grid place-items-center"
-                >
-                  <Arte nome="ui/festa" className="size-14 sm:size-20" />
-                  <Comemoracao raio={110} />
-                </motion.span>
-                <h2 className="text-2xl font-extrabold text-roxo sm:text-4xl">Fase concluída!</h2>
+                {nivelNovo ? (
+                  <CartaoSubiuNivel n={nivelNovo} />
+                ) : (
+                  <motion.span
+                    initial={{ scale: 0, rotate: -20 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ ...MOLA_ENTRADA, delay: 0.15 }}
+                    className="relative grid place-items-center"
+                  >
+                    <Arte nome="ui/festa" className="size-14 sm:size-20" />
+                    <Comemoracao raio={110} />
+                  </motion.span>
+                )}
+                <h2 className="text-2xl font-extrabold text-roxo sm:text-4xl">{nivelNovo ? "Subiu de nível!" : "Fase concluída!"}</h2>
                 <Estrelas valor={estrelas} tamanho="lg" atraso={0.4} />
                 <motion.p
                   initial={{ opacity: 0, y: 8 }}
@@ -421,6 +431,40 @@ const CASCATA = {
   fora: { opacity: 0, y: 12, scale: 0.9 },
   dentro: { opacity: 1, y: 0, scale: 1, transition: MOLA_ENTRADA },
 };
+
+/**
+ * "SUBIU DE NÍVEL!": cartão especial na tela de fim quando a próxima fase abre um nível novo.
+ * Ícone do nível girando para entrar, número grande e o exemplo (lido em voz ao tocar).
+ */
+function CartaoSubiuNivel({ n }: { n: number }) {
+  const info = infoNivel(n);
+  return (
+    <motion.button
+      type="button"
+      onClick={() => speak(`Você subiu de nível! ${info.fala}`)}
+      initial={{ opacity: 0, scale: 0.6, rotate: -8 }}
+      animate={{ opacity: 1, scale: 1, rotate: 0 }}
+      whileHover={{ y: -2 }}
+      whileTap={{ scale: 0.95 }}
+      transition={{ ...MOLA_ENTRADA, delay: 0.15 }}
+      aria-label={`Subiu para o nível ${n}: ${info.nome}`}
+      className="relative flex items-center gap-3 rounded-xl bg-amarelo px-3 py-2 text-roxo shadow-[0_5px_0_var(--color-amarelo-escuro)] sm:px-4 sm:py-3"
+    >
+      <span className="relative grid size-14 shrink-0 place-items-center rounded-full bg-branco sm:size-16">
+        <Arte nome={info.icone} className="size-10 sm:size-12" />
+        <Comemoracao raio={110} />
+      </span>
+      <span className="flex flex-col items-start leading-none">
+        <span className="flex items-baseline gap-1.5">
+          <Arte nome="ui/escada" className="size-5 self-center" />
+          <span className="text-xs font-extrabold tracking-[0.12em] uppercase">Nível</span>
+          <span className="text-3xl font-extrabold sm:text-4xl">{n}</span>
+        </span>
+        <span className="mt-1 font-leitura text-xl font-bold uppercase sm:text-2xl">{info.exemplo}</span>
+      </span>
+    </motion.button>
+  );
+}
 
 /** "Figurinha nova!": entra com mola e um brilho gira devagar atrás do ícone. */
 function SeloFigurinhaNova() {

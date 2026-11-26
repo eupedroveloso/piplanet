@@ -12,6 +12,8 @@ import { MOLA_ENTRADA, MOLA_TOQUE } from "./movimento";
 /** Só para os adultos (Pedro e Gabi): o painel de acompanhamento, que é a tela inicial deles. */
 const PAINEL = { href: "/painel", rotulo: "Painel", icone: "ui/nivel", fala: "Aprendizado do Pietro" };
 
+const AJUSTES = { href: "/ajustes", rotulo: "Ajustes", icone: "ui/ajustes", fala: "Ajustes" };
+
 const ITENS = [
   { href: "/", rotulo: "Jornada", icone: "ui/mapa", fala: "Mapa" },
   { href: "/cartas", rotulo: "Cartas", icone: "ui/cartas", fala: "Cartas dos bichos" },
@@ -28,7 +30,8 @@ const MotionLink = motion.create(Link);
 export function NavInferior() {
   const path = usePathname();
   const perfil = usePerfil();
-  const itens = perfil.temSenha ? [PAINEL, ...ITENS] : ITENS;
+  // Adultos: Painel no lugar do Nível (cabe no celular). Todos: Ajustes no fim.
+  const itens = perfil.temSenha ? [PAINEL, ...ITENS.filter((i) => i.href !== "/nivelamento"), AJUSTES] : [...ITENS, AJUSTES];
   const ativoRota = itens.find((it) => (it.href === "/" ? path === "/" : path.startsWith(it.href)))?.href;
   const [tocado, setTocado] = useState<{ href: string; em: string } | null>(null);
   // O item tocado só vale enquanto a rota não muda

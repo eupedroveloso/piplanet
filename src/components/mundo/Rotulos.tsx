@@ -7,7 +7,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import * as THREE from "three";
 import { arteDoAnimal, type Animal, type TerritorioId } from "@/content/animais";
-import { animaisDaFase, animaisDoTerritorio, chaveFase, faseDesbloqueada, JOGOS, TERRITORIOS } from "@/content/jornada";
+import { animaisDaFase, animaisDoTerritorio, chaveFase, faseDesbloqueada, JOGOS, nivelQueComeca, TERRITORIOS } from "@/content/jornada";
+import { infoNivel } from "@/content/niveis";
 import type { Progress } from "@/lib/progress";
 import { speak } from "@/lib/speech";
 import { BALANCO, CLASSE_ETIQUETA, MOLA_ENTRADA, MOLA_TOQUE } from "@/components/ui";
@@ -147,6 +148,11 @@ export function Rotulos({
           .filter((f) => f.territorio === foco)
           .map(({ fase: f }) => (
             <div key={`${foco}-${f}`} data-ancora={`${foco}-${f}`} className="pointer-events-auto absolute top-0 left-0">
+              {/* Primeira fase de um nível novo: marco "Nível N" ao lado do nó (botão próprio, com voz) */}
+              {(() => {
+                const n = nivelQueComeca(chaveFase(foco, f));
+                return n ? <MarcoNivel n={n} livre={faseDesbloqueada(progresso.fases, foco, f)} /> : null;
+              })()}
               <NoFase
                 territorio={foco}
                 fase={f}
@@ -234,6 +240,38 @@ function capasDoTerritorio(id: TerritorioId) {
   });
   capasCache.set(id, capas);
   return capas;
+}
+
+/**
+ * MARCO DE NÍVEL no mapa: selo com o ícone do nível e o número grande, ao lado da primeira fase do nível.
+ * Trancado fica apagado. Tocar fala o que é o nível (para quem não sabe ler).
+ */
+function MarcoNivel({ n, livre }: { n: number; livre: boolean }) {
+  const info = infoNivel(n);
+  return (
+    <motion.button
+      type="button"
+      aria-label={`Nível ${n}: ${info.nome}`}
+      onClick={() => speak(livre ? info.fala : `${info.fala} Ainda trancado.`)}
+      initial={{ opacity: 0, x: 8, scale: 0.7 }}
+      animate={{ opacity: 1, x: 0, scale: 1 }}
+      whileHover={{ y: -2, scale: 1.06 }}
+      whileTap={{ scale: 0.9 }}
+      transition={MOLA_ENTRADA}
+      className={`absolute top-1/2 right-full mr-2 flex h-10 -translate-y-1/2 items-center gap-1 rounded-full py-1 pr-2.5 pl-1 whitespace-nowrap shadow-flutuante before:absolute before:-inset-1 before:content-[''] ${
+        livre ? "bg-roxo text-branco" : "bg-branco text-tinta-suave grayscale"
+      }`}
+    >
+      <span className={`grid size-8 place-items-center rounded-full ${livre ? "bg-branco" : "bg-roxo-claro"}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={`/arte/${info.icone}.svg`} alt="" className={`size-6 ${livre ? "" : "opacity-50"}`} draggable={false} />
+      </span>
+      <span className="flex flex-col items-center leading-none">
+        <span className="text-[9px] font-extrabold tracking-[0.12em] uppercase opacity-80">Nível</span>
+        <span className="text-xl font-extrabold">{n}</span>
+      </span>
+    </motion.button>
+  );
 }
 
 function NoFase({
