@@ -1,6 +1,7 @@
 "use client";
 
-import { Component, useEffect, useRef, useState, type ReactNode } from "react";
+import { ligarModoLeve } from "./modoLeve";
+import { Component, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { speak } from "@/lib/speech";
 import { Arte, ArteMascote, Botao } from "@/components/ui";
 
@@ -29,6 +30,16 @@ export function ProtecaoCena({ children }: { children: ReactNode }) {
   const [chave, setChave] = useState(0);
   const [falhas, setFalhas] = useState(0);
   const caixa = useRef<HTMLDivElement>(null);
+  // Com cacheComponents o Next não desmonta a rota ao ir para /jogar: esconde com <Activity> e o Canvas
+  // continuaria vivo, segurando a memória de vídeo durante o jogo (no iPhone, somava e derrubava o 3D na volta).
+  // Escondida → desmonta o Canvas (o R3F faz dispose + forceContextLoss); visível de novo → contexto limpo.
+  const [visivel, setVisivel] = useState(true);
+  useLayoutEffect(() => {
+    // padrão do guia do Next (preserving-ui-state): o layout effect liga/desliga junto com o <Activity>
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setVisivel(true);
+    return () => setVisivel(false);
+  }, []);
 
   // WebGL perdido (não borbulha: escuta na captura) → reconstrói a cena
   useEffect(() => {
@@ -36,7 +47,11 @@ export function ProtecaoCena({ children }: { children: ReactNode }) {
     if (!el) return;
     let t: ReturnType<typeof setTimeout>;
     const perdeu = (e: Event) => {
+      // canvas já desmontado (o R3F força a perda ao liberar a GPU): não é queda
+      if (!(e.target as Element | null)?.isConnected) return;
       e.preventDefault();
+      // caiu por falta de memória de vídeo: daqui pra frente a cena vem no modo leve
+      ligarModoLeve();
       clearTimeout(t);
       t = setTimeout(() => setChave((k) => k + 1), 600);
     };
@@ -48,6 +63,7 @@ export function ProtecaoCena({ children }: { children: ReactNode }) {
   }, []);
 
   function aoErrar() {
+    ligarModoLeve();
     setFalhas((f) => {
       if (f === 0) setTimeout(() => setChave((k) => k + 1), 400);
       return f + 1;
@@ -71,7 +87,7 @@ export function ProtecaoCena({ children }: { children: ReactNode }) {
             </Botao>
           </div>
         </div>
-      ) : (
+      ) : !visivel ? null : (
         <Limite key={chave} onErro={aoErrar}>
           {children}
         </Limite>

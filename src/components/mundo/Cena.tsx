@@ -18,6 +18,7 @@ import { GEOMETRIAS, type Forma } from "./formas";
 import { fundir } from "./fundir";
 import { Modelos } from "./DecoracaoModelos";
 import { modelosLigados } from "./modelos";
+import { dprMaximo, ehCelular, modoLeve } from "./modoLeve";
 import { geometriaFita, geometriaTerreno, misturar, type Ilha } from "./ilha";
 import {
   Balao,
@@ -69,19 +70,31 @@ export type Qualidade = "alto" | "medio" | "baixo";
 const ORDEM: Qualidade[] = ["baixo", "medio", "alto"];
 const DPR: Record<Qualidade, number> = { alto: 2, medio: 1.5, baixo: 1 };
 const QualidadeContexto = createContext<Qualidade>("medio");
+/** Modo leve (iPhone/iPad ou depois de uma queda do WebGL): ainda menos decoração e sem miudezas do mar. */
+const LeveContexto = createContext(false);
 
 /** Canvas 3D: a ilha (com a silhueta do país) no meio do oceano. */
 export default function Cena(props: CenaProps) {
-  const [q, setQ] = useState<Qualidade>("medio");
-  const mudar = (passo: number) => setQ((atual) => ORDEM[Math.max(0, Math.min(2, ORDEM.indexOf(atual) + passo))]);
-  const dpr = Math.min(DPR[q], typeof window !== "undefined" ? window.devicePixelRatio : 1);
+  // lido na montagem: depois de uma queda o ProtecaoCena remonta e a cena já volta leve
+  const [leve] = useState(modoLeve);
+  const [celular] = useState(ehCelular);
+  const [q, setQ] = useState<Qualidade>(leve ? "baixo" : "medio");
+  // modo leve fica no baixo; no celular não passa do médio (N8AO + MSAA + sombra 2048 estouram a memória de vídeo)
+  const teto = leve ? 0 : celular ? 1 : 2;
+  const mudar = (passo: number) => setQ((atual) => ORDEM[Math.max(0, Math.min(teto, ORDEM.indexOf(atual) + passo))]);
+  const dpr = Math.min(DPR[q], typeof window !== "undefined" ? window.devicePixelRatio : 1, celular || leve ? dprMaximo() : 2);
   useEffect(() => {
     // em desenvolvimento: window.__pgQualidade("baixo") força um nível para medir
     if (process.env.NODE_ENV !== "production") (window as unknown as { __pgQualidade: (q: Qualidade) => void }).__pgQualidade = setQ;
   }, []);
   return (
-    <Canvas shadows dpr={dpr} gl={{ antialias: true, alpha: true }} camera={{ fov: 38, position: [0, 30, 38], near: 0.1, far: 240 }}>
-      <PerformanceMonitor flipflops={3} onIncline={() => mudar(1)} onDecline={() => mudar(-1)} onFallback={() => setQ("baixo")} />
+    <Canvas
+      shadows={!leve}
+      dpr={dpr}
+      gl={{ antialias: !leve, alpha: true, powerPreference: leve ? "low-power" : "default" }}
+      camera={{ fov: 38, position: [0, 30, 38], near: 0.1, far: 240 }}
+    >
+      {!leve && <PerformanceMonitor flipflops={3} onIncline={() => mudar(1)} onDecline={() => mudar(-1)} onFallback={() => setQ("baixo")} />}
       <Medidor q={q} />
       <fog attach="fog" args={["#bfeef0", 55, 130]} />
       <hemisphereLight args={["#ffffff", "#9fe3dc", 1.05]} />
@@ -101,12 +114,14 @@ export default function Cena(props: CenaProps) {
         shadow-normalBias={0.03}
       />
       <QualidadeContexto.Provider value={q}>
-        <IlhaContexto.Provider value={props.ilha}>
-          <Mundo {...props} />
-        </IlhaContexto.Provider>
+        <LeveContexto.Provider value={leve}>
+          <IlhaContexto.Provider value={props.ilha}>
+            <Mundo {...props} />
+          </IlhaContexto.Provider>
+        </LeveContexto.Provider>
       </QualidadeContexto.Provider>
-      {/* Oclusão de ambiente (cara de maquete): só no nível alto */}
-      {q === "alto" && (
+      {/* Oclusão de ambiente (cara de maquete): só no nível alto (nunca no celular nem no modo leve) */}
+      {q === "alto" && !leve && (
         <EffectComposer multisampling={4}>
           <N8AO aoRadius={1.6} distanceFalloff={1.2} intensity={2.2} color="#2b3550" halfRes />
         </EffectComposer>
@@ -145,6 +160,7 @@ function Medidor({ q }: { q: Qualidade }) {
       return {
         qualidade: q,
         dpr: gl.getPixelRatio(),
+        leve: modoLeve(),
         triangulos: quadro.current.triangulos,
         drawCalls: quadro.current.drawCalls,
         geometrias: gl.info.memory.geometries,
@@ -168,6 +184,7 @@ function faseAtual(p: Progress) {
 function Mundo({ ilha, progresso, liberados, foco, onFocar, hover, onHover, camRef, balaoRef, caminho, cabeca }: CenaProps) {
   const mundo = useMemo(() => montarMundo(ilha), [ilha]);
   const controles = useRef<CameraControlsImpl>(null);
+  const leve = useContext(LeveContexto);
   const camera = useThree((st) => st.camera);
   useEffect(() => {
     camRef.current = camera;
@@ -252,10 +269,10 @@ function Mundo({ ilha, progresso, liberados, foco, onFocar, hover, onHover, camR
         <circleGeometry args={[120, 48]} />
         <meshBasicMaterial color="#13989c" />
       </mesh>
-      <AlgasDoFundo />
+      {!leve && <AlgasDoFundo />}
       <Mar />
       <Espuma />
-      <BrilhosDoMar />
+      {!leve && <BrilhosDoMar />}
 
       {/* Terreno da ilha */}
       <mesh
@@ -330,7 +347,7 @@ function Mundo({ ilha, progresso, liberados, foco, onFocar, hover, onHover, camR
       <Golfinho x={-16} z={-11} fase={2} giro={2.2} />
       <Golfinho x={8} z={19} fase={3.1} giro={1.2} />
       <Farol x={-15} z={15} />
-      <MiudezasDoMar />
+      {!leve && <MiudezasDoMar />}
       <Passaros />
       <Balao alvo={balaoAlvo} objRef={balaoRef} />
     </>
@@ -423,6 +440,7 @@ function TrilhaFeita({
   useEffect(() => () => material.dispose(), [material]);
 
   const base = useRef<{ t0: number; alvo: THREE.Vector3; ponta: THREE.Vector3 } | null>(null);
+  const [tmp] = useState(() => ({ ponta: new THREE.Vector3(), alvo: new THREE.Vector3() }));
   const reduzir = useMemo(() => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches, []);
   useFrame(() => {
     const { de, ate, t0 } = caminho;
@@ -431,7 +449,7 @@ function TrilhaFeita({
     u.current.uFeito.value = feito;
     u.current.uBrilho.value = t0 !== null && t < 1 ? 0.55 : Math.max(0, u.current.uBrilho.value - 0.03);
     const i = Math.min(ilha.trilha.length - 2, Math.floor(feito));
-    const ponta = ilha.trilha[Math.max(0, i)].clone().lerp(ilha.trilha[Math.max(0, i) + 1], feito - i);
+    const ponta = tmp.ponta.copy(ilha.trilha[Math.max(0, i)]).lerp(ilha.trilha[Math.max(0, i) + 1], feito - i);
     cabeca?.current?.copy(ponta);
     // câmera acompanha de leve (40% do deslocamento da ponta), suavizada pelo CameraControls
     const c = controles.current;
@@ -439,7 +457,7 @@ function TrilhaFeita({
     if (base.current?.t0 !== t0) base.current = { t0, alvo: c.getTarget(new THREE.Vector3()), ponta: ponta.clone() };
     if (t < 1) {
       const b = base.current;
-      const alvo = b.alvo.clone().addScaledVector(ponta.sub(b.ponta), 0.4);
+      const alvo = tmp.alvo.copy(b.alvo).addScaledVector(ponta.sub(b.ponta), 0.4);
       c.moveTo(alvo.x, alvo.y, alvo.z, true);
     }
   });
@@ -546,25 +564,33 @@ function Pier({ ilha, liberados }: { ilha: Ilha; liberados: Record<string, boole
 /** Modelos com a qualidade atual: no baixo, sem sombra e sem miudezas (tufos, flores, cogumelos). */
 function ModelosDaQualidade({ pais, pecas }: { pais: Ilha["pais"]; pecas: Peca[] }) {
   const q = useContext(QualidadeContexto);
-  const lista = useMemo(() => (q === "baixo" ? pecas.filter((p) => !/^(grass|flower|mushroom)/.test(p.m!)) : pecas), [pecas, q]);
+  const leve = useContext(LeveContexto);
+  const lista = useMemo(() => {
+    if (q !== "baixo") return pecas;
+    const sem = pecas.filter((p) => !/^(grass|flower|mushroom)/.test(p.m!));
+    // modo leve: também sem pedrinhas e com metade dos arbustos
+    return leve ? sem.filter((p, i) => !/^(stone_small|rock_small)/.test(p.m!) && !(/^plant_bush/.test(p.m!) && i % 2)) : sem;
+  }, [pecas, q, leve]);
   return <Modelos pais={pais} pecas={lista} sombra={q !== "baixo"} />;
 }
 
 function Pecas({ pecas }: { pecas: Peca[] }) {
   const q = useContext(QualidadeContexto);
+  const leve = useContext(LeveContexto);
   const grupos = useMemo(() => {
     const m = new Map<Forma, Peca[]>();
     for (const p of pecas) {
-      // no nível baixo, ficam de fora as miudezas (tufos, flores, pedrinhas)
-      if (q === "baixo" && Math.max(...p.s) < 0.14) continue;
+      // no nível baixo, ficam de fora as miudezas (tufos, flores, pedrinhas); no modo leve, um pouco mais
+      if (q === "baixo" && Math.max(...p.s) < (leve ? 0.22 : 0.14)) continue;
       m.set(p.f, [...(m.get(p.f) ?? []), p]);
     }
     return [...m.entries()];
-  }, [pecas, q]);
+  }, [pecas, q, leve]);
   const geos = useMemo(
     () => Object.fromEntries(Object.entries(GEOMETRIAS).map(([k, f]) => [k, f()])) as Record<Forma, THREE.BufferGeometry>,
     [],
   );
+  useEffect(() => () => Object.values(geos).forEach((g) => g.dispose()), [geos]);
   return (
     <>
       {grupos.map(([forma, lista]) => (

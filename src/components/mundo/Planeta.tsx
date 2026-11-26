@@ -4,7 +4,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { CameraControls } from "@react-three/drei";
 import CameraControlsImpl from "camera-controls";
 import { motion } from "motion/react";
-import { useEffect, useMemo, useRef, type RefObject } from "react";
+import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import * as THREE from "three";
 import { PAISES, type PaisId } from "@/content/paises";
 import { animaisDoTerritorio, territoriosDoPais } from "@/content/jornada";
@@ -14,6 +14,7 @@ import { speak } from "@/lib/speech";
 import { CLASSE_ETIQUETA, MOLA_ENTRADA } from "@/components/ui";
 import { latLonParaVetor, texturaGlobo } from "./geo";
 import { Asteroides, Cometa, CriaturasDoMar, Estrelas, Foguete, Lua, Satelite } from "./Espaco";
+import { dprMaximo, modoLeve } from "./modoLeve";
 import { useProjecao } from "./Rotulos";
 
 const RAIO = 6;
@@ -53,21 +54,25 @@ export function Planeta({
     [],
   );
   useProjecao(host, camRef, ancoras, undefined, frente);
+  // lido na montagem: depois de uma queda o ProtecaoCena remonta e o planeta já volta leve
+  const [leve] = useState(modoLeve);
 
   return (
     <div className="absolute inset-0">
-      <Canvas dpr={[1, 1.5]} gl={{ antialias: true, alpha: true }} camera={{ fov: 40, position: [0, 4, 22], near: 0.1, far: 300 }}>
+      <Canvas
+        dpr={leve ? 1 : [1, dprMaximo()]}
+        gl={{ antialias: !leve, alpha: true, powerPreference: leve ? "low-power" : "default" }} camera={{ fov: 40, position: [0, 4, 22], near: 0.1, far: 300 }}>
         <hemisphereLight args={["#ffffff", "#5b5fa8", 0.9]} />
         <directionalLight position={[10, 12, 14]} intensity={1.6} />
         <Estrelas />
         <Globo liberados={liberados} atual={atual} alvo={alvo} camRef={camRef} />
-        <CriaturasDoMar raio={RAIO} />
+        {!leve && <CriaturasDoMar raio={RAIO} />}
         <Lua />
-        <Asteroides />
+        {!leve && <Asteroides />}
         <Foguete raio={8.2} vel={0.25} fase={0} inclinacao={0.3} cor="#f25f5c" />
         <Foguete raio={9.4} vel={-0.18} fase={2.5} inclinacao={-0.5} cor="#ffc935" />
-        <Satelite />
-        <Cometa />
+        {!leve && <Satelite />}
+        {!leve && <Cometa />}
       </Canvas>
 
       {/* Placas dos países (escondem quando estão do outro lado do globo) */}
@@ -148,11 +153,13 @@ function Globo({
   }, [camera, camRef]);
 
   const textura = useMemo(() => {
-    const t = new THREE.CanvasTexture(texturaGlobo(liberados));
+    // modo leve: textura com metade da largura (4x menos memória de vídeo)
+    const t = new THREE.CanvasTexture(texturaGlobo(liberados, modoLeve() ? 1024 : 2048));
     t.colorSpace = THREE.SRGBColorSpace;
     t.anisotropy = 4;
     return t;
   }, [liberados]);
+  useEffect(() => () => textura.dispose(), [textura]);
 
   /** Coloca a câmera de frente para um país (distância `d`). */
   const olharPara = (id: PaisId, d: number, animar: boolean) => {

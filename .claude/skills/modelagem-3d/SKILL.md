@@ -78,3 +78,30 @@ O dono exige que abra leve num tablet Android (GPUs Mali/Adreno intermediárias,
 - 2026-11-26 (espaço, pedido do dono: "asteroides são só bolas"): `rochas.ts` → `geometriaRocha()` = icosaedro + ruído + crateras (fundo afundado, borda levantada), facetado, uma cor por face (manchas, fundo de cratera escuro, borda clara). Serve para asteroides (3 formas instanciadas, escala não uniforme para alongados, eixo de giro próprio), lua e núcleo do cometa. Foguete = Lathe (corpo/bico/bocal) + aletas Extrude + aro/vidro, fundidos numa malha; chama em 3 cones aditivos + brilho; rastro instanciado nas posições passadas da órbita. **Orientação em grupo inclinado**: `lookAt` usa coordenadas do mundo; use `quaternion.setFromUnitVectors(Y, velocidadeLocal)`. **Câmera do planeta orbita até o país**: efeito "de fundo" (cometa) precisa ser posicionado relativo à câmera, senão some atrás dela. Temporários usados no `useFrame` vão em `useRef` (o lint do React Compiler barra mutar `useMemo`); depois de mudar a forma de um `useRef`, recarregue a página (o Fast Refresh mantém o objeto antigo).
 - **Progresso que se desenha na trilha (2026-11-26):** UMA fita a mais sobre o piso da trilha inteira, com atributo `aS` (índice da amostra ao longo da trilha) e `discard` no shader quando `vS > uFeito`. A animação só mexe num uniform: custa +1 draw call e zero geometria nova por quadro. Ponta brilha (emissive com `smoothstep` perto de `uFeito`), easing suave (smoothstep) e 1,5 s. A câmera acompanha com `moveTo(alvo + 40% do deslocamento da ponta, true)`; o `smoothTime` do CameraControls suaviza. Uma mãozinha HTML vai na ponta por âncora dinâmica (ref de Vector3 que o 3D copia a cada quadro). "Animar uma vez" = última posição vista no sessionStorage, gravada **só quando a animação começa** (o StrictMode roda o efeito duas vezes: gravar no efeito apaga a animação). O "antes" vem num `useMemo` desde o primeiro quadro, senão o trecho novo pisca pronto. Espere o foco no bioma (ou um fallback de 2,5 s) antes de começar. Com movimento reduzido: sem câmera nem mãozinha viajando, só o preenchimento. Lógica em `caminhada.ts`.
 - **Explorador andando sobre o 3D (2026-11-26):** personagem em HTML na âncora dinâmica da ponta do caminho. Quadros trocados por `setInterval` de 125 ms, e o lado detectado comparando o `translate3d` da âncora entre quadros (rAF, sem estado React) para aplicar `scaleX(-1)`. Se os quadros já sobem na passagem, não some outro sobe e desce. O sprite é o `ui/Explorador` (do Faísca, compartilhado com os jogos); a arte nova é detectada sozinha com um `new Image()` (onload/onerror), então o reserva entra sem quebrar nada até o ilustrador entregar. Armadilha: `<img>` com `size-14` dentro de um span `absolute left-full` encolhe para ~12 px por causa do `max-width: 100%` do preflight; use `max-w-none`. Na espera antes de animar, o personagem fica parado no nó ANTIGO (senão aparece no novo e "volta"). A troca do andando para o parado é um pulinho do centro do nó para o lado.
+
+### iPhone derrubando o WebGL (modo leve) — 2026-11-26
+- **Sintoma:** no iPhone (Safari, dpr 3) a ilha caía ao voltar de um jogo e aparecia a tela de proteção. No Mac nada acontecia.
+- **Causa provável:** o `PerformanceMonitor` sobe para "alto" num GPU rápido, o que liga N8AO, MSAA 4x e sombra 2048. Com o dpr alto, isso estoura a pouca memória de vídeo do Safari.
+- **Regra:**
+  - Aparelho de toque (`ehCelular()` em `modoLeve.ts`) nunca passa do "médio" e usa dpr ≤ 1,5.
+  - `modoLeve()` (iPhone/iPad com dpr ≥ 3, ou depois de uma queda) fica travado no "baixo", com:
+    - dpr 1, sem sombras, sem antialias e sem PerformanceMonitor;
+    - sem algas, brilhos e miudezas do mar, nem as pedrinhas e metade dos arbustos;
+    - no planeta, globo de 1024 px, sem asteroides, cometa, satélite nem criaturas.
+- **Recuperação:**
+  - O `ProtecaoCena` liga o modo leve ao perder o contexto e remonta.
+  - Cena e Planeta leem `modoLeve()` num `useState` na montagem, então voltam leves sozinhos.
+  - O listener de perda ignora canvas já desmontado (`isConnected`), porque o R3F força a perda ao liberar.
+- **Liberar a GPU:**
+  - O R3F 9 já chama `dispose` e `forceContextLoss` ao desmontar o Canvas; não duplique.
+  - Descarte o que você mesmo cria com `useMemo` (geometrias, CanvasTexture) num `useEffect` de limpeza.
+- **Testar sem iPhone:**
+  - `maestri portal ua "<portal>" ios`, depois `resize 393 852`.
+  - Force o modo leve com `localStorage.setItem("pg:3d-leve","1")`.
+  - Simule a queda com `WEBGL_lose_context.loseContext()` no canvas.
+  - Confira com `__pgDesempenho()`, que tem o campo `leve`. No Brasil o modo leve caiu de 136 mil para 74 mil triângulos e de 69 para cerca de 40 draw calls.
+- **Canvas vivo em rota escondida (achado pelo Faro):**
+  - Com `cacheComponents`, o Next 16 não desmonta a rota `/` ao ir para `/jogar`. Ele a esconde com `<Activity mode="hidden">`.
+  - O R3F só desmonta num `useInsertionEffect`, que não roda ao esconder, então o contexto WebGL e a memória de vídeo ficavam presos durante o jogo inteiro.
+  - Correção: o `ProtecaoCena` guarda `visivel` num `useLayoutEffect` (true na montagem, false na limpeza) e só renderiza o Canvas quando visível. Ao esconder, o R3F libera a GPU; ao voltar, cria um contexto limpo.
+  - Conferência: em `/jogar/...`, `document.querySelectorAll('canvas').length` deve dar 0.
