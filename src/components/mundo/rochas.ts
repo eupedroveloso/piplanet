@@ -19,6 +19,8 @@ export interface OpcoesRocha {
   paleta: string[];
   /** Tamanho das crateras (raio angular, em radianos). */
   raioCratera?: [number, number];
+  /** Profundidade das crateras (mínima, máxima). */
+  profundidade?: [number, number];
 }
 
 /** Ruído 3D barato a partir do fbm 2D (média de três planos). */
@@ -27,11 +29,12 @@ const ruido3 = (x: number, y: number, z: number, s: number) => (fbm(x, y, s) + f
 export function geometriaRocha(o: OpcoesRocha): THREE.BufferGeometry {
   const rnd = prng(o.semente);
   const [rmin, rmax] = o.raioCratera ?? [0.25, 0.6];
+  const [pmin, pmax] = o.profundidade ?? [0.06, 0.16];
   const crateras = Array.from({ length: o.crateras }, () => {
     const u = rnd() * 2 - 1;
     const t = rnd() * Math.PI * 2;
     const s = Math.sqrt(1 - u * u);
-    return { c: new THREE.Vector3(Math.cos(t) * s, u, Math.sin(t) * s), r: rmin + rnd() * (rmax - rmin), prof: 0.06 + rnd() * 0.1 };
+    return { c: new THREE.Vector3(Math.cos(t) * s, u, Math.sin(t) * s), r: rmin + rnd() * (rmax - rmin), prof: pmin + rnd() * (pmax - pmin) };
   });
   /** Para um ponto da esfera: deslocamento do raio e "onde está" em relação às crateras. */
   const avaliar = (n: THREE.Vector3) => {
@@ -85,7 +88,7 @@ export function geometriaRocha(o: OpcoesRocha): THREE.BufferGeometry {
     const mancha = ruido3(n.x * 1.1 + 5, n.y * 1.1, n.z * 1.1, o.semente + 9);
     const idx = Math.min(paleta.length - 1, Math.max(0, Math.floor((mancha - 0.25) * 2 * paleta.length)));
     c.copy(paleta[idx]);
-    if (fundo > 0) c.multiplyScalar(0.78 - fundo * 0.08);
+    if (fundo > 0) c.multiplyScalar(0.8 - fundo * 0.14);
     else if (borda > 0.5) c.lerp(paleta[paleta.length - 1], 0.45);
     for (let k = 0; k < 3; k++) cor.set([c.r, c.g, c.b], (f + k) * 3);
   }

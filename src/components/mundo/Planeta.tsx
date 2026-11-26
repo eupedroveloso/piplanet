@@ -56,7 +56,7 @@ export function Planeta({
 
   return (
     <div className="absolute inset-0">
-      <Canvas dpr={[1, 2]} gl={{ antialias: true, alpha: true }} camera={{ fov: 40, position: [0, 4, 22], near: 0.1, far: 300 }}>
+      <Canvas dpr={[1, 1.5]} gl={{ antialias: true, alpha: true }} camera={{ fov: 40, position: [0, 4, 22], near: 0.1, far: 300 }}>
         <hemisphereLight args={["#ffffff", "#5b5fa8", 0.9]} />
         <directionalLight position={[10, 12, 14]} intensity={1.6} />
         <Estrelas />

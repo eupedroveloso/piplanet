@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <radialGradient id="cascavel-cabeca" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#f1dcae"/>
+      <stop offset="0.6" stop-color="#d4b480"/>
+      <stop offset="1" stop-color="#b08c58"/>
+    </radialGradient>
+    <linearGradient id="cascavel-pele" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e2c696"/>
+      <stop offset="1" stop-color="#b8945e"/>
+    </linearGradient>
+    <linearGradient id="cascavel-chocalho" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff2c8"/>
+      <stop offset="0.6" stop-color="#e8cf8e"/>
+      <stop offset="1" stop-color="#c9a660"/>
+    </linearGradient>
+    <clipPath id="cascavel-clip-cauda"><path d="M196 230 C230 232 252 206 244 170 L241 150 L229 150 L232 170 C236 194 222 204 196 202 Z"/></clipPath>
+    <clipPath id="cascavel-clip-cabeca"><path d="M126 80 C128 96 124 112 108 118 C92 124 64 120 48 112 C38 107 38 96 46 91 C58 83 80 77 98 75 C112 73 124 72 126 80 Z"/></clipPath>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="134" cy="237" rx="96" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="corpo" fill="none" stroke-linejoin="round">
+    <g stroke-linecap="round">
+      <path d="M54 206 55 204 57 202 60 200 64 198 70 196 77 195 85 193 93 192 102 191 112 191 122 190 132 190 142 190 152 191 162 191 171 192 179 193 187 195 194 196 200 198 204 200 207 202 209 204 210 206" stroke="#5a3e22" stroke-width="39"/>
+      <path d="M54 206 55 204 57 202 60 200 64 198 70 196 77 195 85 193 93 192 102 191 112 191 122 190 132 190 142 190 152 191 162 191 171 192 179 193 187 195 194 196 200 198 204 200 207 202 209 204 210 206" stroke="#c9a66e" stroke-width="34"/>
+      <path d="M69 196 L67 213 L53 203 L55 186 Z M93 192 L87 208 L75 195 L82 179 Z M117 190 L109 205 L99 191 L107 176 Z M141 190 L132 204 L123 190 L132 176 Z M165 191 L155 205 L147 190 L157 176 Z M189 195 L177 208 L171 192 L182 179 Z M211 203 L197 213 L195 196 L209 186 Z" fill="#6a4426" stroke="#f6e7c4" stroke-width="2" stroke-linejoin="round"/>
+      <g fill="#8a5e36"><circle cx="61" cy="199" r="2.2"/><circle cx="84" cy="193" r="2.2"/><circle cx="108" cy="191" r="2.2"/><circle cx="132" cy="190" r="2.2"/><circle cx="156" cy="191" r="2.2"/><circle cx="180" cy="193" r="2.2"/><circle cx="203" cy="199" r="2.2"/></g>
+    </g>
+    <g stroke-linecap="round">
+      <path d="M74 178 74 176 76 175 78 173 82 172 86 170 90 169 96 168 102 167 109 166 116 165 123 165 130 165 137 165 144 165 151 166 158 167 164 168 170 169 174 170 178 172 182 173 184 175 186 176 186 178" stroke="#5a3e22" stroke-width="35"/>
+      <path d="M74 178 74 176 76 175 78 173 82 172 86 170 90 169 96 168 102 167 109 166 116 165 123 165 130 165 137 165 144 165 151 166 158 167 164 168 170 169 174 170 178 172 182 173 184 175 186 176 186 178" stroke="#d2b07a" stroke-width="30"/>
+      <path d="M83 170 L83 185 L69 179 L69 164 Z M105 166 L98 180 L88 169 L95 155 Z M127 165 L119 178 L110 166 L118 153 Z M149 166 L140 178 L132 165 L141 153 Z M171 169 L160 180 L154 166 L164 155 Z M190 179 L176 184 L176 169 L190 164 Z" fill="#6a4426" stroke="#f6e7c4" stroke-width="2" stroke-linejoin="round"/>
+      <g fill="#8a5e36"><circle cx="76" cy="175" r="2.2"/><circle cx="97" cy="168" r="2.2"/><circle cx="118" cy="165" r="2.2"/><circle cx="140" cy="165" r="2.2"/><circle cx="162" cy="167" r="2.2"/><circle cx="183" cy="174" r="2.2"/></g>
+    </g>
+    <g stroke-linecap="round">
+      <path d="M182 170 186 164 189 158 190 152 191 146 191 140 190 135 188 130 185 126 181 122 177 118 172 114 167 111 161 109 154 107 147 105 140 104 136 104 132 103 129 103 126 102 123 102 120 101 117 101 115 100 112 99 110 99 108 98 107 98 105 97 103 97 102 96 100 96" stroke="#5a3e22" stroke-width="32"/>
+      <path d="M182 170 186 164 189 158 190 152 191 146 191 140 190 135 188 130 185 126 181 122 177 118 172 114 167 111 161 109 154 107 147 105 140 104 136 104 132 103 129 103 126 102 123 102 120 101 117 101 115 100 112 99 110 99 108 98 107 98 105 97 103 97 102 96 100 96" stroke="#d8b884" stroke-width="27"/>
+      <path d="M189 158 L195 171 L181 172 L176 159 Z M191 137 L202 145 L191 153 L180 146 Z M180 119 L193 118 L190 132 L176 133 Z M162 108 L174 103 L176 116 L163 122 Z M141 104 L151 95 L157 107 L146 116 Z M120 101 L130 92 L136 104 L126 113 Z M100 96 L111 88 L115 100 L105 109 Z" fill="#6a4426" stroke="#f6e7c4" stroke-width="2" stroke-linejoin="round"/>
+      <g fill="#8a5e36"><circle cx="185" cy="165" r="2.2"/><circle cx="191" cy="145" r="2.2"/><circle cx="185" cy="125" r="2.2"/><circle cx="169" cy="112" r="2.2"/><circle cx="149" cy="105" r="2.2"/><circle cx="128" cy="103" r="2.2"/><circle cx="108" cy="98" r="2.2"/></g>
+      <path d="M188 140 188 137 187 134 186 131 185 128 184 125 182 123 180 121 177 119 175 117 172 115 169 114 165 112 162 111 158 110 154 109 150 108" stroke="#fff4dc" stroke-width="3" opacity="0.55"/>
+    </g>
+  </g>
+
+  <g id="cauda" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M196 230 C230 232 252 206 244 170 L241 150 L229 150 L232 170 C236 194 222 204 196 202 Z" fill="url(#cascavel-pele)" stroke="#5a3e22" stroke-width="2.5"/>
+    <g clip-path="url(#cascavel-clip-cauda)">
+      <path d="M217 214 L212 225 L203 216 L208 205 Z M232 202 L235 214 L223 211 L220 199 Z M239 183 L248 191 L236 196 L227 187 Z M237 163 L248 168 L239 176 L228 171 Z" fill="#6a4426" stroke="#f6e7c4" stroke-width="2"/>
+      <path d="M200 226 C226 226 244 206 240 174" fill="none" stroke="#8a6a44" stroke-width="5" opacity="0.35"/>
+    </g>
+    <!-- chocalho segmentado -->
+    <g stroke="#8a6a2e" stroke-width="2">
+      <path d="M227 152 C227 144 243 144 243 152 C243 158 227 158 227 152 Z" fill="url(#cascavel-chocalho)"/>
+      <path d="M228 143 C228 135 242 135 242 143 C242 150 228 150 228 143 Z" fill="url(#cascavel-chocalho)"/>
+      <path d="M229 134 C229 127 241 127 241 134 C241 141 229 141 229 134 Z" fill="url(#cascavel-chocalho)"/>
+      <path d="M230 125.5 C230 119 240 119 240 125.5 C240 132 230 132 230 125.5 Z" fill="url(#cascavel-chocalho)"/>
+      <path d="M231 117 C231 111 239 111 239 117 C239 123 231 123 231 117 Z" fill="url(#cascavel-chocalho)"/>
+      <path d="M232 109 C232 103 238 103 238 109 C238 114 232 114 232 109 Z" fill="url(#cascavel-chocalho)"/>
+    </g>
+    <path d="M230 150 l4 -1 M231 141 l4 -1 M232 132 l3 -1 M233 123 l3 -1 M234 115 l2 -1" stroke="#fffbe8" stroke-width="1.8"/>
+    <!-- linhas de vibração -->
+    <g fill="none" stroke="#c98a2e" stroke-width="2.5">
+      <path d="M246 112 Q251 120 246 128"/><path d="M251 106 Q258 120 251 134"/>
+      <path d="M224 112 Q219 120 224 128"/><path d="M219 106 Q212 120 219 134"/>
+    </g>
+  </g>
+
+  <g id="volta-de-baixo" fill="none" stroke-linejoin="round">
+    <g stroke-linecap="round">
+      <path d="M210 206 209 208 207 210 204 212 200 214 194 216 187 217 179 219 171 220 162 221 152 221 142 222 132 222 122 222 112 221 102 221 93 220 85 219 77 217 70 216 64 214 60 212 57 210 55 208 54 206" stroke="#5a3e22" stroke-width="39"/>
+      <path d="M210 206 209 208 207 210 204 212 200 214 194 216 187 217 179 219 171 220 162 221 152 221 142 222 132 222 122 222 112 221 102 221 93 220 85 219 77 217 70 216 64 214 60 212 57 210 55 208 54 206" stroke="#d8b884" stroke-width="34"/>
+      <path d="M199 215 L199 198 L214 206 L214 223 Z M175 220 L181 204 L193 216 L186 232 Z M151 222 L159 206 L169 220 L161 235 Z M127 222 L136 207 L145 222 L136 236 Z M103 221 L113 207 L121 222 L111 236 Z M79 218 L90 205 L97 220 L86 234 Z M56 211 L69 200 L73 217 L61 228 Z" fill="#6a4426" stroke="#f6e7c4" stroke-width="2" stroke-linejoin="round"/>
+      <g fill="#8a5e36"><circle cx="207" cy="211" r="2.2"/><circle cx="184" cy="218" r="2.2"/><circle cx="160" cy="221" r="2.2"/><circle cx="136" cy="222" r="2.2"/><circle cx="112" cy="221" r="2.2"/><circle cx="88" cy="219" r="2.2"/><circle cx="65" cy="214" r="2.2"/></g>
+      <path d="M203 218 201 220 198 222 194 224 189 226 183 227 177 229 170 230 163 231 156 232 148 233 140 233 132 233 124 233 116 233 108 232 101 231 94 230 87 229 81 227 75 226 70 224 66 222 63 220 61 218" stroke="#8a6a44" stroke-width="6" opacity="0.35"/>
+      <path d="M200 204 197 205 193 206 189 207 184 208 179 209 173 210 167 210 161 211 154 211 147 212 139 212 132 212 125 212 117 212 110 211 103 211 97 210 91 210 85 209 80 208 75 207 71 206 67 205 64 204" stroke="#fff4dc" stroke-width="3" opacity="0.55"/>
+    </g>
+  </g>
+
+  <g id="volta-de-cima" fill="none" stroke-linejoin="round">
+    <g stroke-linecap="round">
+      <path d="M186 178 186 180 184 181 182 183 178 184 174 186 170 187 164 188 158 189 151 190 144 191 137 191 130 191 123 191 116 191 109 190 102 189 96 188 90 187 86 186 82 184 78 183 76 181 74 180 74 178" stroke="#5a3e22" stroke-width="35"/>
+      <path d="M186 178 186 180 184 181 182 183 178 184 174 186 170 187 164 188 158 189 151 190 144 191 137 191 130 191 123 191 116 191 109 190 102 189 96 188 90 187 86 186 82 184 78 183 76 181 74 180 74 178" stroke="#e0c290" stroke-width="30"/>
+      <path d="M177 186 L177 171 L191 177 L191 192 Z M155 190 L162 176 L172 187 L165 201 Z M133 191 L141 178 L150 190 L142 203 Z M111 190 L120 178 L128 191 L119 203 Z M89 187 L100 176 L106 190 L96 201 Z M70 177 L84 172 L84 187 L70 192 Z" fill="#6a4426" stroke="#f6e7c4" stroke-width="2" stroke-linejoin="round"/>
+      <g fill="#8a5e36"><circle cx="184" cy="181" r="2.2"/><circle cx="163" cy="188" r="2.2"/><circle cx="142" cy="191" r="2.2"/><circle cx="120" cy="191" r="2.2"/><circle cx="98" cy="189" r="2.2"/><circle cx="77" cy="182" r="2.2"/></g>
+      <path d="M180 189 178 191 176 192 173 194 170 195 166 197 162 198 157 199 152 200 147 200 141 201 136 201 130 201 124 201 119 201 113 200 108 200 103 199 98 198 94 197 90 195 87 194 84 192 82 191 80 189" stroke="#8a6a44" stroke-width="6" opacity="0.35"/>
+      <path d="M175 177 173 178 171 178 168 179 164 180 161 180 157 181 153 181 148 181 144 182 139 182 135 182 130 182 125 182 121 182 116 182 112 181 107 181 103 181 99 180 96 180 92 179 89 178 87 178 85 177" stroke="#fff4dc" stroke-width="3" opacity="0.55"/>
+    </g>
+  </g>
+
+  <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
+    <!-- língua bifurcada -->
+    <path d="M46 104 L30 106 L18 99 L21 104 L27 108 L20 113 L18 118 L31 110 L46 109 Z" fill="#e5484d" stroke="#a82a32" stroke-width="1.6"/>
+    <!-- cabeça triangular larga -->
+    <path d="M126 80 C128 96 124 112 108 118 C92 124 64 120 48 112 C38 107 38 96 46 91 C58 83 80 77 98 75 C112 73 124 72 126 80 Z" fill="url(#cascavel-cabeca)" stroke="#5a3e22" stroke-width="2.5"/>
+    <g clip-path="url(#cascavel-clip-cabeca)">
+      <!-- faixa escura atrás do olho, bordeada de claro -->
+      <path d="M78 98 C92 100 108 104 130 116 L130 128 C108 116 92 110 76 106 Z" fill="#7a5034"/>
+      <path d="M80 96 C94 98 110 102 130 112" fill="none" stroke="#fbf0d4" stroke-width="2.5"/>
+      <path d="M78 108 C92 112 108 118 128 128" fill="none" stroke="#fbf0d4" stroke-width="2.5"/>
+      <!-- losango no alto da cabeça -->
+      <path d="M100 78 L112 72 L126 78 L112 86 Z" fill="#6a4426" stroke="#f6e7c4" stroke-width="2"/>
+    </g>
+    <path d="M56 86 Q74 78 94 77" fill="none" stroke="#fff6e0" stroke-width="3" opacity="0.85"/>
+    <!-- narina e fosseta loreal (sensor de calor) -->
+    <ellipse cx="46" cy="96" rx="2" ry="1.5" fill="#4a3220"/>
+    <ellipse cx="58" cy="101" rx="3" ry="2.4" fill="#4a3220" stroke="#efd9a8" stroke-width="1"/>
+    <path d="M44 108 Q62 116 88 112" fill="none" stroke="#5a3e22" stroke-width="2.2"/>
+    <ellipse cx="96" cy="111" rx="8" ry="5" fill="#f4908a" opacity="0.5"/>
+    <g fill="none" stroke="#b08c58" stroke-width="1.2" opacity="0.8"><path d="M106 110 q3 2 6 0 M66 112 q3 2 6 0"/></g>
+  </g>
+
+  <g id="olhos">
+    <ellipse cx="76" cy="94" rx="11.5" ry="12.5" fill="#efdcae" stroke="#9a7a4c" stroke-width="1.5"/>
+    <ellipse cx="76.5" cy="94.5" rx="9" ry="10.5" fill="#2b1d16"/>
+    <circle cx="73" cy="90" r="4.2" fill="#fff"/>
+    <circle cx="80.5" cy="99" r="2" fill="#fff"/>
+    <!-- escama sobre o olho -->
+    <path d="M64 84 Q76 77 88 83" fill="none" stroke="#5a3e22" stroke-width="2.5"/>
+  </g>
+</svg>

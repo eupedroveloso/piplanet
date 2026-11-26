@@ -2,13 +2,14 @@ import { COOKIE_SESSAO, perfilPorId, type PerfilId } from "@/content/perfis";
 
 /**
  * Sessão simples: cookie "perfil.assinatura" com HMAC-SHA256 (Web Crypto, roda no proxy e no servidor).
- * O segredo vem de SEGREDO_SESSAO no .env.
+ * O segredo vem de SEGREDO_SESSAO (ou de um valor padrão, se não houver).
  */
 const enc = new TextEncoder();
 
 async function chave() {
-  const segredo = process.env.SEGREDO_SESSAO;
-  if (!segredo) throw new Error("SEGREDO_SESSAO não configurado (.env)");
+  // Proteção simples (só para o Pietro não entrar nos perfis dos adultos): há um valor padrão;
+  // se SEGREDO_SESSAO existir no ambiente (.env / Vercel), ele tem prioridade.
+  const segredo = process.env.SEGREDO_SESSAO || "pietro-games-sessao-familia";
   return crypto.subtle.importKey("raw", enc.encode(segredo), { name: "HMAC", hash: "SHA-256" }, false, ["sign", "verify"]);
 }
 

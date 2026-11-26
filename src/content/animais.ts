@@ -96,7 +96,7 @@ export const ANIMAIS: Animal[] = [
   a("peru", "pe-ru", 1, "us-pradaria", "ave", "O peru selvagem vive nas florestas e campos dos Estados Unidos."),
   a("bisao", "bi-são", 3, "us-pradaria", "mamífero", "O bisão é o maior mamífero terrestre da América do Norte.", { nome: "bisão" }),
   a("aguia", "á-gui-a", 3, "us-pradaria", "ave", "A águia-careca é o símbolo dos Estados Unidos.", { nome: "águia" }),
-  a("cascavel", "cas-ca-vel", 3, "us-pradaria", "réptil", "A cascavel faz barulho com o chocalho na ponta do rabo.", { arte: "cobra.svg" }),
+  a("cascavel", "cas-ca-vel", 3, "us-pradaria", "réptil", "A cascavel faz barulho com o chocalho na ponta do rabo."),
 
   // ── Rússia ────────────────────────────────────────────────────────────
   a("foca", "fo-ca", 1, "ru-tundra", "mamífero", "A foca consegue ficar muitos minutos debaixo d'água sem respirar."),

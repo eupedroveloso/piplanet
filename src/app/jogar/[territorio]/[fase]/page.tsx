@@ -31,7 +31,7 @@ async function Fase({ params }: { params: Params }) {
   } as React.CSSProperties;
   return (
     <div style={vars} className="flex min-h-dvh flex-col bg-t-fundo">
-      <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col px-4 py-4 sm:px-6">
+      <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col px-3 pt-3 pb-[max(env(safe-area-inset-bottom),0.75rem)] sm:px-6 sm:py-4">
         {jogo === "le-e-acha" && <LeEAcha territorio={territorio} faseIdx={idx} />}
         {jogo === "monta-o-bicho" && <MontaOBicho territorio={territorio} faseIdx={idx} modo="silabas" />}
         {jogo === "monta-a-silaba" && <MontaOBicho territorio={territorio} faseIdx={idx} modo="letras" />}

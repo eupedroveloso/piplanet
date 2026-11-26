@@ -113,6 +113,7 @@ function RodadaMontar({ animal, fase, acertou, errar, acertar, modo }: RodadaPro
   const dica = errosCasa >= ERROS_ATE_DICA ? pecas.find((p) => !p.used && p.text === unidades[feitas])?.id : undefined;
   // Palavras longas (RI·NO·CE·RON·TE) usam o bloco menor para caber numa linha no celular
   const pequeno = modo !== "silabas" || unidades.length >= 4;
+  const bloco = modo === "silabas" && unidades.length >= 5 ? "xs" : pequeno ? "sm" : "md";
 
   return (
     <>
@@ -148,7 +149,7 @@ function RodadaMontar({ animal, fase, acertou, errar, acertar, modo }: RodadaPro
                 <Casinha
                   key={i}
                   texto={u}
-                  tamanho={pequeno ? "sm" : "md"}
+                  tamanho={bloco}
                   layoutId={encaixes[i] ? idVoo(encaixes[i]) : undefined}
                   estado={i < feitas ? "cheia" : i === feitas && !acertou ? "proxima" : "vazia"}
                 />
@@ -168,7 +169,7 @@ function RodadaMontar({ animal, fase, acertou, errar, acertar, modo }: RodadaPro
               layoutId={idVoo(p.id)}
               texto={p.text}
               usada={p.used}
-              tamanho={pequeno ? "sm" : "md"}
+              tamanho={bloco}
               onToque={() => tocar(p)}
               estado={balancando === p.id ? "balancar" : dica === p.id ? "dica" : "normal"}
             />

@@ -18,7 +18,8 @@ export async function POST(req: Request) {
   const p = perfilPorId(perfil);
   if (!p) return NextResponse.json({ ok: false, erro: "perfil" }, { status: 400 });
   if (p.temSenha) {
-    const certa = process.env[`SENHA_${p.id.toUpperCase()}`];
+    // Senha padrão 0001 (proteção simples); SENHA_PEDRO / SENHA_GABI no ambiente têm prioridade.
+    const certa = process.env[`SENHA_${p.id.toUpperCase()}`] || "0001";
     if (!senhaCerta(String(senha ?? ""), certa)) return NextResponse.json({ ok: false, erro: "senha" }, { status: 401 });
   }
   const res = NextResponse.json({ ok: true, perfil: p.id });

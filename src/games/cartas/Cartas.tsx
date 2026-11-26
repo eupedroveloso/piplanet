@@ -7,7 +7,7 @@ import { TERRITORIOS } from "@/content/jornada";
 import { avaliarCarta, progressStore, useProgress } from "@/lib/progress";
 import { speak } from "@/lib/speech";
 import { falarSobre } from "@/lib/falar-bicho";
-import { Arte, Botao, BotaoLink, BotaoRedondo, BotaoRedondoLink, BotaoSom, Mascote, MOLA_ENTRADA, MOLA_TOQUE, Painel } from "@/components/ui";
+import { Arte, Botao, BotaoLink, BotaoRedondo, BotaoRedondoLink, BotaoSom, Mascote, MOLA_ENTRADA, MOLA_TOQUE, Painel, fonteQueCabeEm } from "@/components/ui";
 
 /**
  * CARTAS (flashcards com repetição espaçada)
@@ -141,14 +141,21 @@ export function Cartas() {
               className="relative h-80 w-64 [transform-style:preserve-3d] sm:h-96 sm:w-72"
             >
               {/* Frente: a palavra */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-xl bg-branco shadow-[0_10px_0_var(--color-linha)] [backface-visibility:hidden]">
-                <span className="font-leitura text-5xl font-bold text-roxo uppercase sm:text-6xl">{carta.silabas.join("·")}</span>
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-xl bg-branco shadow-[0_10px_0_var(--color-linha)] [-webkit-backface-visibility:hidden] [backface-visibility:hidden]">
+                <span
+                  style={{ fontSize: fonteQueCabeEm(224, carta.silabas.join("").length, carta.silabas.length - 1, 3.75) }}
+                  className="font-leitura font-bold text-roxo uppercase"
+                >
+                  {carta.silabas.join("·")}
+                </span>
                 <Arte nome="ui/cartas" className="size-10 opacity-30" />
               </div>
               {/* Verso: o bicho */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-xl bg-amarelo-claro p-4 shadow-[0_10px_0_var(--color-amarelo)] [backface-visibility:hidden] [transform:rotateY(180deg)]">
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-xl bg-amarelo-claro p-4 shadow-[0_10px_0_var(--color-amarelo)] [-webkit-backface-visibility:hidden] [backface-visibility:hidden] [transform:rotateY(180deg)]">
                 <Arte src={arteDoAnimal(carta)} className="size-40 sm:size-48" />
-                <span className="font-leitura text-4xl font-bold text-roxo uppercase">{carta.nome}</span>
+                <span style={{ fontSize: fonteQueCabeEm(224, carta.nome.length, 0, 2.25) }} className="font-leitura font-bold text-roxo uppercase">
+                  {carta.nome}
+                </span>
               </div>
             </motion.button>
           </motion.div>

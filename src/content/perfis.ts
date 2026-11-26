@@ -1,7 +1,7 @@
 /**
  * PERFIS DA FAMÍLIA
- * O Pietro entra direto (sem senha). Pedro e Gabi têm senha, guardada no .env
- * (SENHA_PEDRO, SENHA_GABI) e conferida no servidor.
+ * O Pietro entra direto (sem senha). Pedro e Gabi têm senha (padrão 0001; pode ser trocada
+ * com SENHA_PEDRO / SENHA_GABI no ambiente), conferida no servidor.
  * Cada perfil tem o próprio progresso salvo no aparelho.
  */
 export type PerfilId = "pietro" | "pedro" | "gabi";

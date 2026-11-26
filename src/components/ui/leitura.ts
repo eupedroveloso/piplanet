@@ -13,3 +13,9 @@ export function fonteQueCabe(letras: number, separadores = 0, folgaPx = 80, maxR
   const ems = Math.max(1, letras * 0.64 + separadores * 0.7);
   return `min(${maxRem}rem, calc((100vw - ${folgaPx}px) / ${ems.toFixed(2)}))`;
 }
+
+/** Igual a `fonteQueCabe`, mas para uma caixa de largura fixa (ex.: a carta de 256 px). */
+export function fonteQueCabeEm(larguraPx: number, letras: number, separadores = 0, maxRem = 3) {
+  const ems = Math.max(1, letras * 0.64 + separadores * 0.7);
+  return `min(${maxRem}rem, ${Math.floor(larguraPx / ems)}px)`;
+}

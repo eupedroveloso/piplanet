@@ -7,7 +7,7 @@ import { fraseDe } from "@/content/frases";
 import { registrarNivelamento, useProgress } from "@/lib/progress";
 import { shuffle } from "@/lib/random";
 import { speak } from "@/lib/speech";
-import { Arte, Botao, BotaoLink, BotaoRedondo, BotaoRedondoLink, BotaoSom, Mascote, MOLA_ENTRADA, Painel } from "@/components/ui";
+import { Arte, Botao, BotaoLink, BotaoRedondo, BotaoRedondoLink, BotaoSom, Mascote, MOLA_ENTRADA, Painel, fonteQueCabe } from "@/components/ui";
 
 /**
  * NIVELAMENTO (teste de leitura adaptativo)
@@ -138,7 +138,7 @@ export function Nivelamento() {
     return (
       <div className="flex flex-1 flex-col gap-6">
         {topo}
-        <div className="flex flex-1 flex-col items-center justify-center gap-8">
+        <div className="flex flex-1 flex-col items-center justify-center gap-6 sm:gap-8">
           <Mascote fala="Vamos ver como está sua leitura? Não tem certo nem errado!" tamanho="lg" />
           {ultimo && <Escada nivel={ultimo.nivel} />}
           <Botao cor="amarelo" tamanho="lg" onClick={comecar} icone={<Arte nome="ui/nivel" className="size-8" />}>
@@ -186,20 +186,22 @@ export function Nivelamento() {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -40 }}
           transition={MOLA_ENTRADA}
-          className="flex flex-1 flex-col items-center justify-center gap-8"
+          className="flex flex-1 flex-col items-center justify-center gap-6 sm:gap-8"
         >
           <div className="flex items-center gap-3">
-            <BotaoRedondo aria-label="Ouvir a instrução de novo" onClick={() => speak(instrucao(p))} className="size-16 ring-4 ring-amarelo">
+            <BotaoRedondo aria-label="Ouvir a instrução de novo" fala={false} onClick={() => speak(instrucao(p))} className="size-14 shrink-0 ring-4 ring-amarelo sm:size-16">
               <Arte nome="ui/som-ligado" className="size-9" />
             </BotaoRedondo>
             {p.tipo === "figura" && (
-              <div className="rounded-xl bg-branco px-6 py-4 shadow-[0_8px_0_var(--color-linha)]">
-                <span className="font-leitura text-5xl font-bold text-roxo uppercase sm:text-6xl">{p.texto}</span>
+              <div className="rounded-xl bg-branco px-4 py-3 shadow-[0_8px_0_var(--color-linha)] sm:px-6 sm:py-4">
+                <span style={{ fontSize: fonteQueCabe(p.texto.replace(/[^a-zà-ú]/gi, "").length, 0, 150, 3.75) }} className="font-leitura font-bold text-roxo uppercase">
+                  {p.texto}
+                </span>
               </div>
             )}
           </div>
 
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
             {p.tipo === "silaba"
               ? p.opcoes.map((s) => (
                   <motion.button
@@ -209,7 +211,7 @@ export function Nivelamento() {
                     whileTap={{ scale: 0.92 }}
                     animate={escolhido === s ? { scale: 1.1 } : { scale: 1 }}
                     onClick={() => responder(s === p.alvo, s)}
-                    className={`grid h-28 min-w-28 place-items-center rounded-xl bg-branco px-5 font-leitura text-6xl font-bold text-roxo uppercase shadow-[0_8px_0_var(--color-linha)] ${
+                    className={`grid h-20 min-w-20 place-items-center rounded-xl bg-branco px-3 font-leitura text-4xl font-bold text-roxo uppercase shadow-[0_8px_0_var(--color-linha)] sm:h-28 sm:min-w-28 sm:px-5 sm:text-6xl ${
                       escolhido === s ? "ring-4 ring-amarelo" : ""
                     }`}
                   >
