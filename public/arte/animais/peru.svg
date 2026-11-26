@@ -102,43 +102,46 @@
   </g>
 
   <g id="barba" stroke-linejoin="round" stroke-linecap="round">
-    <!-- tufo de cerdas no peito -->
-    <path d="M110 150 C106 162 104 178 106 192 M113 150 C112 164 112 178 114 192 M116 150 C116 164 118 176 120 188 M108 152 C102 164 100 176 100 186" fill="none" stroke="#1e140e" stroke-width="3"/>
-    <path d="M112 152 C111 162 110 172 110 180" fill="none" stroke="#6a5444" stroke-width="1.2"/>
+    <!-- tufo de cerdas ("barba") pendendo do peito -->
+    <path d="M110 146 C116 146 120 150 119 158 C118 172 116 184 112 196 L109 190 L106 197 C104 184 102 170 103 158 C103 150 106 146 110 146 Z" fill="#241811" stroke="#120a06" stroke-width="2"/>
+    <path d="M108 152 L107 190 M112 152 L112 188 M115 154 L114 182" fill="none" stroke="#5e4a3c" stroke-width="1.2"/>
   </g>
 
   <g id="pescoco" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M70 100 C78 108 92 122 110 132 C118 128 124 120 126 112 C112 104 98 92 92 82 Z" fill="url(#peru-cabeca)" stroke="#2e6a9c" stroke-width="2.5"/>
-    <!-- carúnculas vermelhas na garganta -->
-    <path d="M74 98 C72 108 78 116 84 118 C88 124 96 128 104 128 C108 132 116 134 120 130 C112 124 100 118 94 110 C88 104 84 98 80 94 Z" fill="url(#peru-vermelho)" stroke="#8a1e22" stroke-width="2"/>
+    <path d="M74 92 C82 104 96 120 112 130 C120 128 126 120 128 112 C114 104 104 94 98 84 Z" fill="url(#peru-vermelho)" stroke="#8a1e22" stroke-width="2.5"/>
+    <path d="M90 92 C100 102 110 110 124 114" fill="none" stroke="#9ccdf0" stroke-width="5" opacity="0.8"/>
+    <!-- carúnculas (verrugas vermelhas) na garganta -->
     <g fill="#ff8c80" stroke="#8a1e22" stroke-width="1.2">
-      <circle cx="84" cy="114" r="3.5"/><circle cx="94" cy="122" r="3.5"/><circle cx="106" cy="128" r="3"/><circle cx="114" cy="130" r="2.5"/>
+      <circle cx="82" cy="106" r="4"/><circle cx="90" cy="114" r="4"/><circle cx="99" cy="121" r="3.5"/><circle cx="108" cy="127" r="3"/><circle cx="116" cy="130" r="2.5"/>
     </g>
   </g>
 
   <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
-    <!-- cabeça sem penas, azul -->
-    <path d="M80 50 C98 50 108 62 108 78 C108 92 98 102 82 102 C66 102 56 92 56 78 C56 62 64 50 80 50 Z" fill="url(#peru-cabeca)" stroke="#2e6a9c" stroke-width="2.5"/>
-    <path d="M62 70 Q66 56 80 54" fill="none" stroke="#ffffff" stroke-width="3" opacity="0.8"/>
-    <g fill="#b6dcf4"><circle cx="96" cy="64" r="1.5"/><circle cx="100" cy="70" r="1.5"/><circle cx="64" cy="88" r="1.5"/></g>
-    <!-- barbela vermelha pendente -->
-    <path d="M66 94 C64 106 68 118 76 120 C84 120 86 110 84 98 Z" fill="url(#peru-vermelho)" stroke="#8a1e22" stroke-width="2"/>
-    <path d="M70 100 q0 8 4 14" fill="none" stroke="#ffb0a6" stroke-width="2"/>
+    <!-- barbela vermelha pendente sob o queixo -->
+    <path d="M74 92 C70 104 72 118 80 124 C88 126 92 116 90 100 Z" fill="url(#peru-vermelho)" stroke="#8a1e22" stroke-width="2"/>
+    <path d="M77 102 q0 8 4 14" fill="none" stroke="#ffb0a6" stroke-width="2"/>
+    <!-- cabeça sem penas: alto azul, rosto vermelho -->
+    <path d="M82 46 C100 46 110 58 110 74 C110 90 100 100 82 100 C64 100 54 90 54 74 C54 58 64 46 82 46 Z" fill="url(#peru-vermelho)" stroke="#8a1e22" stroke-width="2.5"/>
+    <path d="M55 80 C54 60 66 46 82 46 C98 46 110 60 109 80 C102 82 96 86 90 84 C86 82 78 82 74 84 C68 86 62 82 55 80 Z" fill="url(#peru-cabeca)" stroke="#2e6a9c" stroke-width="2"/>
+    <path d="M64 60 Q70 50 82 50" fill="none" stroke="#ffffff" stroke-width="3" opacity="0.85"/>
+    <g fill="#ffb0a6"><circle cx="62" cy="86" r="1.6"/><circle cx="102" cy="86" r="1.6"/><circle cx="98" cy="94" r="1.4"/></g>
     <!-- bico -->
-    <path d="M70 82 C70 78 84 78 84 82 L78 96 Z" fill="#e8d2a0" stroke="#9a7a44" stroke-width="2"/>
-    <path d="M72 83 L79 84" stroke="#fff4d8" stroke-width="1.6"/>
-    <!-- carúncula (snood) sobre o bico, caindo de lado -->
-    <path d="M76 70 C70 70 68 76 70 84 C70 92 66 100 62 108 C60 114 66 116 68 110 C72 102 76 92 78 82 C78 76 80 72 76 70 Z" fill="url(#peru-vermelho)" stroke="#8a1e22" stroke-width="2"/>
-    <ellipse cx="64" cy="110" rx="4" ry="5" fill="#e2403c" stroke="#8a1e22" stroke-width="1.6"/>
-    <ellipse cx="96" cy="88" rx="6" ry="4" fill="#f4908a" opacity="0.55"/>
+    <path d="M76 84 C76 80 90 80 90 84 L83 98 Z" fill="#eed9a8" stroke="#9a7a44" stroke-width="2"/>
+    <path d="M79 85 L85 85" stroke="#fffaf0" stroke-width="1.6"/>
+    <!-- carúncula sobre o bico (snood), caindo de lado -->
+    <path d="M84 70 C80 70 78 74 78 80 C78 88 74 98 70 106 C68 112 74 114 76 108 C80 100 84 90 85 80 C86 76 87 72 84 70 Z" fill="#e2403c" stroke="#8a1e22" stroke-width="2"/>
+    <ellipse cx="72" cy="109" rx="4" ry="5" fill="#ff6e62" stroke="#8a1e22" stroke-width="1.6"/>
+    <path d="M81 76 q-1 8 -3 14" fill="none" stroke="#ffb0a6" stroke-width="1.6"/>
+    <ellipse cx="62" cy="80" rx="7" ry="4" fill="#f4908a" opacity="0.6"/>
+    <ellipse cx="102" cy="80" rx="7" ry="4" fill="#f4908a" opacity="0.6"/>
   </g>
 
   <g id="olhos">
-    <ellipse cx="68" cy="70" rx="7" ry="8.5" fill="#2b1d16"/>
-    <ellipse cx="92" cy="70" rx="7.5" ry="9" fill="#2b1d16"/>
-    <circle cx="65.5" cy="66.5" r="3.4" fill="#fff"/>
-    <circle cx="71" cy="73.5" r="1.6" fill="#fff"/>
-    <circle cx="89" cy="66" r="3.6" fill="#fff"/>
-    <circle cx="95" cy="73.5" r="1.7" fill="#fff"/>
+    <ellipse cx="68" cy="68" rx="8" ry="9.5" fill="#2b1d16"/>
+    <ellipse cx="96" cy="68" rx="8" ry="9.5" fill="#2b1d16"/>
+    <circle cx="65" cy="64" r="3.8" fill="#fff"/>
+    <circle cx="71.5" cy="72" r="1.8" fill="#fff"/>
+    <circle cx="93" cy="64" r="3.8" fill="#fff"/>
+    <circle cx="99.5" cy="72" r="1.8" fill="#fff"/>
   </g>
 </svg>

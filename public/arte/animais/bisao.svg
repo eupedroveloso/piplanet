@@ -1,12 +1,127 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M23.17 22.0029H21.2L19.09 29.6329C19.03 29.8329 19.18 30.0329 19.39 30.0329H20.71C20.85 30.0329 20.97 29.9429 21.01 29.8029L23.17 22.0029Z" fill="#7D4533"/>
-<path d="M13.03 29.6929C13.03 29.8629 12.89 30.0029 12.72 30.0029H11.34C11.17 30.0029 11.03 29.8629 11.03 29.6929V26.0229H13.03V29.6929Z" fill="#7D4533"/>
-<path d="M29.4688 22L30 22.3328V26.3328C28.9 26.3328 28 25.4328 28 24.3328C28 23.5965 28.4033 22.9497 29 22.6026L29.4688 22Z" fill="#1C1C1C"/>
-<path d="M8.96997 23.9728V23.0028L12 22.0028L15.03 23.0028V23.9728C15.03 25.6428 13.67 27.0028 12 27.0028C10.33 27.0028 8.96997 25.6428 8.96997 23.9728Z" fill="#1C1C1C"/>
-<path d="M26.96 11.6929C28.8 12.4829 30 14.3029 30 16.3129V25.0029L30 22.3328C29.6364 22.3328 29.2946 22.4312 29 22.6026V19.2329C28.72 19.5829 28.37 19.8929 28 20.1529V24.3232L28 24.3328L28 24.3424V29.7029C28 29.8729 27.86 30.0129 27.69 30.0129H26.31C26.14 30.0129 26 29.8729 26 29.7029V26.0129H25.73C23.66 26.0129 21.99 24.3329 21.99 22.2729V22.1729C21.44 22.6829 20.69 23.0029 19.87 23.0029H11.03C9.32002 23.0029 8.06764 21.6532 8.06764 19.9432L8.06764 19.4702L6.99314 20.0088L5.37 19.0029H4.5C3.67 19.0029 3 18.3329 3 17.5029C3 17.0929 3.17 16.7129 3.44 16.4529C3.79 16.0929 4 15.6129 4 15.1129V13.0029L6.46552 12.0217L8.06763 12.6419L8.06763 10.0029H21.4C22.46 10.0029 23.5 10.2129 24.47 10.6229L26.96 11.6929Z" fill="#A56953"/>
-<path d="M10.31 30.0028H11.69C11.86 30.0028 12 29.8628 12 29.6928V26.0228H10V29.6928C10 29.8628 10.14 30.0028 10.31 30.0028Z" fill="#A56953"/>
-<path d="M16.16 6.50284L21.08 8.61284C21.64 8.85284 22 9.39284 22 10.0028L15.66 13.1728C14.64 13.6828 14 14.7228 14 15.8628V24.0028C14 25.6728 12.64 27.0328 10.97 27.0328C9.3 27.0328 8 25.6728 8 24.0028L8.00763 22.042L7.20002 21.2577C7.10002 21.1577 6.93002 21.1777 6.85002 21.2977L6.56002 21.7677C6.30002 22.1877 5.69002 22.1977 5.42002 21.7777L3.27053 18.4185C3.09998 18.1751 3 17.8783 3 17.5577C3 17.1477 3.16 16.7777 3.43 16.5077H4.61C5.38 16.5077 6 17.1277 6 17.8977V19.0029H8.01946L8.03116 15.9975L8 13.6128C8 13.2728 7.73 13.0028 7.39 13.0028H5.68C5.58 13.0028 5.5 13.0828 5.5 13.1828V13.6328C5.5 13.8328 5.33 14.0028 5.13 14.0028H3.64C2.73 14.0028 2 13.2728 2 12.3628V11.0028C2 9.90284 2.9 9.00284 4 9.00284H4.88C5.16 9.00284 5.42 8.87284 5.6 8.66284C5.93 8.26284 6.44 8.00284 7 8.00284C7.71 8.00284 8.33 8.41284 8.63 9.00284H8.68C9.71 7.16284 11.71 5.93284 13.99 6.00284C14.74 6.03284 15.48 6.20284 16.16 6.50284Z" fill="#6D4534"/>
-<path d="M5 15.5128C5 15.7928 5.22 16.0128 5.5 16.0128C5.78 16.0128 6 15.7828 6 15.5128V14.9128C6 14.6328 5.78 14.4128 5.5 14.4128C5.22 14.4128 5 14.6328 5 14.9128V15.5128Z" fill="#1C1C1C"/>
-<path d="M5 17.5029C5 17.779 4.77614 18.0029 4.5 18.0029C4.22386 18.0029 4 17.779 4 17.5029C4 17.2267 4.22386 17.0029 4.5 17.0029C4.77614 17.0029 5 17.2267 5 17.5029Z" fill="#1C1C1C"/>
-<path d="M7.18 6.00285C7.01 5.99285 6.95 6.20285 7.08 6.29285C7.7 6.66285 8.09 7.36285 8.04 8.13285C7.97 9.20285 7.07 10.0228 6.01 10.0028H6C5.45 10.0028 5 10.4428 5 11.0028C5 11.5528 5.45 12.0028 6 12.0028H7C8.55 11.9828 9.86 10.7828 9.97 9.20285C10.08 7.55285 8.83 6.12285 7.18 6.00285Z" fill="#F9C23C"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="bisao-la" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#946038"/>
+      <stop offset="0.55" stop-color="#5e3a1e"/>
+      <stop offset="1" stop-color="#3a2212"/>
+    </linearGradient>
+    <linearGradient id="bisao-pelo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c49260"/>
+      <stop offset="0.55" stop-color="#9a6838"/>
+      <stop offset="1" stop-color="#6e4422"/>
+    </linearGradient>
+    <linearGradient id="bisao-tras" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7a4e2a"/>
+      <stop offset="1" stop-color="#4e3018"/>
+    </linearGradient>
+    <radialGradient id="bisao-cabeca" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#8a5a34"/>
+      <stop offset="0.6" stop-color="#5a3820"/>
+      <stop offset="1" stop-color="#3a2414"/>
+    </radialGradient>
+    <linearGradient id="bisao-chifre" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6a6260"/>
+      <stop offset="1" stop-color="#1e1a19"/>
+    </linearGradient>
+    <linearGradient id="bisao-focinho" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6e5448"/>
+      <stop offset="1" stop-color="#3e2c24"/>
+    </linearGradient>
+    <radialGradient id="bisao-iris" cx="0.4" cy="0.35" r="0.7">
+      <stop offset="0" stop-color="#e2c494"/>
+      <stop offset="1" stop-color="#a87a44"/>
+    </radialGradient>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="136" cy="237" rx="100" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="patas-tras" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M128 176 L128 224 L141 224 L142 176 Z" fill="url(#bisao-tras)" stroke="#2e1a0c" stroke-width="2.5"/>
+    <path d="M196 160 C208 168 212 182 206 196 L206 224 L218 224 L220 194 C224 180 218 166 208 158 Z" fill="url(#bisao-tras)" stroke="#2e1a0c" stroke-width="2.5"/>
+    <path d="M126 222 L143 222 L144 234 L125 234 Z M204 222 L220 222 L221 234 L203 234 Z" fill="#2a2220" stroke="#140f0d" stroke-width="2"/>
+    <path d="M134.5 224 v10 M212.5 224 v10" stroke="#140f0d" stroke-width="1.5"/>
+  </g>
+
+  <g id="cauda" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M216 116 C226 124 228 146 226 168" fill="none" stroke="#4e3018" stroke-width="6"/>
+    <path d="M216 116 C226 124 228 146 226 168" fill="none" stroke="#9a6838" stroke-width="2.5"/>
+    <path d="M226 162 C218 166 218 184 226 190 C234 184 236 168 226 162 Z" fill="url(#bisao-la)" stroke="#2e1a0c" stroke-width="2"/>
+    <path d="M224 170 l-1 12 M228 170 l1 12" stroke="#946038" stroke-width="1.3"/>
+  </g>
+
+  <g id="quartos" stroke-linejoin="round" stroke-linecap="round">
+    <!-- traseira de cá, pelo curto e mais claro -->
+    <path d="M168 150 C196 144 210 166 204 190 C202 198 198 204 198 212 L198 224 L184 224 L184 208 C186 200 186 196 184 190 C172 184 166 170 168 150 Z" fill="url(#bisao-pelo)"/>
+    <path d="M184 224 L184 208 C186 200 186 196 184 190 M198 224 L198 212 C198 204 202 198 204 190 C208 176 204 164 196 156" fill="none" stroke="#4a2c14" stroke-width="2.5"/>
+    <path d="M182 222 L199 222 L200 234 L181 234 Z" fill="#3a302c" stroke="#140f0d" stroke-width="2"/>
+    <path d="M190.5 224 v10" stroke="#140f0d" stroke-width="1.5"/>
+    <!-- corpo de trás -->
+    <path d="M118 112 C150 96 192 98 212 110 C228 120 228 150 220 166 C212 180 198 184 186 182 L126 184 Z" fill="url(#bisao-pelo)" stroke="#4a2c14" stroke-width="2.5"/>
+    <path d="M160 104 Q186 100 206 110" fill="none" stroke="#e2b884" stroke-width="3.5" opacity="0.8"/>
+    <path d="M178 126 C200 120 216 136 212 158" fill="none" stroke="#6e4422" stroke-width="2" opacity="0.5"/>
+    <g fill="none" stroke="#6e4422" stroke-width="1.5" opacity="0.7">
+      <path d="M170 130 l3 5 M188 144 l3 5 M164 156 l3 5 M200 160 l2 5 M178 168 l3 5"/>
+    </g>
+  </g>
+
+  <g id="la-frente" stroke-linejoin="round" stroke-linecap="round">
+    <!-- corcova alta e lã densa da frente, com borda felpuda -->
+    <path d="M64 120 C62 86 86 54 118 52 C138 52 152 64 158 80 C164 82 162 90 166 94 C172 98 166 106 172 112 C178 118 170 124 174 132 C178 140 170 144 172 152 C174 160 166 162 166 170 C164 178 156 178 152 184 C144 190 136 186 130 190 L96 190 C80 184 66 160 64 140 Z"
+          fill="url(#bisao-la)" stroke="#2e1a0c" stroke-width="2.5"/>
+    <path d="M82 88 Q96 62 120 58" fill="none" stroke="#b07a48" stroke-width="4" opacity="0.8"/>
+    <!-- cachinhos de lã -->
+    <g fill="none" stroke="#2e1a0c" stroke-width="1.8" opacity="0.65">
+      <path d="M110 76 q5 -5 10 0 M130 70 q5 -5 10 0 M142 88 q5 -5 10 0 M120 96 q5 -5 10 0 M100 104 q5 -5 10 0 M146 110 q5 -5 10 0 M130 122 q5 -5 10 0 M148 136 q5 -5 10 0 M134 150 q5 -5 10 0 M146 164 q5 -5 10 0 M118 140 q5 -5 10 0 M124 170 q5 -5 10 0"/>
+    </g>
+    <g fill="none" stroke="#a87448" stroke-width="1.6" opacity="0.75">
+      <path d="M100 74 q4 -4 8 0 M118 64 q4 -4 8 0 M90 92 q4 -4 8 0 M134 102 q4 -4 8 0 M110 118 q4 -4 8 0 M138 140 q4 -4 8 0"/>
+    </g>
+  </g>
+
+  <g id="patas-frente" stroke-linejoin="round" stroke-linecap="round">
+    <!-- canela fina -->
+    <path d="M104 196 L104 224 L119 224 L120 196 Z" fill="url(#bisao-tras)" stroke="#2e1a0c" stroke-width="2.5"/>
+    <path d="M102 222 L121 222 L122 234 L101 234 Z" fill="#3a302c" stroke="#140f0d" stroke-width="2"/>
+    <path d="M111.5 224 v10" stroke="#140f0d" stroke-width="1.5"/>
+    <!-- "calça" de lã na perna da frente -->
+    <path d="M96 160 C112 156 128 162 128 176 C130 186 126 192 128 200 L122 198 L120 206 L114 200 L110 208 L106 200 L100 206 L98 196 C92 188 90 172 96 160 Z" fill="url(#bisao-la)" stroke="#2e1a0c" stroke-width="2.5"/>
+    <path d="M102 170 q4 -4 8 0 M112 182 q4 -4 8 0 M100 188 q4 -4 8 0" fill="none" stroke="#a87448" stroke-width="1.6" opacity="0.8"/>
+  </g>
+
+  <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
+    <!-- chifres curtos, curvos e pretos -->
+    <path d="M38 112 C26 108 20 96 24 84 C30 90 36 94 46 98 Z" fill="url(#bisao-chifre)" stroke="#0e0b0a" stroke-width="2.2"/>
+    <path d="M28 90 Q30 98 38 102" fill="none" stroke="#9a9290" stroke-width="1.8"/>
+    <path d="M100 112 C112 108 118 96 114 84 C108 90 102 94 92 98 Z" fill="url(#bisao-chifre)" stroke="#0e0b0a" stroke-width="2.2"/>
+    <!-- barba -->
+    <path d="M50 160 C52 176 58 190 68 200 L72 192 L76 200 L80 192 C86 182 88 170 88 160 Z" fill="url(#bisao-la)" stroke="#2e1a0c" stroke-width="2.5"/>
+    <path d="M60 168 l4 16 M70 168 l2 18 M80 168 l-1 14" fill="none" stroke="#a87448" stroke-width="1.5" opacity="0.8"/>
+    <!-- cabeça enorme e baixa -->
+    <path d="M69 92 C94 92 108 106 108 128 C108 146 100 160 88 168 C80 172 58 172 50 168 C38 160 30 146 30 128 C30 106 44 92 69 92 Z"
+          fill="url(#bisao-cabeca)" stroke="#2e1a0c" stroke-width="2.5"/>
+    <!-- topete de lã entre os chifres -->
+    <path d="M40 106 C38 90 50 78 60 80 C62 72 76 70 80 78 C90 74 102 84 98 98 C102 104 98 112 92 110 C86 116 80 110 76 114 C70 108 64 114 60 108 C54 114 46 112 46 106 C42 110 38 110 40 106 Z" fill="url(#bisao-la)" stroke="#2e1a0c" stroke-width="2.5"/>
+    <path d="M52 92 q4 -4 8 0 M66 84 q4 -4 8 0 M80 92 q4 -4 8 0 M60 102 q4 -4 8 0 M76 102 q4 -4 8 0" fill="none" stroke="#a87448" stroke-width="1.6" opacity="0.8"/>
+    <!-- focinho largo -->
+    <path d="M46 148 C46 138 92 138 92 148 C92 162 82 170 69 170 C56 170 46 162 46 148 Z" fill="url(#bisao-focinho)" stroke="#2e1a0c" stroke-width="2.2"/>
+    <path d="M54 144 Q66 140 78 141" fill="none" stroke="#9a7e70" stroke-width="2.4" opacity="0.9"/>
+    <ellipse cx="58" cy="152" rx="4" ry="5" fill="#1e1410"/>
+    <ellipse cx="80" cy="152" rx="4" ry="5" fill="#1e1410"/>
+    <path d="M60 163 Q69 168 78 163" fill="none" stroke="#1e1410" stroke-width="2"/>
+    <ellipse cx="40" cy="138" rx="7" ry="4.5" fill="#f4908a" opacity="0.5"/>
+    <ellipse cx="98" cy="138" rx="7" ry="4.5" fill="#f4908a" opacity="0.5"/>
+  </g>
+
+  <g id="olhos">
+    <ellipse cx="54" cy="124" rx="10.5" ry="11.5" fill="url(#bisao-iris)" stroke="#2e1a0c" stroke-width="1.5"/>
+    <ellipse cx="84" cy="124" rx="10.5" ry="11.5" fill="url(#bisao-iris)" stroke="#2e1a0c" stroke-width="1.5"/>
+    <ellipse cx="54.5" cy="124.5" rx="7.5" ry="9" fill="#2b1d16"/>
+    <ellipse cx="84.5" cy="124.5" rx="7.5" ry="9" fill="#2b1d16"/>
+    <circle cx="51" cy="120" r="4" fill="#fff"/>
+    <circle cx="58" cy="128.5" r="1.9" fill="#fff"/>
+    <circle cx="81" cy="120" r="4" fill="#fff"/>
+    <circle cx="88" cy="128.5" r="1.9" fill="#fff"/>
+  </g>
 </svg>

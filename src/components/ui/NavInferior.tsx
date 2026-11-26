@@ -34,7 +34,7 @@ export function NavInferior() {
       animate={{ opacity: 1, y: 0 }}
       transition={MOLA_ENTRADA}
       aria-label="Navegação"
-      className="sticky bottom-[max(env(safe-area-inset-bottom),0.75rem)] z-20 mx-auto mt-auto mb-[max(env(safe-area-inset-bottom),0.75rem)] flex w-fit gap-1 rounded-full p-1 vidro"
+      className="sticky bottom-[max(env(safe-area-inset-bottom),0.75rem)] z-20 mx-auto mt-auto mb-[max(env(safe-area-inset-bottom),0.75rem)] flex w-fit max-w-[calc(100vw-1rem)] gap-0.5 rounded-[1.75rem] p-1 vidro sm:gap-1 sm:rounded-full"
     >
       {ITENS.map((it) => {
         const eh = ativo === it.href;
@@ -50,13 +50,13 @@ export function NavInferior() {
             whileHover={{ y: -1 }}
             whileTap={{ scale: 0.94 }}
             transition={MOLA_TOQUE}
-            className="relative flex h-12 items-center gap-2 rounded-full pr-4 pl-3 font-bold"
+            className="relative flex h-14 min-w-16 flex-col items-center justify-center gap-0.5 rounded-3xl px-2.5 font-bold sm:h-12 sm:min-w-0 sm:flex-row sm:gap-2 sm:rounded-full sm:pr-4 sm:pl-3"
           >
             {eh && (
               <motion.span
                 layoutId="nav-ativo"
                 transition={MOLA_ENTRADA}
-                className="absolute inset-0 rounded-full bg-roxo shadow-[0_2px_0_var(--color-roxo-escuro)]"
+                className="absolute inset-0 rounded-3xl bg-roxo shadow-[0_2px_0_var(--color-roxo-escuro)] sm:rounded-full"
               />
             )}
             <motion.span
@@ -66,10 +66,10 @@ export function NavInferior() {
                 eh ? "" : "opacity-70 grayscale-[0.6]"
               }`}
             >
-              <Arte nome={it.icone} className="size-8" />
+              <Arte nome={it.icone} className="size-7 sm:size-8" />
             </motion.span>
             <span
-              className={`relative text-base leading-none transition-colors duration-300 ${
+              className={`relative text-xs leading-none transition-colors duration-300 sm:text-base ${
                 eh ? "text-branco" : "text-tinta-suave"
               }`}
             >

@@ -42,7 +42,13 @@ export function useProjecao(
           if (dinamicas?.(chave, tmp)) alvo = tmp;
           if (!alvo) continue;
           v.copy(alvo).project(cam);
-          el.style.transform = `translate3d(${((v.x + 1) / 2) * w}px, ${((1 - v.y) / 2) * hh}px, 0) translate(-50%, -50%)`;
+          let px = ((v.x + 1) / 2) * w;
+          // Etiquetas largas (placas) não saem pela borda no celular: ficam inteiras, com 8 px de folga
+          if (el.dataset.prender !== undefined) {
+            const meia = el.offsetWidth / 2 + 8;
+            px = Math.min(Math.max(px, meia), w - meia);
+          }
+          el.style.transform = `translate3d(${px}px, ${((1 - v.y) / 2) * hh}px, 0) translate(-50%, -50%)`;
           const ve = v.z < 1 && (!visivel || visivel(alvo, cam));
           el.style.visibility = ve ? "visible" : "hidden";
           el.style.opacity = ve ? "1" : "0";
@@ -107,7 +113,7 @@ export function Rotulos({
 
       {!foco &&
         jogaveis.map((b) => (
-          <div key={`placa-${b.id}`} data-ancora={`placa-${b.id}`} className="pointer-events-auto absolute top-0 left-0">
+          <div key={`placa-${b.id}`} data-ancora={`placa-${b.id}`} data-prender className="pointer-events-auto absolute top-0 left-0">
             <Placa id={b.id} liberada={!!liberados[b.id]} progresso={progresso} destaque={hover === b.id} onTocar={() => onFocar(b.id)} />
           </div>
         ))}

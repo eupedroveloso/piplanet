@@ -79,7 +79,7 @@ export function Planeta({
           const feitas = ts.reduce((s, t) => s + t.fases.filter((_, k) => `${t.id}/${k}` in progresso.fases).length, 0);
           const capa = ts[0] ? animaisDoTerritorio(ts[0].id)[0] : undefined;
           return (
-            <div key={p.id} data-ancora={`pais-${p.id}`} className="pointer-events-auto absolute top-0 left-0">
+            <div key={p.id} data-ancora={`pais-${p.id}`} data-prender className="pointer-events-auto absolute top-0 left-0">
               <motion.button
                 type="button"
                 initial={{ opacity: 0, scale: 0.6, y: 10 }}

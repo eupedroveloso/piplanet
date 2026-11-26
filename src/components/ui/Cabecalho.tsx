@@ -17,13 +17,13 @@ export function Cabecalho({ estreito = false }: { estreito?: boolean }) {
   const perfil = usePerfil();
   const p = useProgress();
   return (
-    <header className={`mx-auto flex w-full ${estreito ? "max-w-3xl" : "max-w-6xl"} items-start justify-between gap-3 px-4 pt-[max(env(safe-area-inset-top),1rem)] pb-3`}>
+    <header className={`mx-auto flex w-full ${estreito ? "max-w-3xl" : "max-w-6xl"} items-start justify-between gap-2 px-3 sm:gap-3 sm:px-4 pt-[max(env(safe-area-inset-top),1rem)] pb-3`}>
       {/* Cartão de vidro: avatar + saudação + placar, tudo junto e leve */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={MOLA_ENTRADA}
-        className="flex min-w-0 items-center gap-3 rounded-[2rem] py-2 pr-3 pl-2 vidro"
+        className="flex min-w-0 items-center gap-2 rounded-[2rem] py-1.5 pr-2 pl-1.5 vidro sm:gap-3 sm:py-2 sm:pr-3 sm:pl-2"
       >
         <motion.button
           type="button"
@@ -37,15 +37,16 @@ export function Cabecalho({ estreito = false }: { estreito?: boolean }) {
           <Arte nome={perfil.avatar} className="size-9" />
         </motion.button>
         <div className="flex min-w-0 flex-col gap-1">
-          <h1 className="truncate px-1 text-lg leading-tight font-extrabold text-roxo">Oi, {perfil.nome}!</h1>
-          <div className="flex flex-wrap gap-1.5">
+          {/* No celular a saudação vem pela voz (toque no avatar) para sobrar espaço ao mapa */}
+          <h1 className="hidden truncate px-1 text-lg leading-tight font-extrabold text-roxo sm:block">Oi, {perfil.nome}!</h1>
+          <div className="flex flex-wrap gap-1 sm:gap-1.5">
             <Contador icone="ui/estrela" valor={totalEstrelas(p)} rotulo="estrelas" />
             <Contador icone="ui/patinhas" valor={p.patinhas} rotulo="patinhas" />
             <Contador icone="ui/album" valor={p.animaisColetados.length} total={ANIMAIS.length} rotulo="figurinhas" />
           </div>
         </div>
       </motion.div>
-      <div className="flex gap-2">
+      <div className="flex flex-col gap-2 sm:flex-row">
         <BotaoRedondo aria-label="Trocar de perfil" onClick={trocarPerfil}>
           <Arte nome="ui/casa" className="size-7" />
         </BotaoRedondo>

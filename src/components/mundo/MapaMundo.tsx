@@ -148,7 +148,7 @@ export function MapaMundo() {
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ ...MOLA_ENTRADA, delay: 0.3 }}
-              className="pointer-events-none absolute top-[calc(max(env(safe-area-inset-top),1rem)+6rem)] left-1/2 lg:top-[calc(max(env(safe-area-inset-top),1rem)+0.5rem)] flex h-10 -translate-x-1/2 items-center rounded-full px-5 text-base font-extrabold tracking-[0.12em] text-roxo uppercase vidro"
+              className="pointer-events-none absolute top-[calc(max(env(safe-area-inset-top),1rem)+4.75rem)] left-1/2 sm:top-[calc(max(env(safe-area-inset-top),1rem)+6rem)] lg:top-[calc(max(env(safe-area-inset-top),1rem)+0.5rem)] flex h-10 -translate-x-1/2 items-center rounded-full px-5 text-base font-extrabold tracking-[0.12em] text-roxo uppercase vidro"
             >
               {nomePais}
             </motion.div>
