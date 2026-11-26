@@ -1,8 +1,170 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M5.65736 15.3411C3.49828 14.2825 2 12.0601 2 9.5C2 5.93016 4.93016 3 8.5 3C10.4976 3 12.2896 3.91222 13.4836 5.3388C14.2869 5.11802 15.1339 5 16.0098 5C16.8798 5 17.7214 5.11645 18.5199 5.33438C19.7156 3.90895 21.5082 3 23.5 3C27.0802 3 30 5.93016 30 9.5C30 12.0578 28.5097 14.2786 26.3529 15.3383L27.3618 18.2188C27.7705 19.0955 28.0097 20.0707 27.9997 21.0951C27.9997 24.9071 24.8702 28 21.0131 28H10.8571V27.9902C7.05976 27.9212 4 24.8677 4 21.0951C4 20.0411 4.24917 19.0561 4.66777 18.1696L5.65736 15.3411Z" fill="#9B9B9B"/>
-<path d="M6.10245 14.069C4.83271 13.1611 4 11.6752 4 10C4 7.2541 6.24385 5 9 5C10.0777 5 11.0796 5.34563 11.8993 5.9322C9.72975 6.97631 8.029 8.82161 7.17936 11.0775L7.15943 11.048L6.10245 14.069Z" fill="#636363"/>
-<path d="M25.9054 14.0605C27.1707 13.1501 28 11.6655 28 10C28 7.24385 25.7459 5 23 5C21.9236 5 20.9254 5.3438 20.1084 5.92643C22.2836 6.96951 23.9891 8.81745 24.8403 11.0775L24.8502 11.048L25.9054 14.0605Z" fill="#636363"/>
-<path d="M9 16.9687C9 16.4165 9.44772 15.9688 10 15.9688C10.5523 15.9688 11 16.4165 11 16.9688V17.9688C11 18.521 10.5523 18.9688 10 18.9688C9.44772 18.9688 9 18.521 9 17.9688V16.9687Z" fill="#1C1C1C"/>
-<path d="M21 16.9687C21 16.4165 21.4477 15.9688 22 15.9688C22.5523 15.9688 23 16.4165 23 16.9688V17.9688C23 18.521 22.5523 18.9688 22 18.9688C21.4477 18.9688 21 18.521 21 17.9688V16.9687Z" fill="#1C1C1C"/>
-<path d="M16 16C13.7909 16 12 17.7909 12 20V22C12 24.2091 13.7909 26 16 26C18.2091 26 20 24.2091 20 22V20C20 17.7909 18.2091 16 16 16Z" fill="#1C1C1C"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="coala-pelo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d2d4da"/>
+      <stop offset="0.55" stop-color="#a3a6ae"/>
+      <stop offset="1" stop-color="#767a84"/>
+    </linearGradient>
+    <linearGradient id="coala-pelo-tras" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a6a9b1"/>
+      <stop offset="1" stop-color="#6c707a"/>
+    </linearGradient>
+    <radialGradient id="coala-cabeca" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#dcdee3"/>
+      <stop offset="0.65" stop-color="#abaeb6"/>
+      <stop offset="1" stop-color="#80848e"/>
+    </radialGradient>
+    <linearGradient id="coala-creme" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e2ded6"/>
+    </linearGradient>
+    <radialGradient id="coala-nariz" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#6a6670"/>
+      <stop offset="0.5" stop-color="#3a3640"/>
+      <stop offset="1" stop-color="#1e1b22"/>
+    </radialGradient>
+    <linearGradient id="coala-tronco" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f1e9dc"/>
+      <stop offset="0.5" stop-color="#d6c7b2"/>
+      <stop offset="1" stop-color="#a8957c"/>
+    </linearGradient>
+    <linearGradient id="coala-folha" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#b4d6c4"/>
+      <stop offset="0.5" stop-color="#7fae9a"/>
+      <stop offset="1" stop-color="#55826f"/>
+    </linearGradient>
+    <clipPath id="coala-clip-tronco">
+      <path d="M138 0 L178 0 C176 60 178 160 182 208 C186 222 196 230 208 236 L108 236 C120 230 130 222 134 208 C138 160 138 60 138 0 Z"/>
+    </clipPath>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="146" cy="237" rx="80" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="eucalipto" stroke-linejoin="round" stroke-linecap="round">
+    <!-- galho com folhas no alto -->
+    <path d="M174 50 C196 38 216 28 240 22 L242 30 C220 36 200 46 178 60 Z" fill="url(#coala-tronco)" stroke="#6e5a46" stroke-width="2.2"/>
+    <g fill="url(#coala-folha)" stroke="#3e6656" stroke-width="1.8">
+      <path d="M206 36 C200 50 198 66 202 80 C210 68 212 52 206 36 Z"/>
+      <path d="M226 28 C226 44 230 58 238 68 C242 54 238 40 226 28 Z"/>
+      <path d="M192 44 C182 52 176 64 176 76 C186 68 192 58 192 44 Z"/>
+    </g>
+    <path d="M205 44 Q203 60 203 74 M228 36 Q232 50 236 60" fill="none" stroke="#3e6656" stroke-width="1.2" opacity="0.7"/>
+    <!-- tronco claro de eucalipto com casca soltando -->
+    <path d="M138 0 L178 0 C176 60 178 160 182 208 C186 222 196 230 208 236 L108 236 C120 230 130 222 134 208 C138 160 138 60 138 0 Z"
+          fill="url(#coala-tronco)" stroke="#6e5a46" stroke-width="2.5"/>
+    <g clip-path="url(#coala-clip-tronco)">
+      <g fill="#c2ab90" opacity="0.7">
+        <path d="M160 14 C168 16 170 30 164 38 C158 34 156 22 160 14 Z"/>
+        <path d="M146 150 C156 148 160 164 154 176 C146 172 142 160 146 150 Z"/>
+        <path d="M168 196 C176 198 180 212 174 222 C166 216 164 204 168 196 Z"/>
+      </g>
+      <g fill="#e9c9b0" opacity="0.8">
+        <path d="M146 30 C150 34 150 44 146 50 C142 44 142 36 146 30 Z"/>
+        <path d="M170 100 C174 104 174 116 170 122 C166 116 166 106 170 100 Z"/>
+      </g>
+      <path d="M144 4 Q142 80 144 140" fill="none" stroke="#fffaf0" stroke-width="3" opacity="0.8"/>
+      <path d="M172 60 q2 20 0 34 M174 140 q2 20 2 34" fill="none" stroke="#8c775f" stroke-width="1.5" opacity="0.6"/>
+    </g>
+    <path d="M122 232 q6 -8 14 -10 M194 232 q-6 -6 -12 -8" fill="none" stroke="#6e5a46" stroke-width="1.8"/>
+  </g>
+
+  <g id="braco-de-la" stroke-linejoin="round" stroke-linecap="round">
+    <!-- braço abraçando o tronco -->
+    <path d="M138 118 C150 114 162 118 170 126 L166 140 C158 136 148 136 140 140 Z" fill="url(#coala-pelo-tras)" stroke="#4a4c54" stroke-width="2.5"/>
+    <path d="M162 122 C170 120 178 126 176 136 C174 142 166 144 162 140 Z" fill="url(#coala-pelo-tras)" stroke="#4a4c54" stroke-width="2.2"/>
+    <g fill="#3a3640"><path d="M172 124 l7 -2 l-4 5 Z"/><path d="M176 130 l7 0 l-5 4 Z"/><path d="M175 137 l6 2 l-6 2 Z"/></g>
+  </g>
+
+  <g id="pe-de-la" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M146 196 C158 192 170 196 172 206 C172 214 162 218 152 214 Z" fill="url(#coala-pelo-tras)" stroke="#4a4c54" stroke-width="2.2"/>
+    <g fill="#3a3640"><path d="M168 198 l7 -2 l-4 5 Z"/><path d="M171 205 l7 0 l-5 4 Z"/><path d="M168 212 l6 3 l-7 1 Z"/></g>
+  </g>
+
+  <g id="corpo" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M116 108 C148 108 162 136 160 170 C158 202 140 222 114 222 C88 222 72 202 74 170 C76 136 88 108 116 108 Z"
+          fill="url(#coala-pelo)" stroke="#4a4c54" stroke-width="2.5"/>
+    <!-- peito e barriga claros -->
+    <path d="M112 126 C130 126 140 146 140 172 C140 196 128 210 112 210 C96 210 86 196 86 172 C86 146 96 126 112 126 Z" fill="url(#coala-creme)"/>
+    <g fill="none" stroke="#d2cdc4" stroke-width="1.5"><path d="M100 150 l3 4 M118 160 l3 4 M104 180 l3 4 M124 186 l3 4"/></g>
+    <!-- tufos de pelo felpudo -->
+    <path d="M75 160 q-6 4 -1 8 M74 182 q-6 5 0 9 M159 158 q6 4 1 8 M158 182 q6 5 0 9" fill="none" stroke="#4a4c54" stroke-width="2"/>
+    <g fill="none" stroke="#7d818b" stroke-width="1.5" opacity="0.8"><path d="M84 140 l4 5 M146 140 l-4 5 M150 196 l-4 4 M82 200 l4 4"/></g>
+    <path d="M86 140 Q92 118 112 112" fill="none" stroke="#eceef2" stroke-width="3.5" opacity="0.8"/>
+  </g>
+
+  <g id="pe" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M84 206 C74 214 76 230 90 232 C102 234 112 228 112 218 C112 210 98 202 84 206 Z" fill="url(#coala-pelo)" stroke="#4a4c54" stroke-width="2.4"/>
+    <path d="M86 230 l-2 4 M94 232 l0 4 M102 230 l2 4" stroke="#3a3640" stroke-width="2.2"/>
+    <path d="M86 212 Q92 208 100 210" fill="none" stroke="#eceef2" stroke-width="2.5" opacity="0.8"/>
+  </g>
+
+  <g id="braco" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M96 128 C82 132 70 140 64 150 C60 158 66 166 74 164 C82 158 92 154 102 152 C110 148 108 134 96 128 Z" fill="url(#coala-pelo)" stroke="#4a4c54" stroke-width="2.5"/>
+    <path d="M92 134 Q80 138 72 148" fill="none" stroke="#eceef2" stroke-width="2.5" opacity="0.8"/>
+  </g>
+
+  <g id="ramo" stroke-linejoin="round" stroke-linecap="round">
+    <!-- raminho de eucalipto na mão: folhas compridas verde-azuladas -->
+    <path d="M70 170 C60 154 48 138 34 124" fill="none" stroke="#9a6e4c" stroke-width="3"/>
+    <g fill="url(#coala-folha)" stroke="#3e6656" stroke-width="1.8">
+      <path d="M36 126 C24 120 14 108 12 94 C26 100 34 112 36 126 Z"/>
+      <path d="M46 138 C32 140 18 136 8 126 C22 122 36 128 46 138 Z"/>
+      <path d="M44 132 C46 118 54 106 66 100 C66 114 58 126 44 132 Z"/>
+      <path d="M56 150 C46 158 32 162 20 160 C28 150 42 146 56 150 Z"/>
+    </g>
+    <path d="M34 122 Q22 110 16 100 M44 137 Q28 136 14 128 M46 130 Q54 116 62 106 M54 151 Q40 158 26 159" fill="none" stroke="#3e6656" stroke-width="1.2" opacity="0.7"/>
+  </g>
+
+  <g id="mao" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M56 154 C56 144 70 142 76 150 C80 158 74 168 64 168 C58 166 56 160 56 154 Z" fill="url(#coala-pelo)" stroke="#4a4c54" stroke-width="2.2"/>
+    <!-- garras para agarrar -->
+    <g fill="#3a3640"><path d="M58 148 l-6 -3 l2 6 Z"/><path d="M56 155 l-6 0 l4 4 Z"/><path d="M58 162 l-5 3 l6 1 Z"/></g>
+    <path d="M64 150 l4 2 M63 158 l5 1" stroke="#7d818b" stroke-width="1.4"/>
+  </g>
+
+  <g id="orelhas" stroke-linejoin="round" stroke-linecap="round">
+    <!-- orelhas grandes, redondas e felpudas -->
+    <path d="M66 74 C46 74 34 60 36 44 C38 28 52 18 66 20 C80 22 92 34 92 50 Q86 52 88 58 Q80 60 82 66 Q74 66 76 72 Z" fill="url(#coala-pelo)" stroke="#4a4c54" stroke-width="2.5"/>
+    <path d="M66 66 C52 64 44 54 46 44 C48 34 56 28 66 30 C76 32 82 40 82 50 Q76 52 78 58 Q70 60 72 64 Z" fill="url(#coala-creme)"/>
+    <path d="M54 44 l6 4 M52 52 l7 2 M58 38 l5 5 M62 58 l5 0" stroke="#bdb8ae" stroke-width="1.6"/>
+    <path d="M158 74 C178 74 190 60 188 44 C186 28 172 18 158 20 C144 22 132 34 132 50 Q138 52 136 58 Q144 60 142 66 Q150 66 148 72 Z" fill="url(#coala-pelo-tras)" stroke="#4a4c54" stroke-width="2.5"/>
+    <path d="M158 66 C172 64 180 54 178 44 C176 34 168 28 158 30 C148 32 142 40 142 50 Q148 52 146 58 Q154 60 152 64 Z" fill="url(#coala-creme)"/>
+    <path d="M170 44 l-6 4 M172 52 l-7 2 M166 38 l-5 5" stroke="#bdb8ae" stroke-width="1.6"/>
+    <!-- franja branca da borda -->
+    <path d="M38 40 q-4 -2 -3 -6 M44 26 q-2 -4 1 -6 M186 40 q4 -2 3 -6 M180 26 q2 -4 -1 -6" fill="none" stroke="#4a4c54" stroke-width="2"/>
+  </g>
+
+  <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M112 40 C142 40 160 58 160 84 C160 108 140 124 112 124 C84 124 64 108 64 84 C64 58 82 40 112 40 Z"
+          fill="url(#coala-cabeca)" stroke="#4a4c54" stroke-width="2.5"/>
+    <path d="M76 66 Q86 48 108 46" fill="none" stroke="#eceef2" stroke-width="4" opacity="0.8"/>
+    <path d="M65 96 q-5 4 0 8 M159 94 q5 4 0 8" fill="none" stroke="#4a4c54" stroke-width="2"/>
+    <g fill="none" stroke="#7d818b" stroke-width="1.5" opacity="0.8"><path d="M104 50 l2 5 M114 48 v5 M124 50 l-2 5"/></g>
+    <!-- bochechas -->
+    <ellipse cx="80" cy="102" rx="9" ry="5.5" fill="#f4908a" opacity="0.5"/>
+    <ellipse cx="142" cy="100" rx="9" ry="5.5" fill="#f4908a" opacity="0.5"/>
+    <!-- sorriso -->
+    <path d="M104 112 Q110 117 116 112" fill="none" stroke="#3a3640" stroke-width="2"/>
+  </g>
+
+  <g id="olhos">
+    <ellipse cx="88" cy="80" rx="8.5" ry="10" fill="#2b1d16"/>
+    <ellipse cx="136" cy="78" rx="8.5" ry="10" fill="#2b1d16"/>
+    <circle cx="85" cy="78" r="3.6" fill="#fff"/>
+    <circle cx="91.5" cy="85" r="1.8" fill="#fff"/>
+    <circle cx="133" cy="76" r="3.6" fill="#fff"/>
+    <circle cx="139.5" cy="83" r="1.8" fill="#fff"/>
+    <!-- pálpebras sonolentas -->
+    <path d="M78 76 C78 66 98 66 98 76 C92 73 84 73 78 76 Z" fill="#a3a6ae" stroke="#4a4c54" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M126 74 C126 64 146 64 146 74 C140 71 132 71 126 74 Z" fill="#a3a6ae" stroke="#4a4c54" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+
+  <g id="nariz" stroke-linejoin="round">
+    <!-- nariz grande, preto e liso -->
+    <path d="M112 76 C124 76 128 86 126 98 C124 108 118 112 112 112 C106 112 100 108 98 98 C96 86 100 76 112 76 Z" fill="url(#coala-nariz)" stroke="#16131a" stroke-width="2"/>
+    <ellipse cx="106" cy="86" rx="3.5" ry="6" fill="#8e8a94" opacity="0.8" transform="rotate(12 106 86)"/>
+    <path d="M104 106 q3 2 6 0 M114 106 q3 2 6 0" fill="none" stroke="#5a5660" stroke-width="1.4"/>
+  </g>
 </svg>

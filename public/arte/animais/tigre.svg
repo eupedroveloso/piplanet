@@ -1,25 +1,124 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M28.125 26.8691L28.5 25.5L28.125 24.4826C28.0454 24.3393 28 24.1747 28 24L28 23L27 22.5L26 23V24C26 25.346 26.8983 26.4923 28.125 26.8691Z" fill="#FF6723"/>
-<path d="M26 21L27 21.5L28 21V19L27 18.5L26 19V21Z" fill="#FF6723"/>
-<path d="M25 17L27 17.5L27.8276 17C27.4134 15.8378 26.2998 15 25 15H24.18C23.63 15 23.18 15.45 23.18 16C23.18 16.55 23.63 17 24.18 17H25Z" fill="#FF6723"/>
-<path d="M15.39 29.61L13.5 22.52H10.5L11.97 28.03C11.66 28.11 11.41 28.36 11.35 28.69L11.18 29.67C11.15 29.84 11.28 30 11.46 30H15.09C15.3 30 15.45 29.81 15.39 29.61Z" fill="#FF6723"/>
-<path d="M16.97 28L18.44 22.52H21.42L19.52 29.63C19.46 29.85 19.27 30 19.04 30H16.2C16.01 30 15.87 29.83 15.9 29.64L16.07 28.69C16.14 28.29 16.49 28 16.89 28H16.97Z" fill="#FF6723"/>
-<path d="M24.04 15C24.65 15 25.22 15.28 25.59 15.76C25.86 16.1 26 16.53 26.01 16.96V22.78C26.01 23.59 25.88 24.39 25.62 25.16L24.12 29.66C24.06 29.86 23.87 30 23.65 30H20.43C20.21 30 20.05 29.8 20.1 29.59L20.3 28.79C20.41 28.33 20.83 28 21.31 28H21.53L21.7988 27L22.5 26.5L21.56 26L20.56 25L20.5 24.5L19.56 24H10.98V29.69C10.98 29.86 10.84 30 10.67 30H7.42001C7.19001 30 7.00001 29.81 7.00001 29.58V28.98C7.00001 28.44 7.44001 28 7.99001 28V27L8.5 26.5L7.99001 26V23.63C6.81001 23.04 7.00001 21.4137 7.00001 20.0137V16.96L3.47961 15.76L4.00001 13C4.00001 12.96 5.03001 11.74 5.76001 10.87C6.23001 10.32 6.91001 10 7.64001 10H7.99001V9.5C7.99001 8.67 8.66001 8 9.49001 8C10.32 8 10.99 8.67 10.99 9.5V11.46C10.99 11.8 11.13 12.14 11.37 12.38L13 14.01L14 15.5L15 15H17L18 15.5L19 15H21L22 15.5L23 15H24.04Z" fill="#FF822D"/>
-<path d="M10 10V9.5C10 9.22 9.78 9 9.5 9C9.22 9 9 9.22 9 9.5V10H10Z" fill="#FF6723"/>
-<path d="M8.99 16.5L8.36 17.44C8.12 17.81 7.99 18.23 7.99 18.67V23.63C6.81 23.04 6 21.82 6 20.42V18H4.74C3.23 18 2 16.77 2 15.26V13.72C2 13.32 2.32 13 2.72 13H4L4.61 14.21C4.85 14.69 5.34 15 5.88 15H8.18C8.96 15 9.42 15.86 8.99 16.5Z" fill="#FFDEA7"/>
-<path d="M10.99 22H17.57C18.67 22 19.57 22.9 19.57 24H10.99V22Z" fill="#FFDEA7"/>
-<path d="M7.65 14.15C7.45 13.95 7.45 13.64 7.65 13.44L8.94 12.15C9.14 11.95 9.45 11.95 9.65 12.15C9.85 12.35 9.85 12.66 9.65 12.86L8.35 14.15C8.16 14.34 7.84 14.34 7.65 14.15Z" fill="#212121"/>
-<path d="M5 13.5C5 13.78 5.22 14 5.5 14C5.78 14 6 13.78 6 13.5V13C6 12.72 5.78 12.5 5.5 12.5C5.22 12.5 5 12.72 5 13V13.5Z" fill="#212121"/>
-<path d="M27.83 17H26.01V19H28V18C28 17.65 27.94 17.31 27.83 17Z" fill="#212121"/>
-<path d="M26 21H28V23H26V21Z" fill="#212121"/>
-<path d="M29 25C28.62 25 28.3 24.79 28.12 24.48V26.87C28.4 26.95 28.7 27 29 27C29.55 27 30 26.55 30 26C30 25.45 29.55 25 29 25Z" fill="#212121"/>
-<path d="M13.66 14.67C13.88 14.88 14.17 15 14.47 15H15V18C15 18.55 14.55 19 14 19C13.45 19 13 18.55 13 18V14L13.66 14.67Z" fill="#212121"/>
-<path d="M17 15V18C17 18.55 17.45 19 18 19C18.55 19 19 18.55 19 18V15H17Z" fill="#212121"/>
-<path d="M21 18V15H23V18C23 18.55 22.55 19 22 19C21.45 19 21 18.55 21 18Z" fill="#212121"/>
-<path d="M2.72 13C2.32 13 2 13.32 2 13.72V15L3.69 13H2.72Z" fill="#212121"/>
-<path d="M19.56 24H23.5C23.78 24 24 24.22 24 24.5C24 24.78 23.78 25 23.5 25H20.56L19.56 24Z" fill="#212121"/>
-<path d="M9.99999 24.5C9.99999 24.22 9.77999 24 9.49999 24H7.98999V25H9.49999C9.77999 25 9.99999 24.78 9.99999 24.5Z" fill="#212121"/>
-<path d="M9.49999 25.99C9.77999 25.99 9.99999 26.21 9.99999 26.49C9.99999 26.77 9.77999 26.99 9.49999 26.99H7.98999V25.99H9.49999Z" fill="#212121"/>
-<path d="M24 26.49C24 26.21 23.78 25.99 23.5 25.99H21.55L21.96 26.4L21.8 27H23.5C23.78 27 24 26.78 24 26.5V26.49Z" fill="#212121"/>
-<path d="M9.31998 14.26C9.11998 14.46 9.11998 14.77 9.31998 14.97C9.50998 15.16 9.82998 15.16 10.02 14.97L10.48 14.52C10.68 14.32 10.68 14.01 10.48 13.81C10.28 13.61 9.96998 13.61 9.76998 13.81L9.31998 14.26Z" fill="#212121"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="tigre-pelo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8c890"/>
+      <stop offset="0.55" stop-color="#eb9d55"/>
+      <stop offset="1" stop-color="#c46e2e"/>
+    </linearGradient>
+    <linearGradient id="tigre-tras" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d98a46"/>
+      <stop offset="1" stop-color="#a85a22"/>
+    </linearGradient>
+    <radialGradient id="tigre-cabeca" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#fbd3a0"/>
+      <stop offset="0.65" stop-color="#ec9f58"/>
+      <stop offset="1" stop-color="#c87232"/>
+    </radialGradient>
+    <linearGradient id="tigre-branco" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#eadfd2"/>
+    </linearGradient>
+    <radialGradient id="tigre-iris" cx="0.4" cy="0.35" r="0.7">
+      <stop offset="0" stop-color="#ffe08a"/>
+      <stop offset="1" stop-color="#d9961e"/>
+    </radialGradient>
+    <clipPath id="tigre-clip-corpo"><path d="M98 120 C114 102 172 100 206 108 C228 114 232 142 224 160 C218 174 202 178 190 178 L122 178 C104 178 94 166 94 148 C94 134 94 126 98 120 Z"/></clipPath>
+    <clipPath id="tigre-clip-cabeca"><path d="M80 44 C106 44 122 60 122 82 C122 96 116 106 108 112 C100 124 92 130 80 130 C68 130 60 124 52 112 C44 106 38 96 38 82 C38 60 54 44 80 44 Z"/></clipPath>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="140" cy="237" rx="98" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="cauda" stroke-linejoin="round" stroke-linecap="round" fill="none">
+    <!-- cauda com anéis e ponta preta -->
+    <path d="M216 128 C238 130 250 112 244 94 C240 84 234 76 237 64" stroke="#7a3d14" stroke-width="14"/>
+    <path d="M216 128 C238 130 250 112 244 94 C240 84 234 76 237 64" stroke="#eb9d55" stroke-width="9"/>
+    <path d="M216 128 C238 130 250 112 244 94 C240 84 234 76 237 64" stroke="#2b1d16" stroke-width="9.5" stroke-dasharray="4 9" stroke-dashoffset="-14" stroke-linecap="butt"/>
+    <path d="M236 76 C235 72 236 68 237 64" stroke="#2b1d16" stroke-width="10"/>
+    <path d="M226 124 C238 122 244 110 242 98" stroke="#fbd3a0" stroke-width="2.5" opacity="0.8"/>
+  </g>
+
+  <g id="patas-tras" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M124 166 L124 222 L142 222 L144 166 Z" fill="url(#tigre-tras)" stroke="#7a3d14" stroke-width="2.5"/>
+    <path d="M196 160 C210 168 214 184 208 196 L210 222 L226 222 L226 194 C230 178 222 162 210 154 Z" fill="url(#tigre-tras)" stroke="#7a3d14" stroke-width="2.5"/>
+    <path d="M126 186 l14 2 M126 198 l14 0 M210 180 l14 4 M212 194 l13 0" stroke="#2b1d16" stroke-width="3.5"/>
+    <path d="M120 220 C120 212 146 212 146 220 C146 228 142 232 133 232 C124 232 120 228 120 220 Z M206 220 C206 212 230 212 230 220 C230 228 226 232 218 232 C210 232 206 228 206 220 Z" fill="#efe4d6" stroke="#7a3d14" stroke-width="2"/>
+    <path d="M129 226 v5 M136 226 v5 M214 226 v5 M221 226 v5" stroke="#a88a6c" stroke-width="1.4"/>
+  </g>
+
+  <g id="patas-frente" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M98 156 C98 180 100 202 100 220 L122 220 C122 202 124 180 126 156 Z" fill="url(#tigre-pelo)"/>
+    <path d="M98 164 C98 184 100 202 100 220 M122 220 C122 202 124 184 125 168" fill="none" stroke="#7a3d14" stroke-width="2.5"/>
+    <path d="M164 146 C194 140 206 164 200 184 C198 192 194 198 194 206 L194 220 L176 220 L176 202 C178 196 180 192 178 186 C166 178 162 164 164 146 Z" fill="url(#tigre-pelo)"/>
+    <path d="M176 220 L176 202 C178 196 180 192 178 186 M194 220 L194 206 C194 198 198 192 200 184 C204 170 200 158 192 152" fill="none" stroke="#7a3d14" stroke-width="2.5"/>
+    <path d="M99 184 Q105.7 186.5 112 183 Q105.4 182.5 99 184Z M99 196 Q105.5 199 112 196 Q105.5 195 99 196Z M178 184 Q186.4 186.2 194 182 Q185.8 181.8 178 184Z M177 196 Q185.5 199 194 196 Q185.5 195 177 196Z M186 178 Q193.3 177.7 198 172 Q191.6 174.1 186 178Z" fill="#2b1d16"/>
+    <path d="M105 176 C105 192 106 204 106 212" fill="none" stroke="#fde0bc" stroke-width="3" opacity="0.8"/>
+    <!-- patas grandes e brancas -->
+    <path d="M94 218 C94 208 128 208 128 218 C128 228 122 232 111 232 C100 232 94 228 94 218 Z M170 218 C170 208 200 208 200 218 C200 228 194 232 185 232 C176 232 170 228 170 218 Z" fill="url(#tigre-branco)" stroke="#7a3d14" stroke-width="2"/>
+    <path d="M103 224 v7 M111 225 v7 M119 224 v7 M178 224 v7 M185 225 v7 M192 224 v7" stroke="#a88a6c" stroke-width="1.5"/>
+  </g>
+
+  <g id="corpo" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M98 120 C114 102 172 100 206 108 C228 114 232 142 224 160 C218 174 202 178 190 178 L122 178 C104 178 94 166 94 148 C94 134 94 126 98 120 Z" fill="url(#tigre-pelo)" stroke="#7a3d14" stroke-width="2.5"/>
+    <g clip-path="url(#tigre-clip-corpo)">
+      <path d="M92 160 C130 168 180 168 232 156 L232 186 L92 186 Z" fill="url(#tigre-branco)"/>
+      <!-- listras pretas finas e espaçadas -->
+      <path d="M116 104 Q109 118.3 112 134 Q115 119.1 116 104Z M132 100 Q125.5 117.7 130 136 Q132.5 118.1 132 100Z M148 100 Q142 115 148 130 Q148 115 148 100Z M150 140 Q145 148.4 147 158 Q150 149.2 150 140Z M166 100 Q159.5 119 166 138 Q166.5 119 166 100Z M182 102 Q176.5 119.4 184 136 Q183.5 119 182 102Z M196 106 Q192.1 121.8 200 136 Q198 121 196 106Z M212 110 Q210.1 124.1 218 136 Q216 122.8 212 110Z M176 146 Q171.5 153.6 174 162 Q176.5 154.2 176 146Z M204 142 Q200.5 151 204 160 Q205.5 151 204 142Z M124 140 Q119.5 148.6 122 158 Q124.5 149.2 124 140Z" fill="#2b1d16"/>
+    </g>
+    <path d="M118 110 Q150 102 186 106" fill="none" stroke="#fde0bc" stroke-width="3.5" opacity="0.9"/>
+    <path d="M176 124 C198 120 214 134 212 152" fill="none" stroke="#a85a22" stroke-width="2" opacity="0.5"/>
+  </g>
+
+  <g id="peito" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M70 108 C70 92 98 86 118 96 C132 104 140 120 138 136 L132 146 L126 140 L120 156 L112 148 L104 162 L98 150 L88 160 L86 146 C76 138 70 124 70 108 Z" fill="url(#tigre-pelo)" stroke="#7a3d14" stroke-width="2.5"/>
+    <path d="M84 116 C92 130 100 138 110 144 L104 162 L98 150 L88 160 L86 146 C80 140 78 128 84 116 Z" fill="url(#tigre-branco)"/>
+    <path d="M118 98 Q120.2 107 128 112 Q124.2 104.1 118 98Z M130 108 Q130.2 117.1 136 124 Q133.9 115.6 130 108Z" fill="#2b1d16"/>
+  </g>
+
+  <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
+    <!-- orelhas redondas com mancha branca atrás -->
+    <path d="M44 62 C36 52 38 36 50 32 C62 32 70 42 70 52 Z" fill="#2b1d16" stroke="#1e140f" stroke-width="2.5"/>
+    <ellipse cx="52" cy="46" rx="6" ry="7" fill="#ffffff"/>
+    <path d="M116 62 C124 52 122 36 110 32 C98 32 90 42 90 52 Z" fill="#2b1d16" stroke="#1e140f" stroke-width="2.5"/>
+    <ellipse cx="108" cy="46" rx="6" ry="7" fill="#f3ece4"/>
+    <!-- costeletas: pelo grosso nas bochechas -->
+    <path d="M46 84 L18 98 L34 102 L20 114 L40 114 L32 124 L52 120 L50 128 L64 118 Z" fill="url(#tigre-branco)" stroke="#7a3d14" stroke-width="2.2"/>
+    <path d="M114 84 L142 98 L126 102 L140 114 L120 114 L128 124 L108 120 L110 128 L96 118 Z" fill="#efe6dc" stroke="#7a3d14" stroke-width="2.2"/>
+    <path d="M20 104 Q28.2 104.7 36 102 Q27.8 101.3 20 104Z M26 114 Q33.4 114.2 40 111 Q32.6 110.8 26 114Z M140 104 Q132.2 101.3 124 102 Q131.8 104.7 140 104Z M134 114 Q127.4 110.8 120 111 Q126.6 114.2 134 114Z" fill="#2b1d16"/>
+    <!-- cabeça -->
+    <path d="M80 44 C106 44 122 60 122 82 C122 96 116 106 108 112 C100 124 92 130 80 130 C68 130 60 124 52 112 C44 106 38 96 38 82 C38 60 54 44 80 44 Z" fill="url(#tigre-cabeca)" stroke="#7a3d14" stroke-width="2.5"/>
+    <g clip-path="url(#tigre-clip-cabeca)">
+      <path d="M34 86 C44 84 54 90 60 98 C64 104 70 108 80 108 C90 108 96 104 100 98 C106 90 116 84 126 86 L126 134 L34 134 Z" fill="url(#tigre-branco)"/>
+      <path d="M80 44 Q77.5 52 80 60 Q82.5 52 80 44Z M70 46 Q69.2 52.9 74 58 Q72.9 51.7 70 46Z M90 46 Q87.1 51.7 86 58 Q90.8 52.9 90 46Z M40 80 Q46.7 83 54 84 Q47.8 79.1 40 80Z M40 90 Q45.6 93.9 52 96 Q47.3 90.3 40 90Z M120 80 Q112.2 79.1 106 84 Q113.3 83 120 80Z M120 90 Q112.7 90.3 108 96 Q114.4 93.9 120 90Z M54 54 Q56.8 59.2 62 62 Q59.2 56.8 54 54Z M106 54 Q100.8 56.8 98 62 Q103.2 59.2 106 54Z" fill="#2b1d16"/>
+    </g>
+    <!-- branco acima dos olhos -->
+    <path d="M52 68 q9 -6 16 0 q-8 3 -16 0 Z M108 68 q-9 -6 -16 0 q8 3 16 0 Z" fill="#ffffff"/>
+    <path d="M46 76 Q50 56 70 50" fill="none" stroke="#fde0bc" stroke-width="3" opacity="0.8"/>
+    <!-- focinho com almofadas brancas -->
+    <ellipse cx="71" cy="112" rx="11" ry="9" fill="#ffffff" stroke="#d6c6b4" stroke-width="1.5"/>
+    <ellipse cx="89" cy="112" rx="11" ry="9" fill="#f7f1ea" stroke="#d6c6b4" stroke-width="1.5"/>
+    <g fill="#8a6a50"><circle cx="66" cy="110" r="1"/><circle cx="70" cy="115" r="1"/><circle cx="64" cy="115" r="1"/><circle cx="94" cy="110" r="1"/><circle cx="90" cy="115" r="1"/><circle cx="96" cy="115" r="1"/></g>
+    <path d="M71 100 C71 96 89 96 89 100 C89 106 84 110 80 110 C76 110 71 106 71 100 Z" fill="#e88a86" stroke="#7a3d14" stroke-width="1.8"/>
+    <ellipse cx="76" cy="99.5" rx="3" ry="1.4" fill="#ffc4c0"/>
+    <path d="M80 110 v4 M72 120 Q80 125 88 120" fill="none" stroke="#7a3d14" stroke-width="2"/>
+    <!-- dentinhos arredondados, quase escondidos -->
+    <path d="M75 121 q1 3 2.5 0 M83 121 q1.5 3 2.5 0" fill="#ffffff" stroke="#b9a48e" stroke-width="0.8"/>
+    <g fill="none" stroke="#d9cfc4" stroke-width="1.3">
+      <path d="M60 110 Q46 106 32 108 M60 114 Q46 116 34 122 M100 110 Q114 106 128 108 M100 114 Q114 116 126 122"/>
+    </g>
+    <ellipse cx="54" cy="100" rx="8" ry="5" fill="#f4908a" opacity="0.5"/>
+    <ellipse cx="106" cy="100" rx="8" ry="5" fill="#f4908a" opacity="0.5"/>
+  </g>
+
+  <g id="olhos">
+    <ellipse cx="62" cy="82" rx="10.5" ry="11.5" fill="url(#tigre-iris)" stroke="#7a4a0e" stroke-width="1.5"/>
+    <ellipse cx="98" cy="82" rx="10.5" ry="11.5" fill="url(#tigre-iris)" stroke="#7a4a0e" stroke-width="1.5"/>
+    <ellipse cx="62.5" cy="82.5" rx="7.5" ry="9" fill="#2b1d16"/>
+    <ellipse cx="98.5" cy="82.5" rx="7.5" ry="9" fill="#2b1d16"/>
+    <circle cx="59" cy="78" r="4.2" fill="#fff"/>
+    <circle cx="66.5" cy="87" r="2" fill="#fff"/>
+    <circle cx="95" cy="78" r="4.2" fill="#fff"/>
+    <circle cx="102.5" cy="87" r="2" fill="#fff"/>
+  </g>
 </svg>

@@ -1,5 +1,7 @@
 "use client";
 
+import { liberadas } from "@/lib/progress";
+
 import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
@@ -133,7 +135,7 @@ export function Rotulos({
 function faseAtual(p: Progress) {
   for (const t of TERRITORIOS)
     for (let i = 0; i < t.fases.length; i++)
-      if (!(chaveFase(t.id, i) in p.fases) && faseDesbloqueada(p.fases, t.id, i)) return { t: t.id, i };
+      if (!(chaveFase(t.id, i) in p.fases) && faseDesbloqueada(liberadas(p), t.id, i)) return { t: t.id, i };
   return null;
 }
 
@@ -213,7 +215,7 @@ function NoFase({ territorio, fase, progresso, atual }: { territorio: Territorio
   const f = t.fases[fase];
   const chave = chaveFase(territorio, fase);
   const resultado = progresso.fases[chave];
-  const livre = faseDesbloqueada(progresso.fases, territorio, fase);
+  const livre = faseDesbloqueada(liberadas(progresso), territorio, fase);
   const capa = capasDoTerritorio(territorio)[fase];
 
   return (

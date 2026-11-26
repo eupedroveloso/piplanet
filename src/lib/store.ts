@@ -30,9 +30,14 @@ export function createPersistentStore<T>(chave: string | (() => string), initial
   }
 
   function write(updater: (prev: T) => T) {
-    const next = updater(read());
+    const prev = read();
+    let next = updater(prev);
+    if (next !== prev && next && typeof next === "object" && "atualizadoEm" in (next as object)) {
+      next = { ...next, atualizadoEm: Date.now() };
+    }
     window.localStorage.setItem(keyAtual(), JSON.stringify(next));
     listeners.forEach((l) => l());
+    aoGravar?.(keyAtual(), next);
   }
 
   function subscribe(listener: () => void) {
@@ -49,7 +54,18 @@ export function createPersistentStore<T>(chave: string | (() => string), initial
     return useSyncExternalStore(subscribe, read, () => initial);
   }
 
-  return { read, write, useStore };
+  /** Substitui tudo (sem mexer em atualizadoEm): usado ao baixar do servidor. */
+  function substituir(valor: T) {
+    window.localStorage.setItem(keyAtual(), JSON.stringify(valor));
+    listeners.forEach((l) => l());
+  }
+
+  let aoGravar: ((chave: string, valor: T) => void) | undefined;
+  function quandoGravar(fn: (chave: string, valor: T) => void) {
+    aoGravar = fn;
+  }
+
+  return { read, write, useStore, substituir, quandoGravar };
 }
 
 /** Perfil que entrou (cookie legível pg_perfil). */

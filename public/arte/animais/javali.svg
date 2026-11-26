@@ -1,11 +1,125 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M25.4 7.11L29.22 8.68C29.69 8.87 30 9.33 30 9.84V28.54C30 29.23 29.3 29.68 28.68 29.4L20.85 25.84C19.63 25.29 18.31 25 16.97 25H11.61C9.34998 25 7.24998 23.87 5.99998 22H2.93998C2.82355 22 2.71213 21.9789 2.60931 21.9404L2.61149 14.0588C2.7137 14.0208 2.82437 14 2.93998 14C5.46998 14 7.83998 12.73 9.23998 10.61L10.38 8.9C11.99 6.46 14.72 5 17.64 5C17.85 5 18.04 4.9 18.16 4.73C19.29 3.05 21.19 2 23.28 2H24.75C25.84 2 26.59 3.09 26.21 4.1C26.21 4.1 25.58 5.79 25.23 6.71C25.17 6.87 25.24 7.05 25.4 7.11Z" fill="#6D4534"/>
-<path d="M24.98 4.55L24.44 6C23.54 8.4 21.23 10 18.66 10H18.54C18.26 10 18.06 9.72 18.16 9.45L19.06 7.05C19.74 5.22 21.5 4 23.46 4H24.6C24.89 4 25.08 4.28 24.98 4.55Z" fill="#FF8687"/>
-<path d="M2.64 14.05C4.54 14.36 6 16.01 6 18C6 19.99 4.54 21.64 2.64 21.95C2.27 21.82 2 21.47 2 21.06V14.94C2 14.53 2.27 14.18 2.64 14.05Z" fill="#FF8687"/>
-<path d="M12.17 22C12.8 22 13.04 21.17 12.5 20.84C11.7 20.35 11.14 19.85 10.83 19.53C10.2 18.88 9.69003 18.15 9.32003 17.37C9.05003 16.8 8.20003 16.94 8.13003 17.56C7.97003 18.89 8.15003 20.25 8.66003 21.5C8.78003 21.8 9.08003 22 9.41003 22H12.17Z" fill="#D3D3D3"/>
-<path d="M12 16C12 16.55 12.45 17 13 17C13.55 17 14 16.55 14 16V14C14 13.45 13.55 13 13 13C12.45 13 12 13.45 12 14V16Z" fill="#1C1C1C"/>
-<path d="M3 19.5C3 19.78 3.22 20 3.5 20C3.78 20 4 19.78 4 19.5V16.5C4 16.22 3.78 16 3.5 16C3.22 16 3 16.22 3 16.5V19.5Z" fill="#1C1C1C"/>
-<path d="M24.76 13.11L23.42 14.45C23.1 14.77 22.57 14.77 22.25 14.45C21.93 14.13 21.93 13.6 22.25 13.28L23.59 11.94C23.91 11.62 24.44 11.62 24.76 11.94C25.08 12.26 25.08 12.79 24.76 13.11Z" fill="#A56953"/>
-<path d="M26 18.1H24.1C23.64 18.1 23.27 17.73 23.27 17.27C23.27 16.81 23.64 16.44 24.1 16.44H26C26.46 16.44 26.83 16.81 26.83 17.27C26.83 17.73 26.46 18.1 26 18.1Z" fill="#A56953"/>
-<path d="M23.58 22.61L22.24 21.27C21.92 20.94 21.92 20.42 22.24 20.1C22.56 19.78 23.09 19.78 23.41 20.1L24.75 21.44C25.07 21.76 25.07 22.29 24.75 22.61C24.43 22.93 23.9 22.93 23.58 22.61Z" fill="#A56953"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="javali-pelo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8f735c"/>
+      <stop offset="0.55" stop-color="#5f4736"/>
+      <stop offset="1" stop-color="#3f2d21"/>
+    </linearGradient>
+    <linearGradient id="javali-tras" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#55402f"/>
+      <stop offset="1" stop-color="#36261b"/>
+    </linearGradient>
+    <radialGradient id="javali-cabeca" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#977a62"/>
+      <stop offset="0.65" stop-color="#654c3a"/>
+      <stop offset="1" stop-color="#433024"/>
+    </radialGradient>
+    <linearGradient id="javali-disco" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d9b8ab"/>
+      <stop offset="1" stop-color="#a27f73"/>
+    </linearGradient>
+    <linearGradient id="javali-presa" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fffaea"/>
+      <stop offset="1" stop-color="#dcc8a0"/>
+    </linearGradient>
+    <linearGradient id="javali-terra" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#b78a5e"/>
+      <stop offset="1" stop-color="#7d5634"/>
+    </linearGradient>
+    <radialGradient id="javali-iris" cx="0.4" cy="0.35" r="0.7">
+      <stop offset="0" stop-color="#d9a774"/>
+      <stop offset="1" stop-color="#8a5326"/>
+    </radialGradient>
+    <clipPath id="javali-clip-corpo"><path d="M96 118 C104 94 128 84 152 88 C176 92 206 104 220 124 C230 140 226 162 212 172 C204 178 194 178 184 178 L120 178 C104 178 94 166 94 148 C94 136 94 126 96 118 Z"/></clipPath>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="136" cy="237" rx="100" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="patas-tras" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M126 166 L126 222 L140 222 L142 166 Z" fill="url(#javali-tras)" stroke="#24180f" stroke-width="2.5"/>
+    <path d="M194 158 C206 166 210 180 206 194 L208 222 L220 222 L220 192 C224 176 218 162 208 154 Z" fill="url(#javali-tras)" stroke="#24180f" stroke-width="2.5"/>
+    <path d="M122 220 L144 220 L145 233 L134 233 L133 227 L132 233 L121 233 Z M204 220 L224 220 L225 233 L215 233 L214 227 L213 233 L203 233 Z" fill="#2a1f19" stroke="#16100c" stroke-width="2"/>
+  </g>
+
+  <g id="cauda" transform="translate(0 12)" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M220 130 C232 134 234 148 230 160" fill="none" stroke="#24180f" stroke-width="5"/>
+    <path d="M220 130 C232 134 234 148 230 160" fill="none" stroke="#6a503d" stroke-width="2"/>
+    <path d="M230 156 L224 170 L230 166 L232 174 L235 166 L240 170 L234 156 Z" fill="#2e2018" stroke="#16100c" stroke-width="1.6"/>
+  </g>
+
+  <g id="patas-frente" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M100 160 C100 182 102 202 102 220 L118 220 C118 202 120 182 122 160 Z" fill="url(#javali-pelo)"/>
+    <path d="M100 168 C100 186 102 202 102 220 M118 220 C118 202 120 186 121 170" fill="none" stroke="#24180f" stroke-width="2.5"/>
+    <path d="M106 178 C106 194 107 204 107 212" fill="none" stroke="#a88a72" stroke-width="2.5" opacity="0.7"/>
+    <path d="M164 150 C190 146 200 168 194 186 C192 192 188 196 188 204 L188 220 L174 220 L174 202 C176 196 178 192 176 186 C166 180 162 166 164 150 Z" fill="url(#javali-pelo)"/>
+    <path d="M174 220 L174 202 C176 196 178 192 176 186 M188 220 L188 204 C188 196 192 192 194 186 C198 174 196 164 190 156" fill="none" stroke="#24180f" stroke-width="2.5"/>
+    <path d="M97 220 L123 220 L124 233 L111 233 L110 227 L109 233 L96 233 Z M169 220 L193 220 L194 233 L182 233 L181 227 L180 233 L168 233 Z" fill="#33261e" stroke="#16100c" stroke-width="2"/>
+    <path d="M100 223 h7 M172 223 h7" stroke="#7a6658" stroke-width="2"/>
+  </g>
+
+  <g id="corpo" transform="translate(0 12)" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M96 118 C104 94 128 84 152 88 C176 92 206 104 220 124 C230 140 226 162 212 172 C204 178 194 178 184 178 L120 178 C104 178 94 166 94 148 C94 136 94 126 96 118 Z" fill="url(#javali-pelo)" stroke="#24180f" stroke-width="2.5"/>
+    <g clip-path="url(#javali-clip-corpo)">
+      <path d="M90 166 C130 174 190 176 232 160 L232 190 L90 190 Z" fill="#2e2018" opacity="0.45"/>
+    </g>
+    <!-- cerdas -->
+    <g fill="none" stroke="#2e2018" stroke-width="1.8" opacity="0.8"><path d="M118 108 l3 8 M134 104 l3 8 M150 106 l3 8 M166 110 l3 8 M182 114 l3 8 M198 122 l3 8 M126 126 l3 8 M142 124 l3 8 M158 128 l3 8 M174 132 l3 8 M190 136 l3 8 M206 140 l3 8 M134 146 l3 8 M150 148 l3 8 M166 150 l3 8 M182 152 l3 8 M200 156 l3 8 M118 142 l3 8 M122 160 l3 8 M140 164 l3 8 M160 166 l3 8 M184 166 l3 8"/></g>
+    <g fill="none" stroke="#b39a84" stroke-width="1.6" opacity="0.8"><path d="M112 104 l2 6 M128 98 l2 6 M144 98 l2 6 M160 102 l2 6 M176 106 l2 6 M194 114 l2 6 M210 126 l2 6"/></g>
+    <path d="M176 120 C198 116 214 130 212 150" fill="none" stroke="#2e2018" stroke-width="2" opacity="0.5"/>
+    <!-- crina eriçada no dorso -->
+    <path d="M96 116 L98 110 L88 101 L104 98 L98 87 L112 91 L110 79 L122 87 L123 76 L134 85 L138 75 L146 86 L150 78 L158 88 L163 81 L170 91 L175 85 L182 95 L187 90 L194 99 L200 95 L205 105 L211 103 L214 113 L218 119 L212 119 L203 111 L192 105 L180 101 L168 97 L156 94 L143 92 L131 91 L119 93 L109 97 L101 104 L95 116 Z" fill="#2e2018" stroke="#16100c" stroke-width="2"/>
+    
+  </g>
+
+  <g id="terra" stroke-linejoin="round" stroke-linecap="round">
+    <!-- montinho de terra fuçada -->
+    <path d="M30 236 C34 222 46 214 60 214 C74 214 86 222 92 236 Z" fill="url(#javali-terra)" stroke="#5e3f24" stroke-width="2.2"/>
+    <g fill="#7d5634"><circle cx="26" cy="210" r="2.5"/><circle cx="36" cy="202" r="2"/><circle cx="96" cy="208" r="2.2"/><circle cx="88" cy="200" r="1.6"/></g>
+    <path d="M44 222 q8 -4 16 -2" fill="none" stroke="#d6ac80" stroke-width="2.2"/>
+    <path d="M70 226 q4 -2 8 0" fill="none" stroke="#5e3f24" stroke-width="1.6"/>
+  </g>
+
+  <g id="cabeca" transform="translate(-4 42)" stroke-linejoin="round" stroke-linecap="round">
+    <!-- orelhas em pé, peludas -->
+    <path d="M50 74 C42 62 42 48 48 38 C58 44 66 54 68 66 Z" fill="url(#javali-cabeca)" stroke="#24180f" stroke-width="2.5"/>
+    <path d="M52 66 C48 58 48 50 50 46 C56 50 60 56 62 63 Z" fill="#a58670"/>
+    <path d="M102 74 C110 62 110 48 104 38 C94 44 86 54 84 66 Z" fill="url(#javali-cabeca)" stroke="#24180f" stroke-width="2.5"/>
+    <path d="M100 66 C104 58 104 50 102 46 C96 50 92 56 90 63 Z" fill="#957660"/>
+    <path d="M48 38 l-2 -5 M104 38 l2 -5" stroke="#24180f" stroke-width="2"/>
+    <!-- costeletas cerdosas -->
+    <path d="M44 100 L30 108 L42 112 L34 122 L50 118 L48 128 L58 118 Z" fill="#7a604c" stroke="#24180f" stroke-width="2"/>
+    <path d="M108 100 L122 108 L110 112 L118 122 L102 118 L104 128 L94 118 Z" fill="#6a5240" stroke="#24180f" stroke-width="2"/>
+    <!-- cabeça em cunha -->
+    <path d="M76 62 C98 62 112 76 112 94 C112 106 106 114 100 122 L94 136 C90 144 84 148 76 148 C68 148 62 144 58 136 L52 122 C46 114 40 106 40 94 C40 76 54 62 76 62 Z" fill="url(#javali-cabeca)" stroke="#24180f" stroke-width="2.5"/>
+    <path d="M48 90 Q52 72 70 66" fill="none" stroke="#b39a84" stroke-width="3" opacity="0.8"/>
+    <!-- focinho forte -->
+    <path d="M68 96 C70 92 82 92 84 96 C88 108 92 120 92 132 L60 132 C60 120 64 108 68 96 Z" fill="#7a604c"/>
+    <path d="M72 98 C70 108 68 118 67 128" fill="none" stroke="#b39a84" stroke-width="2.5" opacity="0.9"/>
+    <path d="M64 112 q12 3 24 0 M62 122 q14 3 28 0" fill="none" stroke="#433024" stroke-width="1.5" opacity="0.8"/>
+    <!-- presas pequenas curvadas para cima -->
+    <path d="M60 138 C52 138 46 132 46 122 C50 128 56 130 62 130 Z" fill="url(#javali-presa)" stroke="#a08a62" stroke-width="1.8"/>
+    <path d="M92 138 C100 138 106 132 106 122 C102 128 96 130 90 130 Z" fill="url(#javali-presa)" stroke="#a08a62" stroke-width="1.8"/>
+    <!-- disco do focinho -->
+    <ellipse cx="76" cy="138" rx="17" ry="11" fill="url(#javali-disco)" stroke="#6e4e44" stroke-width="2.2"/>
+    <ellipse cx="69" cy="139" rx="3.5" ry="4.5" fill="#4a2e28"/>
+    <ellipse cx="83" cy="139" rx="3.5" ry="4.5" fill="#4a2e28"/>
+    <path d="M66 132 q6 -3 12 -1" fill="none" stroke="#f2ddd4" stroke-width="2"/>
+    <path d="M68 151 Q76 155 84 151" fill="none" stroke="#24180f" stroke-width="2"/>
+    <ellipse cx="50" cy="112" rx="7" ry="4.5" fill="#f4908a" opacity="0.5"/>
+    <ellipse cx="102" cy="112" rx="7" ry="4.5" fill="#f4908a" opacity="0.5"/>
+  </g>
+
+  <g id="olhos" transform="translate(-4 42)">
+    <ellipse cx="60" cy="94" rx="9.5" ry="10.5" fill="url(#javali-iris)" stroke="#24180f" stroke-width="1.5"/>
+    <ellipse cx="92" cy="94" rx="9.5" ry="10.5" fill="url(#javali-iris)" stroke="#24180f" stroke-width="1.5"/>
+    <ellipse cx="60.5" cy="94.5" rx="7" ry="8.5" fill="#2b1d16"/>
+    <ellipse cx="92.5" cy="94.5" rx="7" ry="8.5" fill="#2b1d16"/>
+    <circle cx="57" cy="90" r="3.8" fill="#fff"/>
+    <circle cx="64" cy="98" r="1.8" fill="#fff"/>
+    <circle cx="89" cy="90" r="3.8" fill="#fff"/>
+    <circle cx="96" cy="98" r="1.8" fill="#fff"/>
+    <path d="M50 81 q5 -3 10 -2 M102 81 q-5 -3 -10 -2" fill="none" stroke="#b39a84" stroke-width="1.8" stroke-linecap="round"/>
+  </g>
 </svg>

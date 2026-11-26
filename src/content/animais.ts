@@ -121,7 +121,7 @@ export const ANIMAIS: Animal[] = [
 
   // ── Austrália ─────────────────────────────────────────────────────────
   a("canguru", "can-gu-ru", 3, "au-outback", "mamífero", "O filhote de canguru vive na bolsa da mãe."),
-  a("lagarto", "la-gar-to", 3, "au-outback", "réptil", "Alguns lagartos podem soltar o rabo para fugir, e ele cresce de novo."),
+  a("lagarto", "la-gar-to", 3, "au-outback", "réptil", "O dragão-barbudo estufa a barba espinhosa e deixa ela escura para parecer maior."),
   a("aranha", "a-ra-nha", 3, "au-outback", "aracnídeo", "A aranha fabrica a própria teia com fios de seda."),
   a("coala", "co-a-la", 2, "au-eucaliptos", "mamífero", "O coala come folhas de eucalipto e dorme quase o dia todo."),
   a("morcego", "mor-ce-go", 3, "au-eucaliptos", "mamífero", "O morcego é o único mamífero que voa de verdade."),

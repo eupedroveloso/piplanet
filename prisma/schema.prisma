@@ -28,3 +28,14 @@ model Progresso {
   fases            Json     @default("{}")
   atualizadoEm     DateTime @updatedAt
 }
+
+/// Progresso completo de cada perfil (Pietro, Pedro, Gabi), sincronizado entre aparelhos.
+/// O painel dos adultos lê e corrige o do Pietro por aqui.
+model ProgressoPerfil {
+  perfil       String   @id
+  /// Progresso inteiro (o mesmo JSON salvo no aparelho).
+  dados        Json
+  /// Cópias de segurança: [{ data, motivo, dados }] (as 30 mais recentes).
+  copias       Json     @default("[]")
+  atualizadoEm DateTime @updatedAt
+}

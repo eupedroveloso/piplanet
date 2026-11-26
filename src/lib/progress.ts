@@ -1,6 +1,8 @@
 "use client";
 
-import { chaveDoPerfil, createPersistentStore } from "./store";
+import { useMemo, useSyncExternalStore } from "react";
+import { perfilPorId } from "@/content/perfis";
+import { chaveDoPerfil, createPersistentStore, perfilAtual } from "./store";
 
 /**
  * GAMIFICAÇÃO (sem punição)
@@ -23,10 +25,40 @@ export interface Nivelamento {
   acertos: Record<number, [number, number]>;
 }
 
-/** Flashcard com repetição espaçada (caixas de Leitner). */
+/** Flashcard com repetição espaçada (caixas de Leitner) + histórico para o painel dos adultos. */
 export interface Carta {
   caixa: number;
   proxima: number;
+  /** Quantas vezes a carta foi vista. */
+  vistas?: number;
+  /** Quantas vezes ele leu sozinho (sem ouvir antes). */
+  sozinho?: number;
+  /** Última vez vista (ms). */
+  ultima?: number;
+}
+
+/** Um bicho dentro de uma lição: erros, tempo e se precisou da dica (2+ erros). */
+export interface BichoSessao {
+  id: string;
+  erros: number;
+  ms: number;
+}
+
+/** Registro de uma sessão (lição, cartas ou nivelamento), para monitorar o aprendizado. */
+export interface Sessao {
+  tipo: "fase" | "cartas" | "nivelamento";
+  /** Fase: "territorio/indice". */
+  chave?: string;
+  jogo?: string;
+  inicio: number;
+  fim: number;
+  concluida: boolean;
+  erros: number;
+  estrelas?: number;
+  bichos?: BichoSessao[];
+  /** Cartas: lidas sozinho / total vistas. */
+  lidas?: number;
+  vistas?: number;
 }
 
 export interface Progress {
@@ -35,6 +67,10 @@ export interface Progress {
   fases: Record<string, ResultadoFase>;
   nivelamentos: Nivelamento[];
   cartas: Record<string, Carta>;
+  /** Últimas sessões (para o painel dos adultos). */
+  sessoes: Sessao[];
+  /** Quando o progresso mudou pela última vez (ms) — usado para sincronizar aparelhos. */
+  atualizadoEm: number;
 }
 
 export const progressStore = createPersistentStore<Progress>(chaveDoPerfil("pg:progress:v3"), {
@@ -43,9 +79,26 @@ export const progressStore = createPersistentStore<Progress>(chaveDoPerfil("pg:p
   fases: {},
   nivelamentos: [],
   cartas: {},
+  sessoes: [],
+  atualizadoEm: 0,
 });
 
-export const useProgress = progressStore.useStore;
+const semAssinatura = () => () => {};
+
+/** Progresso do perfil atual. `tudoLiberado` vem do perfil (ex.: Pedro tem tudo aberto). */
+export function useProgress(): Progress & { tudoLiberado: boolean } {
+  const p = progressStore.useStore();
+  const liberado = useSyncExternalStore(semAssinatura, () => !!perfilPorId(perfilAtual())?.tudoLiberado, () => false);
+  return useMemo(() => ({ ...p, tudoLiberado: liberado }), [p, liberado]);
+}
+
+/** "Tudo concluído" para efeito de desbloqueio: qualquer chave existe. */
+const TUDO_ABERTO: Record<string, unknown> = new Proxy({}, { has: () => true });
+
+/** O que conta como concluído para liberar fases/biomas/países (tudo, se o perfil tiver tudo liberado). */
+export function liberadas(p: Progress & { tudoLiberado?: boolean }): Record<string, unknown> {
+  return p.tudoLiberado ? TUDO_ABERTO : p.fases;
+}
 
 export const PONTOS = {
   /** Por bicho montado. */
@@ -109,8 +162,28 @@ const INTERVALOS = [0, 0, DIA, 2 * DIA, 4 * DIA, 8 * DIA];
 /** Atualiza a carta: leu sozinho → sobe de caixa (volta mais tarde); senão → volta para a caixa 1. */
 export function avaliarCarta(id: string, leuSozinho: boolean) {
   progressStore.write((p) => {
-    const atual = p.cartas[id]?.caixa ?? 1;
+    const antes = p.cartas[id];
+    const atual = antes?.caixa ?? 1;
     const caixa = leuSozinho ? Math.min(5, atual + 1) : 1;
-    return { ...p, cartas: { ...p.cartas, [id]: { caixa, proxima: Date.now() + INTERVALOS[caixa] } } };
+    const agora = Date.now();
+    return {
+      ...p,
+      cartas: {
+        ...p.cartas,
+        [id]: {
+          caixa,
+          proxima: agora + INTERVALOS[caixa],
+          vistas: (antes?.vistas ?? 0) + 1,
+          sozinho: (antes?.sozinho ?? 0) + (leuSozinho ? 1 : 0),
+          ultima: agora,
+        },
+      },
+    };
   });
+}
+
+/** Guarda uma sessão (mantém as 400 mais recentes). Sessões de menos de 3 s são ignoradas. */
+export function registrarSessao(s: Sessao) {
+  if (s.fim - s.inicio < 3000) return;
+  progressStore.write((p) => ({ ...p, sessoes: [...(p.sessoes ?? []), s].slice(-400) }));
 }

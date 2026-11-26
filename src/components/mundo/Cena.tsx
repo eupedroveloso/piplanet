@@ -1,5 +1,7 @@
 "use client";
 
+import { liberadas } from "@/lib/progress";
+
 import { Canvas, useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
 import { CameraControls, Instance, Instances, PerformanceMonitor } from "@react-three/drei";
 import { EffectComposer, N8AO } from "@react-three/postprocessing";
@@ -154,7 +156,7 @@ function Medidor({ q }: { q: Qualidade }) {
 function faseAtual(p: Progress) {
   for (const t of TERRITORIOS)
     for (let i = 0; i < t.fases.length; i++)
-      if (!(chaveFase(t.id, i) in p.fases) && faseDesbloqueada(p.fases, t.id, i)) return { t: t.id, i };
+      if (!(chaveFase(t.id, i) in p.fases) && faseDesbloqueada(liberadas(p), t.id, i)) return { t: t.id, i };
   return null;
 }
 

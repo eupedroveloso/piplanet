@@ -7,7 +7,7 @@ import { arteDoAnimal, type Animal } from "@/content/animais";
 import { FOTOS } from "@/content/fotos";
 import { curiosidadesDe, falarSobre } from "@/lib/falar-bicho";
 import { speak } from "@/lib/speech";
-import { Arte, BotaoRedondo, MOLA_ENTRADA } from "@/components/ui";
+import { Arte, BotaoRedondo, fonteQueCabe, fonteQueCabeEm, MOLA_ENTRADA, MOLA_TOQUE } from "@/components/ui";
 
 /**
  * FICHA DO BICHO (abre ao tocar numa figurinha do álbum)
@@ -41,10 +41,10 @@ export function FichaBicho({ animal, onFechar }: { animal: Animal | null; onFech
             exit={{ scale: 0.9, y: 20, opacity: 0 }}
             transition={MOLA_ENTRADA}
             onClick={(e) => e.stopPropagation()}
-            className="relative flex w-full max-w-2xl flex-col overflow-hidden rounded-xl bg-branco shadow-[0_12px_0_rgb(61_53_81/0.15)] sm:flex-row"
+            className="relative flex max-h-[calc(100dvh-1.5rem)] w-full max-w-2xl flex-col overflow-hidden rounded-xl bg-branco shadow-[0_12px_0_rgb(61_53_81/0.15)] sm:flex-row"
           >
             {/* Foto real */}
-            <div className="relative aspect-[4/3] w-full overflow-hidden bg-roxo-claro sm:aspect-auto sm:min-h-80 sm:w-1/2">
+            <div className="relative aspect-[4/3] max-h-[40dvh] w-full shrink overflow-hidden bg-roxo-claro sm:aspect-auto sm:max-h-none sm:min-h-80 sm:w-1/2">
               {foto ? (
                 <>
                   {/* a mesma foto desfocada preenche o fundo; a foto inteira fica por cima, sem cortes */}
@@ -70,10 +70,26 @@ export function FichaBicho({ animal, onFechar }: { animal: Animal | null; onFech
             </div>
 
             {/* Nome, voz e curiosidades */}
-            <div className="flex flex-1 flex-col items-center justify-center gap-4 p-6 text-center">
-              <button type="button" onClick={() => speak(animal.nome)} className="font-leitura text-5xl font-bold text-roxo uppercase">
+            <div className="flex flex-1 flex-col items-center justify-center gap-3 p-4 text-center sm:gap-4 sm:p-6">
+              {/* Cabe numa linha: no celular pela largura da tela; no tablet pela metade do cartão */}
+              <motion.button
+                type="button"
+                onClick={() => speak(animal.nome)}
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.94 }}
+                transition={MOLA_TOQUE}
+                style={{
+                  fontSize: `min(${fonteQueCabe(animal.silabas.join("").length, animal.silabas.length - 1, 96, 3)}, ${fonteQueCabeEm(
+                    280,
+                    animal.silabas.join("").length,
+                    animal.silabas.length - 1,
+                    3,
+                  )})`,
+                }}
+                className="max-w-full font-leitura leading-tight font-bold whitespace-nowrap text-roxo uppercase"
+              >
                 {animal.silabas.join("·")}
-              </button>
+              </motion.button>
               <div className="flex gap-3">
                 <BotaoRedondo aria-label="Ouvir o nome" onClick={() => speak(animal.nome)} className="size-16">
                   <Arte nome="ui/som-ligado" className="size-9" />

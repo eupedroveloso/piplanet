@@ -13,6 +13,7 @@ import {
   type Territorio,
 } from "@/content/jornada";
 import { calcularEstrelas, coletarAnimal, concluirFase, ganharPatinhas, PONTOS } from "@/lib/progress";
+import { RastreioLicao } from "@/lib/rastreio";
 import { shuffle } from "@/lib/random";
 import { speak } from "@/lib/speech";
 import { falarSobre } from "@/lib/falar-bicho";
@@ -77,7 +78,13 @@ export function JogoFase({
 
   const animal = fila[indice];
 
+  // Registro para o painel dos adultos: tempo da lição, erros e tempo de cada bicho
+  const [rastreio] = useState(() => new RastreioLicao({ tipo: "fase", chave, jogo: fase.jogo }));
+  // saiu no meio da lição (voltou ao mapa / fechou): guarda como não concluída
+  useEffect(() => () => rastreio.fechar(false), [rastreio]);
+
   function comecar() {
+    rastreio.comecar();
     const nova = shuffle(animaisDaFase(territorio, fase)).slice(0, BICHOS_POR_FASE);
     setFila(nova);
     setIndice(0);
@@ -90,6 +97,7 @@ export function JogoFase({
   }
 
   function errar() {
+    rastreio.erro();
     setErrosBicho((e) => e + 1);
     setErrosFase((e) => e + 1);
   }
@@ -97,6 +105,7 @@ export function JogoFase({
   async function acertar() {
     if (!animal || etapa !== "jogando") return;
     const valor = PONTOS.bicho + (errosBicho === 0 ? PONTOS.semErro : 0);
+    rastreio.bichoResolvido(animal.id, errosBicho);
     const nova = coletarAnimal(animal.id);
     ganharPatinhas(valor);
     setGanho(valor);
@@ -111,6 +120,7 @@ export function JogoFase({
   function proximo() {
     const prox = indice + 1;
     if (prox < fila.length) {
+      rastreio.proximoBicho();
       setIndice(prox);
       setErrosBicho(0);
       setEtapa("jogando");
@@ -121,6 +131,7 @@ export function JogoFase({
     ganharPatinhas(PONTOS.fase);
     setPontosFase(total);
     concluirFase(chave, estrelas, total);
+    rastreio.fechar(true, estrelas);
     setEtapa("fim");
     speak(`Parabéns! Você ganhou ${estrelas} ${estrelas === 1 ? "estrela" : "estrelas"}!`);
   }
@@ -167,7 +178,7 @@ export function JogoFase({
   const [pt, pf] = (proxChave ?? "").split("/");
 
   return (
-    <div className="flex flex-1 flex-col gap-4">
+    <div className="flex min-h-0 flex-1 flex-col gap-2 sm:gap-4">
       {/* Cenário do bioma atrás de tudo (início, jogo e fim) */}
       <CenarioFundo tipo={territorio.tipo} />
       <div className="relative z-10">{topo}</div>
@@ -229,17 +240,17 @@ export function JogoFase({
               transition={MOLA_ENTRADA}
               className="w-full max-w-lg"
             >
-              <Painel className="relative flex w-full flex-col items-center gap-5 p-8 text-center">
+              <Painel className="relative flex w-full flex-col items-center gap-3 p-4 text-center sm:gap-5 sm:p-8">
                 <motion.span
                   initial={{ scale: 0, rotate: -20 }}
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ ...MOLA_ENTRADA, delay: 0.15 }}
                   className="relative grid place-items-center"
                 >
-                  <Arte nome="ui/festa" className="size-20" />
+                  <Arte nome="ui/festa" className="size-14 sm:size-20" />
                   <Comemoracao raio={110} />
                 </motion.span>
-                <h2 className="text-4xl font-extrabold text-roxo">Fase concluída!</h2>
+                <h2 className="text-2xl font-extrabold text-roxo sm:text-4xl">Fase concluída!</h2>
                 <Estrelas valor={estrelas} tamanho="lg" atraso={0.4} />
                 <motion.p
                   initial={{ opacity: 0, y: 8 }}
@@ -257,9 +268,12 @@ export function JogoFase({
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ ...MOLA_ENTRADA, delay: 1.4 }}
-                    className="flex flex-col items-center gap-2"
+                    className="flex flex-col items-center gap-1 sm:gap-2"
                   >
-                    <p className="text-lg font-bold text-tinta-suave">Figurinhas novas no álbum:</p>
+                    <p className="flex items-center gap-1 text-sm font-bold text-tinta-suave sm:text-lg">
+                      <Arte nome="ui/album" className="size-5 sm:size-6" />
+                      Figurinhas novas no álbum
+                    </p>
                     <motion.div
                       className="flex flex-wrap justify-center gap-2"
                       initial="fora"
@@ -278,7 +292,7 @@ export function JogoFase({
                             onClick={() => speak(a.nome)}
                             aria-label={a.nome}
                           >
-                            <Arte src={arteDoAnimal(a)} alt="" className="size-14" />
+                            <Arte src={arteDoAnimal(a)} alt="" className="size-11 sm:size-14" />
                           </motion.button>
                         );
                       })}
@@ -289,7 +303,7 @@ export function JogoFase({
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ ...MOLA_ENTRADA, delay: 1.3 }}
-                  className="flex flex-wrap justify-center gap-3 pt-2"
+                  className="flex w-full flex-col items-stretch gap-3 pt-2 sm:w-auto sm:flex-row sm:flex-wrap sm:justify-center"
                 >
                   <BotaoLink
                     href={proxChave ? `/jogar/${pt}/${pf}` : "/"}
@@ -319,7 +333,7 @@ export function JogoFase({
           <motion.div
             key="jogo"
             {...TELA}
-            className="relative z-10 flex flex-1 flex-col items-center justify-center gap-6 pb-8"
+            className="relative z-10 flex min-h-0 flex-1 flex-col items-center justify-center gap-3 pb-1 sm:gap-6 sm:pb-8"
           >
             <AnimatePresence>
               {acertou && (
@@ -328,7 +342,7 @@ export function JogoFase({
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -10, transition: { duration: 0.2 } }}
                   transition={{ ...MOLA_ENTRADA, delay: 0.3 }}
-                  className="absolute top-0 right-0 flex items-center gap-1 rounded-full bg-amarelo px-4 py-1 text-2xl font-extrabold text-roxo shadow-[0_4px_0_var(--color-amarelo-escuro)]"
+                  className="absolute top-0 right-0 z-10 flex items-center gap-1 rounded-full bg-amarelo px-3 py-0.5 text-xl font-extrabold sm:px-4 sm:py-1 sm:text-2xl text-roxo shadow-[0_4px_0_var(--color-amarelo-escuro)]"
                 >
                   +{ganho}
                   <Arte nome="ui/patinhas" className="size-7" />
@@ -344,7 +358,7 @@ export function JogoFase({
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -40, transition: { duration: 0.2 } }}
                 transition={MOLA_ENTRADA}
-                className="flex w-full flex-col items-center gap-6"
+                className="flex w-full flex-col items-center gap-3 sm:gap-6"
               >
                 {rodada({ animal, territorio, fase, acertou, errar, acertar })}
               </motion.div>
@@ -357,7 +371,7 @@ export function JogoFase({
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, transition: { duration: 0.15 } }}
                   transition={{ ...MOLA_ENTRADA, delay: 0.5 }}
-                  className="flex w-full max-w-xl flex-col items-center gap-4"
+                  className="flex w-full max-w-xl flex-col items-center gap-2.5 sm:gap-4"
                 >
                   {figurinhaNova && <SeloFigurinhaNova />}
                   <BotaoCuriosidade texto={animal.curiosidade} />
@@ -415,7 +429,7 @@ function SeloFigurinhaNova() {
       initial={{ opacity: 0, scale: 0.6 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={MOLA_ENTRADA}
-      className="relative flex items-center gap-2 rounded-full bg-coral px-4 py-1 text-lg font-extrabold text-branco shadow-[0_4px_0_var(--color-coral-escuro)]"
+      className="relative flex items-center gap-2 rounded-full bg-coral px-3 py-0.5 text-base font-extrabold text-branco sm:px-4 sm:py-1 sm:text-lg shadow-[0_4px_0_var(--color-coral-escuro)]"
     >
       <motion.span
         animate={{ rotate: 360 }}
@@ -442,11 +456,11 @@ function BotaoCuriosidade({ texto }: { texto: string }) {
       }}
       whileHover={{ y: -2 }}
       whileTap={{ scale: 0.98 }}
-      className={`flex w-full items-start gap-3 rounded-lg bg-branco p-5 text-left text-xl font-semibold shadow-suave ring-amarelo transition-[box-shadow] duration-300 ${
+      className={`flex w-full items-start gap-2.5 rounded-lg bg-branco p-3 text-left text-base leading-snug font-semibold shadow-suave ring-amarelo transition-[box-shadow] duration-300 sm:gap-3 sm:p-5 sm:text-xl ${
         falando ? "ring-4" : "ring-0"
       }`}
     >
-      <Arte nome="ui/lampada" className="size-9 shrink-0" />
+      <Arte nome="ui/lampada" className="size-7 shrink-0 sm:size-9" />
       <span className="flex-1">{texto}</span>
       <motion.span
         animate={falando ? { scale: [1, 1.15, 1] } : { scale: 1 }}
@@ -470,12 +484,12 @@ export function CirculoBicho({ animal, acertou }: { animal: Animal; acertou: boo
       transition={acertou ? { duration: 0.7, ease: "easeInOut" } : { type: "spring", stiffness: 200, damping: 14 }}
       whileHover={{ y: -3 }}
       whileTap={{ scale: 0.95 }}
-      className={`relative grid size-36 place-items-center rounded-full bg-branco transition-shadow duration-300 sm:size-52 ${
+      className={`relative grid size-[min(9rem,22dvh)] shrink-0 place-items-center rounded-full bg-branco transition-shadow duration-300 sm:size-52 ${
         acertou ? "shadow-[0_8px_0_var(--color-verde-escuro)] ring-4 ring-verde" : "shadow-[0_8px_0_var(--t-chao)]"
       }`}
       aria-label={acertou ? animal.nome : "Que bicho é esse?"}
     >
-      <Arte src={arteDoAnimal(animal)} className="size-24 sm:size-36" />
+      <Arte src={arteDoAnimal(animal)} className="size-[66%] sm:size-36" />
       {acertou && <Comemoracao raio={140} />}
     </motion.button>
   );

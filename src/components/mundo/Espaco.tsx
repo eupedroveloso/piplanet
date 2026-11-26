@@ -330,9 +330,9 @@ export function Cometa() {
   const poeira = useRef<THREE.InstancedMesh>(null);
   const nucleo = useMemo(() => geometriaRocha({ semente: 5, detalhe: 1, crateras: 2, rugosidade: 0.3, paleta: ["#aebfd6", "#c7d6ea", "#dfe9f5"] }), []);
   useEffect(() => () => nucleo.dispose(), [nucleo]);
-  // trajeto: de (-30, 14) a (30, 8); a cauda aponta para trás
-  const ang = Math.atan2(-6, 60);
-  const tmp = useMemo(() => new THREE.Object3D(), []);
+  // Trajeto relativo à CÂMERA (ela orbita até o país atual): sempre cruza o fundo, por trás
+  // do planeta, da esquerda para a direita e descendo um pouco; a cauda aponta para trás.
+  const tmp = useRef({ o: new THREE.Object3D(), fr: new THREE.Vector3(), di: new THREE.Vector3(), ci: new THREE.Vector3(), ida: new THREE.Vector3(), lado: new THREE.Vector3(), vy: new THREE.Vector3(), base: new THREE.Matrix4() });
   useFrame((st) => {
     const g = ref.current;
     if (!g) return;
@@ -341,23 +341,32 @@ export function Cometa() {
     g.visible = ciclo < 0.35;
     if (!g.visible) return;
     const t = ciclo / 0.35;
-    g.position.set(-30 + t * 60, 14 - t * 6, -25);
+    const { o, fr, di, ci, ida, lado, vy, base } = tmp.current;
+    const cam = st.camera;
+    fr.copy(cam.position).multiplyScalar(-1).normalize(); // para onde a câmera olha (o centro)
+    di.crossVectors(fr, cam.up).normalize(); // direita da tela
+    ci.crossVectors(di, fr).normalize(); // cima da tela
+    g.position.copy(fr).multiplyScalar(25).addScaledVector(di, -30 + t * 60).addScaledVector(ci, 10 - t * 6);
+    ida.copy(di).multiplyScalar(60).addScaledVector(ci, -6).normalize();
+    lado.crossVectors(ida, ci).normalize();
+    base.makeBasis(ida, vy.crossVectors(lado, ida).normalize(), lado);
+    g.quaternion.setFromRotationMatrix(base);
     g.children[0].rotation.set(tempo * 0.7, tempo * 0.4, 0);
     const p = poeira.current;
     if (p) {
       for (let i = 0; i < POEIRA; i++) {
-        const k = ((i / POEIRA + tempo * 0.35) % 1);
-        tmp.position.set(-0.4 - k * 3.6, Math.sin(i * 2.3) * 0.35 * k, Math.cos(i * 1.7) * 0.35 * k);
-        tmp.scale.setScalar(0.06 * (1 - k) + 0.01);
-        tmp.updateMatrix();
-        p.setMatrixAt(i, tmp.matrix);
+        const k = (i / POEIRA + tempo * 0.35) % 1;
+        o.position.set(-0.4 - k * 3.6, Math.sin(i * 2.3) * 0.35 * k, Math.cos(i * 1.7) * 0.35 * k);
+        o.scale.setScalar(0.06 * (1 - k) + 0.01);
+        o.updateMatrix();
+        p.setMatrixAt(i, o.matrix);
       }
       p.instanceMatrix.needsUpdate = true;
     }
   });
   const aditivo = { transparent: true, blending: THREE.AdditiveBlending, depthWrite: false } as const;
   return (
-    <group ref={ref} rotation={[0, 0, ang]}>
+    <group ref={ref} scale={1.7}>
       <mesh geometry={nucleo} scale={0.32}>
         <meshStandardMaterial vertexColors flatShading roughness={0.8} emissive="#9fc7ff" emissiveIntensity={0.25} />
       </mesh>

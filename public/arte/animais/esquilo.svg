@@ -1,11 +1,116 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M28.07 9.04L26.82 8.42C26.62 8.31 26.69 8 26.92 8H27.5C28.88 8 30 6.88 30 5.5C30 4.12 28.88 3 27.5 3H25.47C23 3 21 5 21 7.47C21 9.04 21.82 10.49 23.17 11.3L25.05 12.43C25.64 12.78 26 13.42 26 14.1V26H21.52V30H26C28.21 30 30 28.21 30 26V12.16C30 10.83 29.25 9.63 28.07 9.04Z" fill="#A56953"/>
-<path d="M3.85999 16.99V18.98C3.85999 19.67 4.24999 20.3 4.86999 20.6L5.55999 20.93C5.74999 21.02 5.96999 21.02 6.15999 20.93L6.84999 20.6C7.46999 20.3 7.85999 19.67 7.85999 18.98V16.99H3.85999Z" fill="#6D4534"/>
-<path d="M14.31 9.62C14.73 10.47 15.6 11 16.55 11C21.0657 11 24.7492 14.5436 24.9877 19H25V19.4418L25 19.46V26.95C25 27.79 24.66 28.5525 24.1087 29.105C23.5575 29.6575 22.795 30 21.95 30H7.43998C7.18998 30 6.99998 29.76 7.05998 29.51C7.27998 28.64 8.05998 28 8.99998 28H10.8339C9.98084 26.926 9.5 25.5026 9.5 23.94V21.04L7.5 21C6.68 21 6.02 20.35 6 19.53C5.98 18.69 6.69 18 7.54 18H9L10 15L2.31 11L4.66 7.23C4.665 7.225 4.67 7.2175 4.67499 7.21C4.67999 7.20251 4.685 7.195 4.69 7.19L4.74 7.1C5.57 5.84 6.99 5 8.61 5H10V3.33C10 3.14 10.15 3 10.33 3C11.82 3 13.02 4.22 13.01 5.71C13 6.57 13.21 7.42 13.6 8.19L14.31 9.62Z" fill="#F3AD61"/>
-<path d="M7.6 16.49C8.02 16.49 8.35 16.83 8.35 17.24C8.35 17.65 8.00999 17.99 7.6 17.99H4.11999C3.71 17.99 3.37 17.65 3.37 17.24C3.37 16.83 3.71 16.49 4.11999 16.49H7.6Z" fill="#F3AD61"/>
-<path d="M5.65 9.15C5.89 8.46 6.54 8 7.28 8C8.23 8 9 8.77 9 9.72V10.75C9 10.89 9.11 11 9.25 11C10.22 11 11 11.78 11 12.75V16.38L9.65 17.74C9.47 17.91 9.24 17.98 9 18V15H5.12C3.39 15 2 13.61 2 11.88C2 11.56 2.11 11.25 2.31 11H3.72C4.49 11 5.17 10.52 5.42 9.8C5.45412 9.70616 5.48643 9.61232 5.51846 9.51926C5.56153 9.39415 5.60413 9.27042 5.65 9.15Z" fill="#FFDEA7"/>
-<path d="M13.71 19.74C12.86 20.57 11.72 21.04 10.53 21.04H9V23.94C9 25.5017 9.38067 26.9254 10.1283 28H14V26.72C14 26.7142 14 26.7084 14 26.7026V19.4L13.71 19.74Z" fill="#FFDEA7"/>
-<path d="M22 19.45V25.25C22 25.66 22.34 26 22.75 26C23.16 26 23.5 25.66 23.5 25.25V19.45C23.5 16.49 21.64 13.95 19.02 12.95C18.53 12.77 18 13.13 18 13.66C18 13.97 18.19 14.25 18.48 14.36C20.54 15.14 22 17.13 22 19.45Z" fill="#A56953"/>
-<path d="M7.5 10.75C7.5 11.1642 7.16421 11.5 6.75 11.5C6.33579 11.5 6 11.1642 6 10.75C6 10.3358 6.33579 10 6.75 10C7.16421 10 7.5 10.3358 7.5 10.75Z" fill="#1C1C1C"/>
-<path d="M2.31 11C2.84 11 3.26 11.43 3.26 11.96C3.26 12.49 2.83 12.92 2.3 12.92C2.26 12.92 2.22 12.92 2.17 12.91C2.06 12.59 2 12.24 2 11.88C2 11.56 2.11 11.25 2.31 11Z" fill="#1C1C1C"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="esquilo-pelo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f3ad6c"/>
+      <stop offset="0.55" stop-color="#d47432"/>
+      <stop offset="1" stop-color="#a04c1c"/>
+    </linearGradient>
+    <linearGradient id="esquilo-cauda" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7b878"/>
+      <stop offset="0.5" stop-color="#d77834"/>
+      <stop offset="1" stop-color="#9a4618"/>
+    </linearGradient>
+    <radialGradient id="esquilo-cabeca" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#f6b679"/>
+      <stop offset="0.65" stop-color="#d77834"/>
+      <stop offset="1" stop-color="#a8521e"/>
+    </radialGradient>
+    <linearGradient id="esquilo-branco" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fffaf2"/>
+      <stop offset="1" stop-color="#ecdcc6"/>
+    </linearGradient>
+    <linearGradient id="esquilo-bolota" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e3b06a"/>
+      <stop offset="1" stop-color="#a86a2a"/>
+    </linearGradient>
+    <clipPath id="esquilo-clip-corpo"><path d="M96 118 C120 114 146 132 150 166 C154 196 146 222 118 226 C92 228 76 212 76 184 C76 152 80 122 96 118 Z"/></clipPath>
+    <clipPath id="esquilo-clip-cabeca"><path d="M92 56 C116 56 130 72 130 94 C130 114 116 128 92 128 C68 128 54 114 54 94 C54 72 68 56 92 56 Z"/></clipPath>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="140" cy="237" rx="84" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="cauda" stroke-linejoin="round" stroke-linecap="round">
+    <!-- cauda enorme e felpuda, curvada sobre as costas -->
+    <path d="M136 214 Q148 216 160 219 Q174 223 184 213 Q198 210 202 197 Q213 189 212 175 Q219 163 213 151 Q216 137 206 128 Q212 115 204 104 Q215 94 212 80 Q225 75 227 62 Q239 57 240 44 Q245 33 237 24 Q232 13 219 13 Q207 7 197 15 Q184 15 179 27 Q167 35 168 50 Q162 63 170 74 Q167 88 178 97 Q170 108 176 120 Q165 127 166 140 Q153 143 150 156 Q138 157 136 168 Z" fill="url(#esquilo-cauda)" stroke="#6e3010" stroke-width="2.5"/>
+    <path d="M190 194 C204 176 204 156 196 132 C190 112 192 88 204 72 C214 58 228 48 230 36" fill="none" stroke="#fbd0a0" stroke-width="4" opacity="0.8"/>
+    <g fill="none" stroke="#9a4618" stroke-width="1.6" opacity="0.8">
+      <path d="M160 190 l10 4 M176 176 l10 2 M186 156 l10 0 M186 132 l10 -2 M184 108 l10 -4 M186 86 l10 -6 M192 62 l8 -6 M204 40 l6 -8 M220 32 l4 -8"/>
+    </g>
+    <g fill="none" stroke="#fbd0a0" stroke-width="1.4" opacity="0.8">
+      <path d="M196 176 l8 0 M198 148 l8 -2 M194 120 l8 -2 M200 96 l7 -4 M214 70 l6 -5 M226 48 l5 -6"/>
+    </g>
+  </g>
+
+  <g id="pe-tras" stroke-linejoin="round" stroke-linecap="round">
+    <!-- pé de trás comprido -->
+    <path d="M106 220 C100 220 84 222 80 228 C78 234 86 235 96 235 L132 235 C138 235 140 228 134 222 Z" fill="url(#esquilo-pelo)" stroke="#6e3010" stroke-width="2.5"/>
+    <path d="M84 230 l-3 4 M90 231 l-2 4 M96 231 l-1 4" stroke="#4a2410" stroke-width="1.6"/>
+  </g>
+
+  <g id="corpo" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M96 118 C120 114 146 132 150 166 C154 196 146 222 118 226 C92 228 76 212 76 184 C76 152 80 122 96 118 Z" fill="url(#esquilo-pelo)" stroke="#6e3010" stroke-width="2.5"/>
+    <g clip-path="url(#esquilo-clip-corpo)">
+      <!-- barriga branca -->
+      <path d="M70 120 C96 120 108 140 108 170 C108 196 100 214 90 230 L70 230 Z" fill="url(#esquilo-branco)"/>
+      <!-- coxa grande -->
+      <path d="M110 178 C130 168 154 180 154 204 C154 226 136 232 118 230 C104 228 100 214 102 200 C103 190 104 182 110 178 Z" fill="#c4662a"/>
+    </g>
+    <path d="M110 178 C130 168 154 180 152 204" fill="none" stroke="#6e3010" stroke-width="2" opacity="0.6"/>
+    <path d="M114 184 Q130 178 142 186" fill="none" stroke="#f3ad6c" stroke-width="3" opacity="0.8"/>
+    <g fill="none" stroke="#e3d0b6" stroke-width="1.5"><path d="M84 150 l3 4 M90 170 l3 4 M86 192 l3 4"/></g>
+    <g fill="none" stroke="#9a4618" stroke-width="1.5" opacity="0.8"><path d="M124 140 l4 5 M134 156 l4 5 M120 210 l4 4 M136 214 l4 4"/></g>
+    <path d="M106 124 Q126 128 138 144" fill="none" stroke="#f3ad6c" stroke-width="3" opacity="0.8"/>
+  </g>
+
+  <g id="bolota" stroke-linejoin="round" stroke-linecap="round">
+    <!-- semente (bolota) entre as patinhas -->
+    <path d="M80 150 C80 166 88 176 96 176 C104 176 112 166 112 150 Z" fill="url(#esquilo-bolota)" stroke="#7a4a1a" stroke-width="2.2"/>
+    <path d="M86 156 C86 164 90 170 94 172" fill="none" stroke="#f6d49a" stroke-width="2.5"/>
+    <path d="M76 150 C76 140 86 136 96 136 C106 136 116 140 116 150 Z" fill="#8a5a30" stroke="#5a3418" stroke-width="2.2"/>
+    <path d="M82 144 l4 4 M90 140 l4 5 M100 140 l4 5 M108 143 l3 4" stroke="#5a3418" stroke-width="1.4"/>
+    <path d="M96 136 C96 130 99 128 102 128" fill="none" stroke="#5a3418" stroke-width="3"/>
+    <!-- patinhas segurando -->
+    <path d="M70 156 C66 148 72 140 80 144 C86 148 86 156 82 162 C78 166 72 162 70 156 Z" fill="url(#esquilo-pelo)" stroke="#6e3010" stroke-width="2.2"/>
+    <path d="M122 156 C126 148 120 140 112 144 C106 148 106 156 110 162 C114 166 120 162 122 156 Z" fill="url(#esquilo-pelo)" stroke="#6e3010" stroke-width="2.2"/>
+    <path d="M76 158 l4 -2 M78 152 l4 -1 M116 158 l-4 -2 M114 152 l-4 -1" stroke="#4a2410" stroke-width="1.4"/>
+  </g>
+
+  <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
+    <!-- orelhas com tufos longos -->
+    <path d="M64 72 C58 60 58 48 62 38 C70 42 78 52 80 64 Z" fill="url(#esquilo-cabeca)" stroke="#6e3010" stroke-width="2.5"/>
+    <path d="M66 66 C63 58 63 50 65 45 C70 49 74 55 75 62 Z" fill="#f2b9a0"/>
+    <path d="M 120 72 C 126 60 126 48 122 38 C 114 42 106 52 104 64 Z" fill="url(#esquilo-cabeca)" stroke="#6e3010" stroke-width="2.5"/>
+    <path d="M 118 66 C 121 58 121 50 119 45 C 114 49 110 55 109 62 Z" fill="#e6a68c"/>
+    <path d="M58 46 C52 36 52 24 58 12 C60 20 62 20 64 10 C66 18 68 22 71 18 C73 30 70 40 68 48 Z" fill="#b4561e" stroke="#6e3010" stroke-width="2"/>
+    <path d="M 126 46 C 132 36 132 24 126 12 C 124 20 122 20 120 10 C 118 18 116 22 113 18 C 111 30 114 40 116 48 Z" fill="#a04c1c" stroke="#6e3010" stroke-width="2"/>
+    <path d="M60 36 l2 -12 M64 34 l2 -12" stroke="#e08a48" stroke-width="1.4"/>
+    <!-- cabeça -->
+    <path d="M92 56 C116 56 130 72 130 94 C130 114 116 128 92 128 C68 128 54 114 54 94 C54 72 68 56 92 56 Z" fill="url(#esquilo-cabeca)" stroke="#6e3010" stroke-width="2.5"/>
+    <g clip-path="url(#esquilo-clip-cabeca)">
+      <path d="M50 104 C62 100 74 106 82 112 C88 116 96 116 102 112 C110 106 122 100 134 104 L134 132 L50 132 Z" fill="url(#esquilo-branco)"/>
+    </g>
+    <path d="M62 86 Q66 66 84 62" fill="none" stroke="#fbd0a0" stroke-width="3.5" opacity="0.8"/>
+    <!-- anel claro ao redor dos olhos -->
+    <ellipse cx="76" cy="90" rx="12.5" ry="14" fill="#f8d6b0"/>
+    <ellipse cx="108" cy="90" rx="12.5" ry="14" fill="#f2c9a0"/>
+    <!-- focinho -->
+    <path d="M86 108 C86 104 98 104 98 108 C98 112 94 114 92 114 C90 114 86 112 86 108 Z" fill="#5a2e1e" stroke="#3a1c10" stroke-width="1.2"/>
+    <ellipse cx="89.5" cy="107" rx="2" ry="1" fill="#a8705c"/>
+    <path d="M92 114 v3 M86 119 Q89 122 92 117 Q95 122 98 119" fill="none" stroke="#6e3010" stroke-width="1.8"/>
+    <path d="M90 120 h4 v4 h-4 Z" fill="#ffffff" stroke="#b9a48e" stroke-width="0.8"/>
+    <g fill="none" stroke="#8a5a3a" stroke-width="1.1"><path d="M82 112 Q70 110 62 112 M82 115 Q72 118 64 122 M102 112 Q114 110 122 112 M102 115 Q112 118 120 122"/></g>
+    <ellipse cx="68" cy="108" rx="7" ry="4.5" fill="#f4908a" opacity="0.5"/>
+    <ellipse cx="116" cy="108" rx="7" ry="4.5" fill="#f4908a" opacity="0.5"/>
+  </g>
+
+  <g id="olhos">
+    <ellipse cx="76" cy="90" rx="9" ry="10.5" fill="#2b1d16"/>
+    <ellipse cx="108" cy="90" rx="9" ry="10.5" fill="#2b1d16"/>
+    <circle cx="72.5" cy="85.5" r="4.2" fill="#fff"/>
+    <circle cx="80" cy="94.5" r="2" fill="#fff"/>
+    <circle cx="104.5" cy="85.5" r="4.2" fill="#fff"/>
+    <circle cx="112" cy="94.5" r="2" fill="#fff"/>
+  </g>
 </svg>

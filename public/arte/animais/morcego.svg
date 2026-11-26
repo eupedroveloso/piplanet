@@ -1,8 +1,101 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M19.3859 9.58452L26.6806 2.20071C26.6939 2.18745 26.7096 2.16926 26.7275 2.14858C26.8182 2.04379 26.9642 1.87507 27.12 1.96024C27.3521 2.08716 27.2854 2.33186 27.189 2.49335C26.3207 3.94884 26.2747 7.36886 29.6056 8.02646C29.7494 8.0594 29.8817 8.30247 29.6611 8.52303C28.6115 9.57264 26.689 12.9977 29.9263 15.5941C30.0404 15.6567 30.1715 15.8261 29.7826 16.0029C29.7533 16.0162 29.7124 16.0328 29.6618 16.0533C28.8749 16.3717 25.7323 17.6434 26.8327 22.7094L20.5129 16.3896C21.1869 15.7819 21.9095 13.7865 19.4081 10.6664C18.9167 10.0536 19.3859 9.58452 19.3859 9.58452Z" fill="#A56953"/>
-<path d="M9.74083 19.2296L2.35702 26.5243C2.34377 26.5376 2.32557 26.5533 2.30489 26.5712C2.2001 26.6619 2.03138 26.8079 2.11655 26.9637C2.24347 27.1958 2.48817 27.129 2.64966 27.0327C4.10515 26.1644 7.52517 26.1184 8.18277 29.4493C8.21571 29.593 8.45878 29.7253 8.67934 29.5048C9.72895 28.4552 13.154 26.5327 15.7504 29.77C15.813 29.8841 15.9824 30.0152 16.1592 29.6263C16.1726 29.597 16.1891 29.5561 16.2096 29.5055C16.528 28.7185 17.7997 25.576 22.8657 26.6764L16.5459 20.3566C15.9382 21.0306 13.9428 21.7532 10.8228 19.2517C10.2099 18.7604 9.74083 19.2296 9.74083 19.2296Z" fill="#A56953"/>
-<path d="M22.5489 18.0733C22.4661 17.3728 22.1445 16.6526 21.4734 15.9814L17.4738 11.9818C17.1533 11.6613 16.8219 11.794 16.9656 12.4901L17.2749 15.2964C16.8551 15.6425 15.9115 16.483 15.4961 17.0752L12.6125 16.8432C11.8943 16.7658 11.7507 17.0863 12.06 17.3956C12.1636 17.4992 12.3722 17.7043 12.6455 17.973C13.5611 18.8732 15.2031 20.4876 16.0596 21.3952C16.4731 21.8087 17.2468 22.2908 18.181 22.4182C18.7158 23.022 19.5553 23.9186 20.8104 25.1737C23.8038 28.1671 25.3559 26.74 26.2073 25.9571C26.2358 25.9309 26.2635 25.9054 26.2905 25.8808C27.9146 24.2567 26.8429 22.4116 25.2851 20.699C24.4759 19.8095 23.3965 18.8045 22.5489 18.0733Z" fill="#6D4534"/>
-<path d="M19.0648 20.71C18.6173 20.2626 18.645 19.1522 18.9377 18.8594C19.3134 18.4838 20.5066 18.5942 20.8436 18.9312C21.0591 19.1467 21.0867 19.4616 20.3133 20.235C19.5399 21.0084 19.2195 20.8647 19.0648 20.71Z" fill="#FF8687"/>
-<path d="M19.5 18C19.7761 18 20 17.7761 20 17.5C20 17.2239 19.7761 17 19.5 17C19.2239 17 19 17.2239 19 17.5C19 17.7761 19.2239 18 19.5 18Z" fill="#1C1C1C"/>
-<path d="M17.5 20C17.7761 20 18 19.7761 18 19.5C18 19.2239 17.7761 19 17.5 19C17.2239 19 17 19.2239 17 19.5C17 19.7761 17.2239 20 17.5 20Z" fill="#1C1C1C"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="morcego-asa" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a08278"/>
+      <stop offset="0.5" stop-color="#6e5652"/>
+      <stop offset="1" stop-color="#4a3a3a"/>
+    </linearGradient>
+    <linearGradient id="morcego-asa-d" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8e7068"/>
+      <stop offset="0.5" stop-color="#634c49"/>
+      <stop offset="1" stop-color="#433435"/>
+    </linearGradient>
+    <linearGradient id="morcego-corpo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7a5a48"/>
+      <stop offset="0.5" stop-color="#5a3f32"/>
+      <stop offset="1" stop-color="#3c2a22"/>
+    </linearGradient>
+    <radialGradient id="morcego-cabeca" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#cc9a78"/>
+      <stop offset="0.6" stop-color="#a06e50"/>
+      <stop offset="1" stop-color="#74503a"/>
+    </radialGradient>
+    <linearGradient id="morcego-capa" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffd38a"/>
+      <stop offset="0.5" stop-color="#e8a24e"/>
+      <stop offset="1" stop-color="#bc7630"/>
+    </linearGradient>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="128" cy="237" rx="78" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="asas" stroke-linejoin="round" stroke-linecap="round">
+    <!-- asas de membrana esticadas entre os dedos compridos -->
+    <path d="M108 122 C94 96 76 78 60 70 L16 56 Q30 88 6 112 Q34 140 20 164 Q48 164 62 192 Q86 170 114 186 Z" fill="url(#morcego-asa)" stroke="#2e2224" stroke-width="2.5"/>
+    <path d="M148 122 C162 96 180 78 196 70 L240 56 Q226 88 250 112 Q222 140 236 164 Q208 164 194 192 Q170 170 142 186 Z" fill="url(#morcego-asa-d)" stroke="#2e2224" stroke-width="2.5"/>
+    <!-- ossos dos dedos -->
+    <path d="M108 122 C94 98 76 80 60 70 M60 70 L16 56 M60 70 Q30 90 6 112 M60 70 Q40 124 20 164 M60 70 Q62 140 62 192 M148 122 C162 98 180 80 196 70 M196 70 L240 56 M196 70 Q226 90 250 112 M196 70 Q216 124 236 164 M196 70 Q194 140 194 192" fill="none" stroke="#2e2224" stroke-width="5"/>
+    <path d="M108 122 C94 98 76 80 60 70 M60 70 L16 56 M60 70 Q30 90 6 112 M60 70 Q40 124 20 164 M60 70 Q62 140 62 192 M148 122 C162 98 180 80 196 70 M196 70 L240 56 M196 70 Q226 90 250 112 M196 70 Q216 124 236 164 M196 70 Q194 140 194 192" fill="none" stroke="#a88a7e" stroke-width="2.4"/>
+    <g fill="#c2a498" stroke="#2e2224" stroke-width="1.4"><circle cx="38" cy="63" r="2.6"/><circle cx="32" cy="94" r="2.6"/><circle cx="38" cy="122" r="2.6"/><circle cx="61" cy="134" r="2.6"/><circle cx="218" cy="63" r="2.6"/><circle cx="224" cy="94" r="2.6"/><circle cx="218" cy="122" r="2.6"/><circle cx="195" cy="134" r="2.6"/></g>
+    <!-- polegar com garrinha -->
+    <path d="M60 70 Q56 62 58 58 M196 70 Q200 62 198 58" fill="none" stroke="#2e2224" stroke-width="5"/>
+    <path d="M60 70 Q56 62 58 58 M196 70 Q200 62 198 58" fill="none" stroke="#a88a7e" stroke-width="2.4"/>
+    <path d="M58 58 l-4 -4 l6 0 Z M198 58 l4 -4 l-6 0 Z" fill="#2e2224" stroke="#2e2224" stroke-width="1.5"/>
+    <!-- brilho na membrana -->
+    <path d="M70 86 Q50 100 34 104 M186 86 Q206 100 222 104" fill="none" stroke="#b39890" stroke-width="2" opacity="0.6"/>
+    <path d="M90 130 Q70 150 60 170 M166 130 Q186 150 196 170" fill="none" stroke="#2e2224" stroke-width="1.2" opacity="0.4"/>
+  </g>
+
+  <g id="pernas" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M114 176 C110 188 108 198 110 206 M142 176 C146 188 148 198 146 206" fill="none" stroke="#2e2224" stroke-width="7"/>
+    <path d="M114 176 C110 188 108 198 110 206 M142 176 C146 188 148 198 146 206" fill="none" stroke="#6a4c3c" stroke-width="3.5"/>
+    <!-- garrinhas dos pés, que ele usa para se pendurar -->
+    <path d="M104 206 q2 6 6 6 M110 206 q1 7 4 8 M116 206 q0 6 2 8 M152 206 q-2 6 -6 6 M146 206 q-1 7 -4 8 M140 206 q0 6 -2 8" fill="none" stroke="#2e2224" stroke-width="2.2"/>
+  </g>
+
+  <g id="corpo" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M128 108 C152 108 160 132 158 154 C156 174 144 186 128 186 C112 186 100 174 98 154 C96 132 104 108 128 108 Z"
+          fill="url(#morcego-corpo)" stroke="#2e2224" stroke-width="2.5"/>
+    <path d="M128 140 C140 140 146 152 144 164 C142 174 136 178 128 178 C120 178 114 174 112 164 C110 152 116 140 128 140 Z" fill="#7a5a48" opacity="0.6" stroke="none"/>
+    <path d="M110 140 Q112 122 124 116" fill="none" stroke="#9a7864" stroke-width="3" opacity="0.8"/>
+    <g fill="none" stroke="#3c2a22" stroke-width="1.5" opacity="0.8"><path d="M116 146 l3 4 M138 148 l3 4 M120 164 l3 4 M138 166 l-3 4 M128 156 l2 4"/></g>
+    <!-- capa dourada no pescoço -->
+    <path d="M96 106 C110 96 146 96 160 106 C162 120 156 128 150 134 Q146 130 142 136 Q137 132 133 138 Q128 134 123 138 Q119 132 114 136 Q110 130 106 134 C100 128 94 120 96 106 Z"
+          fill="url(#morcego-capa)" stroke="#8a5420" stroke-width="2.2"/>
+    <path d="M104 110 Q116 102 132 102" fill="none" stroke="#fff0c8" stroke-width="3" opacity="0.9"/>
+    <g fill="none" stroke="#bc7630" stroke-width="1.5"><path d="M108 118 l2 5 M118 120 l1 5 M138 120 l-1 5 M148 118 l-2 5"/></g>
+  </g>
+
+  <g id="cabeca-toda" transform="translate(128 92) scale(1.22) translate(-128 -92)">
+  <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
+    <!-- orelhas pontudas -->
+    <path d="M100 74 C96 60 98 46 106 38 C114 44 118 56 116 68 Z" fill="url(#morcego-cabeca)" stroke="#2e2224" stroke-width="2.5"/>
+    <path d="M103 70 C101 60 102 50 106 45 C111 50 113 58 112 66 Z" fill="#4a3434"/>
+    <path d="M156 74 C160 60 158 46 150 38 C142 44 138 56 140 68 Z" fill="url(#morcego-cabeca)" stroke="#2e2224" stroke-width="2.5"/>
+    <path d="M153 70 C155 60 154 50 150 45 C145 50 143 58 144 66 Z" fill="#4a3434"/>
+    <!-- cabeça de raposinha -->
+    <path d="M128 56 C150 56 160 70 158 88 C156 100 148 108 140 114 C136 118 132 122 128 122 C124 122 120 118 116 114 C108 108 100 100 98 88 C96 70 106 56 128 56 Z"
+          fill="url(#morcego-cabeca)" stroke="#2e2224" stroke-width="2.5"/>
+    <path d="M106 74 Q114 62 128 60" fill="none" stroke="#d6aa8a" stroke-width="3.5" opacity="0.8"/>
+    <g fill="none" stroke="#644232" stroke-width="1.4" opacity="0.8"><path d="M122 62 l1 4 M134 62 l-1 4"/></g>
+    <!-- focinho comprido -->
+    <path d="M128 92 C138 92 144 100 142 108 C140 116 134 122 128 122 C122 122 116 116 114 108 C112 100 118 92 128 92 Z" fill="#a87658" opacity="0.9"/>
+    <path d="M121 108 C121 103 135 103 135 108 C135 113 131 115 128 115 C125 115 121 113 121 108 Z" fill="#2e2224"/>
+    <path d="M124 106 q2 -1 3 1 M129 107 q1 -2 3 -1" fill="none" stroke="#7a5a5a" stroke-width="1.2"/>
+    <path d="M128 115 v3 M122 117 Q128 122 134 117" fill="none" stroke="#2e2224" stroke-width="1.8"/>
+    <ellipse cx="108" cy="100" rx="8" ry="5" fill="#f4908a" opacity="0.5"/>
+    <ellipse cx="148" cy="100" rx="8" ry="5" fill="#f4908a" opacity="0.5"/>
+  </g>
+
+  <g id="olhos">
+    <ellipse cx="113" cy="84" rx="7.4" ry="8.6" fill="#2b1d16"/>
+    <ellipse cx="143" cy="84" rx="7.4" ry="8.6" fill="#2b1d16"/>
+    <circle cx="109.5" cy="79.5" r="3.5" fill="#fff"/>
+    <circle cx="117" cy="88.5" r="1.7" fill="#fff"/>
+    <circle cx="139.5" cy="79.5" r="3.5" fill="#fff"/>
+    <circle cx="147" cy="88.5" r="1.7" fill="#fff"/>
+  </g>
+  </g>
 </svg>

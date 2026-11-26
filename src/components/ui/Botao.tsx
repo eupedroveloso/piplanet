@@ -22,7 +22,8 @@ const CORES = {
 
 const TAMANHOS = {
   md: "h-14 px-6 text-xl gap-2",
-  lg: "h-18 px-10 text-2xl gap-3",
+  /** Grande no tablet; no celular encolhe para caber sem rolagem (continua ≥ 56 px). */
+  lg: "h-14 px-6 text-xl gap-2 sm:h-18 sm:px-10 sm:text-2xl sm:gap-3",
 } as const;
 
 export type CorBotao = keyof typeof CORES;

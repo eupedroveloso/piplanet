@@ -1,15 +1,134 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M7.99998 2.5C7.99998 2.22 8.21998 2 8.49998 2C8.77998 2 8.99998 2.22 8.99998 2.5V3.66C8.99998 3.87131 8.96502 4.0753 8.90007 4.26606L9.27003 4.2C9.69003 4.13 10 3.77 10 3.34V2.5C10 2.22 10.22 2 10.5 2C10.78 2 11 2.22 11 2.5V3.34C11 4.26 10.35 5.03 9.44003 5.19L8.60003 5.33C8.57003 5.34 8.54003 5.34 8.51003 5.34C8.38443 5.34 8.26704 5.29344 8.17794 5.21322C7.98069 5.34755 7.75527 5.44643 7.50998 5.5C7.45998 5.32 7.35998 5.15 7.21998 5C7.09998 4.86 6.97998 4.73 6.84998 4.6L7.26998 4.52C7.68998 4.45 7.99998 4.09 7.99998 3.66V2.5Z" fill="#7D4533"/>
-<path d="M21 18.71V24.78C21 24.93 20.97 25.07 20.9 25.2L19.4412 28.9999H21.6459L23.7 25.42C23.89 25.1 24.01 24.82 24.01 24.48V18.71H21Z" fill="#D3883E"/>
-<path d="M18.1429 28.9999H16.0966L15.44 26.63C15.4 26.47 15.29 26.33 15.15 26.25C14.51 25.88 14.04 25.27 13.85 24.56L13 21.01H15.99L18.1429 28.9999Z" fill="#D3883E"/>
-<path d="M28.27 20.25L29.54 21.52C29.84 21.82 30 22.21 29.99 22.62V28.66C29.99 28.83 29.85 28.97 29.68 28.97H28.31C28.14 28.97 28 28.83 28 28.66V25.3C28 25.1 27.9 24.91 27.73 24.82L23.62 21.88C22.86 21.33 22.4 20.44 22.4 19.5L17.1033 19.643L13 21V23.84C13 24.58 12.7 25.29 12.18 25.81C12.07 25.93 12 26.08 12 26.25V28.67C12 28.84 11.86 28.98 11.69 28.98H10.31C10.14 28.98 10 28.84 10 28.67V20.97H9.74C8.46447 20.97 7.26955 20.4704 6.41797 19.6523L7.09851 14.7251L4.99 12H3.56C2.7 12 2 11.28 2 10.42C2 10.14 2.11 9.86997 2.31 9.65997L5.51 6.45997C5.82 6.14997 6.25 5.96997 6.7 5.96997H12.2C12.6 5.96997 12.84 6.42997 12.61 6.75997C12.09 7.49997 11.23 7.98997 10.25 7.98997H9.86L11.51 11C11.81 11.59 12.42 11.97 13.08 11.97H24V9C25.1 9 26 9.9 26 11V12.403C27.1891 13.032 28 14.2819 28 15.72V19.59C28 19.84 28.1 20.08 28.27 20.25Z" fill="#F3AD61"/>
-<path d="M12 29.69V28H10V29.69C10 29.86 10.14 30 10.31 30H11.69C11.86 30 12 29.86 12 29.69Z" fill="#6D4534"/>
-<path d="M16.69 29.99C16.52 29.99 16.35 29.94 16.31 29.77L15.82 28H17.88L18.31 29.62C18.36 29.78 18.29 30 18.09 30L16.69 29.99Z" fill="#6D4534"/>
-<path d="M19.22 29.55L19.82 28H22.21L21.28 29.62C21.1 29.86 20.83 30 20.53 30H19.5C19.27 30 19.12 29.76 19.22 29.55Z" fill="#6D4534"/>
-<path d="M30 28V29.69C30 29.86 29.86 30 29.68 30H28.31C28.14 30 28 29.86 28 29.69V28H30Z" fill="#6D4534"/>
-<path d="M6 9.5C6 9.77614 5.77614 10 5.5 10C5.22386 10 5 9.77614 5 9.5C5 9.22386 5.22386 9 5.5 9C5.77614 9 6 9.22386 6 9.5Z" fill="#212121"/>
-<path d="M3.06 11H2.1C2.04 10.83 2 10.64 2 10.44C2 10.28 2.03 10.14 2.1 10H3.02C3.66 10 3.7 10.96 3.06 11Z" fill="#212121"/>
-<path d="M7.99999 12V17.01C7.99999 18.15 7.36999 19.14 6.42999 19.66C5.54999 18.79 4.99999 17.59 4.99999 16.26L4.98999 12H7.99999Z" fill="#FFDEA7"/>
-<path d="M13 21V19L22.04 19C22.24 19 22.4 19.15 22.4 19.35V19.36C22.4 19.45 22.36 19.54 22.3 19.61C21.46 20.49 20.29 21 19.07 21H13Z" fill="#FFDEA7"/>
-<path d="M13.5 2.02002C13.22 2.02002 13 2.24002 13 2.52002V3.04002C13 3.35002 12.78 3.62002 12.47 3.67002L8.36997 4.35002C8.02997 4.40002 7.72997 4.56002 7.49997 4.78002C7.26997 4.55002 6.96997 4.37002 6.62997 4.30002L6.04997 4.17002C5.70997 4.09002 5.46997 3.79002 5.46997 3.44002V3.50002C5.46997 3.22002 5.24997 3.00002 4.96997 3.00002C4.69997 3.00002 4.47997 3.21002 4.46997 3.47002C4.48997 4.28002 5.03997 4.97002 5.83997 5.14002L6.41997 5.27002C6.74997 5.35002 6.99997 5.65002 6.99997 6.00002V6.66002V7.00002C6.99997 7.28002 7.21997 7.50002 7.49997 7.50002C7.77997 7.50002 7.99997 7.28002 7.99997 7.00002V6.66002V6.00002V5.96002C7.99997 5.65002 8.21997 5.38002 8.52997 5.33002L12.63 4.65002C13.42 4.52002 14 3.84002 14 3.04002V2.52002C14 2.24002 13.78 2.02002 13.5 2.02002Z" fill="#6D4534"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="rena-pelo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#b19a84"/>
+      <stop offset="0.55" stop-color="#8a735e"/>
+      <stop offset="1" stop-color="#644f3e"/>
+    </linearGradient>
+    <linearGradient id="rena-tras" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7a6553"/>
+      <stop offset="1" stop-color="#544234"/>
+    </linearGradient>
+    <radialGradient id="rena-cabeca" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#bba590"/>
+      <stop offset="0.65" stop-color="#937c66"/>
+      <stop offset="1" stop-color="#6c5644"/>
+    </radialGradient>
+    <linearGradient id="rena-claro" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fffcf4"/>
+      <stop offset="1" stop-color="#ddd1bd"/>
+    </linearGradient>
+    <linearGradient id="rena-chifre" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f3e6c8"/>
+      <stop offset="1" stop-color="#c4a679"/>
+    </linearGradient>
+    <linearGradient id="rena-focinho" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ddd0bf"/>
+      <stop offset="1" stop-color="#ad9b86"/>
+    </linearGradient>
+    <clipPath id="rena-clip-corpo">
+      <path d="M100 124 C116 112 170 110 200 116 C220 122 226 144 220 162 C214 176 202 180 188 180 L120 180 C104 180 94 168 94 152 C94 140 96 130 100 124 Z"/>
+    </clipPath>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="140" cy="237" rx="94" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="patas-tras" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M124 168 L124 220 L138 220 L140 168 Z" fill="url(#rena-tras)" stroke="#3e3026" stroke-width="2.5"/>
+    <path d="M194 160 C206 168 210 182 206 196 L208 220 L220 220 L220 194 C224 178 218 164 208 156 Z" fill="url(#rena-tras)" stroke="#3e3026" stroke-width="2.5"/>
+    <path d="M123 212 h16 M207 212 h14" stroke="#efe6d6" stroke-width="5"/>
+    <path d="M119 220 L143 220 L144 232 L132 232 L131 226 L130 232 L118 232 Z M203 220 L225 220 L226 232 L215 232 L214 226 L213 232 L202 232 Z" fill="#3b2e26" stroke="#241b15" stroke-width="2"/>
+  </g>
+
+  <g id="cauda" stroke-linejoin="round">
+    <path d="M216 126 C226 124 232 132 228 142 C224 148 216 146 214 140 Z" fill="url(#rena-claro)" stroke="#3e3026" stroke-width="2.5"/>
+  </g>
+
+  <g id="patas-frente" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M102 160 C102 182 104 202 104 220 L118 220 C118 202 120 182 122 160 Z" fill="url(#rena-pelo)"/>
+    <path d="M102 168 C102 186 104 202 104 220 M118 220 C118 202 120 186 121 170" fill="none" stroke="#3e3026" stroke-width="2.5"/>
+    <path d="M164 150 C190 146 200 168 194 186 C192 192 188 196 188 204 L188 220 L174 220 L174 202 C176 196 178 192 176 186 C166 180 162 166 164 150 Z" fill="url(#rena-pelo)"/>
+    <path d="M174 220 L174 202 C176 196 178 192 176 186 M188 220 L188 204 C188 196 192 192 194 186 C198 174 196 164 190 156" fill="none" stroke="#3e3026" stroke-width="2.5"/>
+    <path d="M108 176 C108 192 109 204 109 212" fill="none" stroke="#c9b49e" stroke-width="2.5" opacity="0.8"/>
+    <!-- meias claras acima do casco -->
+    <path d="M104 212 h14 M174 212 h14" stroke="#efe6d6" stroke-width="5"/>
+    <!-- cascos largos e fendidos (raquetes de neve) -->
+    <path d="M98 220 L124 220 L126 233 L112 233 L111 226 L110 233 L96 233 Z M168 220 L194 220 L196 233 L182 233 L181 226 L180 233 L166 233 Z" fill="#4a3a30" stroke="#241b15" stroke-width="2"/>
+    <path d="M101 223 h7 M171 223 h7" stroke="#8a766a" stroke-width="2"/>
+    <path d="M100 216 l-4 4 M170 216 l-4 4" stroke="#3b2e26" stroke-width="2.5"/>
+  </g>
+
+  <g id="corpo" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M100 124 C116 112 170 110 200 116 C220 122 226 144 220 162 C214 176 202 180 188 180 L120 180 C104 180 94 168 94 152 C94 140 96 130 100 124 Z"
+          fill="url(#rena-pelo)" stroke="#3e3026" stroke-width="2.5"/>
+    <g clip-path="url(#rena-clip-corpo)">
+      <!-- faixa clara no flanco e barriga escura -->
+      <path d="M96 158 C130 150 170 152 226 146 L226 158 C180 164 130 164 96 170 Z" fill="#d9cbb6" opacity="0.75"/>
+      <path d="M96 170 C130 166 180 164 226 158 L226 190 L96 190 Z" fill="#5a4636"/>
+      <!-- traseiro branco -->
+      <path d="M206 116 C222 118 230 136 226 160 C218 156 212 146 210 134 C208 126 206 120 206 116 Z" fill="url(#rena-claro)"/>
+    </g>
+    <path d="M130 116 Q160 110 188 114" fill="none" stroke="#c9b49e" stroke-width="3.5" opacity="0.9"/>
+    <g fill="none" stroke="#644f3e" stroke-width="1.6" opacity="0.7">
+      <path d="M134 132 l3 6 M156 130 l3 6 M178 128 l3 6 M146 144 l3 5 M168 142 l3 5 M192 136 l3 5"/>
+    </g>
+    <path d="M176 130 C194 126 208 138 206 156" fill="none" stroke="#644f3e" stroke-width="2" opacity="0.5"/>
+  </g>
+
+  <g id="pescoco" stroke-linejoin="round" stroke-linecap="round">
+    <!-- pescoço com juba clara e "babador" branco -->
+    <path d="M70 116 C74 100 104 96 120 108 C132 116 138 134 134 152 L126 148 L122 164 L114 154 L108 172 L100 158 L92 170 L90 152 C80 144 70 132 70 116 Z" fill="url(#rena-claro)" stroke="#3e3026" stroke-width="2.5"/>
+    <path d="M110 112 C118 118 122 128 124 140" fill="none" stroke="#a8977f" stroke-width="1.8" opacity="0.8"/>
+    <path d="M98 124 q4 10 4 22 M110 128 q4 8 4 18 M88 130 q2 8 4 16" fill="none" stroke="#cbbca3" stroke-width="1.6"/>
+  </g>
+
+  <g id="chifres" stroke-linejoin="round" stroke-linecap="round">
+    <!-- galhadas grandes em C, ramificadas -->
+    <g fill="none" stroke="#7a5f3c" stroke-width="10"><path d="M58 70 C46 56 30 46 30 28 C30 16 38 9 46 7 M36 50 L18 48 M31 36 L14 28 M31 22 L20 8 M40 10 L36 2"/><path d="M86 70 C98 56 114 46 114 28 C114 16 106 9 98 7 M108 50 L126 48 M113 36 L130 28 M113 22 L124 8 M104 10 L108 2"/></g>
+    <g fill="none" stroke="url(#rena-chifre)" stroke-width="5"><path d="M58 70 C46 56 30 46 30 28 C30 16 38 9 46 7 M36 50 L18 48 M31 36 L14 28 M31 22 L20 8 M40 10 L36 2"/><path d="M86 70 C98 56 114 46 114 28 C114 16 106 9 98 7 M108 50 L126 48 M113 36 L130 28 M113 22 L124 8 M104 10 L108 2"/></g>
+    <path d="M44 52 C40 42 36 34 32 30 M100 56 C106 46 110 38 112 32" fill="none" stroke="#fff6e0" stroke-width="1.6" opacity="0.8"/>
+  </g>
+
+  <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
+    <!-- orelhas pequenas e peludas -->
+    <path d="M46 86 C32 78 20 80 14 86 C22 96 36 96 48 94 Z" fill="url(#rena-cabeca)" stroke="#3e3026" stroke-width="2.5"/>
+    <path d="M44 88 C34 84 26 84 21 87 C28 92 36 92 44 91 Z" fill="#e3d4c0"/>
+    <path d="M98 86 C112 78 124 80 130 86 C122 96 108 96 96 94 Z" fill="url(#rena-cabeca)" stroke="#3e3026" stroke-width="2.5"/>
+    <path d="M100 88 C110 84 118 84 123 87 C116 92 108 92 100 91 Z" fill="#d6c6b0"/>
+    <!-- cabeça -->
+    <path d="M72 66 C94 66 106 80 106 98 C106 110 100 118 96 126 C92 140 84 148 72 148 C60 148 52 140 48 126 C44 118 38 110 38 98 C38 80 50 66 72 66 Z"
+          fill="url(#rena-cabeca)" stroke="#3e3026" stroke-width="2.5"/>
+    <path d="M46 92 Q50 74 66 70" fill="none" stroke="#cdb9a3" stroke-width="3.5" opacity="0.8"/>
+    <path d="M62 70 Q72 74 82 70" fill="none" stroke="#6c5644" stroke-width="2" opacity="0.6"/>
+    <!-- focinho largo e peludo -->
+    <path d="M60 112 C62 106 82 106 84 112 C90 120 94 128 93 136 C92 144 84 150 72 150 C60 150 52 144 51 136 C50 128 54 120 60 112 Z" fill="url(#rena-focinho)" stroke="#8a7462" stroke-width="1.8"/>
+    <path d="M51 138 C52 146 60 150 72 150 C84 150 92 146 93 138" fill="none" stroke="#3e3026" stroke-width="2.2"/>
+    <path d="M64 112 C62 118 58 124 57 130" fill="none" stroke="#f3eadc" stroke-width="2.5" opacity="0.9"/>
+    <path d="M62 132 C62 126 82 126 82 132 C82 138 77 140 72 140 C67 140 62 138 62 132 Z" fill="#4a3d36" stroke="#2a211c" stroke-width="1.4"/>
+    <ellipse cx="66.5" cy="131" rx="2.5" ry="3" fill="#2a211c"/><ellipse cx="77.5" cy="131" rx="2.5" ry="3" fill="#2a211c"/>
+    <path d="M65 128 h4" stroke="#7d6e64" stroke-width="1.5"/>
+    <path d="M72 140 v3 M66 145 Q72 148 78 145" fill="none" stroke="#3e3026" stroke-width="2"/>
+    <g fill="none" stroke="#f3eadc" stroke-width="1.4" opacity="0.8"><path d="M56 128 l-3 2 M88 128 l3 2 M57 134 l-3 1 M87 134 l3 1"/></g>
+    <ellipse cx="48" cy="118" rx="7" ry="4.5" fill="#f4908a" opacity="0.5"/>
+    <ellipse cx="96" cy="118" rx="7" ry="4.5" fill="#f4908a" opacity="0.5"/>
+  </g>
+
+  <g id="pa" stroke-linejoin="round" stroke-linecap="round">
+    <!-- galho chato da frente (pá), na frente da testa -->
+    <path d="M60 76 C55 70 50 62 48 54 C43 53 41 48 44 45 C46 43 49 43 51 45 C50 40 52 37 56 37 C59 37 61 40 61 43 C62 40 65 39 68 40 C71 42 71 46 69 49 C67 56 65 66 60 76 Z" fill="url(#rena-chifre)" stroke="#7a5f3c" stroke-width="2.2"/>
+    <path d="M52 50 Q58 46 64 48" fill="none" stroke="#fff6e0" stroke-width="2"/>
+    <path d="M58 56 C59 62 60 68 60 74" fill="none" stroke="#a88a5c" stroke-width="1.6"/>
+  </g>
+
+  <g id="olhos">
+    <ellipse cx="57" cy="98" rx="9" ry="10.5" fill="#2b1d16"/>
+    <ellipse cx="87" cy="98" rx="9" ry="10.5" fill="#2b1d16"/>
+    <circle cx="53.5" cy="93.5" r="4.2" fill="#fff"/>
+    <circle cx="61" cy="102.5" r="2" fill="#fff"/>
+    <circle cx="83.5" cy="93.5" r="4.2" fill="#fff"/>
+    <circle cx="91" cy="102.5" r="2" fill="#fff"/>
+    <path d="M48 85 q4 -3 9 -2 M96 85 q-4 -3 -9 -2" fill="none" stroke="#3e3026" stroke-width="1.8" stroke-linecap="round"/>
+  </g>
 </svg>

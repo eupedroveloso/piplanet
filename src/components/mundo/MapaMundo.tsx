@@ -7,7 +7,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type * as THREE from "three";
 import { chaveFase, faseDesbloqueada, paisDesbloqueado, TERRITORIOS, territorioDesbloqueado } from "@/content/jornada";
 import { PAISES, type PaisId } from "@/content/paises";
-import { useProgress } from "@/lib/progress";
+import { useProgress, liberadas } from "@/lib/progress";
 import { speak } from "@/lib/speech";
 import { settingsStore, useSettings } from "@/lib/settings";
 import { Arte, BotaoRedondo, MOLA_ENTRADA, TelaCarregando } from "@/components/ui";
@@ -16,6 +16,7 @@ import { criarIlha, type Ilha } from "./ilha";
 import { Rotulos } from "./Rotulos";
 
 /** O 3D só roda no navegador (a tela de carregamento cobre enquanto baixa). */
+import { ProtecaoCena } from "./ProtecaoCena";
 const Cena = dynamic(() => import("./Cena"), { ssr: false });
 const Planeta = dynamic(() => import("./Planeta").then((m) => m.Planeta), { ssr: false });
 
@@ -35,17 +36,17 @@ export function MapaMundo() {
   const balaoRef = useRef<THREE.Group | null>(null);
 
   const liberados = useMemo(
-    () => Object.fromEntries(TERRITORIOS.map((t) => [t.id, territorioDesbloqueado(progresso.fases, t.id)])) as Record<string, boolean>,
-    [progresso.fases],
+    () => Object.fromEntries(TERRITORIOS.map((t) => [t.id, territorioDesbloqueado(liberadas(progresso), t.id)])) as Record<string, boolean>,
+    [progresso.fases, progresso.tudoLiberado],
   );
   const paisesLivres = useMemo(
-    () => Object.fromEntries(PAISES.map((p) => [p.id, paisDesbloqueado(progresso.fases, p.id)])) as Record<PaisId, boolean>,
-    [progresso.fases],
+    () => Object.fromEntries(PAISES.map((p) => [p.id, paisDesbloqueado(liberadas(progresso), p.id)])) as Record<PaisId, boolean>,
+    [progresso.fases, progresso.tudoLiberado],
   );
   const atual = useMemo(() => {
     for (const t of TERRITORIOS)
       for (let i = 0; i < t.fases.length; i++)
-        if (!(chaveFase(t.id, i) in progresso.fases) && faseDesbloqueada(progresso.fases, t.id, i)) return t;
+        if (!(chaveFase(t.id, i) in progresso.fases) && faseDesbloqueada(liberadas(progresso), t.id, i)) return t;
     return TERRITORIOS[TERRITORIOS.length - 1];
   }, [progresso.fases]);
 
@@ -128,10 +129,13 @@ export function MapaMundo() {
       <AnimatePresence mode="wait">
         {nivel === "planeta" ? (
           <motion.div key="planeta" className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
-            <Planeta liberados={paisesLivres} atual={atual.pais} progresso={progresso} alvo={voandoPara} onEscolher={entrarNoPais} />
+            <ProtecaoCena>
+              <Planeta liberados={paisesLivres} atual={atual.pais} progresso={progresso} alvo={voandoPara} onEscolher={entrarNoPais} />
+            </ProtecaoCena>
           </motion.div>
         ) : !ilha ? null : (
           <motion.div key={`pais-${ilha.pais}`} className="absolute inset-0" initial={{ opacity: 0, scale: 1.04 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
+            <ProtecaoCena>
             <Cena
               ilha={ilha}
               progresso={progresso}
@@ -143,6 +147,7 @@ export function MapaMundo() {
               camRef={camRef}
               balaoRef={balaoRef}
             />
+            </ProtecaoCena>
             <Rotulos ilha={ilha} camRef={camRef} balaoRef={balaoRef} foco={foco} hover={hover} progresso={progresso} liberados={liberados} onFocar={setFoco} />
             <motion.div
               initial={{ opacity: 0, y: -8 }}

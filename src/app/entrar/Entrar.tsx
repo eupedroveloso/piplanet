@@ -68,7 +68,7 @@ export function Entrar() {
   }
 
   return (
-    <div className="flex min-h-dvh flex-col items-center justify-center gap-6 px-4 pt-[max(env(safe-area-inset-top),2rem)] pb-[max(env(safe-area-inset-bottom),2rem)] sm:gap-8" style={{ background: "linear-gradient(180deg, #a9c1ff 0%, #cdd8ff 45%, #f1e8ff 100%)" }}>
+    <div className="flex h-dvh flex-col items-center justify-center gap-4 overflow-hidden px-4 pt-[max(env(safe-area-inset-top),1rem)] pb-[max(env(safe-area-inset-bottom),1rem)] sm:gap-8" style={{ background: "linear-gradient(180deg, #a9c1ff 0%, #cdd8ff 45%, #f1e8ff 100%)" }}>
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={MOLA_ENTRADA} className="flex flex-col items-center gap-2">
         <motion.button
           type="button"

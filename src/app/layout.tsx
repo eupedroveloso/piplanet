@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Andika, Baloo_2 } from "next/font/google";
 import { ProvedorMovimento } from "@/components/ui/movimento";
+import { Sincronia } from "@/components/Sincronia";
 import "./globals.css";
 
 /** Baloo 2: fonte de títulos e interface, redonda e amigável. */
@@ -42,6 +43,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="pt-BR" className={`${baloo.variable} ${andika.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <ProvedorMovimento>{children}</ProvedorMovimento>
+        <Sincronia />
       </body>
     </html>
   );

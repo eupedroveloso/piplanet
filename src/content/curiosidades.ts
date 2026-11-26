@@ -377,7 +377,7 @@ export const CURIOSIDADES: Record<string, string[]> = {
     "O lagarto-de-língua-azul mostra a língua azul para espantar quem chega perto.",
     "O diabo-espinhoso bebe água por canaizinhos na pele, que levam a água até a boca.",
     "O lagarto-de-gola abre uma gola enorme em volta do pescoço para parecer maior.",
-    "Os lagartos tomam sol para esquentar o corpo.",
+    "Alguns lagartos podem soltar o rabo para fugir, e ele cresce de novo.",
   ],
   aranha: [
     "A aranha tem oito patas e não é um inseto.",

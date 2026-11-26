@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { ANIMAIS, arteDoAnimal, type Animal } from "@/content/animais";
 import { animaisDoTerritorio, type Territorio } from "@/content/jornada";
 import { shuffle } from "@/lib/random";
@@ -131,15 +131,23 @@ function RodadaAchar({
       </div>
 
       {/* Opções de bicho */}
-      <div className="grid grid-cols-2 justify-items-center gap-3 [&>*:last-child:nth-child(odd)]:col-span-2 sm:flex sm:flex-wrap sm:justify-center sm:gap-4">
-        {opcoes.map((a, n) => {
+      {/* Sem rolagem no celular: o lado de cada opção cabe na altura (até 6 opções em 3 linhas).
+          No acerto, as erradas saem e fica só o bicho certo (um foco por vez, e sobra espaço). */}
+      <div
+        style={{ "--lado": `min(40vw, 11rem, calc((100dvh - 330px) / ${Math.ceil((acertou ? 1 : opcoes.length) / 2)}))` } as React.CSSProperties}
+        className="grid grid-cols-2 justify-items-center gap-3 [&>*:last-child:nth-child(odd)]:col-span-2 sm:flex sm:flex-wrap sm:justify-center sm:gap-4"
+      >
+        <AnimatePresence initial={false}>
+        {opcoes.filter((a) => !acertou || a.id === animal.id).map((a, n) => {
           const certo = a.id === animal.id;
           return (
             <motion.div
               key={a.id}
+              layout
               initial={{ opacity: 0, y: 16, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ ...MOLA_ENTRADA, delay: 0.15 + n * 0.06 }}
+              exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.2 } }}
+              transition={{ ...MOLA_ENTRADA, delay: acertou ? 0 : 0.15 + n * 0.06 }}
             >
               <motion.button
                 type="button"
@@ -161,7 +169,7 @@ function RodadaAchar({
                     ? { duration: 1, repeat: Infinity, ease: "easeInOut" }
                     : { duration: 0.4 }
                 }
-                className={`relative grid size-[min(9rem,40vw)] place-items-center rounded-xl bg-branco transition-[opacity,box-shadow] duration-300 sm:size-44 ${
+                className={`relative grid size-[var(--lado)] min-h-14 min-w-14 place-items-center rounded-xl bg-branco transition-[opacity,box-shadow] duration-300 sm:size-44 ${
                   acertou && certo
                     ? "shadow-[0_8px_0_var(--color-verde-escuro)] ring-4 ring-verde"
                     : dica && certo
@@ -175,6 +183,7 @@ function RodadaAchar({
             </motion.div>
           );
         })}
+        </AnimatePresence>
       </div>
     </>
   );

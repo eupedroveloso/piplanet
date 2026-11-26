@@ -1,5 +1,156 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M24.0506 11.0149C24.3406 10.9749 24.6106 11.1549 24.6806 11.4349C24.6806 11.4349 26.635 22.8775 26.625 24.1875C26.625 27.5275 24.6563 29.9531 21.2813 29.9531C17.0625 29.9531 15.2812 26.4872 15.2812 23.0312C15.2812 22.6324 15.2175 22.264 15.1024 21.9199L13.8496 21.9199C13.7881 21.9199 13.7266 21.9712 13.7266 22.043V23.0534C13.7266 23.8711 13.0591 24.5319 12.4297 24.6055C12.3908 24.61 12.3531 24.6139 12.3166 24.6177C12.0707 24.643 11.8759 24.6632 11.6953 24.8438C11.6953 24.8438 11.2222 25.3424 11.0682 25.4329C10.9141 25.5234 10.4915 25.6036 10.2864 25.3984C10.0813 25.1933 10.0608 24.8379 10.2659 24.6328L10.5039 24.3984C10.5347 24.3574 10.5317 24.2852 10.4805 24.2852L9.96484 24.3242C9.73827 24.3242 9.53125 24.1523 9.51171 23.9141C9.49217 23.6758 9.58984 23.4453 9.96484 23.3789L10.3042 23.3018C10.3555 23.3018 10.3862 23.2402 10.3555 23.1992L10.1406 22.9508C9.96484 22.7852 9.95503 22.4278 10.1602 22.2226C10.3653 22.0175 10.7636 22.0488 10.9688 22.2539L11.5742 22.8047C11.6641 22.8985 11.7226 22.9508 11.8398 22.9508C11.9014 22.9508 11.9805 22.8996 11.9805 22.8278V21.6483C11.9805 20.8176 12.6927 20.1719 13.5234 20.1719H13.9633C13.697 19.9003 13.4031 19.6418 13.0937 19.3906C11.758 18.3061 10.6138 16.9976 9.95396 15.4375H7.68689C6.67188 15.4375 6.16015 14.6562 6.16015 14.0391V13.3242C6.16015 13.2542 6.13765 13.1984 6.09765 13.1484L5.47265 12.4844C5.27265 12.2844 5.24702 11.8931 5.45702 11.7031C5.65702 11.5131 5.99689 11.5031 6.18689 11.7031L6.30405 11.7612C6.34405 11.8012 6.41405 11.7712 6.41405 11.7212V11.5012C6.41405 11.2312 6.63671 10.9844 6.90624 10.9844C7.21483 10.9843 7.46812 11.2112 7.46812 11.5012V11.7612C7.46812 11.8212 7.53812 11.8412 7.57812 11.8012L7.71874 11.6835C7.90874 11.4935 8.22577 11.5035 8.42577 11.6835C8.63577 11.8735 8.62577 12.257 8.42577 12.457L7.84765 13.0912C7.79765 13.1412 7.78124 13.2012 7.78124 13.2712L7.78091 13.3224C7.78025 13.4068 7.77902 13.565 7.78124 13.664C7.78356 13.7675 7.8418 13.7812 7.8828 13.7812H9.46434C9.39058 13.3581 9.35156 12.9195 9.35156 12.4649V11.6449C9.35156 11.5955 9.35463 11.5444 9.35771 11.4931C9.36958 11.2952 9.38164 11.0943 9.21875 10.9763C8.23875 10.2663 7.49875 8.99288 7.46875 7.70288C7.43209 6.03503 8.57472 4.59777 9.61314 3.29159C9.84008 3.00613 10.062 2.72694 10.2656 2.45296C10.849 1.66791 12.058 1.65579 12.7656 2.45296C12.9221 2.62924 13.0822 2.80409 13.2428 2.97949C14.4204 4.26553 15.625 5.58115 15.625 7.70296C15.625 9.05296 14.9106 10.3049 13.8806 11.0249C13.6706 11.1649 13.6406 11.3949 13.6406 11.6449V12.4149C13.6716 12.9946 13.7296 13.4135 13.8635 13.7772H15.5612C15.633 13.7772 15.6323 13.7289 15.6314 13.6613L15.6312 13.6372L15.6312 13.2215C15.6312 13.1515 15.5891 13.0915 15.5391 13.0415L14.9375 12.453C14.7375 12.253 14.7275 11.9015 14.9375 11.7115C15.1375 11.5215 15.478 11.4815 15.668 11.6815L15.8197 11.7515C15.8597 11.7915 15.9297 11.7715 15.9297 11.7115V11.414C15.9297 11.2344 16.1016 10.9531 16.4062 10.9531C16.7344 10.9531 16.9512 11.1758 16.9512 11.414L16.9883 11.7115C16.9883 11.7615 17.0583 11.7915 17.0983 11.7515L17.2227 11.6815C17.4127 11.4815 17.7341 11.5186 17.9141 11.6815C18.0941 11.8444 18.1844 12.2015 17.9844 12.4015L17.4023 13.0703L17.3916 13.0836C17.3511 13.1336 17.293 13.2055 17.293 13.2695V13.9961C17.293 14.8261 16.6328 15.4715 15.7012 15.4715H15.2259C15.3053 15.5444 15.3849 15.6172 15.4646 15.6901C16.2595 16.4171 17.0634 17.1523 17.7484 18.0156L17.7493 17.9499C17.7493 17.1399 18.74 17.0156 19.55 17.0156H20.3047C20.3747 17.0156 20.4219 16.9467 20.4219 16.8867V16.6599C20.4219 16.6599 20.4284 16.3894 20.3984 16.3594L19.793 15.6328C19.5996 15.4395 19.6125 15.1383 19.8125 14.9383C20.0125 14.7383 20.2461 14.7734 20.3984 14.8398L20.68 14.9883C20.72 15.0183 20.78 14.9883 20.78 14.9383V14.6699C20.78 14.3899 21.03 14.1699 21.31 14.1699C21.59 14.1699 21.8359 14.3899 21.8359 14.6699V14.9141C21.8359 14.9641 21.8959 14.9941 21.9359 14.9641L22.1641 14.8398C22.2852 14.7656 22.5695 14.7141 22.7695 14.9141C22.9695 15.1141 22.9648 15.3984 22.7969 15.6328L22.5391 15.9492L22.3438 16.207C22.3237 16.227 22.3037 16.267 22.3037 16.297V17.1699C22.3037 18.3477 21.39 18.8828 20.58 18.8828H19.67C19.6 18.8828 19.55 18.9897 19.55 19.0497L19.5584 22.5108C19.5861 22.8153 19.6006 23.1329 19.6006 23.4649C19.6006 24.7326 20.22 26.0406 21.7344 26C22.8144 25.97 23.4375 25.2031 23.4375 23.4649L23.5806 11.5849C23.5806 11.3049 23.7706 11.0549 24.0506 11.0149Z" fill="#00D26A"/>
-<path d="M10 6.5C10 6.77614 9.77614 7 9.5 7C9.22386 7 9 6.77614 9 6.5C9 6.22386 9.22386 6 9.5 6C9.77614 6 10 6.22386 10 6.5Z" fill="#1C1C1C"/>
-<path d="M14 6.5C14 6.77614 13.7761 7 13.5 7C13.2239 7 13 6.77614 13 6.5C13 6.22386 13.2239 6 13.5 6C13.7761 6 14 6.22386 14 6.5Z" fill="#1C1C1C"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="lagarto-pele" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f4cf92"/>
+      <stop offset="0.5" stop-color="#dea25c"/>
+      <stop offset="1" stop-color="#b37638"/>
+    </linearGradient>
+    <linearGradient id="lagarto-pele-tras" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#cf9150"/>
+      <stop offset="1" stop-color="#9c6430"/>
+    </linearGradient>
+    <radialGradient id="lagarto-cabeca" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#f8d9a2"/>
+      <stop offset="0.6" stop-color="#e1a862"/>
+      <stop offset="1" stop-color="#b87a3c"/>
+    </radialGradient>
+    <linearGradient id="lagarto-barba" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d79a58"/>
+      <stop offset="1" stop-color="#8e5a2a"/>
+    </linearGradient>
+    <linearGradient id="lagarto-barriga" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff2d8"/>
+      <stop offset="1" stop-color="#ecd2a6"/>
+    </linearGradient>
+    <radialGradient id="lagarto-iris" cx="0.4" cy="0.35" r="0.7">
+      <stop offset="0" stop-color="#f6d77a"/>
+      <stop offset="1" stop-color="#c88a2a"/>
+    </radialGradient>
+    <linearGradient id="lagarto-pedra" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ecdcc6"/>
+      <stop offset="0.5" stop-color="#c9a98a"/>
+      <stop offset="1" stop-color="#977459"/>
+    </linearGradient>
+    <clipPath id="lagarto-clip-corpo">
+      <path d="M92 148 C110 132 160 130 188 144 C202 154 200 178 186 188 C162 200 116 200 96 190 C82 180 80 160 92 148 Z"/>
+    </clipPath>
+    <clipPath id="lagarto-clip-cauda">
+      <path d="M180 156 C212 156 238 172 242 196 C246 216 230 228 204 231 C184 233 160 232 140 228 C158 222 192 222 210 216 C224 210 224 196 212 188 C202 182 192 182 182 186 Z"/>
+    </clipPath>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="138" cy="237" rx="106" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="pedra" stroke-linejoin="round" stroke-linecap="round">
+    <!-- pedra do deserto onde o dragão-barbudo toma sol -->
+    <path d="M34 236 C28 220 34 202 54 196 C90 190 180 188 214 192 C236 196 246 214 240 236 Z" fill="url(#lagarto-pedra)" stroke="#5e4632" stroke-width="2.5"/>
+    <path d="M52 202 Q120 194 200 196" fill="none" stroke="#fbf1e4" stroke-width="3.5" opacity="0.8"/>
+    <path d="M70 214 q14 -4 26 2 M150 222 q16 -6 30 0 M196 210 q10 4 14 12 M48 224 q8 -2 12 4" fill="none" stroke="#977459" stroke-width="1.8"/>
+    <g fill="#a8866a" opacity="0.6"><circle cx="112" cy="220" r="2.2"/><circle cx="124" cy="228" r="1.6"/><circle cx="220" cy="226" r="2"/><circle cx="62" cy="212" r="1.6"/></g>
+  </g>
+
+  <g id="bicho" transform="translate(0 -42)">
+  <g id="patas-de-la" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M120 176 C126 190 132 204 134 218 L148 220 C146 204 140 188 134 176 Z" fill="url(#lagarto-pele-tras)" stroke="#6e4018" stroke-width="2.5"/>
+    <path d="M128 220 L136 214 L152 218 L156 224 L150 226 L146 222 L144 228 L138 226 L136 222 L130 226 Z" fill="url(#lagarto-pele-tras)" stroke="#6e4018" stroke-width="2"/>
+    <path d="M190 174 C198 188 206 200 210 212 L222 210 C218 196 210 182 200 170 Z" fill="url(#lagarto-pele-tras)" stroke="#6e4018" stroke-width="2.5"/>
+    <path d="M204 214 L212 208 L226 210 L230 216 L224 218 L220 214 L218 220 L212 218 L210 214 L206 218 Z" fill="url(#lagarto-pele-tras)" stroke="#6e4018" stroke-width="2"/>
+  </g>
+
+  <g id="cauda" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M180 156 C212 156 238 172 242 196 C246 216 230 228 204 231 C184 233 160 232 140 228 C158 222 192 222 210 216 C224 210 224 196 212 188 C202 182 192 182 182 186 Z"
+          fill="url(#lagarto-pele)" stroke="#6e4018" stroke-width="2.5"/>
+    <g clip-path="url(#lagarto-clip-cauda)">
+      <!-- faixas da cauda -->
+      <g fill="#b37638" opacity="0.75">
+        <path d="M200 150 l10 0 l-6 40 l-10 0 Z"/><path d="M226 162 l9 6 l-20 30 l-8 -5 Z"/><path d="M246 196 l0 10 l-30 2 l0 -9 Z"/><path d="M234 226 l-8 8 l-16 -18 l8 -6 Z"/><path d="M196 236 l-10 0 l2 -20 l10 0 Z"/><path d="M168 236 l-9 0 l1 -14 l9 0 Z"/>
+      </g>
+      <path d="M150 226 C180 224 210 220 222 206" fill="none" stroke="#fff2d8" stroke-width="3" opacity="0.6"/>
+    </g>
+    <path d="M190 160 Q222 164 236 186" fill="none" stroke="#fbe2b8" stroke-width="3" opacity="0.8"/>
+    <!-- escamas espinhosas da cauda -->
+    <g fill="#e8b472" stroke="#6e4018" stroke-width="1.6">
+      <path d="M204 158 l4 -7 l3 8 Z"/><path d="M222 166 l6 -5 l1 9 Z"/><path d="M234 180 l7 -3 l-2 9 Z"/>
+    </g>
+  </g>
+
+  <g id="corpo" stroke-linejoin="round" stroke-linecap="round">
+    <!-- espinhos laterais (franja) -->
+    <g fill="#e8b472" stroke="#6e4018" stroke-width="2">
+      <path d="M100 190 l-6 10 l12 -4 Z"/><path d="M116 196 l-3 11 l10 -7 Z"/><path d="M134 198 l0 11 l9 -9 Z"/><path d="M152 198 l2 11 l7 -10 Z"/><path d="M170 194 l4 10 l5 -11 Z"/><path d="M184 186 l7 8 l2 -11 Z"/>
+    </g>
+    <path d="M92 148 C110 132 160 130 188 144 C202 154 200 178 186 188 C162 200 116 200 96 190 C82 180 80 160 92 148 Z"
+          fill="url(#lagarto-pele)" stroke="#6e4018" stroke-width="2.5"/>
+    <g clip-path="url(#lagarto-clip-corpo)">
+      <path d="M84 178 C120 190 160 190 204 172 L204 204 L84 204 Z" fill="url(#lagarto-barriga)" opacity="0.8"/>
+      <!-- desenho em losangos do dorso -->
+      <g fill="#c08240" opacity="0.6">
+        <path d="M112 146 l10 -8 l10 8 l-10 8 Z"/><path d="M136 142 l10 -8 l10 8 l-10 8 Z"/><path d="M160 144 l10 -8 l10 8 l-10 8 Z"/>
+        <path d="M124 162 l9 -7 l9 7 l-9 7 Z"/><path d="M148 160 l9 -7 l9 7 l-9 7 Z"/><path d="M172 162 l8 -6 l8 6 l-8 7 Z"/>
+      </g>
+      <g fill="#f8dca8"><circle cx="122" cy="146" r="2"/><circle cx="146" cy="142" r="2"/><circle cx="170" cy="144" r="2"/><circle cx="133" cy="162" r="1.8"/><circle cx="157" cy="160" r="1.8"/></g>
+      <!-- escamas -->
+      <g fill="none" stroke="#b37638" stroke-width="1.3" opacity="0.7">
+        <path d="M104 172 q3 -3 6 0 q3 -3 6 0 M124 178 q3 -3 6 0 q3 -3 6 0 M150 178 q3 -3 6 0 q3 -3 6 0 M174 172 q3 -3 6 0"/>
+      </g>
+    </g>
+    <!-- fileira de espinhos no flanco -->
+    <g fill="#f0c486" stroke="#6e4018" stroke-width="1.6">
+      <path d="M108 168 l3 -7 l4 7 Z"/><path d="M124 172 l3 -7 l4 7 Z"/><path d="M140 174 l3 -7 l4 7 Z"/><path d="M156 174 l3 -7 l4 7 Z"/><path d="M172 170 l3 -7 l4 7 Z"/>
+    </g>
+    <path d="M102 146 Q130 132 166 136" fill="none" stroke="#fde7c0" stroke-width="4" opacity="0.8"/>
+  </g>
+
+  <g id="patas-de-ca" stroke-linejoin="round" stroke-linecap="round">
+    <!-- pata da frente -->
+    <path d="M98 176 C92 190 88 204 88 218 L104 220 C104 206 108 192 114 182 Z" fill="url(#lagarto-pele)" stroke="#6e4018" stroke-width="2.5"/>
+    <path d="M78 228 C80 220 88 216 98 216 C106 216 112 220 112 226 L106 232 L100 228 L96 234 L90 230 L84 234 L82 230 Z" fill="url(#lagarto-pele)" stroke="#6e4018" stroke-width="2.2"/>
+    <!-- pata de trás dobrada -->
+    <path d="M160 178 C176 176 186 188 182 200 C180 208 178 214 176 220 L162 220 C164 212 164 204 158 196 C150 188 152 180 160 178 Z" fill="url(#lagarto-pele)" stroke="#6e4018" stroke-width="2.5"/>
+    <path d="M156 228 C158 220 166 216 176 216 C184 216 190 220 190 226 L184 232 L178 228 L174 234 L168 230 L162 234 L160 230 Z" fill="url(#lagarto-pele)" stroke="#6e4018" stroke-width="2.2"/>
+    <!-- garrinhas -->
+    <g fill="#4a3020"><path d="M82 230 l-4 3 l3 1 Z"/><path d="M90 230 l-2 5 l3 0 Z"/><path d="M100 228 l0 6 l3 -1 Z"/><path d="M106 232 l2 4 l2 -2 Z"/>
+      <path d="M160 230 l-4 3 l3 1 Z"/><path d="M168 230 l-2 5 l3 0 Z"/><path d="M178 228 l0 6 l3 -1 Z"/><path d="M184 232 l2 4 l2 -2 Z"/></g>
+    <path d="M100 182 q-6 14 -8 28 M166 184 Q178 186 178 196" fill="none" stroke="#fde7c0" stroke-width="2.5" opacity="0.8"/>
+    <g fill="#c08240" opacity="0.7"><circle cx="100" cy="198" r="2"/><circle cx="98" cy="208" r="1.8"/><circle cx="170" cy="200" r="2"/></g>
+  </g>
+
+  <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
+    <!-- barba espinhosa -->
+    <path d="M34 160 C50 176 84 182 108 168 L104 186 C80 196 50 190 30 172 Z" fill="url(#lagarto-barba)" stroke="#6e4018" stroke-width="2.5"/>
+    <g fill="#c88a48" stroke="#6e4018" stroke-width="1.8">
+      <path d="M32 170 l-8 6 l10 2 Z"/><path d="M40 178 l-6 9 l11 -2 Z"/><path d="M52 184 l-3 10 l10 -5 Z"/><path d="M66 188 l0 10 l8 -8 Z"/><path d="M80 188 l3 10 l6 -9 Z"/><path d="M94 184 l6 9 l3 -11 Z"/><path d="M104 178 l9 5 l-2 -11 Z"/>
+    </g>
+    <path d="M44 178 l2 -3 M58 184 l1 -3 M72 186 v-3 M86 184 l-1 -3" stroke="#6e4018" stroke-width="1.5"/>
+    <!-- cabeça triangular -->
+    <path d="M22 150 C22 136 38 124 60 118 C80 114 100 118 110 132 C116 142 114 158 104 166 C88 174 54 174 34 166 C26 162 22 158 22 150 Z"
+          fill="url(#lagarto-cabeca)" stroke="#6e4018" stroke-width="2.5"/>
+    <path d="M30 140 Q44 124 66 122" fill="none" stroke="#fde7c0" stroke-width="4" opacity="0.8"/>
+    <!-- espinhos atrás da cabeça -->
+    <g fill="#f0c486" stroke="#6e4018" stroke-width="1.8">
+      <path d="M100 124 l8 -10 l2 12 Z"/><path d="M110 136 l10 -6 l-2 12 Z"/><path d="M112 150 l10 -2 l-6 10 Z"/><path d="M82 118 l4 -10 l5 10 Z"/>
+    </g>
+    <g fill="#c08240" opacity="0.6"><circle cx="44" cy="146" r="1.8"/><circle cx="54" cy="152" r="1.8"/><circle cx="98" cy="150" r="2"/><circle cx="102" cy="140" r="1.8"/></g>
+    <!-- narina -->
+    <ellipse cx="28" cy="144" rx="2.2" ry="1.6" fill="#6e4018"/>
+    <!-- sorriso -->
+    <path d="M24 154 C40 164 64 166 86 160" fill="none" stroke="#6e4018" stroke-width="2.2"/>
+    <path d="M86 160 q4 -1 5 -5" fill="none" stroke="#6e4018" stroke-width="2"/>
+    <ellipse cx="84" cy="152" rx="9" ry="5.5" fill="#f4908a" opacity="0.5"/>
+  </g>
+
+  <g id="olhos">
+    <ellipse cx="60" cy="136" rx="10.5" ry="11.5" fill="url(#lagarto-iris)" stroke="#6e4018" stroke-width="1.5"/>
+    <ellipse cx="91" cy="132" rx="9.5" ry="10.5" fill="url(#lagarto-iris)" stroke="#6e4018" stroke-width="1.5"/>
+    <ellipse cx="61" cy="137" rx="8" ry="9.5" fill="#2b1d16"/>
+    <ellipse cx="92" cy="133" rx="7.2" ry="8.6" fill="#2b1d16"/>
+    <circle cx="57.5" cy="132.5" r="4.2" fill="#fff"/>
+    <circle cx="65" cy="141.5" r="2" fill="#fff"/>
+    <circle cx="88.5" cy="128.5" r="3.8" fill="#fff"/>
+    <circle cx="95.5" cy="137" r="1.8" fill="#fff"/>
+    <path d="M48 126 Q60 118 72 126 M80 122 Q91 115 102 122" fill="none" stroke="#6e4018" stroke-width="2.2"/>
+  </g>
+  </g>
 </svg>

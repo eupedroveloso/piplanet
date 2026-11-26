@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { ANIMAIS, arteDoAnimal, type Animal } from "@/content/animais";
 import { fraseDe } from "@/content/frases";
-import { registrarNivelamento, useProgress } from "@/lib/progress";
+import { registrarNivelamento, registrarSessao, useProgress } from "@/lib/progress";
 import { shuffle } from "@/lib/random";
 import { speak } from "@/lib/speech";
 import { Arte, Botao, BotaoLink, BotaoRedondo, BotaoRedondoLink, BotaoSom, Mascote, MOLA_ENTRADA, Painel, fonteQueCabe } from "@/components/ui";
@@ -19,7 +19,7 @@ import { Arte, Botao, BotaoLink, BotaoRedondo, BotaoRedondoLink, BotaoSom, Masco
  */
 
 const TOTAL = 10;
-const NIVEIS = [
+export const NIVEIS = [
   { n: 1, nome: "Sílabas", icone: "ui/letras", fala: "Você está aprendendo as sílabas!" },
   { n: 2, nome: "Palavras curtas", icone: "animais/gato", fala: "Você lê palavras curtas, como gato!" },
   { n: 3, nome: "Palavras maiores", icone: "animais/cavalo", fala: "Você lê palavras de três sílabas, como cavalo!" },
@@ -64,7 +64,10 @@ export function Nivelamento() {
   const [resultado, setResultado] = useState(1);
   const [escolhido, setEscolhido] = useState<string | null>(null);
 
+  const [inicio, setInicio] = useState(0);
+
   function comecar() {
+    setInicio(Date.now());
     const p = criarPergunta(2, new Set());
     setNivel(2);
     setN(0);
@@ -95,6 +98,8 @@ export function Nivelamento() {
         }
         setResultado(final);
         registrarNivelamento({ data: new Date().toISOString(), nivel: final, acertos: ac });
+        const erros = Object.values(ac).reduce((s, [cc, tt]) => s + (tt - cc), 0);
+        registrarSessao({ tipo: "nivelamento", inicio, fim: Date.now(), concluida: true, erros, estrelas: final });
         setEtapa("fim");
         speak(`Prontinho! ${NIVEIS[final - 1].fala}`);
         return;
@@ -244,7 +249,7 @@ export function Nivelamento() {
 /** Escada dos 6 níveis, com o degrau atual destacado. */
 function Escada({ nivel }: { nivel: number }) {
   return (
-    <div className="flex items-end gap-2" aria-label={`Nível ${nivel} de 6`}>
+    <div className="flex items-end gap-0.5 sm:gap-2" aria-label={`Nível ${nivel} de 6`}>
       {NIVEIS.map((nv, i) => {
         const feito = nv.n <= nivel;
         return (
@@ -255,13 +260,14 @@ function Escada({ nivel }: { nivel: number }) {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ ...MOLA_ENTRADA, delay: i * 0.06 }}
+            whileHover={{ y: -2 }}
             whileTap={{ scale: 0.92 }}
-            style={{ height: 44 + i * 16 }}
-            className={`flex w-14 flex-col items-center justify-start rounded-t-lg pt-2 ${
+            style={{ height: 48 + i * 14 }}
+            className={`flex w-12 flex-col sm:w-14 items-center justify-start rounded-t-lg pt-2 ${
               nv.n === nivel ? "bg-amarelo shadow-[0_5px_0_var(--color-amarelo-escuro)]" : feito ? "bg-verde-claro" : "bg-branco/60"
             }`}
           >
-            <Arte nome={nv.icone} className={`size-8 ${feito ? "" : "opacity-40 grayscale"}`} />
+            <Arte nome={nv.icone} className={`size-7 sm:size-8 ${feito ? "" : "opacity-40 grayscale"}`} />
           </motion.button>
         );
       })}

@@ -1,8 +1,127 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M14 24.563C14 23.3163 13.02 22.3052 11.75 22.3052L19 16.7V27.7926C19 28.4601 18.43 29 17.75 29H15.25C14.57 29 14 28.4601 14 27.7926V24.563Z" fill="#636363"/>
-<path d="M22.51 22.25L22 22H29V28.06C29 28.58 28.58 29 28.06 29H24.94C24.42 29 24 28.58 24 28.06V24.67C24 23.64 23.43 22.71 22.51 22.25Z" fill="#636363"/>
-<path d="M19.35 6C25.23 6 30 10.723 29.99 16.5673V27.7796C29.99 28.4543 29.44 29 28.76 29H26.2339C25.5539 29 25.0039 28.4543 25.0039 27.7796V24.5151C25.0039 23.255 23.9739 22 22.7039 22H17.5C16.49 22 15.79 22.9573 15.32 23.7908C15.2356 23.9407 15.1457 24.1025 15.0509 24.273C14.0231 26.1221 12.4234 29 11.05 29H8.31C8.28361 29 8.26 28.9972 8.23771 28.9946C8.21777 28.9923 8.19889 28.9901 8.18 28.9901C7.35 28.9107 6.96 27.9284 7.45 27.2636L9.16 24.9318C9.88 23.9594 10.07 22.6795 9.59 21.5781C8.84797 19.8763 7.16017 19.1422 5 18.8549V22.5C5 22.7783 5.07227 22.8945 5.08948 22.9152C5.09336 22.9199 5.1032 22.9318 5.13954 22.9472C5.18248 22.9654 5.29076 23 5.5 23C6.32843 23 7 23.6716 7 24.5C7 25.3285 6.32843 26 5.5 26C4.38888 26 3.43171 25.6126 2.7841 24.8349C2.17679 24.1055 2 23.2217 2 22.5V10.9909C2 8.23253 4.25 6 7.03 6H19.35Z" fill="#9B9B9B"/>
-<path d="M5.5 12.5C5.77614 12.5 6 12.7239 6 13V14C6 14.2761 5.77614 14.5 5.5 14.5C5.22386 14.5 5 14.2761 5 14V13C5 12.7239 5.22386 12.5 5.5 12.5Z" fill="#1C1C1C"/>
-<path d="M10 6C14.4741 6 18.2026 9.18153 18.9773 13.3758C19.1323 14.2261 18.4737 15 17.6022 15H11.3945C10.6295 15 10 14.3885 10 13.6242V6Z" fill="#D3D3D3"/>
-<path d="M3.46002 19.7C3.46002 20.2 3.86002 20.6 4.36002 20.6C6.36002 20.6 7.98002 19 7.99002 17H6.19002C6.19002 18.01 5.37002 18.8 4.36002 18.8C3.86002 18.8 3.46002 19.2 3.46002 19.7Z" fill="#D3D3D3"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="elefante-pele" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#cfcbd0"/>
+      <stop offset="0.55" stop-color="#a9a4ac"/>
+      <stop offset="1" stop-color="#7f7a84"/>
+    </linearGradient>
+    <linearGradient id="elefante-tras" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9a95a0"/>
+      <stop offset="1" stop-color="#736e78"/>
+    </linearGradient>
+    <radialGradient id="elefante-cabeca" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#d8d4d9"/>
+      <stop offset="0.65" stop-color="#b0abb4"/>
+      <stop offset="1" stop-color="#8a8590"/>
+    </radialGradient>
+    <linearGradient id="elefante-orelha" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c4bfc6"/>
+      <stop offset="0.6" stop-color="#a39ea8"/>
+      <stop offset="1" stop-color="#85808c"/>
+    </linearGradient>
+    <linearGradient id="elefante-rosa" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ead0d0"/>
+      <stop offset="1" stop-color="#c8a2a6"/>
+    </linearGradient>
+    <linearGradient id="elefante-marfim" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fffdf4"/>
+      <stop offset="1" stop-color="#e6d8b4"/>
+    </linearGradient>
+    <linearGradient id="elefante-agua" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#bfe6fa"/>
+      <stop offset="1" stop-color="#4fb0e3"/>
+    </linearGradient>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="146" cy="237" rx="96" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="elefante" transform="translate(8 15) scale(0.94)">
+  <g id="patas-tras" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M140 170 L140 232 L162 232 L164 170 Z" fill="url(#elefante-tras)" stroke="#555060" stroke-width="2.5"/>
+    <path d="M206 160 C220 168 226 186 222 204 L222 232 L240 232 L240 200 C244 182 236 166 222 158 Z" fill="url(#elefante-tras)" stroke="#555060" stroke-width="2.5"/>
+    <path d="M144 228 q3 -4 6 0 M152 228 q3 -4 6 0 M226 228 q3 -4 6 0 M233 228 q3 -4 6 0" fill="#d8d0c0" stroke="#8a8278" stroke-width="1.4"/>
+    <path d="M144 196 q8 3 16 0 M144 206 q8 3 16 0 M224 200 q7 3 14 0" fill="none" stroke="#5e5868" stroke-width="1.5" opacity="0.7"/>
+  </g>
+
+  <g id="cauda" fill="none" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M226 124 C236 134 238 152 236 170" stroke="#555060" stroke-width="5"/>
+    <path d="M226 124 C236 134 238 152 236 170" stroke="#a9a4ac" stroke-width="2"/>
+    <path d="M236 166 l-4 12 M236 166 l0 13 M236 166 l4 12" stroke="#3a3640" stroke-width="2.2"/>
+  </g>
+
+  <g id="patas-frente" stroke-linejoin="round" stroke-linecap="round">
+    <!-- pilares largos -->
+    <path d="M104 166 C102 190 104 212 104 232 L132 232 C132 212 134 190 134 166 Z" fill="url(#elefante-pele)"/>
+    <path d="M104 172 C103 192 104 212 104 232 L132 232 C132 212 133 192 134 176" fill="none" stroke="#555060" stroke-width="2.5"/>
+    <path d="M180 166 C204 162 214 182 210 200 L210 232 L188 232 L188 206 C184 196 180 184 180 166 Z" fill="url(#elefante-pele)"/>
+    <path d="M188 232 L188 206 C186 200 184 194 183 188 M210 232 L210 200 C212 190 210 180 204 172" fill="none" stroke="#555060" stroke-width="2.5"/>
+    <path d="M104 232 L132 232 M188 232 L210 232" stroke="#555060" stroke-width="2.5"/>
+    <!-- unhas -->
+    <path d="M107 230 q4 -6 8 0 Z M116 230 q4 -6 8 0 Z M125 230 q3 -5 6 0 Z M191 230 q4 -6 8 0 Z M200 230 q4 -6 8 0 Z" fill="url(#elefante-marfim)" stroke="#8a8278" stroke-width="1.4"/>
+    <path d="M108 200 q10 4 20 0 M108 212 q10 4 20 0 M190 204 q9 3 18 0 M190 214 q9 3 18 0" fill="none" stroke="#6e6878" stroke-width="1.5" opacity="0.7"/>
+    <path d="M110 196 L110 214" stroke="#e6e2e8" stroke-width="3" opacity="0.7"/>
+  </g>
+
+  <g id="corpo" stroke-linejoin="round" stroke-linecap="round">
+    <!-- dorso côncavo: ombro e anca altos, meio mais baixo -->
+    <path d="M104 110 C112 88 142 82 162 94 C174 100 186 96 202 96 C224 98 234 122 232 150 C230 176 216 192 194 192 L124 192 C106 192 96 178 96 152 C96 134 98 120 104 110 Z" fill="url(#elefante-pele)" stroke="#555060" stroke-width="2.5"/>
+    <path d="M120 96 Q140 86 158 94 M176 100 Q196 96 214 104" fill="none" stroke="#e6e2e8" stroke-width="3.5" opacity="0.8"/>
+    <!-- rugas da pele -->
+    <g fill="none" stroke="#6e6878" stroke-width="1.6" opacity="0.65">
+      <path d="M180 120 C198 116 214 128 214 146"/>
+      <path d="M150 150 q6 4 12 0 M158 162 q6 4 12 0 M140 172 q6 4 12 0 M176 140 q6 4 12 0 M196 168 q6 4 12 0 M128 128 q5 3 10 0"/>
+      <path d="M140 188 Q164 184 190 188"/>
+    </g>
+  </g>
+
+  <g id="orelhas" stroke-linejoin="round" stroke-linecap="round">
+    <!-- orelhas enormes no formato do mapa da África: larga em cima, ponta para baixo -->
+    <path d="M58 58 C50 42 30 34 14 40 C2 46 -2 62 6 74 C12 82 10 92 16 100 C24 108 22 120 26 134 C28 146 30 156 32 168 C40 160 46 146 54 132 C62 112 64 82 58 58 Z" fill="url(#elefante-orelha)" stroke="#555060" stroke-width="2.5"/>
+    <path d="M53 66 C46 52 32 46 20 50 C10 54 8 64 14 72 C20 80 18 90 24 98 C30 106 28 118 32 130 C34 140 34 148 35 154 C40 146 46 136 50 124 C56 106 58 84 53 66 Z" fill="url(#elefante-rosa)"/>
+    <path d="M22 62 q8 6 10 16 M28 96 q6 8 6 18 M40 72 q4 10 2 22" fill="none" stroke="#a88488" stroke-width="1.5" opacity="0.8"/>
+    <path d="M8 56 Q18 42 38 42" fill="none" stroke="#e6e2e8" stroke-width="3" opacity="0.8"/>
+    <path d="M102 58 C110 42 130 34 146 40 C158 46 162 62 154 74 C148 82 150 92 144 100 C136 108 138 120 134 134 C132 146 130 156 128 168 C120 160 114 146 106 132 C98 112 96 82 102 58 Z" fill="url(#elefante-orelha)" stroke="#555060" stroke-width="2.5"/>
+    <path d="M107 66 C114 52 128 46 140 50 C150 54 152 64 146 72 C140 80 142 90 136 98 C130 106 132 118 128 130 C126 140 126 148 125 154 C120 146 114 136 110 124 C104 106 102 84 107 66 Z" fill="url(#elefante-rosa)" opacity="0.85"/>
+    <path d="M138 62 q-8 6 -10 16 M132 96 q-6 8 -6 18" fill="none" stroke="#a88488" stroke-width="1.5" opacity="0.8"/>
+  </g>
+
+  <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M80 46 C108 46 122 68 120 94 C118 114 108 126 96 130 L64 130 C52 126 42 114 40 94 C38 68 52 46 80 46 Z" fill="url(#elefante-cabeca)" stroke="#555060" stroke-width="2.5"/>
+    <path d="M54 68 Q62 52 80 50" fill="none" stroke="#eceaee" stroke-width="3.5" opacity="0.9"/>
+    <path d="M70 60 q10 -4 20 0 M72 66 q8 -3 16 0" fill="none" stroke="#7e7886" stroke-width="1.6" opacity="0.7"/>
+    <!-- tromba erguida esguichando água -->
+    <path d="M96 120 C98 158 92 196 66 206 C44 212 24 196 22 172 C21 162 24 152 28 148 L40 150 C36 160 38 180 52 188 C66 194 74 176 72 160 C70 146 66 134 64 120 Z" fill="url(#elefante-pele)" stroke="#555060" stroke-width="2.5"/>
+    <g fill="none" stroke="#6e6878" stroke-width="1.8" opacity="0.75">
+      <path d="M66 134 q14 4 29 0 M68 146 q13 4 28 0 M71 158 q12 4 25 0 M73 170 q10 3 22 -2 M72 182 q8 4 18 -4 M64 192 q4 8 12 6 M52 192 q0 8 6 12 M40 186 q-6 6 -6 12 M34 174 q-8 2 -10 6"/>
+    </g>
+    <path d="M86 130 C88 154 86 176 76 190" fill="none" stroke="#e6e2e8" stroke-width="2.5" opacity="0.7"/>
+    <ellipse cx="34" cy="149" rx="6.5" ry="3" fill="#4a4652" transform="rotate(8 34 149)"/>
+    <!-- presas de marfim -->
+    <path d="M66 122 C60 132 52 140 46 140 C50 134 54 126 58 118 Z" fill="url(#elefante-marfim)" stroke="#a8966a" stroke-width="2"/>
+    <path d="M94 122 C100 132 108 140 114 140 C110 134 106 126 102 118 Z" fill="url(#elefante-marfim)" stroke="#a8966a" stroke-width="2"/>
+    <path d="M58 126 Q54 132 50 136 M102 126 Q106 132 110 136" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+    <ellipse cx="54" cy="108" rx="7" ry="4.5" fill="#f4908a" opacity="0.5"/>
+    <ellipse cx="106" cy="108" rx="7" ry="4.5" fill="#f4908a" opacity="0.5"/>
+  </g>
+
+  <g id="agua" fill="none" stroke-linecap="round">
+    <path d="M32 146 C26 126 16 112 6 106 M34 146 C32 124 30 108 26 94 M36 146 C40 126 46 112 54 104" stroke="#2f86b8" stroke-width="6"/>
+    <path d="M32 146 C26 126 16 112 6 106 M34 146 C32 124 30 108 26 94 M36 146 C40 126 46 112 54 104" stroke="#9ad8f6" stroke-width="3"/>
+    <g fill="#9ad8f6" stroke="#2f86b8" stroke-width="1.5">
+      <circle cx="4" cy="96" r="3"/><circle cx="14" cy="98" r="2"/><circle cx="24" cy="84" r="3"/><circle cx="34" cy="86" r="2"/><circle cx="58" cy="94" r="3"/><circle cx="50" cy="96" r="2"/><circle cx="62" cy="104" r="1.8"/>
+    </g>
+  </g>
+
+  <g id="olhos">
+    <ellipse cx="65" cy="90" rx="9" ry="10.5" fill="#2b1d16"/>
+    <ellipse cx="95" cy="90" rx="9" ry="10.5" fill="#2b1d16"/>
+    <circle cx="61.5" cy="85.5" r="4.2" fill="#fff"/>
+    <circle cx="69" cy="94.5" r="2" fill="#fff"/>
+    <circle cx="91.5" cy="85.5" r="4.2" fill="#fff"/>
+    <circle cx="99" cy="94.5" r="2" fill="#fff"/>
+    <path d="M55 78 q4 -4 9 -3 M105 78 q-4 -4 -9 -3" fill="none" stroke="#555060" stroke-width="1.8" stroke-linecap="round"/>
+  </g>
+  </g>
 </svg>

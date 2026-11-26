@@ -12,11 +12,13 @@ export interface Perfil {
   /** Ilustração do avatar (public/arte/...). */
   avatar: string;
   temSenha: boolean;
+  /** Todos os países, biomas e lições abertos (sem precisar completar a sequência). */
+  tudoLiberado?: boolean;
 }
 
 export const PERFIS: Perfil[] = [
   { id: "pietro", nome: "Pietro", avatar: "animais/leao", temSenha: false },
-  { id: "pedro", nome: "Pedro", avatar: "animais/lobo", temSenha: true },
+  { id: "pedro", nome: "Pedro", avatar: "animais/lobo", temSenha: true, tudoLiberado: true },
   { id: "gabi", nome: "Gabi", avatar: "animais/raposa", temSenha: true },
 ];
 

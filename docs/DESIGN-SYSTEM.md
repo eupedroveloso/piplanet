@@ -54,7 +54,8 @@ Coloque `data-territorio="fazenda|floresta|savana|oceano"` num contêiner e use 
 | `NumeroAnimado` | número que sobe contando até o valor (`de` = valor inicial) |
 | `Estrelas` | 0 a 3 estrelas, entram em cascata (`atraso` em segundos) |
 | `Bolinhas` | progresso da rodada |
-| `Peca` / `Casinha` | bloco de sílaba e encaixe; mesmo `layoutId` nas duas faz a peça voar até a casinha |
+| `Peca` / `Casinha` | bloco de sílaba e encaixe; tamanhos `md`, `sm`, `xs` (5+ sílabas), mobile primeiro; mesmo `layoutId` nas duas faz a peça voar até a casinha |
+| `fonteQueCabe` / `fonteQueCabeEm` | font-size que encolhe para a palavra caber numa linha (pela largura da tela ou de uma caixa fixa); use em toda palavra grande de leitura |
 | `Comemoracao` | brilhos em roda, uma vez, no centro do pai (`relative`); some com "reduzir movimento" |
 | `Mascote` | coruja Juju com balão de fala (toque lê em voz alta) |
 | `CenarioFundo` | cenário do bioma atrás das telas de exercício (`public/arte/cenarios/<tipo>.svg`); fade de entrada + parallax leve, sem parallax com reduzir movimento |

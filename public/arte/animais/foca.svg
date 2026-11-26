@@ -1,13 +1,127 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M3.94531 26.7454V23.0032H7.96875V27.0297C7.96875 28.2922 6.03125 28.9954 5.23438 28.9954H2.53125C2.35417 29.0318 2 28.8704 2 28.4954C2 28.1204 2.27747 28.0621 2.53125 28.0266C3.3125 27.9172 3.80469 27.2454 3.94531 26.7454Z" fill="#636363"/>
-<path d="M11.78 29.0003C6.38 29.0003 2 24.6203 2 19.2203V14.5803C2 11.0003 4.86 8.03025 8.44 8.00025C11.89 7.97025 14.72 10.6203 14.98 14.0003C15.1512 15.5413 16.1247 16.8478 17.4633 17.5182L19 19L20.7296 17.8299C22.6308 17.2831 24 15.5007 24 13.4403V11.1303C24 10.4503 24.71 10.0103 25.33 10.3103C26.32 10.8003 27 11.8203 27 13.0003C27 11.8203 27.68 10.8003 28.67 10.3103C29.29 10.0003 30 10.4503 30 11.1303V14.8803C30 18.1193 29.2429 21.1306 27.7931 23.5332L23 27L18.25 28.9983C18.1671 28.9997 18.0837 29.0004 18 29.0003L15.125 29L12.5 28.5L11.78 29.0003Z" fill="#9B9B9B"/>
-<path d="M7.11 14.0002H10.02C10.98 14.0002 11.76 14.7802 11.75 15.7402C11.75 16.7002 10.97 17.4802 10.01 17.4802C9.41 17.4802 8.87 17.1702 8.56 16.7002C8.25 17.1702 7.72 17.4802 7.11 17.4802C6.15 17.4802 5.37 16.7002 5.37 15.7402C5.37 14.7802 6.15 14.0002 7.11 14.0002Z" fill="#D3D3D3"/>
-<path d="M11.61 24.9904V21.2304C11.61 19.5604 10.29 18.1604 8.61999 18.1304C6.90999 18.1004 5.51999 19.4804 5.51999 21.1704V22.7504C5.51999 26.1804 8.27999 28.9704 11.71 29.0004H15.63C13.41 29.0004 11.61 27.2004 11.61 24.9904Z" fill="#D3D3D3"/>
-<path d="M16.62 22.3982V26.5002C16.62 27.3202 17.29 27.9902 18.11 27.9902C18.39 27.9902 18.61 28.2102 18.61 28.4902C18.61 28.7664 18.3958 28.9938 18.1211 28.9998C22.56 28.9666 25.8532 26.7911 27.8321 23.468L28.1172 22.9648C27.8242 23.21 27.3078 23.6067 27.0446 23.8339C25.1684 25.4537 23.8531 26.5892 20.3125 26.8266C18.0593 26.9297 17.342 24.5942 16.9235 23.2313C16.8083 22.8562 16.7157 22.5548 16.62 22.3982Z" fill="#D3D3D3"/>
-<path d="M18.1033 28.9999H16.4812L18 29.0002C18.0345 29.0002 18.069 29.0001 18.1033 28.9999Z" fill="#D3D3D3"/>
-<path d="M6.81 13.2102C6.81 13.6244 6.47421 13.9602 6.06 13.9602C5.64578 13.9602 5.31 13.6244 5.31 13.2102C5.31 12.796 5.64578 12.4602 6.06 12.4602C6.47421 12.4602 6.81 12.796 6.81 13.2102Z" fill="#1C1C1C"/>
-<path d="M11.07 13.9602C11.4842 13.9602 11.82 13.6244 11.82 13.2102C11.82 12.796 11.4842 12.4602 11.07 12.4602C10.6558 12.4602 10.32 12.796 10.32 13.2102C10.32 13.6244 10.6558 13.9602 11.07 13.9602Z" fill="#1C1C1C"/>
-<path d="M8.18999 15.6502L7.38999 14.9902C7.25999 14.8802 7.18999 14.7202 7.18999 14.5602C7.18999 14.2502 7.43999 14.0002 7.74999 14.0002H9.37999C9.68999 14.0002 9.93999 14.2502 9.93999 14.5602C9.93999 14.7302 9.85999 14.8902 9.73999 14.9902L8.93999 15.6502C8.71999 15.8302 8.40999 15.8302 8.18999 15.6502Z" fill="#1C1C1C"/>
-<path d="M20.89 18.4903C20.89 19.5203 20.06 20.3503 19.03 20.3503C18 20.3503 17.17 19.5203 17.16 18.4903C17.16 18.1303 17.26 17.8003 17.44 17.5103C18.06 17.8203 18.75 18.0003 19.49 18.0003H19.62C20.02 17.9903 20.4 17.9303 20.76 17.8203C20.84 18.0203 20.89 18.2503 20.89 18.4903Z" fill="#636363"/>
-<path d="M24.71 19.4903C24.71 20.1199 24.1996 20.6303 23.57 20.6303C22.9404 20.6303 22.43 20.1199 22.43 19.4903C22.43 18.8607 22.9404 18.3503 23.57 18.3503C24.1996 18.3503 24.71 18.8607 24.71 19.4903Z" fill="#636363"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="foca-pelo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a9b3be"/>
+      <stop offset="0.55" stop-color="#7e8996"/>
+      <stop offset="1" stop-color="#5a6572"/>
+    </linearGradient>
+    <radialGradient id="foca-cabeca" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#b9c2cb"/>
+      <stop offset="0.65" stop-color="#8b96a2"/>
+      <stop offset="1" stop-color="#65707d"/>
+    </radialGradient>
+    <linearGradient id="foca-barriga" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eef1f3"/>
+      <stop offset="1" stop-color="#bcc4cb"/>
+    </linearGradient>
+    <linearGradient id="foca-nadadeira" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8a95a1"/>
+      <stop offset="1" stop-color="#525d69"/>
+    </linearGradient>
+    <linearGradient id="foca-gelo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e9f7fd"/>
+      <stop offset="0.6" stop-color="#bfe4f5"/>
+      <stop offset="1" stop-color="#8cc8e6"/>
+    </linearGradient>
+    <clipPath id="foca-clip-corpo">
+      <path d="M56 176 C52 150 66 132 92 134 C126 138 160 152 190 168 C206 176 218 188 226 200 C220 210 202 214 180 214 L92 214 C70 214 56 200 56 176 Z"/>
+    </clipPath>
+    <clipPath id="foca-clip-cabeca">
+      <path d="M78 82 C100 82 114 98 114 118 C114 138 98 152 78 152 C58 152 42 138 42 118 C42 98 56 82 78 82 Z"/>
+    </clipPath>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="134" cy="237" rx="106" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="gelo" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M26 214 L40 206 L130 204 L222 206 L242 212 L244 226 L234 236 L36 236 L24 226 Z" fill="url(#foca-gelo)" stroke="#5f9fc2" stroke-width="2.5"/>
+    <path d="M28 214 L41 207 L130 205 L221 207 L240 213 L236 220 L130 222 L34 220 Z" fill="#fbfeff"/>
+    <path d="M52 230 l16 -2 M160 231 l26 -2 M104 232 h10" stroke="#ffffff" stroke-width="2.5" opacity="0.9"/>
+    <path d="M220 226 l8 7 M70 226 l-6 7" stroke="#5f9fc2" stroke-width="1.6" opacity="0.7"/>
+  </g>
+
+  <g id="nadadeiras-tras" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M214 194 C222 180 236 170 246 172 C248 182 240 196 226 206 Z" fill="url(#foca-nadadeira)" stroke="#3a434d" stroke-width="2.5"/>
+    <path d="M218 202 C230 198 244 200 250 208 C242 216 228 214 216 210 Z" fill="url(#foca-nadadeira)" stroke="#3a434d" stroke-width="2.5"/>
+    <path d="M224 192 l14 -14 M228 196 l14 -10 M226 206 l18 0 M224 209 l16 3" stroke="#3a434d" stroke-width="1.4" opacity="0.7"/>
+  </g>
+
+  <g id="corpo" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M56 176 C52 150 66 132 92 134 C126 138 160 152 190 168 C206 176 218 188 226 200 C220 210 202 214 180 214 L92 214 C70 214 56 200 56 176 Z"
+          fill="url(#foca-pelo)" stroke="#3a434d" stroke-width="2.5"/>
+    <g clip-path="url(#foca-clip-corpo)">
+      <!-- barriga prateada -->
+      <path d="M50 196 C90 204 160 206 230 196 L230 220 L50 220 Z" fill="url(#foca-barriga)"/>
+      <!-- anéis claros da foca-anelada -->
+      <g fill="none" stroke="#d6dde3" stroke-width="2.2">
+        <ellipse cx="110" cy="152" rx="7" ry="5"/>
+        <ellipse cx="136" cy="160" rx="6" ry="4.5"/>
+        <ellipse cx="162" cy="168" rx="7" ry="5"/>
+        <ellipse cx="186" cy="180" rx="6" ry="4.5"/>
+        <ellipse cx="124" cy="178" rx="6.5" ry="4.5"/>
+        <ellipse cx="152" cy="186" rx="6" ry="4.5"/>
+        <ellipse cx="88" cy="160" rx="6" ry="4.5"/>
+        <ellipse cx="204" cy="194" rx="5" ry="3.5"/>
+        <ellipse cx="178" cy="196" rx="5" ry="3.5"/>
+      </g>
+      <g fill="#4a5561">
+        <ellipse cx="110" cy="152" rx="3" ry="2"/><ellipse cx="136" cy="160" rx="2.5" ry="1.8"/>
+        <ellipse cx="162" cy="168" rx="3" ry="2"/><ellipse cx="186" cy="180" rx="2.5" ry="1.8"/>
+        <ellipse cx="124" cy="178" rx="2.5" ry="1.8"/><ellipse cx="152" cy="186" rx="2.5" ry="1.8"/>
+        <ellipse cx="88" cy="160" rx="2.5" ry="1.8"/>
+        <circle cx="98" cy="174" r="1.8"/><circle cx="140" cy="146" r="1.6"/><circle cx="172" cy="182" r="1.6"/><circle cx="196" cy="186" r="1.4"/>
+      </g>
+      <path d="M50 150 C80 140 120 142 160 156" fill="none" stroke="#5a6572" stroke-width="10" opacity="0.25"/>
+    </g>
+    <path d="M100 140 Q140 146 176 162" fill="none" stroke="#d3dae1" stroke-width="3.5" opacity="0.9"/>
+  </g>
+
+  <g id="nadadeira-frente" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M100 176 C114 174 124 188 122 202 C121 211 114 216 106 214 C96 212 94 200 96 188 C97 181 98 178 100 176 Z" fill="url(#foca-nadadeira)" stroke="#3a434d" stroke-width="2.5"/>
+    <path d="M104 182 C102 192 102 200 104 208" fill="none" stroke="#a9b3be" stroke-width="2" opacity="0.8"/>
+    <!-- garrinhas -->
+    <g fill="#2f2620"><path d="M100 212 l-3 5 l5 -2 Z M106 214 l-2 5 l5 -2 Z M112 214 l-1 5 l4 -2 Z M118 211 l0 5 l3 -3 Z"/></g>
+  </g>
+
+  <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
+    <!-- cabeça redonda sem orelhas externas -->
+    <path d="M78 82 C100 82 114 98 114 118 C114 138 98 152 78 152 C58 152 42 138 42 118 C42 98 56 82 78 82 Z"
+          fill="url(#foca-cabeca)" stroke="#3a434d" stroke-width="2.5"/>
+    <g clip-path="url(#foca-clip-cabeca)">
+      <path d="M40 124 C52 118 66 124 78 124 C90 124 104 118 116 124 L116 156 L40 156 Z" fill="#c9d0d6"/>
+      <g fill="none" stroke="#d6dde3" stroke-width="2"><ellipse cx="96" cy="92" rx="5" ry="3.5"/><ellipse cx="56" cy="94" rx="4.5" ry="3"/></g>
+      <g fill="#4a5561"><circle cx="96" cy="92" r="1.6"/><circle cx="56" cy="94" r="1.4"/><circle cx="78" cy="88" r="1.4"/></g>
+    </g>
+    <path d="M50 104 Q54 88 72 86" fill="none" stroke="#d3dae1" stroke-width="3.5" opacity="0.9"/>
+    <circle cx="44" cy="112" r="1.8" fill="#3a434d" opacity="0.6"/>
+    <!-- almofadas dos bigodes -->
+    <ellipse cx="70" cy="134" rx="10" ry="8" fill="#eef1f3" stroke="#8b96a2" stroke-width="1.5"/>
+    <ellipse cx="86" cy="134" rx="10" ry="8" fill="#e3e8ec" stroke="#8b96a2" stroke-width="1.5"/>
+    <g fill="#7e8996"><circle cx="66" cy="132" r="1"/><circle cx="70" cy="137" r="1"/><circle cx="64" cy="137" r="1"/><circle cx="90" cy="132" r="1"/><circle cx="86" cy="137" r="1"/><circle cx="92" cy="137" r="1"/></g>
+    <!-- nariz -->
+    <path d="M71 124 C71 120 85 120 85 124 C85 128 81 131 78 131 C75 131 71 128 71 124 Z" fill="#2b2522" stroke="#1a1513" stroke-width="1.2"/>
+    <path d="M74 124 q1 2 2 2 M82 124 q-1 2 -2 2" fill="none" stroke="#6e6460" stroke-width="1.2"/>
+    <ellipse cx="75" cy="122.5" rx="2.5" ry="1.1" fill="#6e6460"/>
+    <path d="M73 142 Q78 146 83 142" fill="none" stroke="#3a434d" stroke-width="2"/>
+    <!-- bigodes longos -->
+    <g fill="none" stroke="#6b7682" stroke-width="1.3">
+      <path d="M62 132 Q46 128 30 130 M62 136 Q46 138 32 144 M63 140 Q50 146 40 154"/>
+      <path d="M94 132 Q110 128 126 130 M94 136 Q110 138 124 144 M93 140 Q106 146 116 154"/>
+    </g>
+    <ellipse cx="50" cy="126" rx="7" ry="4.5" fill="#f4908a" opacity="0.5"/>
+    <ellipse cx="106" cy="126" rx="7" ry="4.5" fill="#f4908a" opacity="0.5"/>
+  </g>
+
+  <g id="olhos">
+    <!-- olhos grandes e escuros de foca -->
+    <ellipse cx="63" cy="110" rx="10.5" ry="12" fill="#2b1d16"/>
+    <ellipse cx="93" cy="110" rx="10.5" ry="12" fill="#2b1d16"/>
+    <circle cx="59" cy="105" r="4.5" fill="#fff"/>
+    <circle cx="67.5" cy="115" r="2.1" fill="#fff"/>
+    <circle cx="89" cy="105" r="4.5" fill="#fff"/>
+    <circle cx="97.5" cy="115" r="2.1" fill="#fff"/>
+    <path d="M54 95 q4 -3 9 -2 M102 95 q-4 -3 -9 -2" fill="none" stroke="#3a434d" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
 </svg>
