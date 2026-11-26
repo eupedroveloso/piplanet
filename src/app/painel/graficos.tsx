@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion, type PanInfo } from "motion/react";
 import { useState, useSyncExternalStore, type ReactNode } from "react";
-import { Arte, BotaoRedondo, MOLA_ENTRADA, MOLA_TOQUE } from "@/components/ui";
+import { Arte, BotaoRedondo, MOLA_ENTRADA } from "@/components/ui";
 
 /**
  * GRÁFICOS DO PAINEL DOS ADULTOS
@@ -401,15 +401,12 @@ export function Secoes({ secoes }: { secoes: { titulo: string; conteudo: ReactNo
         <div className="flex min-w-0 flex-col items-center gap-1">
           <span className="truncate text-sm font-extrabold text-roxo">{secoes[atual].titulo}</span>
           <div className="flex gap-1.5">
+            {/* só indicador (as setas de 48 px fazem a troca) */}
             {secoes.map((s, k) => (
-              <motion.button
+              <span
                 key={s.titulo}
-                type="button"
-                aria-label={s.titulo}
-                onClick={() => ir(k)}
-                whileTap={{ scale: 0.85 }}
-                transition={MOLA_TOQUE}
-                className={`h-2 rounded-full transition-[width,background-color] duration-300 before:absolute before:-inset-3 before:content-[''] relative ${k === atual ? "w-5 bg-roxo" : "w-2 bg-roxo/25"}`}
+                aria-hidden
+                className={`h-2 rounded-full transition-[width,background-color] duration-300 ${k === atual ? "w-5 bg-roxo" : "w-2 bg-roxo/25"}`}
               />
             ))}
           </div>

@@ -59,3 +59,12 @@ por você (rode tsc/lint/build e o conferir-telas depois). Nunca faça commit/pu
 - (2026-11-26) Esperar `await speak()` para mudar o estado do jogo travava as peças; o jogo nunca deve depender do
   fim de um áudio.
 - (2026-11-26) No iPhone o 3D da ilha caiu ao voltar do exercício (memória de vídeo); o Mac não reproduz.
+- (2026-11-26) Com `cacheComponents`, o Next esconde rotas com `<Activity>` (até 3) em vez de desmontar: estado e DOM
+  ficam vivos, efeitos rodam cleanup ao esconder e de novo ao mostrar. Teste sempre "sair e voltar" pela navegação
+  do app (não pelo `navigate` do portal, que recarrega tudo). Confira `document.querySelectorAll('canvas')` durante o
+  jogo (deve ser 0) e se a fase retomada continua registrando no painel (`sessoes` em `pg:progress:v3:<perfil>`).
+- (2026-11-26) Trocar a voz muda a chave do cache: cada fala não pré-gerada leva ~7 s na primeira vez (e custa).
+  Antes de testar a voz, confira com `status-vozes.mts` se está tudo gerado; meça com `curl -w %{time_total}`.
+- (2026-11-26) Para jogar rápido no portal, use `evaluate` com JS que lê o bicho (`img` em `/arte/animais/<nome>.svg`)
+  e toca a peça certa; `maestri portal click` (toque real) libera o áudio. Outros agentes podem usar o "Mundo QA":
+  se a URL mudar sozinha, espere ficar parada.

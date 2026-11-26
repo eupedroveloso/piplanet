@@ -260,7 +260,7 @@ function MarcoNivel({ n, livre }: { n: number; livre: boolean }) {
       whileHover={{ y: -2, scale: 1.06 }}
       whileTap={{ scale: 0.9 }}
       transition={MOLA_ENTRADA}
-      className={`absolute top-1/2 right-full mr-2 flex h-10 -translate-y-1/2 items-center gap-1 rounded-full py-1 pr-2.5 pl-1 whitespace-nowrap shadow-flutuante before:absolute before:-inset-1 before:content-[''] ${
+      className={`absolute top-1/2 right-full mr-2 flex h-12 -translate-y-1/2 items-center gap-1 rounded-full py-1 pr-3 pl-1.5 whitespace-nowrap shadow-flutuante ${
         livre ? "bg-roxo text-branco" : "bg-branco text-tinta-suave grayscale"
       }`}
     >

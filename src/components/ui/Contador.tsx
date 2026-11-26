@@ -67,15 +67,18 @@ export function Contador({
         animar(escopo.current, { y: [0, -6, 0], scale: [1, 1.15, 1] }, { duration: 0.45, ease: "easeOut" });
         speak(`Você tem ${valor}${total !== undefined ? ` de ${total}` : ""} ${rotulo}.`);
       }}
-      className="relative inline-flex h-8 items-center gap-1 rounded-full bg-roxo-claro pr-2.5 pl-1 text-sm font-bold text-tinta sm:pr-3 sm:text-base before:absolute before:-inset-2 before:content-['']"
+      // Área de toque real de 48 px (o chip visível tem 32); -my-2 não empurra o layout
+      className="-my-2 inline-flex h-12 items-center"
       aria-label={`${valor}${total !== undefined ? ` de ${total}` : ""} ${rotulo}`}
     >
-      <span ref={escopo} className="inline-grid">
-        <Arte nome={icone} className="size-6" />
-      </span>
-      <span aria-hidden>
-        <NumeroAnimado valor={valor} de={inicio ?? 0} />
-        {total !== undefined && `/${total}`}
+      <span className="inline-flex h-8 items-center gap-1 rounded-full bg-roxo-claro pr-2.5 pl-1 text-sm font-bold text-tinta sm:pr-3 sm:text-base">
+        <span ref={escopo} className="inline-grid">
+          <Arte nome={icone} className="size-6" />
+        </span>
+        <span aria-hidden>
+          <NumeroAnimado valor={valor} de={inicio ?? 0} />
+          {total !== undefined && `/${total}`}
+        </span>
       </span>
     </motion.button>
   );

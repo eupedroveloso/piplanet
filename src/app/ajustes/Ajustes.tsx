@@ -58,22 +58,38 @@ export function Ajustes() {
           <motion.button type="button" aria-label="Mais devagar" onClick={() => mudarVelocidade(idx - 1)} whileTap={{ scale: 0.88 }} transition={MOLA_TOQUE} className="grid size-16 shrink-0 place-items-center rounded-full bg-verde-claro shadow-[0_4px_0_var(--color-linha)]">
             <Arte nome="animais/tartaruga" className="size-11" />
           </motion.button>
-          <div className="flex flex-1 items-end justify-between gap-1 px-1" role="radiogroup" aria-label="Velocidade">
+          {/* Um controle só (alvo grande): tocar em qualquer ponto escolhe o nível daquela posição.
+              As barrinhas são só indicação visual; as setas do teclado também mudam. */}
+          <motion.button
+            type="button"
+            role="slider"
+            aria-label="Velocidade da voz"
+            aria-valuemin={1}
+            aria-valuemax={VELOCIDADES.length}
+            aria-valuenow={idx + 1}
+            onClick={(e) => {
+              const r = e.currentTarget.getBoundingClientRect();
+              const x = Math.max(0, Math.min(0.999, (e.clientX - r.left) / r.width));
+              mudarVelocidade(Math.floor(x * VELOCIDADES.length));
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowLeft" || e.key === "ArrowDown") mudarVelocidade(idx - 1);
+              if (e.key === "ArrowRight" || e.key === "ArrowUp") mudarVelocidade(idx + 1);
+            }}
+            whileTap={{ scale: 0.97 }}
+            transition={MOLA_TOQUE}
+            className="flex h-14 min-w-0 flex-1 items-end gap-1 rounded-xl px-1.5 pb-1"
+          >
             {VELOCIDADES.map((v, i) => (
-              <motion.button
+              <motion.span
                 key={v}
-                type="button"
-                role="radio"
-                aria-checked={i === idx}
-                aria-label={`Velocidade ${i + 1}`}
-                onClick={() => mudarVelocidade(i)}
-                whileTap={{ scale: 0.85 }}
-                animate={{ height: 16 + i * 6 }}
+                aria-hidden
+                animate={{ height: 14 + i * 5, scale: i === idx ? 1.08 : 1 }}
                 transition={MOLA_TOQUE}
-                className={`w-full rounded-md ${i <= idx ? "bg-amarelo" : "bg-linha"} ${i === idx ? "ring-2 ring-roxo" : ""}`}
+                className={`block flex-1 origin-bottom rounded-md transition-colors duration-200 ${i <= idx ? "bg-amarelo" : "bg-linha"} ${i === idx ? "ring-2 ring-roxo" : ""}`}
               />
             ))}
-          </div>
+          </motion.button>
           <motion.button type="button" aria-label="Mais rápido" onClick={() => mudarVelocidade(idx + 1)} whileTap={{ scale: 0.88 }} transition={MOLA_TOQUE} className="grid size-16 shrink-0 place-items-center rounded-full bg-amarelo-claro shadow-[0_4px_0_var(--color-linha)]">
             <Arte nome="animais/coelho" className="size-11" />
           </motion.button>

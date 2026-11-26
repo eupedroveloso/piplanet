@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useState, type ReactNode } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ANIMAIS, arteDoAnimal, type Animal } from "@/content/animais";
 import {
@@ -88,10 +88,20 @@ export function JogoFase({
   // Registro para o painel dos adultos: tempo da lição, erros e tempo de cada bicho
   const [rastreio] = useState(() => new RastreioLicao({ tipo: "fase", chave, jogo: fase.jogo }));
   // saiu no meio da lição (voltou ao mapa / fechou): guarda como não concluída
-  useEffect(
+  // Com cacheComponents, o Next guarda esta tela escondida (<Activity>) ao sair. Ao esconder: fecha o registro,
+  // para a voz e VOLTA A FASE PARA O INÍCIO, para que ao voltar ela recomece do zero (com instrução falada e
+  // registro novo), em vez de retomar no meio sem registrar a conclusão.
+  useLayoutEffect(
     () => () => {
       rastreio.fechar(false);
       stopSpeaking();
+      setEtapa("inicio");
+      setFila([]);
+      setIndice(0);
+      setErrosBicho(0);
+      setErrosFase(0);
+      setPontosFase(0);
+      setNovas([]);
     },
     [rastreio],
   );

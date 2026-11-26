@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { chaveDaVoz, gerarVoz } from "@/lib/voz";
 
 /**
@@ -33,7 +34,19 @@ export async function GET(req: Request) {
   if (guardado) return mp3(guardado.audio);
 
   const v = await gerarVoz(texto);
-  if (!v) return new Response("voz indisponível", { status: 503 });
+  if (!v) {
+    // Ainda sem a voz atual (ex.: sem crédito): para FRASES, usa o áudio já gerado na voz anterior (ElevenLabs Will).
+    // Sílabas e letras soltas NÃO usam a voz anterior (ela é em inglês e lia "to" como "two").
+    if (db && /\s/.test(texto)) {
+      const antiga = await db.vozCache
+        .findUnique({ where: { chave: createHash("sha256").update(`elevenlabs/eleven-flash-v2.5|will|tts1|${texto}`).digest("hex") }, select: { audio: true } })
+        .catch(() => null);
+      if (antiga) {
+        return new Response(antiga.audio as BodyInit, { headers: { "Content-Type": "audio/mpeg", "Cache-Control": "no-store" } });
+      }
+    }
+    return new Response("voz indisponível", { status: 503 });
+  }
   const qc = { transcricao: v.transcricao, modelo: v.modelo, duracaoMs: v.duracaoMs, status: v.suspeita ? "suspeita" : v.ouvido ? "conferida" : "pendente" };
   await db?.vozCache.upsert({ where: { chave }, create: { chave, texto, audio: v.audio, ...qc }, update: {} }).catch(() => null);
   return mp3(v.audio);

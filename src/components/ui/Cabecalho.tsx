@@ -73,10 +73,13 @@ function SeloNivel({ n }: { n: number }) {
       whileHover={{ scale: 1.12 }}
       whileTap={{ scale: 0.85 }}
       transition={MOLA_ENTRADA}
-      className="absolute -right-1.5 -bottom-1.5 flex h-6 min-w-6 items-center justify-center gap-0.5 rounded-full bg-roxo px-1 text-xs font-extrabold text-branco shadow-[0_2px_0_var(--color-roxo-escuro)] ring-2 ring-branco before:absolute before:-inset-3 before:content-['']"
+      // Área de toque real de 48 px, centrada no selinho de 24 px (mesmo lugar de antes)
+      className="absolute -right-[1.125rem] -bottom-[1.125rem] grid size-12 place-items-center"
     >
-      <Arte nome="ui/escada" className="size-3.5" />
-      {n}
+      <span className="flex h-6 min-w-6 items-center justify-center gap-0.5 rounded-full bg-roxo px-1 text-xs font-extrabold text-branco shadow-[0_2px_0_var(--color-roxo-escuro)] ring-2 ring-branco">
+        <Arte nome="ui/escada" className="size-3.5" />
+        {n}
+      </span>
     </motion.button>
   );
 }

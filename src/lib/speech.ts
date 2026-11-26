@@ -1,51 +1,60 @@
 "use client";
 
 import { settingsStore } from "./settings";
+import vozConfig from "@/content/voz-config.json";
+
+/**
+ * MODO DA VOZ (src/content/voz-config.json → "modo"):
+ * - "sistema": voz do próprio navegador (Web Speech), usada enquanto as vozes de IA são corrigidas e aprovadas;
+ * - "ia": voz natural gerada pelo OpenRouter (/api/voz), conferida e aprovada na página /vozes.
+ */
+const MODO_SISTEMA = vozConfig.modo !== "ia";
 
 /**
  * VOZ DA JUJU
  * 1º: voz natural gerada pelo OpenRouter (/api/voz — cada frase é gerada uma vez e reaproveitada).
- * Se não der (sem internet, sem crédito, não configurada): voz do próprio navegador (Web Speech).
+ * Modo "ia": se a voz natural falhar, silêncio. Modo "sistema" (atual, temporário): voz do navegador.
  * `speak` devolve uma Promise que termina quando a fala acaba (os jogos esperam por ela).
  */
 
 let encerrarAtual: (() => void) | null = null;
-/** Depois de uma falha da voz natural, usa a do navegador por um tempo (evita esperar a cada fala). */
-let semVozNaturalAte = 0;
 
-function pickVoice(): SpeechSynthesisVoice | null {
+function escolherVozDoSistema(): SpeechSynthesisVoice | null {
   const voices = window.speechSynthesis.getVoices();
-  const ptBR = voices.filter(
-    (v) => v.lang.replace("_", "-").toLowerCase() === "pt-br",
-  );
+  const ptBR = voices.filter((v) => v.lang.replace("_", "-").toLowerCase() === "pt-br");
   return (
-    ptBR.find((v) => /luciana|google|francisca|thalita/i.test(v.name)) ??
+    ptBR.find((v) => /luciana|google|francisca|thalita|felipe/i.test(v.name)) ??
     ptBR[0] ??
     voices.find((v) => v.lang.toLowerCase().startsWith("pt")) ??
     null
   );
 }
 
-function falarNavegador(text: string, rate: number): Promise<void> {
+/** Voz do sistema (Web Speech, pt-BR). Termina quando a fala acaba, com tempo limite para não travar a fila. */
+function falarSistema(text: string, rate: number): Promise<void> {
   return new Promise((resolve) => {
     if (!("speechSynthesis" in window)) return resolve();
-    window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text.toLowerCase());
     u.lang = "pt-BR";
     u.rate = rate;
-    const voice = pickVoice();
+    const voice = escolherVozDoSistema();
     if (voice) u.voice = voice;
-    // Alguns aparelhos nunca disparam onend: o tempo limite evita que o jogo trave.
     let feito = false;
     const terminar = () => {
       if (feito) return;
       feito = true;
       clearTimeout(limite);
+      encerrarAtual = null;
       resolve();
     };
+    // alguns aparelhos nunca disparam onend: o tempo limite evita que a fila trave
     const limite = setTimeout(terminar, 1500 + text.length * 110);
     u.onend = terminar;
     u.onerror = terminar;
+    encerrarAtual = () => {
+      window.speechSynthesis.cancel();
+      terminar();
+    };
     window.speechSynthesis.speak(u);
   });
 }
@@ -201,18 +210,17 @@ async function tocar(text: string, opts: { rate?: number }) {
   const curto = text.trim().length <= 12 && !/\s/.test(text.trim().replace(/-/g, ""));
   const rate = curto ? 1 : (opts.rate ?? velocidadeVoz);
 
-  if (Date.now() > semVozNaturalAte) {
-    const r = await falarNatural(text, rate);
-    if (r === "ok") return;
-    if (r === "bloqueado") {
-      // o navegador ainda não deixou tocar som (falta um toque): guarda e toca no primeiro toque
-      liberado = false;
-      pendente = { text, rate };
-      return;
-    }
-    semVozNaturalAte = Date.now() + 30_000;
+  if (MODO_SISTEMA) {
+    await falarSistema(text, opts.rate ?? velocidadeVoz);
+    return;
   }
-  await falarNavegador(text, rate);
+  const r = await falarNatural(text, rate);
+  if (r === "bloqueado") {
+    // o navegador ainda não deixou tocar som (falta um toque): guarda e toca no primeiro toque
+    liberado = false;
+    pendente = { text, rate };
+  }
+  // REGRA DO DONO: nunca a voz do sistema (robótica). Se a voz natural falhar, fica em silêncio.
 }
 
 function pararAudio() {

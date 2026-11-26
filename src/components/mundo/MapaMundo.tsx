@@ -117,15 +117,20 @@ export function MapaMundo() {
     setFoco(null);
   }
 
-  // Ao abrir direto num país (voltando de um jogo), aproxima no bioma atual
-  useEffect(() => {
-    if (!ultimoPais) return;
-    const t = setTimeout(() => setFoco((f) => f ?? (atual.pais === ultimoPais ? atual.id : null)), 1200);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const biomaAtualDoPais = ilha ? (atual.pais === ilha.pais ? atual.id : ilha.biomas.find((b) => b.jogavel)!.id) : null;
+
+  // Ao abrir direto num país (app aberto do zero ou voltando de um jogo), aproxima no bioma atual
+  // assim que a cena fica pronta. Antes isso rodava só na montagem e, num carregamento do zero, o ultimoPais
+  // (e o progresso) ainda não tinham sido lidos do aparelho: o mapa ficava no país inteiro.
+  const [autoFocoEm, setAutoFocoEm] = useState<string | null>(null);
+  useEffect(() => {
+    if (carregando || nivel !== "pais" || !biomaAtualDoPais || autoFocoEm === chaveCena) return;
+    const t = setTimeout(() => {
+      setAutoFocoEm(chaveCena);
+      setFoco((f) => f ?? biomaAtualDoPais);
+    }, 600);
+    return () => clearTimeout(t);
+  }, [carregando, nivel, biomaAtualDoPais, autoFocoEm, chaveCena]);
   const nomePais = pais ? PAISES.find((p) => p.id === pais)!.nome : "";
 
   return (

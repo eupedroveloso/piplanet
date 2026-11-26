@@ -66,6 +66,7 @@ function RodadaMontar({ animal, fase, acertou, errar, acertar, modo }: RodadaPro
         ? pecasDePalavras(palavras, fase.distratores)
         : pecasDeLetras(animal.silabas[0], fase.distratores, 0),
   );
+  const [trancado, setTrancado] = useState(false);
   const [ouviuFrase, setOuviuFrase] = useState(false);
   const ouvirFrase = () => {
     setOuviuFrase(true);
@@ -79,7 +80,8 @@ function RodadaMontar({ animal, fase, acertou, errar, acertar, modo }: RodadaPro
   const idVoo = (tileId: string) => `peca-${animal.id}-${tileId}`;
 
   function tocar(tile: Tile) {
-    if (acertou || tile.used) return;
+    // durante a pausa entre sílabas ou antes do acerto, toques não contam (nem como erro)
+    if (acertou || tile.used || trancado) return;
     if (tile.text !== unidades[feitas]) {
       setErrosCasa((e) => e + 1);
       errar();
@@ -106,12 +108,17 @@ function RodadaMontar({ animal, fase, acertou, errar, acertar, modo }: RodadaPro
         speak(falaDaSilaba(animal.silabas[g]));
         if (total < unidades.length) {
           const proxima = g + 1;
-          setTimeout(() => setPecas(pecasDeLetras(animal.silabas[proxima], fase.distratores, proxima)), 700);
+          setTrancado(true);
+          setTimeout(() => {
+            setPecas(pecasDeLetras(animal.silabas[proxima], fase.distratores, proxima));
+            setTrancado(false);
+          }, 700);
         }
       }
     }
     if (total === unidades.length) {
       if (modo === "frase") speak(palavras.join(" "));
+      setTrancado(true);
       setTimeout(acertar, 600);
     }
   }

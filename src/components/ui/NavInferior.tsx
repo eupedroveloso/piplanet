@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { usePerfil } from "@/lib/perfil";
 import { speak } from "@/lib/speech";
 import { Arte } from "./Arte";
@@ -34,6 +34,9 @@ export function NavInferior() {
   const itens = perfil.temSenha ? [PAINEL, ...ITENS.filter((i) => i.href !== "/nivelamento"), AJUSTES] : [...ITENS, AJUSTES];
   const ativoRota = itens.find((it) => (it.href === "/" ? path === "/" : path.startsWith(it.href)))?.href;
   const [tocado, setTocado] = useState<{ href: string; em: string } | null>(null);
+  // A página fica guardada (escondida) pelo <Activity> do Next ao navegar: ao esconder, esquece o item tocado,
+  // senão na volta a pílula ficaria na aba de onde se saiu
+  useLayoutEffect(() => () => setTocado(null), []);
   // O item tocado só vale enquanto a rota não muda
   const ativo = tocado && tocado.em === path ? tocado.href : ativoRota;
 
