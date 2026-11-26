@@ -1,26 +1,164 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ═══════════════════════════════════════════════════════════════════════════
+ * PIETRO GAMES · DESIGN SYSTEM · TOKENS
+ * Documentação: docs/DESIGN-SYSTEM.md · Vitrine viva: /design-system
+ *
+ * Regra: nunca use cor, raio ou sombra solta. Use sempre um token daqui.
+ * ═══════════════════════════════════════════════════════════════════════════ */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@theme {
+  /* ── Marca ─────────────────────────────────────────────────────────────── */
+  --color-roxo: #5b2a9c;          /* títulos, ícones ativos, botão principal */
+  --color-roxo-escuro: #43207a;   /* sombra/relevo do roxo */
+  --color-roxo-claro: #efe8fb;    /* fundos suaves, chips */
+  --color-amarelo: #ffc935;       /* destaque, estrelas, fase atual */
+  --color-amarelo-escuro: #e3a400;
+  --color-amarelo-claro: #fff4d1;
+  --color-coral: #f25f5c;         /* concluído ✓, celebração */
+  --color-coral-escuro: #cf3f3c;
+  --color-verde: #5dbb85;         /* acerto, confirmar */
+  --color-verde-escuro: #3f9966;
+  --color-verde-claro: #e2f4e8;
+  --color-azul: #4fb0e3;
+  --color-azul-escuro: #2f8fc2;
+  --color-azul-claro: #e1f2fb;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* ── Neutros ───────────────────────────────────────────────────────────── */
+  --color-fundo: #f6f2fd;         /* lavanda do app */
+  --color-branco: #ffffff;
+  --color-tinta: #3d3551;         /* texto principal */
+  --color-tinta-suave: #8a84a0;   /* texto secundário */
+  --color-linha: #ebe6f3;         /* bordas */
+  --color-bloqueado: #d9d4e3;     /* fases trancadas */
+
+  /* ── Territórios (valores fixos para a vitrine; o tema dinâmico usa --t-*) */
+  --color-fazenda: #dff2dc;
+  --color-floresta: #cfe9d9;
+  --color-savana: #fcefc2;
+  --color-artico: #e6f1fb;
+  --color-oceano: #d8eef9;
+
+  /* ── Tipografia ────────────────────────────────────────────────────────── */
+  --font-display: var(--font-baloo), ui-rounded, system-ui, sans-serif; /* títulos e interface */
+  --font-leitura: var(--font-andika), ui-rounded, system-ui, sans-serif; /* letras e sílabas */
+  --font-sans: var(--font-display);
+
+  /* ── Raios ─────────────────────────────────────────────────────────────── */
+  --radius-sm: 0.75rem;
+  --radius-md: 1.25rem;
+  --radius-lg: 1.75rem;
+  --radius-xl: 2.5rem;
+
+  /* ── Sombras ───────────────────────────────────────────────────────────── */
+  --shadow-suave: 0 4px 14px rgb(61 53 81 / 0.08);
+  --shadow-relevo: 0 6px 0 rgb(61 53 81 / 0.12);
+
+  /* ── Animações ─────────────────────────────────────────────────────────── */
+  --animate-flutuar: flutuar 3s ease-in-out infinite;
+  --animate-pulsar: pulsar 1.6s ease-in-out infinite;
+
+  @keyframes flutuar {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  @keyframes pulsar {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
   }
 }
 
+/* ── Tema dinâmico por território ──────────────────────────────────────────
+ * Aplique data-territorio="fazenda|floresta|savana|oceano" num contêiner.
+ * Use as classes bg-t-fundo, bg-t-chao, bg-t-trilha, text-t-destaque...
+ */
+@theme inline {
+  --color-t-fundo: var(--t-fundo);
+  --color-t-chao: var(--t-chao);
+  --color-t-trilha: var(--t-trilha);
+  --color-t-faixa: var(--t-faixa);
+  --color-t-destaque: var(--t-destaque);
+}
+
+:root,
+[data-territorio="fazenda"] {
+  --t-fundo: #dff2dc;
+  --t-chao: #c9e9c5;
+  --t-trilha: #74c69d;
+  --t-faixa: #e9f7ea;
+  --t-destaque: #3e8f63;
+}
+[data-territorio="floresta"] {
+  --t-fundo: #cfe9d9;
+  --t-chao: #b5dcc4;
+  --t-trilha: #3f9e78;
+  --t-faixa: #d9f0e2;
+  --t-destaque: #2b765a;
+}
+[data-territorio="savana"] {
+  --t-fundo: #fcefc2;
+  --t-chao: #f8e2a2;
+  --t-trilha: #f2bf4d;
+  --t-faixa: #fff7dc;
+  --t-destaque: #b57c00;
+}
+[data-territorio="artico"] {
+  --t-fundo: #e6f1fb;
+  --t-chao: #cfe2f3;
+  --t-trilha: #ffffff;
+  --t-faixa: #b9d6ee;
+  --t-destaque: #3a7cb0;
+}
+[data-territorio="oceano"] {
+  --t-fundo: #d8eef9;
+  --t-chao: #bfe3f5;
+  --t-trilha: #ffffff;
+  --t-faixa: #a9d8f0;
+  --t-destaque: #2f86b5;
+}
+
+/* ── Base ──────────────────────────────────────────────────────────────── */
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-fundo);
+  color: var(--color-tinta);
+  font-family: var(--font-display);
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+img {
+  -webkit-user-drag: none;
+}
+
+/* Respeita quem prefere menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Fase atual pulando no mapa da ilha (SVG) */
+.ilha-pular {
+  transform-box: fill-box;
+  transform-origin: bottom center;
+  animation: flutuar 1.4s ease-in-out infinite;
+}
+
+/* Ondinhas do mar da ilha balançando devagar */
+.ilha-onda {
+  transform-box: fill-box;
+  animation: ilha-onda 3.2s ease-in-out infinite;
+}
+@keyframes ilha-onda {
+  0%, 100% { transform: translateX(0); opacity: 0.45; }
+  50% { transform: translateX(6px); opacity: 0.8; }
 }

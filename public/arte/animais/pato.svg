@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <radialGradient id="pato-cabeca" cx="0.38" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#6fd39a"/>
+      <stop offset="0.5" stop-color="#2f9a62"/>
+      <stop offset="1" stop-color="#1b6a44"/>
+    </radialGradient>
+    <linearGradient id="pato-corpo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f1f2f4"/>
+      <stop offset="0.55" stop-color="#d3d6db"/>
+      <stop offset="1" stop-color="#aab0b8"/>
+    </linearGradient>
+    <linearGradient id="pato-peito" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c3835c"/>
+      <stop offset="0.6" stop-color="#9a5a3c"/>
+      <stop offset="1" stop-color="#7a432a"/>
+    </linearGradient>
+    <linearGradient id="pato-asa" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#cdbfa9"/>
+      <stop offset="1" stop-color="#9c8b74"/>
+    </linearGradient>
+    <linearGradient id="pato-espelho" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7fb0ff"/>
+      <stop offset="1" stop-color="#3a62c8"/>
+    </linearGradient>
+    <linearGradient id="pato-bico" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe07a"/>
+      <stop offset="1" stop-color="#e8b22e"/>
+    </linearGradient>
+    <linearGradient id="pato-pe" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffb35c"/>
+      <stop offset="1" stop-color="#e57f24"/>
+    </linearGradient>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="140" cy="237" rx="68" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="pes" stroke="#b55a14" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M124 206 L122 226" fill="none" stroke="#e57f24" stroke-width="6"/>
+    <path d="M156 206 L156 226" fill="none" stroke="#d06e1c" stroke-width="6"/>
+    <path d="M122 224 L100 234 Q106 238 112 235 Q116 239 122 236 Q128 239 132 234 Z" fill="url(#pato-pe)"/>
+    <path d="M156 224 L136 234 Q142 238 148 235 Q152 239 158 236 Q164 239 168 234 Z" fill="url(#pato-pe)"/>
+    <path d="M112 231 l-2 4 M122 231 v5 M148 231 l-2 4 M158 231 v5" stroke="#c96a1c" stroke-width="1.4"/>
+  </g>
+
+  <g id="corpo" stroke-linejoin="round" stroke-linecap="round">
+    <!-- cauda preta enrolada + penas brancas -->
+    <path d="M198 152 L232 142 Q240 150 232 160 L204 172 Z" fill="#f4f5f7" stroke="#7d838c" stroke-width="2.2"/>
+    <path d="M206 154 L230 147 M208 162 L230 155" fill="none" stroke="#c4c9cf" stroke-width="1.5"/>
+    <path d="M190 160 Q218 162 224 178 Q212 194 194 198 Z" fill="#2c2f36" stroke="#15171c" stroke-width="2.2"/>
+    <path d="M200 168 Q210 170 214 178" fill="none" stroke="#565b66" stroke-width="2.5"/>
+    <path d="M204 156 C202 138 214 130 224 134 C232 138 228 148 220 145" fill="none" stroke="#2c2f36" stroke-width="4.5"/>
+    <!-- corpo cinza -->
+    <path d="M76 168 C76 132 110 124 150 126 C186 128 210 142 214 166 C218 194 190 214 148 214 C110 214 78 204 76 168 Z"
+          fill="url(#pato-corpo)" stroke="#7d838c" stroke-width="2.5"/>
+    <!-- vermiculado (riscos finos) -->
+    <g fill="none" stroke="#9aa0a8" stroke-width="1.2" opacity="0.6">
+      <path d="M120 196 q6 -2 12 0 q6 2 12 0"/><path d="M126 204 q6 -2 12 0 q6 2 12 0"/><path d="M156 198 q6 -2 12 0 q6 2 12 0"/><path d="M170 190 q6 -2 12 0 q6 2 12 0"/>
+    </g>
+    <!-- peito castanho -->
+    <path d="M86 132 C64 140 58 176 72 196 C84 212 104 214 118 206 C130 186 130 150 120 132 C110 126 96 126 86 132 Z" fill="url(#pato-peito)" stroke="#5a2e1b" stroke-width="2.5"/>
+    <g fill="none" stroke="#6e3a22" stroke-width="1.6" opacity="0.6">
+      <path d="M80 160 q4 4 8 0"/><path d="M96 152 q4 4 8 0"/><path d="M84 176 q4 4 8 0"/><path d="M100 168 q4 4 8 0"/><path d="M92 192 q4 4 8 0"/><path d="M106 184 q4 4 8 0"/>
+    </g>
+    <path d="M72 160 Q76 142 92 136" fill="none" stroke="#d99a72" stroke-width="3.5" opacity="0.8"/>
+  </g>
+
+  <g id="asa" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M118 150 C140 136 184 138 206 156 C200 168 186 176 170 180 C152 186 130 182 118 170 Z" fill="url(#pato-asa)" stroke="#6e604d" stroke-width="2.5"/>
+    <!-- espelho azul com bordas brancas -->
+    <path d="M146 166 C162 164 182 158 198 152 L204 162 C188 170 168 178 150 180 Z" fill="#fff" stroke="none"/>
+    <path d="M148 169 C164 167 182 161 198 155.5 L201 160 C186 167 167 174 150 176.5 Z" fill="url(#pato-espelho)" stroke="none"/>
+    <path d="M160 168 l2 6 M172 165 l2 6 M184 161 l2 6" stroke="#2c4a9a" stroke-width="1.2"/>
+    <!-- penas da asa -->
+    <g fill="none" stroke="#8a7a63" stroke-width="1.8" opacity="0.85">
+      <path d="M132 156 q10 -8 22 -8"/><path d="M140 162 q12 -8 26 -8"/><path d="M128 166 q8 -2 16 0"/>
+    </g>
+    <path d="M128 148 Q150 140 176 142" fill="none" stroke="#e6dccb" stroke-width="3" opacity="0.9"/>
+  </g>
+
+  <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
+    <!-- pescoço -->
+    <path d="M76 100 C74 116 78 130 86 140 L122 138 C118 124 118 110 122 98 Z" fill="url(#pato-cabeca)" stroke="#144a2e" stroke-width="2.5"/>
+    <!-- coleira branca -->
+    <path d="M78 122 Q100 130 120 120 L120 127 Q100 137 80 129 Z" fill="#ffffff" stroke="#c7ccd2" stroke-width="1.5"/>
+    <!-- cabeça verde -->
+    <circle cx="98" cy="80" r="40" fill="url(#pato-cabeca)" stroke="#144a2e" stroke-width="2.5"/>
+    <!-- brilho iridescente -->
+    <path d="M70 62 Q82 46 102 44" fill="none" stroke="#9ff0c2" stroke-width="5" opacity="0.6"/>
+    <path d="M118 52 q10 8 14 22" fill="none" stroke="#5a8fd8" stroke-width="4" opacity="0.45"/>
+    <g fill="none" stroke="#1d6b42" stroke-width="1.6" opacity="0.7">
+      <path d="M112 96 q6 2 10 -2"/><path d="M116 86 q6 2 10 -2"/><path d="M108 106 q6 2 10 -2"/>
+    </g>
+    <!-- bochecha -->
+  </g>
+
+  <g id="olhos">
+    <ellipse cx="72" cy="78" rx="6.5" ry="9.5" fill="#2b1d16"/>
+    <circle cx="70.5" cy="74" r="2.8" fill="#fff"/>
+    <ellipse cx="102" cy="76" rx="9" ry="10.5" fill="#2b1d16"/>
+    <circle cx="98.5" cy="71.5" r="4.2" fill="#fff"/>
+    <circle cx="106" cy="80.5" r="2" fill="#fff"/>
+  </g>
+
+  <g id="bico" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M76 88 C66 86 46 88 30 94 Q22 100 30 106 C46 110 66 108 78 104 Q84 96 76 88 Z" fill="url(#pato-bico)" stroke="#b9851a" stroke-width="2.2"/>
+    <path d="M30 100 C46 102 64 102 78 98" fill="none" stroke="#b9851a" stroke-width="1.8"/>
+    <path d="M27 96 Q25 101 30 104 Q34 99 33 94 Q29 94 27 96 Z" fill="#c99a3a"/>
+    <ellipse cx="62" cy="93" rx="3" ry="1.6" fill="#a8761a"/>
+    <path d="M40 92 Q54 88 70 89" fill="none" stroke="#fff4c2" stroke-width="2.4" opacity="0.9"/>
+  </g>
+</svg>

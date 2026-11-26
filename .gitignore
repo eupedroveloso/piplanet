@@ -39,3 +39,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+!.env.example
+
+/src/generated/prisma
+
+# ferramentas locais (canvas Maestri, skills instaladas por outras ferramentas)
+/.maestri/
+/.windsurf/
+/.agents/
+skills-lock.json
+
+# cliente do Prisma gerado
+/src/generated/

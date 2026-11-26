@@ -1,0 +1,30 @@
+// Banco: Prisma Postgres (credenciais em .env).
+// Guarda o progresso do jogador na nuvem, para não perder ao trocar de aparelho.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Jogador {
+  id        String     @id @default(cuid())
+  nome      String
+  criadoEm  DateTime   @default(now())
+  progresso Progresso?
+}
+
+model Progresso {
+  jogadorId        String   @id
+  jogador          Jogador  @relation(fields: [jogadorId], references: [id], onDelete: Cascade)
+  /// Pontos (patinhas). Nunca diminuem.
+  patinhas         Int      @default(0)
+  /// Ids dos animais já lidos (figurinhas do álbum).
+  animaisColetados String[] @default([])
+  /// Resultado por fase: { "fazenda/0": { estrelas, melhorPontos, vezes } }
+  fases            Json     @default("{}")
+  atualizadoEm     DateTime @updatedAt
+}

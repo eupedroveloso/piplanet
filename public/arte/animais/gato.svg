@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="gato-pelo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffc583"/>
+      <stop offset="0.5" stop-color="#f4a259"/>
+      <stop offset="1" stop-color="#d97f34"/>
+    </linearGradient>
+    <linearGradient id="gato-cauda" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f4a259"/>
+      <stop offset="1" stop-color="#cf742c"/>
+    </linearGradient>
+    <radialGradient id="gato-cabeca" cx="0.38" cy="0.32" r="0.8">
+      <stop offset="0" stop-color="#ffcf94"/>
+      <stop offset="0.6" stop-color="#f6a65c"/>
+      <stop offset="1" stop-color="#df8538"/>
+    </radialGradient>
+    <linearGradient id="gato-branco" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fffaf2"/>
+      <stop offset="1" stop-color="#ecdcc8"/>
+    </linearGradient>
+    <radialGradient id="gato-iris" cx="0.4" cy="0.35" r="0.7">
+      <stop offset="0" stop-color="#c6ec7c"/>
+      <stop offset="1" stop-color="#6fb53e"/>
+    </radialGradient>
+    <clipPath id="gato-clip-cauda"><path d="M172 222 C206 224 222 204 220 176 C218 150 206 134 196 120 Q188 112 184 120 Q182 126 188 132 C198 146 206 160 206 178 C206 198 194 210 170 208 Z"/></clipPath>
+  </defs>
+
+  <g id="sombra">
+    <ellipse cx="136" cy="237" rx="70" ry="8" fill="#3b2a1a" opacity="0.18"/>
+  </g>
+
+  <g id="cauda" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M172 222 C206 224 222 204 220 176 C218 150 206 134 196 120 Q188 112 184 120 Q182 126 188 132 C198 146 206 160 206 178 C206 198 194 210 170 208 Z"
+          fill="url(#gato-cauda)" stroke="#a5531e" stroke-width="2.5"/>
+    <g fill="none" stroke="#c0632a" stroke-width="4" opacity="0.8" clip-path="url(#gato-clip-cauda)">
+      <path d="M190 128 q6 -2 10 -8"/><path d="M200 146 q8 0 12 -6"/><path d="M206 166 q8 2 13 -2"/><path d="M204 188 q8 4 14 2"/><path d="M194 206 q6 6 12 6"/>
+    </g>
+  </g>
+
+  <g id="corpo" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M106 124 C84 146 76 196 88 228 L186 228 C198 196 190 148 162 124 Z" fill="url(#gato-pelo)" stroke="#a5531e" stroke-width="2.5"/>
+    <!-- coxa traseira -->
+    <path d="M150 178 C176 168 198 186 194 212 C192 224 182 230 168 230 L150 230 Z" fill="url(#gato-cauda)" stroke="#a5531e" stroke-width="2.5"/>
+    <path d="M160 186 q14 -4 24 6" fill="none" stroke="#ffc583" stroke-width="3" opacity="0.7"/>
+    <!-- listras do corpo -->
+    <g fill="none" stroke="#c0632a" stroke-width="4" opacity="0.75">
+      <path d="M168 140 q-10 4 -14 12"/><path d="M178 158 q-12 2 -18 10"/><path d="M90 168 q8 2 12 8"/><path d="M86 188 q8 0 12 6"/>
+      <path d="M172 196 q10 -2 16 4"/><path d="M168 210 q10 0 16 6"/>
+    </g>
+    <!-- peitinho branco -->
+    <path d="M104 132 C118 150 146 150 158 132 C160 160 150 186 130 196 C110 186 100 160 104 132 Z" fill="url(#gato-branco)" stroke="#d9c3a8" stroke-width="2"/>
+    <g fill="none" stroke="#d9c3a8" stroke-width="1.6">
+      <path d="M118 158 l4 6 l4 -6"/><path d="M132 160 l4 6 l4 -6"/><path d="M124 174 l4 6 l4 -6"/>
+    </g>
+  </g>
+
+  <g id="patas" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M100 176 C100 196 98 214 100 226 Q112 234 124 226 C124 212 122 194 122 176 Z" fill="url(#gato-pelo)"/>
+    <path d="M100 180 C100 196 98 214 100 226 Q112 234 124 226 C124 212 122 194 122 180" fill="none" stroke="#a5531e" stroke-width="2.5"/>
+    <path d="M132 178 C132 196 132 214 134 226 Q146 234 158 226 C158 212 156 194 154 178 Z" fill="url(#gato-cauda)"/>
+    <path d="M132 182 C132 196 132 214 134 226 Q146 234 158 226 C158 212 156 194 154 182" fill="none" stroke="#a5531e" stroke-width="2.5"/>
+    <g fill="none" stroke="#c0632a" stroke-width="3.5" opacity="0.75">
+      <path d="M102 192 q8 2 18 0"/><path d="M101 204 q9 2 20 0"/><path d="M134 194 q8 2 18 0"/><path d="M135 206 q8 2 18 0"/>
+    </g>
+    <!-- patinhas brancas -->
+    <path d="M97 222 Q98 212 112 212 Q126 212 126 222 Q126 232 112 232 Q97 232 97 222 Z" fill="url(#gato-branco)" stroke="#c9b096" stroke-width="2"/>
+    <path d="M131 222 Q132 212 146 212 Q160 212 160 222 Q160 232 146 232 Q131 232 131 222 Z" fill="url(#gato-branco)" stroke="#c9b096" stroke-width="2"/>
+    <path d="M107 226 v5 M116 226 v5 M141 226 v5 M150 226 v5" stroke="#c9b096" stroke-width="1.8"/>
+  </g>
+
+  <g id="cabeca" stroke-linejoin="round" stroke-linecap="round">
+    <!-- orelhas -->
+    <path d="M70 72 L66 22 Q90 32 108 50 Z" fill="url(#gato-pelo)" stroke="#a5531e" stroke-width="2.5"/>
+    <path d="M150 48 Q164 30 186 20 L180 72 Z" fill="url(#gato-cauda)" stroke="#a5531e" stroke-width="2.5"/>
+    <path d="M74 56 L71 31 Q86 38 98 49 Q84 50 74 56 Z" fill="#f7a9a8"/>
+    <path d="M158 48 Q168 38 180 31 L177 56 Q168 50 158 48 Z" fill="#ee9796"/>
+    <path d="M78 40 l6 10 M82 36 l6 10 M176 40 l-6 10" stroke="#fff4e6" stroke-width="1.5" opacity="0.9"/>
+    <!-- cabeça com bochechas fofas -->
+    <path d="M124 40 C164 40 188 62 188 92 C188 108 194 116 186 124 C176 140 154 146 124 146 C94 146 72 140 62 124 C54 116 60 108 60 92 C60 62 84 40 124 40 Z"
+          fill="url(#gato-cabeca)" stroke="#a5531e" stroke-width="2.5"/>
+    <path d="M82 60 Q100 46 124 46" fill="none" stroke="#ffe0b5" stroke-width="5" opacity="0.7"/>
+    <path d="M116 41 q6 -8 10 -2 q4 -6 8 2" fill="url(#gato-cabeca)" stroke="#a5531e" stroke-width="2.2"/>
+    <!-- tufos das bochechas -->
+    <path d="M62 118 l-6 4 l7 2 M186 118 l6 4 l-7 2" fill="none" stroke="#a5531e" stroke-width="2"/>
+    <!-- listras: "M" da testa e bochechas -->
+    <g fill="none" stroke="#c0632a" stroke-width="4" opacity="0.85">
+      <path d="M124 48 v14"/><path d="M112 52 q2 6 2 12"/><path d="M136 52 q-2 6 -2 12"/>
+      <path d="M62 96 q8 0 14 4"/><path d="M64 108 q8 -2 14 2"/><path d="M186 96 q-8 0 -14 4"/><path d="M184 108 q-8 -2 -14 2"/>
+    </g>
+    <!-- focinho branco -->
+    <path d="M124 104 C112 100 94 106 94 120 C94 134 110 140 124 134 C138 140 154 134 154 120 C154 106 136 100 124 104 Z" fill="url(#gato-branco)" stroke="#e1cbb0" stroke-width="2"/>
+    <!-- bochechas rosadas -->
+    <ellipse cx="84" cy="116" rx="9" ry="5.5" fill="#f4908a" opacity="0.55"/>
+    <ellipse cx="164" cy="116" rx="9" ry="5.5" fill="#f4908a" opacity="0.55"/>
+  </g>
+
+  <g id="olhos">
+    <ellipse cx="100" cy="90" rx="14" ry="15" fill="url(#gato-iris)" stroke="#4d8a2a" stroke-width="2"/>
+    <ellipse cx="148" cy="90" rx="14" ry="15" fill="url(#gato-iris)" stroke="#4d8a2a" stroke-width="2"/>
+    <ellipse cx="101" cy="91" rx="9" ry="11.5" fill="#2b1d16"/>
+    <ellipse cx="149" cy="91" rx="9" ry="11.5" fill="#2b1d16"/>
+    <circle cx="96.5" cy="86" r="4.2" fill="#fff"/>
+    <circle cx="105" cy="96" r="2" fill="#fff"/>
+    <circle cx="144.5" cy="86" r="4.2" fill="#fff"/>
+    <circle cx="153" cy="96" r="2" fill="#fff"/>
+  </g>
+
+  <g id="rosto" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M117 108 Q124 104 131 108 Q129 115 124 117 Q119 115 117 108 Z" fill="#f28a9a" stroke="#c45a6c" stroke-width="1.8"/>
+    <path d="M120 108.5 Q123 107 126 108" fill="none" stroke="#ffd0d8" stroke-width="1.6"/>
+    <path d="M124 117 v4 M124 121 q-4 6 -10 3 M124 121 q4 6 10 3" fill="none" stroke="#8a4a2c" stroke-width="2.2"/>
+    <!-- bigodes -->
+    <g fill="none" stroke="#8a6a52" stroke-width="1.6" opacity="0.8">
+      <path d="M98 120 Q80 116 62 118"/><path d="M98 125 Q80 126 64 132"/>
+      <path d="M150 120 Q168 116 186 118"/><path d="M150 125 Q168 126 184 132"/>
+    </g>
+    <g fill="#c0632a" opacity="0.7">
+      <circle cx="108" cy="119" r="1.3"/><circle cx="104" cy="124" r="1.3"/><circle cx="140" cy="119" r="1.3"/><circle cx="144" cy="124" r="1.3"/>
+    </g>
+  </g>
+</svg>
