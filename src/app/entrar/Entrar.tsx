@@ -25,16 +25,24 @@ export function Entrar() {
 
   async function entrar(p: Perfil, s = "") {
     setEnviando(true);
-    const r = await fetch("/api/entrar", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ perfil: p.id, senha: s }),
-    }).catch(() => null);
+    const tentar = () =>
+      fetch("/api/entrar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ perfil: p.id, senha: s }),
+      }).catch(() => null);
+    let r = await tentar();
+    // perfil sem senha (Pietro): se falhar (rede/servidor), tenta de novo sem falar em senha
+    if (!r?.ok && !p.temSenha) r = await tentar();
     setEnviando(false);
     if (r?.ok) {
       speak(`Oi, ${p.nome}!`);
       // recarrega a navegação inteira para o progresso do perfil certo ser lido
       window.location.assign("/");
+      return;
+    }
+    if (!p.temSenha) {
+      speak("Ops! Toque de novo no seu bicho.");
       return;
     }
     setErro(true);
