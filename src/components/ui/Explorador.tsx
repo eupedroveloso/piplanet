@@ -2,55 +2,42 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
+import { existeArte as existe, usePersonagem, type Personagem } from "./personagem";
 
-/** Quadros do ciclo de caminhada (o Nanquim está desenhando). Enquanto não existirem, usa o pietro.svg com balanço. */
-const QUADROS = [1, 2, 3, 4].map((n) => `/arte/mascote/pietro-andando-${n}.svg`);
-const PARADO = "/arte/mascote/pietro.svg";
-const FELIZ = "/arte/mascote/pietro-feliz.svg";
-
-/** Descobre (uma vez por sessão) quais artes opcionais já existem. */
-const cache = new Map<string, Promise<boolean>>();
-function existe(src: string) {
-  if (typeof window === "undefined") return Promise.resolve(false);
-  if (!cache.has(src)) {
-    cache.set(
-      src,
-      new Promise((ok) => {
-        const img = new Image();
-        img.onload = () => ok(true);
-        img.onerror = () => ok(false);
-        img.src = src;
-      }),
-    );
-  }
-  return cache.get(src)!;
-}
+/** Arte do personagem (mascote/<personagem>...). Quadros de caminhada 1..4, parado e feliz. */
+const quadros = (p: Personagem) => [1, 2, 3, 4].map((n) => `/arte/mascote/${p}-andando-${n}.svg`);
+const parado = (p: Personagem) => `/arte/mascote/${p}.svg`;
+const felizSrc = (p: Personagem) => `/arte/mascote/${p}-feliz.svg`;
 
 /**
- * O PIETRO EXPLORADOR (sprite).
+ * O EXPLORADOR / A EXPLORADORA do perfil atual (sprite): Pietro ou Pérola; a conta Pais usa o Pietro.
  * - `andando`: troca os quadros de caminhada a 8 fps (ou balança de leve, se ainda não houver quadros).
  * - `feliz`: mostra o pietro-feliz (ou o parado, se ainda não existir).
  * - `virado`: olha para a esquerda.
  * Com "reduzir movimento", fica parado (quadro 2, sem ciclo nem balanço).
  */
-export function Explorador({ andando = false, feliz = false, virado = false, className = "size-10" }: { andando?: boolean; feliz?: boolean; virado?: boolean; className?: string }) {
+export function Explorador({ andando = false, feliz = false, virado = false, className = "size-10", personagem }: { andando?: boolean; feliz?: boolean; virado?: boolean; className?: string; personagem?: Personagem }) {
   const reduzir = useReducedMotion();
+  const p = usePersonagem(personagem);
+  const QUADROS = quadros(p);
+  const PARADO = parado(p);
+  const FELIZ = felizSrc(p);
   const [temQuadros, setTemQuadros] = useState(false);
   const [temFeliz, setTemFeliz] = useState(false);
   const [quadro, setQuadro] = useState(0);
 
   useEffect(() => {
     let vivo = true;
-    Promise.all(QUADROS.map(existe)).then((oks) => vivo && setTemQuadros(oks.every(Boolean)));
-    existe(FELIZ).then((ok) => vivo && setTemFeliz(ok));
+    Promise.all(quadros(p).map(existe)).then((oks) => vivo && setTemQuadros(oks.every(Boolean)));
+    existe(felizSrc(p)).then((ok) => vivo && setTemFeliz(ok));
     return () => {
       vivo = false;
     };
-  }, []);
+  }, [p]);
 
   useEffect(() => {
     if (!andando || !temQuadros || reduzir) return;
-    const t = setInterval(() => setQuadro((q) => (q + 1) % QUADROS.length), 125);
+    const t = setInterval(() => setQuadro((q) => (q + 1) % 4), 125);
     return () => clearInterval(t);
   }, [andando, temQuadros, reduzir]);
 
@@ -65,7 +52,7 @@ export function Explorador({ andando = false, feliz = false, virado = false, cla
       draggable={false}
       animate={balancar ? { y: [0, -3, 0], rotate: [-4, 4, -4] } : { y: 0, rotate: 0 }}
       transition={balancar ? { duration: 0.5, repeat: Infinity, ease: "easeInOut" } : { duration: 0.2 }}
-      className={`origin-bottom select-none ${virado ? "-scale-x-100" : ""} ${className}`}
+      className={`max-w-none origin-bottom select-none ${virado ? "-scale-x-100" : ""} ${className}`}
     />
   );
 }

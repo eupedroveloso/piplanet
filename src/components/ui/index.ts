@@ -15,6 +15,7 @@ export { Contador, NumeroAnimado } from "./Contador";
 export { CLASSE_ETIQUETA } from "./Etiqueta";
 export { Estrelas } from "./Estrelas";
 export { Explorador } from "./Explorador";
+export { ArteMascote, usePersonagem, type Personagem } from "./personagem";
 export { TrilhaProgresso } from "./TrilhaProgresso";
 export { fonteQueCabe, fonteQueCabeEm } from "./leitura";
 export { Mascote } from "./Mascote";

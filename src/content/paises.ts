@@ -82,7 +82,7 @@ export const PAISES: Pais[] = [
         tipo: "fazenda",
         u: 0.62,
         v: 0.72,
-        boasVindas: "Bem-vindo à Fazenda! Vamos ler os bichos daqui?",
+        boasVindas: "Boas-vindas à Fazenda! Vamos ler os bichos daqui?",
         niveis: [1, 1, 2],
       },
       {
@@ -111,7 +111,7 @@ export const PAISES: Pais[] = [
         tipo: "tundra",
         u: 0.55,
         v: 0.22,
-        boasVindas: "Brrr! Que frio! Bem-vindo à Tundra!",
+        boasVindas: "Brrr! Que frio! Boas-vindas à Tundra!",
         niveis: [3, 3],
       },
       {
@@ -139,7 +139,7 @@ export const PAISES: Pais[] = [
         tipo: "bambuzal",
         u: 0.5,
         v: 0.72,
-        boasVindas: "Bem-vindo ao Bambuzal, a casa do panda!",
+        boasVindas: "Boas-vindas ao Bambuzal, a casa do panda!",
         niveis: [3, 3],
       },
       {
@@ -180,7 +180,7 @@ export const PAISES: Pais[] = [
         u: -0.75,
         v: 0.55,
         noMar: true,
-        boasVindas: "Que imensidão! Bem-vindo ao Mar Aberto!",
+        boasVindas: "Que imensidão! Boas-vindas ao Mar Aberto!",
         niveis: [4],
       },
     ],
@@ -199,7 +199,7 @@ export const PAISES: Pais[] = [
         tipo: "floresta-temperada",
         u: 0.78,
         v: 0.35,
-        boasVindas: "Bem-vindo às florestas dos Estados Unidos!",
+        boasVindas: "Boas-vindas às florestas dos Estados Unidos!",
         niveis: [4, 4],
       },
       {
@@ -229,7 +229,7 @@ export const PAISES: Pais[] = [
         tipo: "outback",
         u: 0.42,
         v: 0.5,
-        boasVindas: "Bem-vindo ao Outback, o deserto vermelho da Austrália!",
+        boasVindas: "Boas-vindas ao Outback, o deserto vermelho da Austrália!",
         niveis: [4],
       },
       {
@@ -258,7 +258,7 @@ export const PAISES: Pais[] = [
         tipo: "rios",
         u: 0.42,
         v: 0.55,
-        boasVindas: "Bem-vindo aos rios e florestas da África!",
+        boasVindas: "Boas-vindas aos rios e florestas da África!",
         niveis: [5],
       },
       {
@@ -267,7 +267,7 @@ export const PAISES: Pais[] = [
         tipo: "savana",
         u: 0.7,
         v: 0.66,
-        boasVindas: "Que calor! Bem-vindo à Savana africana!",
+        boasVindas: "Que calor! Boas-vindas à Savana africana!",
         niveis: [5, 5],
       },
     ],

@@ -13,6 +13,7 @@ import {
   Estrelas,
   Mascote,
   Painel,
+  TelaCarregando,
   Peca,
 } from "@/components/ui";
 
@@ -125,6 +126,7 @@ export function Vitrine() {
         </div>
         <Bolinhas total={5} feitas={2} />
         <DemoComemoracao />
+        <DemoCarregando />
       </Secao>
 
       <Secao titulo="Peças de sílaba">
@@ -182,6 +184,25 @@ function DemoComemoracao() {
       <Botao cor="verde" onClick={() => setVez((v) => v + 1)}>
         Comemorar!
       </Botao>
+    </div>
+  );
+}
+
+/** Tela de carregamento com progresso controlável (para conferir a trilha do explorador). */
+function DemoCarregando() {
+  const [p, setP] = useState(0.2);
+  const [fundo, setFundo] = useState<"claro" | "escuro">("claro");
+  return (
+    <div className="flex flex-col gap-3">
+      <div id="demo-carregando" className="relative h-80 overflow-hidden rounded-xl">
+        <TelaCarregando progresso={p} fundo={fundo} />
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <Botao cor="branco" onClick={() => setP(0)}>0%</Botao>
+        <Botao cor="branco" onClick={() => setP((v) => Math.min(1, v + 0.2))}>+20%</Botao>
+        <Botao cor="branco" onClick={() => setP(1)}>100%</Botao>
+        <Botao cor="roxo" onClick={() => setFundo((f) => (f === "claro" ? "escuro" : "claro"))}>Fundo</Botao>
+      </div>
     </div>
   );
 }

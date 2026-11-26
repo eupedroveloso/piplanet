@@ -12,6 +12,8 @@ Visual infantil e ilustrado: ilustração flat em tons pastel, formas arredondad
 
 **REGRA DURA: RESPIRO E POUCO TEXTO.** Cada cartão tem no máximo um número grande e um rótulo de 1 a 3 palavras; comparação vira chip curto (▲ 56 min), nunca frase. No máximo um título curto por seção, e só quando necessário; sem frases explicativas. Menos itens por tela, mais espaço entre cartões (`gap-3`/`gap-4`) e padding interno generoso (`p-4`/`p-5`). Prefira o gráfico ao texto. Se não couber, pagine ou divida em mais seções, nunca esprema.
 
+**EQUILÍBRIO: respiro ≠ cartão vazio.** Cartão tem o tamanho do conteúdo, alinhado ao topo (nada de `1fr`/`h-full` esticando). Cada página do celular é uma tela cheia de informação útil (ex.: 4 KPIs compactos em 2x2 + um gráfico); só um gráfico pode crescer para ocupar a sobra. Junte seções pequenas em vez de criar páginas meio vazias. Espaço entre cartões de 12 a 16 px e padding interno de 16 px. Estado vazio: os mesmos cartões com "—" e um único aviso curto ("Sem atividade ainda"), sem esticar.
+
 **PRINCÍPIO: a ferramenta é para quem NÃO SABE LER.** Todo botão e toda instrução funcionam sem leitura: ícone grande e claro + fala da Juju ao tocar ou ao aparecer. Texto pode existir, mas nunca é o único meio de entender algo (ícone e voz vêm primeiro).
 
 0. **REGRA DURA: tudo tem micro-interação.** Todo elemento tocável responde a hover, toque e resultado; toda entrada, saída ou mudança de estado é animada. Receitas e limites (suave, previsível, um foco por vez) em `.claude/skills/motion/SKILL.md`.
@@ -62,6 +64,9 @@ Coloque `data-territorio="fazenda|floresta|savana|oceano"` num contêiner e use 
 | `fonteQueCabe` / `fonteQueCabeEm` | font-size que encolhe para a palavra caber numa linha (pela largura da tela ou de uma caixa fixa); use em toda palavra grande de leitura |
 | `Comemoracao` | brilhos em roda, uma vez, no centro do pai (`relative`); some com "reduzir movimento" |
 | `Mascote` | coruja Juju com balão de fala (toque lê em voz alta) |
+| `ArteMascote` / `usePersonagem` | arte do explorador do perfil atual (Pietro ou Pérola; Pais usa o Pietro); cai no Pietro se a arte ainda não existir |
+| `Explorador` | sprite do explorador andando/feliz (8 fps), usado na trilha do jogo, no loading, no cartão de nível e no mapa |
+| `TrilhaProgresso` | trilha da fase no topo do jogo: o explorador anda até a próxima parada a cada bicho |
 | `CenarioFundo` | cenário do bioma atrás das telas de exercício (`public/arte/cenarios/<tipo>.svg`); fade de entrada + parallax leve, sem parallax com reduzir movimento |
 | `Painel` | superfície branca arredondada |
 | `Cabecalho` | topo: cartão de vidro com avatar (fala ao tocar), saudação e placar; `estreito` para telas de conteúdo |

@@ -172,15 +172,27 @@ function falarNatural(text: string, rate: number): Promise<Resultado> {
   });
 }
 
-export async function speak(
-  text: string,
-  opts: { rate?: number } = {},
-): Promise<void> {
-  if (typeof window === "undefined" || !text.trim()) return;
+/**
+ * FILA DE FALAS: cada fala espera a anterior terminar e toca INTEIRA, na ordem em que foi pedida.
+ * Só uma interrupção manual (stopSpeaking: trocar de tela, passar para o próximo bicho) corta a fila.
+ */
+let geracao = 0;
+let fila: Promise<void> = Promise.resolve();
+
+export function speak(text: string, opts: { rate?: number } = {}): Promise<void> {
+  if (typeof window === "undefined" || !text.trim()) return Promise.resolve();
+  const minha = geracao;
+  const vez = fila.then(() => (minha === geracao ? tocar(text, opts) : undefined));
+  fila = vez.catch(() => {});
+  return vez;
+}
+
+async function tocar(text: string, opts: { rate?: number }) {
   const { voz, velocidadeVoz } = settingsStore.read();
   if (!voz) return;
-  stopSpeaking();
-  const rate = opts.rate ?? velocidadeVoz;
+  // sons curtos (sílabas, letras) na velocidade natural: esticar um áudio curtíssimo distorce o som
+  const curto = text.trim().length <= 12 && !/\s/.test(text.trim().replace(/-/g, ""));
+  const rate = curto ? 1 : (opts.rate ?? velocidadeVoz);
 
   if (Date.now() > semVozNaturalAte) {
     const r = await falarNatural(text, rate);
@@ -196,8 +208,22 @@ export async function speak(
   await falarNavegador(text, rate);
 }
 
-export function stopSpeaking() {
+function pararAudio() {
   if (typeof window === "undefined") return;
   encerrarAtual?.();
   if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+}
+
+/** Interrupção manual: para a fala atual e descarta tudo que estava na fila. */
+export function stopSpeaking() {
+  if (typeof window === "undefined") return;
+  geracao++;
+  pendente = null;
+  fila = Promise.resolve();
+  pararAudio();
+}
+
+/** Fala várias frases em ordem (entram na fila juntas; um stopSpeaking() cancela as que faltam). */
+export async function falarEmSequencia(frases: (string | { texto: string; rate?: number })[]) {
+  await Promise.all(frases.map((f) => (typeof f === "string" ? speak(f) : speak(f.texto, { rate: f.rate }))));
 }

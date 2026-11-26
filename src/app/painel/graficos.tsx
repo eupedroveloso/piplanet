@@ -16,10 +16,10 @@ const pct = (v: number | null) => (v === null ? "—" : `${Math.round(v * 100)}%
 
 export function Cartao({ titulo, acao, children, className = "" }: { titulo?: string; acao?: ReactNode; children: ReactNode; className?: string }) {
   return (
-    <section className={`flex min-h-0 flex-col gap-3 rounded-2xl bg-branco p-4 shadow-suave sm:p-5 ${className}`}>
+    <section className={`flex min-h-0 flex-col gap-3 rounded-2xl bg-branco p-4 shadow-suave ${className.includes("flex-1") ? "" : "shrink-0"} ${className}`}>
       {(titulo || acao) && (
         <div className="flex items-center justify-between gap-2">
-          {titulo && <h2 className="text-sm font-extrabold text-tinta-suave">{titulo}</h2>}
+          {titulo && <h2 className="text-xs font-extrabold tracking-wide text-tinta-suave uppercase">{titulo}</h2>}
           {acao}
         </div>
       )}
@@ -44,7 +44,7 @@ export function Tendencia({ delta, texto, invertido = false }: { delta: number |
   );
 }
 
-/** Cartão de indicador: um número grande, um rótulo de 1 a 3 palavras e, se houver, um chip de tendência. */
+/** Cartão de indicador compacto (do tamanho do conteúdo): ícone + rótulo curto, número grande e chip de tendência. */
 export function KPI({ icone, valor, rotulo, tendencia, className = "" }: { icone: string; valor: ReactNode; rotulo: string; tendencia?: ReactNode; className?: string }) {
   return (
     <motion.div
@@ -52,12 +52,16 @@ export function KPI({ icone, valor, rotulo, tendencia, className = "" }: { icone
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -2 }}
       transition={MOLA_ENTRADA}
-      className={`flex min-w-0 flex-col justify-center gap-2 rounded-2xl bg-branco p-4 shadow-suave sm:p-5 ${className}`}
+      className={`flex min-w-0 shrink-0 flex-col gap-1.5 rounded-2xl bg-branco p-4 shadow-suave ${className}`}
     >
-      <Arte nome={icone} className="size-8" />
-      <span className="text-3xl leading-none font-extrabold text-roxo">{valor}</span>
-      <span className="text-sm font-bold text-tinta-suave">{rotulo}</span>
-      {tendencia}
+      <span className="flex items-center gap-1.5">
+        <Arte nome={icone} className="size-5 shrink-0" />
+        <span className="truncate text-xs font-bold text-tinta-suave">{rotulo}</span>
+      </span>
+      <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+        <span className="text-2xl leading-none font-extrabold text-roxo">{valor}</span>
+        {tendencia}
+      </span>
     </motion.div>
   );
 }
@@ -65,7 +69,7 @@ export function KPI({ icone, valor, rotulo, tendencia, className = "" }: { icone
 // ── Gráficos ─────────────────────────────────────────────────────────────────
 
 /** Anel (donut) de 0 a 1, com o número no meio. */
-export function Anel({ valor, rotulo, cor = "stroke-verde", tamanho = 112 }: { valor: number | null; rotulo: string; cor?: string; tamanho?: number }) {
+export function Anel({ valor, rotulo, cor = "stroke-verde", tamanho = 96 }: { valor: number | null; rotulo: string; cor?: string; tamanho?: number }) {
   const r = 40;
   return (
     <div className="flex flex-col items-center gap-1">
@@ -85,7 +89,7 @@ export function Anel({ valor, rotulo, cor = "stroke-verde", tamanho = 112 }: { v
             transition={{ duration: 0.9, ease: "easeOut" }}
           />
         </svg>
-        <span className="absolute inset-0 grid place-items-center text-2xl font-extrabold text-roxo">{pct(valor)}</span>
+        <span className="absolute inset-0 grid place-items-center text-xl font-extrabold text-roxo">{pct(valor)}</span>
       </div>
       <span className="text-center text-sm font-bold text-tinta-suave">{rotulo}</span>
     </div>
@@ -99,8 +103,8 @@ export function BarrasDias({ dados }: { dados: { rotulo: string; min: number }[]
   const media = ativos.length ? ativos.reduce((s, d) => s + d.min, 0) / ativos.length : 0;
   const marcas = new Set([0, Math.floor(dados.length / 2), dados.length - 1]);
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-1">
-      <div className="relative flex min-h-24 flex-1 items-end gap-1 border-b-2 border-linha pt-4">
+    <div className="flex flex-col gap-1">
+      <div className="relative flex h-32 items-end gap-1 border-b-2 border-linha pt-4 [@media(max-height:700px)]:h-[4.5rem]">
         <span className="absolute top-0 left-0 text-xs text-tinta-suave">{max} min</span>
         {media > 0 && (
           <motion.div
@@ -219,15 +223,15 @@ export function LinhaTempo({ sessoes }: { sessoes: { inicio: number; fim: number
 }
 
 /** Dispersão tempo × erros (cada ponto é uma palavra). */
-export function Dispersao({ pontos }: { pontos: { id: string; x: number; y: number; rotulo: string }[] }) {
+export function Dispersao({ pontos, preencher = false }: { pontos: { id: string; x: number; y: number; rotulo: string }[]; preencher?: boolean }) {
   if (!pontos.length) return <p className="text-xs text-tinta-suave">Sem palavras lidas ainda.</p>;
   const mx = Math.max(...pontos.map((p) => p.x), 1);
   const my = Math.max(...pontos.map((p) => p.y), 1);
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-1">
-      <div className="relative min-h-24 flex-1 border-b-2 border-l-2 border-linha">
+    <div className={`flex flex-col gap-1 ${preencher ? "min-h-0 flex-1" : ""}`}>
+      <div className={`relative border-b-2 border-l-2 border-linha ${preencher ? "min-h-16 flex-1" : "h-40 [@media(max-height:700px)]:h-32"}`}>
         <span className="absolute top-0 left-1 text-xs text-tinta-suave">erros ↑</span>
-        <span className="absolute right-0 -bottom-5 text-xs text-tinta-suave">tempo →</span>
+        <span className="absolute right-1 bottom-1 z-10 rounded bg-branco/85 px-1 text-xs text-tinta-suave">tempo →</span>
         {pontos.map((p, i) => (
           <motion.span
             key={p.id}
@@ -240,7 +244,6 @@ export function Dispersao({ pontos }: { pontos: { id: string; x: number; y: numb
           />
         ))}
       </div>
-      <span className="h-4" />
     </div>
   );
 }
@@ -277,13 +280,13 @@ export function BarraEmpilhada({ valores, nomes, cores }: { valores: number[]; n
 }
 
 /** Linha de evolução (ex.: nível do nivelamento ao longo do tempo). */
-export function LinhaEvolucao({ pontos, max }: { pontos: { rotulo: string; valor: number }[]; max: number }) {
+export function LinhaEvolucao({ pontos, max, preencher = false }: { pontos: { rotulo: string; valor: number }[]; max: number; preencher?: boolean }) {
   if (!pontos.length) return <p className="text-xs text-tinta-suave">Nenhum resultado ainda.</p>;
   const n = pontos.length;
   const xy = pontos.map((p, i) => ({ x: n === 1 ? 50 : 6 + (i / (n - 1)) * 88, y: 92 - (p.valor / max) * 80 }));
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-1">
-      <div className="relative min-h-28 flex-1">
+    <div className={`flex flex-col gap-1 ${preencher ? "min-h-0 flex-1" : ""}`}>
+      <div className={`relative ${preencher ? "min-h-28 flex-1" : "h-36 [@media(max-height:700px)]:h-28"}`}>
         <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 size-full">
           {Array.from({ length: max }, (_, k) => (
             <line key={k} x1="0" x2="100" y1={92 - ((k + 1) / max) * 80} y2={92 - ((k + 1) / max) * 80} className="stroke-linha" strokeWidth="1" vectorEffect="non-scaling-stroke" />
@@ -295,9 +298,9 @@ export function LinhaEvolucao({ pontos, max }: { pontos: { rotulo: string; valor
             strokeWidth="3"
             strokeLinejoin="round"
             vectorEffect="non-scaling-stroke"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 0.9, ease: "easeOut" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
           />
         </svg>
         {xy.map((p, i) => (
@@ -344,9 +347,9 @@ export function Secoes({ secoes }: { secoes: { titulo: string; conteudo: ReactNo
 
   if (largo || secoes.length === 1) {
     return (
-      <div className={`grid h-full min-h-0 auto-rows-fr gap-4 ${secoes.length > 1 ? "grid-cols-2" : ""}`}>
+      <div className={`grid h-full min-h-0 content-start items-start gap-4 ${secoes.length > 1 ? "grid-cols-2" : ""}`}>
         {secoes.map((s) => (
-          <div key={s.titulo} className="flex min-h-0 flex-col gap-4">
+          <div key={s.titulo} className="flex h-full min-h-0 flex-col gap-3">
             {s.conteudo}
           </div>
         ))}

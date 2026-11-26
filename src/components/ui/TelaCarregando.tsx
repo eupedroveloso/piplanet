@@ -47,8 +47,11 @@ export function TelaCarregando({ progresso, fundo = "claro" }: { progresso?: num
 
   useMotionValueEvent(t, "change", (v) => setPassou(PEGADAS.filter((p) => v >= p).length));
 
-  const esquerda = useTransform(t, (v) => `${X(v)}%`);
-  const topo = useTransform(t, (v) => `${(Y(v) / 40) * 100}%`);
+  // o Pietro para um pouco antes da bandeira (para ela continuar visível)
+  const PARADA = 0.9;
+  const esquerda = useTransform(t, (v) => `${X(v * PARADA)}%`);
+  const topo = useTransform(t, (v) => `${(Y(v * PARADA) / 40) * 100}%`);
+  const chegou = progresso !== undefined && progresso >= 1;
   const andado = useTransform(t, (v) => Math.max(0.001, v));
   const escuro = fundo === "escuro";
 
@@ -109,10 +112,11 @@ export function TelaCarregando({ progresso, fundo = "claro" }: { progresso?: num
       {/* a trilha */}
       <div className="absolute inset-0 grid place-items-center px-6">
         <div className="relative aspect-[5/2] w-[min(26rem,88vw)]">
-          <svg viewBox="0 0 100 40" preserveAspectRatio="none" className="absolute inset-0 size-full overflow-visible" aria-hidden>
-            <path d={CAMINHO} fill="none" strokeWidth="9" strokeLinecap="round" className={escuro ? "stroke-branco/15" : "stroke-branco/70"} vectorEffect="non-scaling-stroke" />
-            <path d={CAMINHO} fill="none" strokeWidth="3" strokeDasharray="2 10" strokeLinecap="round" className={escuro ? "stroke-branco/40" : "stroke-roxo/25"} vectorEffect="non-scaling-stroke" />
-            <motion.path d={CAMINHO} fill="none" strokeWidth="9" strokeLinecap="round" className="stroke-verde" vectorEffect="non-scaling-stroke" style={{ pathLength: andado }} />
+          <svg viewBox="0 0 100 40" className="absolute inset-0 size-full overflow-visible" aria-hidden>
+            {/* o quadro tem a mesma proporção do viewBox (5:2): espessuras em unidades do SVG, sem distorção */}
+            <path d={CAMINHO} fill="none" strokeWidth="2.6" strokeLinecap="round" className={escuro ? "stroke-branco/15" : "stroke-branco/70"} />
+            <path d={CAMINHO} fill="none" strokeWidth="0.9" strokeDasharray="0.6 2.8" strokeLinecap="round" className={escuro ? "stroke-branco/40" : "stroke-roxo/25"} />
+            <motion.path d={CAMINHO} fill="none" strokeWidth="2.6" strokeLinecap="round" className="stroke-verde" style={{ pathLength: andado }} />
           </svg>
 
           {/* pegadas de bichos que vão aparecendo atrás do Pietro */}
@@ -144,10 +148,10 @@ export function TelaCarregando({ progresso, fundo = "claro" }: { progresso?: num
               setDica((d) => (d + 1) % DICAS.length);
             }}
             whileTap={{ scale: 0.9 }}
-            className="absolute -translate-x-1/2 -translate-y-[88%]"
+            className="absolute w-max -translate-x-1/2 -translate-y-[88%]"
             style={{ left: esquerda, top: topo }}
           >
-            <Explorador andando={!reduzir} className="size-20 drop-shadow-lg sm:size-24" />
+            <Explorador andando={!reduzir && !chegou} feliz={chegou} className="size-20 drop-shadow-lg sm:size-24" />
           </motion.button>
         </div>
       </div>

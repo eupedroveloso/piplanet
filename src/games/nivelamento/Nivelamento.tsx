@@ -7,6 +7,7 @@ import { fraseDe } from "@/content/frases";
 import { registrarNivelamento, registrarSessao, useProgress } from "@/lib/progress";
 import { shuffle } from "@/lib/random";
 import { speak } from "@/lib/speech";
+import { falaDaSilaba } from "@/content/letras";
 import { Arte, Botao, BotaoLink, BotaoRedondo, BotaoRedondoLink, BotaoSom, Mascote, MOLA_ENTRADA, Painel, fonteQueCabe } from "@/components/ui";
 
 /**
@@ -49,7 +50,7 @@ function criarPergunta(nivel: number, usados: Set<string>): Pergunta {
 }
 
 function instrucao(p: Pergunta) {
-  if (p.tipo === "silaba") return `Toque na sílaba que eu falar: ${p.alvo}`;
+  if (p.tipo === "silaba") return `Toque na sílaba que eu falar: ${falaDaSilaba(p.alvo)}`;
   return p.nivel >= 5 ? "Leia a frase e toque no bicho certo." : "Leia a palavra e toque no bicho certo.";
 }
 

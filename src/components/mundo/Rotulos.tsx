@@ -1,5 +1,6 @@
 "use client";
 
+import { usePerfil } from "@/lib/perfil";
 import { liberadas } from "@/lib/progress";
 
 import { motion, useReducedMotion } from "motion/react";
@@ -11,7 +12,7 @@ import { animaisDaFase, animaisDoTerritorio, chaveFase, faseDesbloqueada, JOGOS,
 import { infoNivel } from "@/content/niveis";
 import type { Progress } from "@/lib/progress";
 import { speak } from "@/lib/speech";
-import { BALANCO, CLASSE_ETIQUETA, MOLA_ENTRADA } from "@/components/ui";
+import { ArteMascote, BALANCO, CLASSE_ETIQUETA, MOLA_ENTRADA } from "@/components/ui";
 import { ExploradorAndando, ExploradorParado } from "./ExploradorNoMapa";
 import type { Ilha } from "./ilha";
 
@@ -124,8 +125,7 @@ export function Rotulos({
     <div ref={host} className="pointer-events-none absolute inset-0 overflow-hidden">
       {/* Juju no cestinho do balão */}
       <div data-ancora="juju" className="absolute top-0 left-0">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/arte/mascote/pietro-rosto.svg" alt="" className="size-10 select-none" draggable={false} />
+        <ArteMascote sufixo="-rosto" className="size-10 select-none" />
       </div>
 
       {!foco &&
@@ -248,7 +248,8 @@ function capasDoTerritorio(id: TerritorioId) {
  * Trancado fica apagado. Tocar fala o que é o nível (para quem não sabe ler).
  */
 function MarcoNivel({ n, livre }: { n: number; livre: boolean }) {
-  const info = infoNivel(n);
+  const { genero } = usePerfil();
+  const info = infoNivel(n, genero);
   return (
     <motion.button
       type="button"

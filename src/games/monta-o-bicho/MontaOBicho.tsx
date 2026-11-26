@@ -5,6 +5,7 @@ import { ANIMAIS, type Animal } from "@/content/animais";
 import type { Territorio } from "@/content/jornada";
 import { shuffle } from "@/lib/random";
 import { speak } from "@/lib/speech";
+import { falaDaLetra, falaDaSilaba } from "@/content/letras";
 import { fraseDe, PALAVRAS_EXTRAS } from "@/content/frases";
 import { Arte, BotaoRedondo, Casinha, Peca } from "@/components/ui";
 import { CirculoBicho, JogoFase, type RodadaProps } from "../comum/JogoFase";
@@ -84,7 +85,7 @@ function RodadaMontar({ animal, fase, acertou, errar, acertar, modo }: RodadaPro
       errar();
       setBalancando(tile.id);
       setTimeout(() => setBalancando(null), 450);
-      speak(tile.text);
+      speak(modo === "letras" ? falaDaLetra(tile.text) : modo === "silabas" ? falaDaSilaba(tile.text) : tile.text);
       return;
     }
 
@@ -94,13 +95,13 @@ function RodadaMontar({ animal, fase, acertou, errar, acertar, modo }: RodadaPro
     setEncaixes((e) => [...e, tile.id]);
     setErrosCasa(0);
 
-    await speak(tile.text);
+    await speak(modo === "letras" ? falaDaLetra(tile.text) : modo === "silabas" ? falaDaSilaba(tile.text) : tile.text);
 
     if (modo === "letras") {
       const g = grupoDe[feitas];
       const fimDaSilaba = total === unidades.length || grupoDe[total] !== g;
       if (fimDaSilaba) {
-        await speak(animal.silabas[g]);
+        await speak(falaDaSilaba(animal.silabas[g]));
         if (total < unidades.length) setPecas(pecasDeLetras(animal.silabas[g + 1], fase.distratores, g + 1));
       }
     }

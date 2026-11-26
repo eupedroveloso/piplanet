@@ -20,7 +20,8 @@ import { fraseDe } from "../src/content/frases";
 import { JOGOS, TERRITORIOS } from "../src/content/jornada";
 import { PAISES } from "../src/content/paises";
 import { PERFIS } from "../src/content/perfis";
-import { NIVEIS_JORNADA } from "../src/content/niveis";
+import { infoNivel, NIVEIS_JORNADA } from "../src/content/niveis";
+import { falaDaLetra, falaDaSilaba, TODAS_AS_LETRAS } from "../src/content/letras";
 
 const BASE = process.env.BASE_URL ?? "http://localhost:3100";
 const falas = new Set<string>();
@@ -40,8 +41,8 @@ for (const a of ANIMAIS) {
   add(`Esse é ${a.nome}.`);
   add(a.curiosidade);
   for (const c of CURIOSIDADES[a.id] ?? []) add(c);
-  for (const s of a.silabas) add(s);
-  add(a.silabas.join(" ") + ". " + a.nome);
+  for (const s of a.silabas) add(falaDaSilaba(s));
+  add(a.silabas.map(falaDaSilaba).join(", ") + ". " + a.nome);
   add(fraseDe(a, "curta").join(" "));
   add(fraseDe(a, "media").join(" "));
 }
@@ -129,20 +130,33 @@ for (const f of arquivos("src")) {
 
 // ── Falas montadas na hora (templates com números/nomes) ────────────────────
 const silabasSimples = [...new Set(ANIMAIS.filter((a) => a.dificuldade === 1).flatMap((a) => a.silabas))];
-for (const s of silabasSimples) add(`Toque na sílaba que eu falar: ${s}`);
+for (const s of silabasSimples) add(`Toque na sílaba que eu falar: ${falaDaSilaba(s)}`);
 for (const i of ["Leia a palavra e toque no bicho certo.", "Leia a frase e toque no bicho certo."]) {
   add(i);
   add("Vamos ver como está sua leitura! Não tem certo nem errado. " + i);
 }
 for (let n = 0; n <= ANIMAIS.length; n++) add(`Você tem ${n} de ${ANIMAIS.length} figurinhas.`);
 for (let n = 0; n <= 60; n++) add(`Você tem ${n} estrelas.`);
-for (let n = 0; n <= 8; n++) add(`Você leu ${n} cartas sozinho!`);
+for (let n = 0; n <= 8; n++) {
+  add(`Você leu ${n} cartas sozinho!`);
+  add(`Você leu ${n} cartas sozinha!`);
+}
+add("Li sozinha");
+// títulos e falas de nível no feminino (Pérola)
+for (const nv of NIVEIS_JORNADA) {
+  const f = infoNivel(nv.n, "f");
+  add(f.fala);
+  add(`Você subiu de nível! ${f.fala}`);
+  add(f.nome);
+  add(`${f.fala} Ainda trancado.`);
+}
 for (const t of TERRITORIOS) {
   const total = ANIMAIS.filter((a) => a.territorio === t.id).length;
   for (let n = 0; n <= total; n++) add(`${t.nome}. Você tem ${n} de ${total} figurinhas.`);
   add(`${t.nome}. Ainda trancado.`);
 }
 for (const nv of NIVEIS_JORNADA) add(`${nv.fala} Ainda trancado.`);
+for (const l of TODAS_AS_LETRAS) add(falaDaLetra(l));
 
 // ── Mapa de falas (docs/FALAS.md) ───────────────────────────────────────────
 function atualizarMapa() {
@@ -159,6 +173,48 @@ function atualizarMapa() {
 }
 atualizarMapa();
 if (process.argv.includes("--mapa")) process.exit(0);
+
+// --conferir: OUVE cada fala (modelo ouvinte); as que saíram erradas são refeitas; as que faltam são geradas
+if (process.argv.includes("--conferir")) {
+  const rp = await fetch(`${BASE}/api/entrar`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ perfil: "pais", senha: process.env.SENHA_PAIS || "0001" }) });
+  const ck = (rp.headers.getSetCookie?.() ?? []).map((c) => c.split(";")[0]).join("; ");
+  const fila = [...falas];
+  const total = fila.length;
+  const res: Record<string, number> = {};
+  const ruins: string[] = [];
+  let n = 0;
+  await Promise.all(Array.from({ length: 2 }, async () => {
+    for (let t = fila.shift(); t; t = fila.shift()) {
+      const r = await fetch(`${BASE}/api/vozes`, { method: "POST", headers: { "Content-Type": "application/json", cookie: ck }, body: JSON.stringify({ texto: t, acao: "conferir" }) }).catch(() => null);
+      const j = r ? await r.json().catch(() => ({})) : {};
+      const st = r?.ok ? (j.status ?? (j.modelo ? "refeita" : "ok")) : "falhou";
+      res[st] = (res[st] ?? 0) + 1;
+      if (!r?.ok) ruins.push(t);
+      if (++n % 50 === 0) console.log(`${n}/${total}`, JSON.stringify(res));
+    }
+  }));
+  console.log("Pronto:", JSON.stringify(res));
+  if (ruins.length) console.log("Não deu certo (revisar em /vozes):", ruins.slice(0, 40));
+  process.exit(0);
+}
+
+// --refazer-curtos: gera de novo, com o modelo maior, os sons curtos (sílabas, letras, palavras soltas)
+if (process.argv.includes("--refazer-curtos")) {
+  const curtos = [...falas].filter((t) => !/\s/.test(t) && t.length <= 14);
+  const rp = await fetch(`${BASE}/api/entrar`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ perfil: "pais", senha: process.env.SENHA_PAIS || "0001" }) });
+  const ck = (rp.headers.getSetCookie?.() ?? []).map((c) => c.split(";")[0]).join("; ");
+  console.log(`Refazendo ${curtos.length} sons curtos com o modelo maior...`);
+  let ok = 0, ruins = 0;
+  const fila = [...curtos];
+  await Promise.all(Array.from({ length: 4 }, async () => {
+    for (let t = fila.shift(); t; t = fila.shift()) {
+      const r = await fetch(`${BASE}/api/vozes`, { method: "POST", headers: { "Content-Type": "application/json", cookie: ck }, body: JSON.stringify({ texto: t, acao: "refazer" }) }).catch(() => null);
+      if (r?.ok) ok++; else { ruins++; console.log("falhou:", t); }
+    }
+  }));
+  console.log(`Pronto: ${ok} refeitos, ${ruins} falhas.`);
+  process.exit(0);
+}
 
 const lista = [...falas];
 const chars = lista.reduce((s, t) => s + t.length, 0);
@@ -182,6 +238,6 @@ async function trabalhador() {
     if (feitas % 25 === 0) console.log(`${feitas} feitas (${falhas} falhas)`);
   }
 }
-await Promise.all(Array.from({ length: 6 }, trabalhador));
+await Promise.all(Array.from({ length: 3 }, trabalhador));
 console.log(`Pronto: ${feitas} falas, ${falhas} falhas.`);
 if (falhou.length) console.log("Falharam (vão usar a voz do navegador até gerar):", falhou.slice(0, 40));

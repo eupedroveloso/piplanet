@@ -83,7 +83,7 @@ export function TrilhaProgresso({ total, feitas }: { total: number; feitas: numb
 
       {/* o explorador */}
       <motion.div
-        className="absolute bottom-2 -translate-x-1/2"
+        className="absolute bottom-2 w-max -translate-x-1/2"
         initial={false}
         animate={{ left: `calc(0.75rem + (100% - 1.5rem) * ${pct(pos) / 100})` }}
         transition={reduzir ? { duration: 0 } : { duration: ANDAR_S, ease: "easeInOut" }}

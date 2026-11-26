@@ -8,9 +8,17 @@ import type { Progress, Sessao } from "@/lib/progress";
  * Dados do painel dos adultos: carrega o progresso do Pietro (banco e/ou aparelho),
  * calcula as métricas e aplica correções (sempre guardando uma cópia antes).
  */
-export const ALVO = "pietro";
-const CHAVE_LOCAL = `pg:progress:v3:${ALVO}`;
-const CHAVE_COPIAS = `pg:copias:${ALVO}`;
+/**
+ * Criança acompanhada no painel (Pietro ou Pérola). O seletor do painel troca com escolherAlvo()
+ * e depois recarrega.
+ */
+let ALVO = "pietro";
+export const alvoAtual = () => ALVO;
+export function escolherAlvo(id: string) {
+  ALVO = id;
+}
+const CHAVE_LOCAL_DE = () => `pg:progress:v3:${ALVO}`;
+const CHAVE_COPIAS_DE = () => `pg:copias:${ALVO}`;
 
 export interface Copia {
   data: number;
@@ -21,7 +29,7 @@ export interface Copia {
 export const VAZIO: Progress = { patinhas: 0, animaisColetados: [], fases: {}, nivelamentos: [], cartas: {}, sessoes: [], atualizadoEm: 0 };
 
 function lerLocal(): Progress | null {
-  const raw = localStorage.getItem(CHAVE_LOCAL) ?? localStorage.getItem("pg:progress:v3");
+  const raw = localStorage.getItem(CHAVE_LOCAL_DE()) ?? (ALVO === "pietro" ? localStorage.getItem("pg:progress:v3") : null);
   if (!raw) return null;
   try {
     return { ...VAZIO, ...JSON.parse(raw) };
@@ -32,7 +40,7 @@ function lerLocal(): Progress | null {
 
 function copiasLocais(): Copia[] {
   try {
-    return JSON.parse(localStorage.getItem(CHAVE_COPIAS) ?? "[]");
+    return JSON.parse(localStorage.getItem(CHAVE_COPIAS_DE()) ?? "[]");
   } catch {
     return [];
   }
@@ -66,9 +74,9 @@ export async function salvar(atual: Progress, novo: Progress, motivo: string) {
   if (!r?.ok) {
     // sem banco: cópia fica guardada neste aparelho
     const copias = [...copiasLocais(), { data: Date.now(), motivo, dados: atual }].slice(-30);
-    localStorage.setItem(CHAVE_COPIAS, JSON.stringify(copias));
+    localStorage.setItem(CHAVE_COPIAS_DE(), JSON.stringify(copias));
   }
-  if (localStorage.getItem(CHAVE_LOCAL) !== null || !r?.ok) localStorage.setItem(CHAVE_LOCAL, JSON.stringify(dados));
+  if (localStorage.getItem(CHAVE_LOCAL_DE()) !== null || !r?.ok) localStorage.setItem(CHAVE_LOCAL_DE(), JSON.stringify(dados));
   return dados;
 }
 

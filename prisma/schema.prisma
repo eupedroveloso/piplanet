@@ -47,4 +47,10 @@ model VozCache {
   texto    String
   audio    Bytes
   criadoEm DateTime @default(now())
+  /// Controle de qualidade: o que o modelo disse, qual modelo gerou e a duração
+  transcricao String?
+  modelo      String?
+  duracaoMs   Int?
+  /// "pendente" | "suspeita" (checagem automática) | "aprovada" | "ruim"
+  status      String  @default("pendente")
 }

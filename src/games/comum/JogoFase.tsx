@@ -17,8 +17,9 @@ import {
 import { calcularEstrelas, coletarAnimal, concluirFase, ganharPatinhas, PONTOS } from "@/lib/progress";
 import { RastreioLicao } from "@/lib/rastreio";
 import { settingsStore } from "@/lib/settings";
+import { usePerfil } from "@/lib/perfil";
 import { shuffle } from "@/lib/random";
-import { speak } from "@/lib/speech";
+import { falarEmSequencia, speak, stopSpeaking } from "@/lib/speech";
 import { falarSobre } from "@/lib/falar-bicho";
 import { infoNivel } from "@/content/niveis";
 import {
@@ -67,6 +68,7 @@ export function JogoFase({
   rodada: (p: RodadaProps) => ReactNode;
 }) {
   const fase = territorio.fases[faseIdx];
+  const { genero } = usePerfil();
   const info = JOGOS[fase.jogo];
   const chave = chaveFase(territorio.id, faseIdx);
   const proxChave = SEQUENCIA[SEQUENCIA.indexOf(chave) + 1];
@@ -86,7 +88,13 @@ export function JogoFase({
   // Registro para o painel dos adultos: tempo da lição, erros e tempo de cada bicho
   const [rastreio] = useState(() => new RastreioLicao({ tipo: "fase", chave, jogo: fase.jogo }));
   // saiu no meio da lição (voltou ao mapa / fechou): guarda como não concluída
-  useEffect(() => () => rastreio.fechar(false), [rastreio]);
+  useEffect(
+    () => () => {
+      rastreio.fechar(false);
+      stopSpeaking();
+    },
+    [rastreio],
+  );
 
   function comecar() {
     rastreio.comecar();
@@ -118,11 +126,12 @@ export function JogoFase({
     setFigurinhaNova(nova);
     if (nova) setNovas((n) => [...n, animal.id]);
     setEtapa("acertou");
-    await speak(animal.nome);
-    await speak(animal.curiosidade, { rate: 0.95 });
+    await falarEmSequencia([animal.nome, { texto: animal.curiosidade, rate: 0.95 }]);
   }
 
   function proximo() {
+    // passou para o próximo bicho: a curiosidade que estava tocando para na hora
+    stopSpeaking();
     const prox = indice + 1;
     if (prox < fila.length) {
       rastreio.proximoBicho();
@@ -140,7 +149,7 @@ export function JogoFase({
     setEtapa("fim");
     const novoNivel = proxChave ? nivelQueComeca(proxChave) : null;
     speak(`Parabéns! Você ganhou ${estrelas} ${estrelas === 1 ? "estrela" : "estrelas"}!`).then(() => {
-      if (novoNivel) speak(`Você subiu de nível! ${infoNivel(novoNivel).fala}`);
+      if (novoNivel) speak(`Você subiu de nível! ${infoNivel(novoNivel, genero).fala}`);
     });
   }
 
@@ -184,7 +193,7 @@ export function JogoFase({
   }, [tela, info.instrucao]);
   const acertou = etapa === "acertou";
   const estrelas = calcularEstrelas(errosFase);
-  const [pt, pf] = (proxChave ?? "").split("/");
+  const [pt] = (proxChave ?? "").split("/");
   const nivelNovo = proxChave ? nivelQueComeca(proxChave) : null;
 
   return (
@@ -446,7 +455,8 @@ const CASCATA = {
  * Ícone do nível girando para entrar, número grande e o exemplo (lido em voz ao tocar).
  */
 function CartaoSubiuNivel({ n }: { n: number }) {
-  const info = infoNivel(n);
+  const { genero } = usePerfil();
+  const info = infoNivel(n, genero);
   const reduzir = useReducedMotion();
   // o Pietro entra andando até o selo do nível novo e, ao chegar, pula de alegria
   const [chegou, setChegou] = useState(!!reduzir);

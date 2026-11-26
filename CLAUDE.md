@@ -7,12 +7,13 @@ Plataforma de alfabetização com tema de animais para uma criança com autismo 
 - Pedagogia: siga `docs/METODOLOGIA.md` (método fônico, sem punição, dica automática, rodadas curtas, gamificação sem perda).
 - Visual: siga `docs/DESIGN-SYSTEM.md`. Só tokens de `src/app/globals.css`, componentes de `@/components/ui`, ilustrações de `public/arte/` (Fluent Emoji Flat). Vitrine em `/design-system`.
 - **REGRA DURA: o público AINDA NÃO SABE LER.** Toda instrução é falada (voz da Juju) e todo botão/ação tem ícone grande e claro; texto nunca é o único meio de entender algo. Só o que é exercício de leitura (sílabas, palavras, frases) depende de ler.
-- **REGRA DURA: nada apertado e pouco texto.** Interfaces com respiro (margens e espaçamento generosos). Nada de excesso de subtítulos ou textos explicativos: um número ou ícone grande e um rótulo curto. Se não couber, divida em páginas ou abas em vez de espremer. Vale também para o painel dos pais.
+- **REGRA DURA: nada apertado e pouco texto.** Interfaces com respiro (margens e espaçamento generosos). Nada de excesso de subtítulos ou textos explicativos: um número ou ícone grande e um rótulo curto. Se não couber, divida em páginas ou abas em vez de espremer. Mas respiro não é desperdício: cartões do tamanho do conteúdo, sem esticar, e cada tela com informação útil. Vale também para o painel dos pais.
 - **REGRA DURA: todo elemento tocável tem estímulo e resposta visual (micro-interação), e toda mudança de estado é animada.** Siga `.claude/skills/motion/SKILL.md`, com movimentos suaves e previsíveis (autismo).
 - Agentes do time (em `.claude/agents/`, terminais no canvas): `ilustrador` / Nanquim (arte, skill `ilustracao`), `ui-designer` / Faísca (telas e motion, skills `ui-design` e `motion`) e `modelador-3d` / Cinzel (mundo 3D e desempenho, skill `modelagem-3d`).
 - Jogos novos: `docs/COMO-CRIAR-UM-JOGO.md`.
 - Animais vêm sempre de `src/content/animais.ts`, no bioma do país onde vivem de verdade (ex.: pinguim não vive no Ártico). Curiosidades precisam ser verdadeiras.
-- Voz: siga `docs/FALAS.md` (mapa de todas as falas). Toda fala nova é pré-gerada com `scripts/gerar-vozes.mts`; nunca deixar voz do sistema. Nunca usar o Magnific.
+- Voz: siga `docs/FALAS.md` (mapa de todas as falas). Toda fala nova é pré-gerada com `scripts/gerar-vozes.mts` (ElevenLabs via OpenRouter, conferida ouvindo); nunca deixar voz do sistema. Nunca usar o Magnific.
+- Perfis (`src/content/perfis.ts`): crianças Pietro e Pérola (sem senha, progresso próprio, personagem e gênero próprios) e a conta Pais (senha, painel, tudo liberado).
 - Banco: Prisma 7 (versão estável; o "latest" do npm é um RC do 8). Credenciais em `.env`, nunca commitar.
 - `cacheComponents` está ligado: params de rota dinâmica são lidos dentro de `<Suspense>`.
 - Textos da interface em português do Brasil.

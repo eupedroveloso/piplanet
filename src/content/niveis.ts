@@ -29,7 +29,12 @@ export const NIVEIS_JORNADA: InfoNivel[] = [
   { n: 5, nome: "Explorador Mestre", leitura: "Palavras gigantes", exemplo: "hi·po·pó·ta·mo", icone: "animais/hipopotamo", fala: "Explorador Mestre! Palavras gigantes, como hipopótamo!" },
 ];
 
-export const infoNivel = (n: number) => NIVEIS_JORNADA[Math.min(5, Math.max(1, n)) - 1];
+/** Nível com o título no gênero da criança ("Exploradora Iniciante" para "f"). */
+export const infoNivel = (n: number, genero: "m" | "f" = "m"): InfoNivel => {
+  const nv = NIVEIS_JORNADA[Math.min(5, Math.max(1, n)) - 1];
+  if (genero === "m") return nv;
+  return { ...nv, nome: nv.nome.replace("Explorador", "Exploradora"), fala: nv.fala.replace("Explorador", "Exploradora") };
+};
 
 /** Sílaba "diferente" (mais difícil que consoante + vogal). */
 function silabaComplexa(s: string) {

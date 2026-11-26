@@ -10,7 +10,7 @@ import { PAISES, type PaisId } from "@/content/paises";
 import { useProgress, liberadas } from "@/lib/progress";
 import { speak } from "@/lib/speech";
 import { settingsStore, useSettings } from "@/lib/settings";
-import { Arte, BotaoRedondo, MOLA_ENTRADA, TelaCarregando } from "@/components/ui";
+import { Arte, ArteMascote, BotaoRedondo, MOLA_ENTRADA, TelaCarregando } from "@/components/ui";
 import { useProgress as useCarga } from "@react-three/drei";
 import { criarIlha, type Ilha } from "./ilha";
 import { Rotulos } from "./Rotulos";
@@ -225,7 +225,7 @@ export function MapaMundo() {
             else setFoco(atual.id);
           }}
         >
-          <Arte nome="mascote/pietro-rosto" className="size-7" />
+          <ArteMascote sufixo="-rosto" className="size-7" />
         </BotaoRedondo>
       </div>
     </div>
@@ -247,7 +247,7 @@ function ContinuarDaqui({ onIr }: { onIr: () => void }) {
       className="absolute bottom-24 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full bg-amarelo py-2 pr-6 pl-2 shadow-[0_6px_0_var(--color-amarelo-escuro)] ring-4 ring-branco/70"
     >
       <span className="grid size-12 place-items-center rounded-full bg-branco">
-        <Arte nome="mascote/pietro-rosto" className="size-10" />
+        <ArteMascote sufixo="-rosto" className="size-10" />
       </span>
       <Arte nome="ui/play" className="size-10" />
     </motion.button>

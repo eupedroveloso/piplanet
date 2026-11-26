@@ -7,6 +7,9 @@ import { TERRITORIOS } from "@/content/jornada";
 import { avaliarCarta, progressStore, useProgress } from "@/lib/progress";
 import { RastreioCartas } from "@/lib/rastreio";
 import { speak } from "@/lib/speech";
+import { falaDaSilaba } from "@/content/letras";
+import { noGenero } from "@/content/perfis";
+import { usePerfil } from "@/lib/perfil";
 import { falarSobre } from "@/lib/falar-bicho";
 import { Arte, Botao, BotaoLink, BotaoRedondo, BotaoRedondoLink, BotaoSom, Mascote, MOLA_ENTRADA, MOLA_TOQUE, Painel, fonteQueCabeEm } from "@/components/ui";
 
@@ -32,6 +35,7 @@ function montarBaralho(coletados: string[], cartas: Record<string, { caixa: numb
 }
 
 export function Cartas() {
+  const { genero } = usePerfil();
   const { animaisColetados } = useProgress();
   const [fila, setFila] = useState<Animal[] | null>(null);
   const [virada, setVirada] = useState(false);
@@ -113,7 +117,7 @@ export function Cartas() {
         <div className="flex flex-1 items-center justify-center">
           <Painel className="flex w-full max-w-lg flex-col items-center gap-5 p-8 text-center">
             <Arte nome="ui/festa" className="size-16" />
-            <button type="button" onClick={() => speak(`Você leu ${lidas} cartas sozinho!`)} className="flex items-center gap-2 text-3xl font-extrabold text-roxo">
+            <button type="button" onClick={() => speak(`Você leu ${lidas} cartas ${noGenero(genero, "sozinho", "sozinha")}!`)} className="flex items-center gap-2 text-3xl font-extrabold text-roxo">
               <Arte nome="ui/estrela" className="size-9" /> {lidas}
             </button>
             <BotaoLink href="/" cor="verde" tamanho="lg" aria-label="Voltar ao mapa" icone={<Arte nome="ui/mapa" className="size-8" />}>
@@ -147,7 +151,7 @@ export function Cartas() {
             aria-label="Ouvir a palavra"
             onClick={() => {
               setOuviu(true);
-              speak(carta.silabas.join(" ") + ". " + carta.nome);
+              speak(carta.silabas.map(falaDaSilaba).join(", ") + ". " + carta.nome);
             }}
             className="size-16"
           >
@@ -155,7 +159,7 @@ export function Cartas() {
           </BotaoRedondo>
         ) : (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={MOLA_TOQUE} className="flex gap-4">
-            <Botao cor="verde" tamanho="lg" aria-label="Li sozinho" onClick={() => avaliar(true)} icone={<Arte nome="ui/estrela" className="size-9" />}>
+            <Botao cor="verde" tamanho="lg" aria-label={noGenero(genero, "Li sozinho", "Li sozinha")} onClick={() => avaliar(true)} icone={<Arte nome="ui/estrela" className="size-9" />}>
               👍
             </Botao>
             <Botao cor="branco" tamanho="lg" aria-label="Treinar de novo" onClick={() => avaliar(false)}>

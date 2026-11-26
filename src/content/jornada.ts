@@ -93,7 +93,7 @@ export const TERRITORIOS: Territorio[] = PAISES.flatMap((p) =>
       pais: p.id,
       tipo: b.tipo,
       noMar: !!b.noMar,
-      boasVindas: b.boasVindas ?? `Bem-vindo a ${b.nome}!`,
+      boasVindas: b.boasVindas ?? `Boas-vindas a ${b.nome}!`,
       fases: fasesIntercaladas(b.niveis!),
     })),
 ).map((t) => {

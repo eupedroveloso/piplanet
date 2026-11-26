@@ -63,3 +63,6 @@ Criança com autismo leve e hiperfoco em animais, aprendendo a ler. Ela conhece 
   - Mochila e binóculo balançam 1 a 2 px, atrasados em relação ao corpo.
   - Na ponta da perna da bermuda, usar `stroke-linecap="butt"`. Com ponta redonda, os joelhos viraram bolinhas.
   - Na pose feliz (comemoração), olhos em arco e boca aberta são aceitáveis. No uso geral, manter o sorriso fechado.
+- 2026-11-26 (Pérola): fiz a garota exploradora com o mesmo conjunto de arquivos do Pietro (perola, -rosto, -lendo, -andando-1..4, -feliz), para trocar 1:1. O gerador é `scripts/mascote/perola.py`, que roda os geradores do Pietro trocando a paleta e envolvendo `face()` e `cabeca()`, sem duplicar código. Uma mudança na base do Pietro passa para os dois.
+  - Para não cair em estereótipo: mesma roupa de explorador, com camisa cáqui-sálvia, mochila verde-azulada e círculo do avatar verde-azulado (o do Pietro é verde). A diferença está no cabelo: trança sobre o ombro com elástico laranja e, de perfil, rabo de cavalo que balança com o passo. Os cílios são discretos, um traço por olho.
+  - Na pose lendo, a trança fica mais curta (3 gomos) para não cobrir o mapa.

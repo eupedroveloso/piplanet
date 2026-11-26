@@ -5,16 +5,55 @@ import { useEffect, useState, type ReactNode } from "react";
 import { arteDoAnimal, ANIMAIS } from "@/content/animais";
 import { PAISES } from "@/content/paises";
 import { infoNivel, NIVEIS_JORNADA } from "@/content/niveis";
-import { chaveFase, nivelAtual, nivelDaFase, SEQUENCIA, TERRITORIOS } from "@/content/jornada";
+import {
+  chaveFase,
+  nivelAtual,
+  nivelDaFase,
+  SEQUENCIA,
+  TERRITORIOS,
+} from "@/content/jornada";
 import { NIVEIS } from "@/games/nivelamento/Nivelamento";
 import type { Progress } from "@/lib/progress";
 import { usePerfil } from "@/lib/perfil";
-import { Arte, BotaoRedondo, MOLA_ENTRADA, MOLA_TOQUE, NavInferior } from "@/components/ui";
 import {
-  carregar, cartasParaHoje, colocarNaFase, duracao, metricas, nomeAnimal, nomeFase, quando, salvar,
-  zerarCartas, zerarTudo, type Copia,
+  Arte,
+  BotaoRedondo,
+  MOLA_ENTRADA,
+  MOLA_TOQUE,
+  NavInferior,
+} from "@/components/ui";
+import {
+  carregar,
+  cartasParaHoje,
+  colocarNaFase,
+  duracao,
+  metricas,
+  nomeAnimal,
+  nomeFase,
+  quando,
+  salvar,
+  zerarCartas,
+  zerarTudo,
+  type Copia,
+  alvoAtual,
+  escolherAlvo,
+  VAZIO,
 } from "./dados";
-import { Anel, BarraEmpilhada, BarrasDias, BarrasH, Cartao, Dispersao, JornadaNiveis, KPI, LinhaEvolucao, LinhaTempo, Secoes, Tendencia } from "./graficos";
+import { CRIANCAS, noGenero, perfilPorId } from "@/content/perfis";
+import {
+  Anel,
+  BarraEmpilhada,
+  BarrasDias,
+  BarrasH,
+  Cartao,
+  Dispersao,
+  JornadaNiveis,
+  KPI,
+  LinhaEvolucao,
+  LinhaTempo,
+  Secoes,
+  Tendencia,
+} from "./graficos";
 
 /**
  * PAINEL DOS PAIS
@@ -32,6 +71,8 @@ const ABAS: { id: Aba; nome: string; icone: string }[] = [
   { id: "ajustes", nome: "Ajustes", icone: "ui/cadeado" },
 ];
 
+/** Hora atual, lida só em efeitos e eventos (ao carregar/recarregar), nunca no render. */
+const agoraMs = () => Date.now();
 
 export function PainelAdultos() {
   const perfil = usePerfil();
@@ -42,44 +83,105 @@ export function PainelAdultos() {
   const [carregando, setCarregando] = useState(true);
   const [aviso, setAviso] = useState("");
   const [agora, setAgora] = useState(0);
+  const [alvo, setAlvo] = useState(alvoAtual());
+  const crianca = perfilPorId(alvo) ?? CRIANCAS()[0];
 
-  function aplicarCarregado(c: Awaited<ReturnType<typeof carregar>>) {
+  /** Troca a criança acompanhada (Pietro ou Pérola) e recarrega os dados dela. */
+  async function trocarCrianca(id: string) {
+    if (id === alvo) return;
+    escolherAlvo(id);
+    setAlvo(id);
+    setCarregando(true);
+    aplicarCarregado(await carregar(), agoraMs());
+  }
+
+  function aplicarCarregado(
+    c: Awaited<ReturnType<typeof carregar>>,
+    em: number,
+  ) {
     setDados(c.dados);
     setCopias(c.copias);
     setTemBanco(c.temBanco);
-    setAgora(Date.now());
+    setAgora(em);
     setCarregando(false);
   }
   async function recarregar() {
     setCarregando(true);
-    aplicarCarregado(await carregar());
+    aplicarCarregado(await carregar(), agoraMs());
   }
   useEffect(() => {
-    carregar().then(aplicarCarregado);
+    carregar().then((c) => aplicarCarregado(c, agoraMs()));
   }, []);
 
   async function aplicar(novo: Progress, motivo: string) {
-    if (!dados) return;
-    setDados(await salvar(dados, novo, motivo));
-    setAviso(`Pronto: ${motivo.toLowerCase()}. Uma cópia de antes foi guardada.`);
+    setDados(await salvar(dados ?? VAZIO, novo, motivo));
+    setAviso(
+      `Pronto: ${motivo.toLowerCase()}. Uma cópia de antes foi guardada.`,
+    );
     setTimeout(() => setAviso(""), 3500);
     const c = await carregar();
     setCopias(c.copias);
   }
 
-  const m = dados ? metricas(dados, agora) : null;
+  // Sem progresso ainda: os mesmos cartões, com "—" (métricas do progresso vazio)
+  const base = dados ?? VAZIO;
+  const m = metricas(base, agora);
 
   return (
     <div className="mx-auto flex h-dvh w-full max-w-6xl flex-col gap-3 overflow-hidden px-4 pt-[max(env(safe-area-inset-top),0.75rem)] sm:gap-3 sm:px-6">
       {/* Topo */}
       <div className="flex items-center gap-2">
-        <div className="flex min-w-0 flex-1 items-center gap-2">
-          <Arte nome="mascote/pietro-rosto" className="hidden size-9 shrink-0 sm:block" />
+        <div className="flex min-w-0 flex-1 items-center gap-2.5">
+          {/* Seletor de criança: os rostos lado a lado; a escolhida fica em destaque */}
+          <div
+            role="tablist"
+            aria-label="Criança"
+            className="flex shrink-0 gap-1 rounded-full bg-branco/80 p-1 shadow-suave"
+          >
+            {CRIANCAS().map((c) => {
+              const ativa = c.id === alvo;
+              return (
+                <motion.button
+                  key={c.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={ativa}
+                  aria-label={c.nome}
+                  onClick={() => trocarCrianca(c.id)}
+                  whileHover={{ y: -1 }}
+                  whileTap={{ scale: 0.9 }}
+                  transition={MOLA_TOQUE}
+                  className="relative grid size-12 place-items-center rounded-full"
+                >
+                  {ativa && (
+                    <motion.span
+                      layoutId="crianca-painel"
+                      transition={MOLA_ENTRADA}
+                      className={`absolute inset-0 rounded-full ring-[3px] ${c.personagem === "perola" ? "bg-verde-claro ring-verde" : "bg-amarelo-claro ring-amarelo"}`}
+                    />
+                  )}
+                  <Arte
+                    nome={c.avatar}
+                    className={`relative size-10 transition-[filter,opacity] duration-300 ${ativa ? "" : "opacity-60 grayscale-[0.5]"}`}
+                  />
+                </motion.button>
+              );
+            })}
+          </div>
           <div className="min-w-0 leading-tight">
-            <h1 className="truncate text-lg font-extrabold text-roxo sm:text-xl">Aprendizado do Pietro</h1>
+            <h1 className="truncate text-lg font-extrabold text-roxo sm:text-xl">
+              <span className="sm:hidden">{crianca.nome}</span>
+              <span className="hidden sm:inline">
+                Aprendizado {noGenero(crianca.genero, "do", "da")}{" "}
+                {crianca.nome}
+              </span>
+            </h1>
             <p className="flex min-w-0 items-center gap-1.5 text-xs text-tinta-suave">
               <span className="truncate">
-                {perfil.nome} · {m?.ultima ? `última atividade ${quando(m.ultima)}` : "sem atividade registrada ainda"}
+                {perfil.nome} ·{" "}
+                {m?.ultima
+                  ? `última atividade ${quando(m.ultima)}`
+                  : "sem atividade registrada ainda"}
               </span>
               {/* Só aparece em teste local (o servidor local não grava no banco, de propósito) */}
               {!temBanco && (
@@ -98,7 +200,11 @@ export function PainelAdultos() {
           <motion.span
             aria-hidden
             animate={carregando ? { rotate: 360 } : { rotate: 0 }}
-            transition={carregando ? { repeat: Infinity, duration: 1, ease: "linear" } : MOLA_TOQUE}
+            transition={
+              carregando
+                ? { repeat: Infinity, duration: 1, ease: "linear" }
+                : MOLA_TOQUE
+            }
             className="grid place-items-center text-2xl leading-none font-extrabold text-roxo"
           >
             ↻
@@ -119,21 +225,24 @@ export function PainelAdultos() {
             transition={MOLA_TOQUE}
             className="relative flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-lg py-1 text-xs font-bold text-roxo sm:flex-row sm:gap-2 sm:text-sm"
           >
-            {aba === a.id && <motion.span layoutId="aba-painel" className="absolute inset-0 rounded-lg bg-amarelo-claro" transition={MOLA_ENTRADA} />}
+            {aba === a.id && (
+              <motion.span
+                layoutId="aba-painel"
+                className="absolute inset-0 rounded-lg bg-amarelo-claro"
+                transition={MOLA_ENTRADA}
+              />
+            )}
             <Arte nome={a.icone} className="relative size-5" />
             <span className="relative">{a.nome}</span>
           </motion.button>
         ))}
       </nav>
 
-
       {/* Conteúdo */}
       <div className="relative min-h-0 flex-1">
         {carregando && !dados ? (
-          <div className="grid h-full place-items-center text-tinta-suave">Carregando…</div>
-        ) : !dados || !m ? (
-          <div className="grid h-full place-items-center p-6 text-center text-tinta-suave">
-            Ainda não há progresso do Pietro. Ele aparece aqui assim que o Pietro jogar{temBanco ? "" : " neste aparelho"}.
+          <div className="grid h-full place-items-center text-tinta-suave">
+            Carregando…
           </div>
         ) : (
           <AnimatePresence mode="wait">
@@ -145,12 +254,16 @@ export function PainelAdultos() {
               transition={{ duration: 0.18 }}
               className="h-full"
             >
-              {aba === "resumo" && <Resumo m={m} fases={dados.fases} agora={agora} />}
+              {aba === "resumo" && (
+                <Resumo m={m} fases={base.fases} agora={agora} />
+              )}
               {aba === "licoes" && <Licoes m={m} />}
               {aba === "palavras" && <Palavras m={m} />}
               {aba === "cartas" && <CartasAba m={m} agora={agora} />}
               {aba === "nivel" && <NivelAba m={m} />}
-              {aba === "ajustes" && <Ajustes dados={dados} copias={copias} aplicar={aplicar} />}
+              {aba === "ajustes" && (
+                <Ajustes dados={base} copias={copias} aplicar={aplicar} />
+              )}
             </motion.div>
           </AnimatePresence>
         )}
@@ -180,7 +293,17 @@ type M = ReturnType<typeof metricas>;
 const LINHA_PX = 46;
 const PAGINAS_PX = 58;
 
-function Paginado<T>({ itens, porPagina: maximo, render, vazio }: { itens: T[]; porPagina: number; render: (t: T, i: number) => ReactNode; vazio: string }) {
+function Paginado<T>({
+  itens,
+  porPagina: maximo,
+  render,
+  vazio,
+}: {
+  itens: T[];
+  porPagina: number;
+  render: (t: T, i: number) => ReactNode;
+  vazio: string;
+}) {
   const [pag, setPag] = useState(0);
   // Sem rolagem: quantos itens cabem na altura disponível (mede o espaço real e recalcula ao girar a tela)
   const [caixa, setCaixa] = useState<HTMLDivElement | null>(null);
@@ -190,7 +313,17 @@ function Paginado<T>({ itens, porPagina: maximo, render, vazio }: { itens: T[]; 
     const medir = () => {
       const h = caixa.clientHeight;
       const semBarra = Math.floor(h / LINHA_PX);
-      setCabem(Math.max(2, Math.min(maximo, itens.length <= semBarra ? semBarra : Math.floor((h - PAGINAS_PX) / LINHA_PX))));
+      setCabem(
+        Math.max(
+          2,
+          Math.min(
+            maximo,
+            itens.length <= semBarra
+              ? semBarra
+              : Math.floor((h - PAGINAS_PX) / LINHA_PX),
+          ),
+        ),
+      );
     };
     medir();
     const ro = new ResizeObserver(medir);
@@ -200,9 +333,13 @@ function Paginado<T>({ itens, porPagina: maximo, render, vazio }: { itens: T[]; 
   const porPagina = cabem;
   const total = Math.max(1, Math.ceil(itens.length / porPagina));
   const p = Math.min(pag, total - 1);
-  if (!itens.length) return <p className="py-4 text-center text-sm text-tinta-suave">{vazio}</p>;
+  if (!itens.length)
+    return <p className="py-4 text-center text-sm text-tinta-suave">{vazio}</p>;
   return (
-    <div ref={setCaixa} className="flex min-h-0 flex-1 flex-col gap-1.5 overflow-hidden">
+    <div
+      ref={setCaixa}
+      className="flex min-h-0 flex-1 flex-col gap-1.5 overflow-hidden"
+    >
       <AnimatePresence mode="wait" initial={false}>
         <motion.ul
           key={p}
@@ -217,13 +354,23 @@ function Paginado<T>({ itens, porPagina: maximo, render, vazio }: { itens: T[]; 
       </AnimatePresence>
       {total > 1 && (
         <div className="mt-auto flex items-center justify-center gap-3 pt-1">
-          <BotaoRedondo aria-label="Anterior" onClick={() => setPag(Math.max(0, p - 1))} className="disabled:opacity-40" disabled={p === 0}>
+          <BotaoRedondo
+            aria-label="Anterior"
+            onClick={() => setPag(Math.max(0, p - 1))}
+            className="disabled:opacity-40"
+            disabled={p === 0}
+          >
             <span className="text-lg font-extrabold text-roxo">‹</span>
           </BotaoRedondo>
           <span className="text-xs font-bold text-tinta-suave">
             {p + 1} / {total}
           </span>
-          <BotaoRedondo aria-label="Próxima" onClick={() => setPag(Math.min(total - 1, p + 1))} className="disabled:opacity-40" disabled={p >= total - 1}>
+          <BotaoRedondo
+            aria-label="Próxima"
+            onClick={() => setPag(Math.min(total - 1, p + 1))}
+            className="disabled:opacity-40"
+            disabled={p >= total - 1}
+          >
             <span className="text-lg font-extrabold text-roxo">›</span>
           </BotaoRedondo>
         </div>
@@ -233,145 +380,118 @@ function Paginado<T>({ itens, porPagina: maximo, render, vazio }: { itens: T[]; 
 }
 
 // ── Abas ─────────────────────────────────────────────────────────────────────
-// Regra: um número grande + rótulo de 1 a 3 palavras por cartão; comparação vira chip curto;
-// uma ideia por seção (o título da seção é o único); o que não cabe vira outra seção.
+// Respiro SEM desperdício: cartões do tamanho do conteúdo, alinhados ao topo; cada página do
+// celular é uma tela cheia de informação útil (KPIs compactos + um gráfico); nada de frases.
 
 const DIA_MS = 86400000;
 
-function Resumo({ m, fases, agora }: { m: M; fases: Progress["fases"]; agora: number }) {
+function Resumo({
+  m,
+  fases,
+  agora,
+}: {
+  m: M;
+  fases: Progress["fases"];
+  agora: number;
+}) {
+  const vazio = !m.licoes.length && !m.sessoesCartas.length;
   const nAtual = nivelAtual(fases);
-  const nj = infoNivel(nAtual);
+  const nj = infoNivel(nAtual, perfilPorId(alvoAtual())?.genero ?? "m");
   const min7 = m.porDia.slice(-7).reduce((s, d) => s + d.min, 0);
   const minAntes = m.porDia.slice(0, 7).reduce((s, d) => s + d.min, 0);
-  const feitasEm = (de: number, ate: number) => m.licoes.filter((s) => s.concluida && s.inicio >= de && s.inicio < ate).length;
+  const feitasEm = (de: number, ate: number) =>
+    m.licoes.filter((s) => s.concluida && s.inicio >= de && s.inicio < ate)
+      .length;
   const lic7 = feitasEm(agora - 7 * DIA_MS, agora + 1);
   const licAntes = feitasEm(agora - 14 * DIA_MS, agora - 7 * DIA_MS);
-  const evol = m.semErro !== null && m.semErroAntes !== null ? m.semErro - m.semErroAntes : null;
+  const evol =
+    m.semErro !== null && m.semErroAntes !== null
+      ? m.semErro - m.semErroAntes
+      : null;
   const niveis = NIVEIS_JORNADA.map((nv) => {
     const ks = SEQUENCIA.filter((k) => nivelDaFase(k) === nv.n);
-    return { n: nv.n, icone: nv.icone, nome: nv.nome, total: ks.length, feitas: ks.filter((k) => k in fases).length };
+    return {
+      n: nv.n,
+      icone: nv.icone,
+      nome: nv.nome,
+      total: ks.length,
+      feitas: ks.filter((k) => k in fases).length,
+    };
   });
-  const doNivel = niveis[nAtual - 1];
 
   return (
     <Secoes
       secoes={[
         {
-          titulo: "Esta semana",
-          conteudo: (
-            <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 min-[400px]:grid-cols-2">
-              <KPI icone="ui/sol" valor={duracao(min7 * 60000)} rotulo="Tempo" tendencia={<Tendencia delta={minAntes || min7 ? min7 - minAntes : null} texto={`${Math.abs(min7 - minAntes)} min`} />} />
-              <KPI icone="ui/mapa" valor={lic7} rotulo="Lições" tendencia={<Tendencia delta={lic7 - licAntes} texto={String(Math.abs(lic7 - licAntes))} />} />
-            </div>
-          ),
-        },
-        {
-          titulo: "Leitura",
-          conteudo: (
-            <Cartao className="flex-1 justify-center">
-              <div className="flex flex-wrap items-start justify-around gap-6">
-                <div className="flex flex-col items-center gap-2">
-                  <Anel valor={m.semErro} rotulo="De primeira" />
-                  <Tendencia delta={evol} texto={evol === null ? "" : `${Math.abs(Math.round(evol * 100))} pts`} />
-                </div>
-                <Anel valor={m.comDica === null ? null : 1 - m.comDica} rotulo="Sem dica" cor="stroke-roxo" />
-              </div>
-            </Cartao>
-          ),
-        },
-        {
-          titulo: "Jornada",
-          conteudo: (
-            <Cartao className="flex-1 justify-center gap-5">
-              <div className="flex items-center gap-3">
-                <span className="grid size-14 shrink-0 place-items-center rounded-full bg-amarelo-claro">
-                  <Arte nome={nj.icone} className="size-10" />
-                </span>
-                <div className="flex min-w-0 flex-col gap-1">
-                  <span className="text-3xl leading-none font-extrabold text-roxo">Nível {nAtual}</span>
-                  <span className="text-sm font-bold text-tinta-suave">{nj.nome}</span>
-                </div>
-              </div>
-              <JornadaNiveis niveis={niveis} atual={nAtual} />
-              <span className="w-fit rounded-full bg-roxo-claro px-2.5 py-1 text-xs font-bold text-roxo">
-                {doNivel.feitas}/{doNivel.total} do nível
-              </span>
-            </Cartao>
-          ),
-        },
-        {
-          titulo: "Minutos por dia",
-          conteudo: (
-            <Cartao className="flex-1">
-              <BarrasDias dados={m.porDia} />
-            </Cartao>
-          ),
-        },
-      ]}
-    />
-  );
-}
-
-function Licoes({ m }: { m: M }) {
-  const [ver, setVer] = useState<"recentes" | "porLicao">("recentes");
-  const sessoes = m.licoes.slice(-16).map((s) => ({ inicio: s.inicio, fim: s.fim, concluida: s.concluida, rotulo: `${nomeFase(s.chave)} · ${duracao(s.fim - s.inicio)}` }));
-  return (
-    <Secoes
-      secoes={[
-        {
-          titulo: "Acerto por exercício",
-          conteudo: (
-            <Cartao className="flex-1 justify-center">
-              <BarrasH itens={m.porJogo.map((j) => ({ chave: j.jogo, icone: j.icone, nome: j.nome, valor: j.semErro, detalhe: "" }))} />
-            </Cartao>
-          ),
-        },
-        {
-          titulo: "Últimas sessões",
-          conteudo: (
-            <Cartao className="flex-1 justify-center">
-              <LinhaTempo sessoes={sessoes} />
-            </Cartao>
-          ),
-        },
-        {
-          titulo: "Histórico",
+          titulo: "Semana",
           conteudo: (
             <>
-              <Segmentos valor={ver} onChange={setVer} opcoes={[["recentes", "Recentes"], ["porLicao", "Por lição"]]} />
-              <Cartao className="flex-1">
-                {ver === "recentes" ? (
-                  <Paginado
-                    itens={[...m.licoes].reverse()}
-                    porPagina={8}
-                    vazio="Nenhuma lição ainda."
-                    render={(s, i) => (
-                      <li key={i} className="flex items-center gap-3 py-2 text-sm">
-                        <span className={`size-2.5 shrink-0 rounded-full ${s.concluida ? "bg-verde" : "bg-coral"}`} />
-                        <div className="min-w-0 flex-1 leading-tight">
-                          <div className="truncate font-bold text-roxo">{nomeFase(s.chave)}</div>
-                          <div className="truncate text-xs text-tinta-suave">{quando(s.inicio)}</div>
-                        </div>
-                        <span className="text-xs font-bold text-tinta">{duracao(s.fim - s.inicio)}</span>
-                      </li>
-                    )}
+              <div className="grid grid-cols-2 gap-3">
+                <KPI
+                  icone="ui/sol"
+                  rotulo="Tempo"
+                  valor={min7 ? duracao(min7 * 60000) : "—"}
+                  tendencia={
+                    vazio ? null : (
+                      <Tendencia
+                        delta={minAntes || min7 ? min7 - minAntes : null}
+                        texto={`${Math.abs(min7 - minAntes)} min`}
+                      />
+                    )
+                  }
+                />
+                <KPI
+                  icone="ui/mapa"
+                  rotulo="Lições"
+                  valor={vazio ? "—" : lic7}
+                  tendencia={
+                    vazio ? null : (
+                      <Tendencia
+                        delta={lic7 - licAntes}
+                        texto={String(Math.abs(lic7 - licAntes))}
+                      />
+                    )
+                  }
+                />
+                <KPI
+                  icone="ui/estrela"
+                  rotulo="Estrelas"
+                  valor={m.estrelas || "—"}
+                />
+                <KPI icone={nj.icone} rotulo="Nível" valor={nAtual} />
+              </div>
+              <Cartao titulo="Minutos por dia">
+                <BarrasDias dados={m.porDia} />
+              </Cartao>
+            </>
+          ),
+        },
+        {
+          titulo: "Leitura e jornada",
+          conteudo: (
+            <>
+              <Cartao titulo="Leitura">
+                <div className="flex items-start justify-around gap-4">
+                  <div className="flex flex-col items-center gap-1.5">
+                    <Anel valor={m.semErro} rotulo="De primeira" />
+                    <Tendencia
+                      delta={evol}
+                      texto={
+                        evol === null
+                          ? ""
+                          : `${Math.abs(Math.round(evol * 100))} pts`
+                      }
+                    />
+                  </div>
+                  <Anel
+                    valor={m.comDica === null ? null : 1 - m.comDica}
+                    rotulo="Sem dica"
+                    cor="stroke-roxo"
                   />
-                ) : (
-                  <Paginado
-                    itens={m.porLicao}
-                    porPagina={8}
-                    vazio="Nenhuma lição ainda."
-                    render={(l) => (
-                      <li key={l.chave} className="flex items-center gap-3 py-2 text-sm">
-                        <span className="min-w-0 flex-1 truncate font-bold text-roxo">{l.nome}</span>
-                        <span className="font-bold text-amarelo-escuro">
-                          {"★".repeat(l.estrelas)}
-                          {"☆".repeat(3 - l.estrelas)}
-                        </span>
-                      </li>
-                    )}
-                  />
-                )}
+                </div>
+              </Cartao>
+              <Cartao titulo={`Jornada · nível ${nAtual}`}>
+                <JornadaNiveis niveis={niveis} atual={nAtual} />
               </Cartao>
             </>
           ),
@@ -381,63 +501,107 @@ function Licoes({ m }: { m: M }) {
   );
 }
 
-const corErros = (e: number) => (e >= 2 ? "bg-coral/20 text-coral-escuro" : e > 0.5 ? "bg-amarelo-claro text-amarelo-escuro" : "bg-verde/15 text-verde-escuro");
-
-function Palavras({ m }: { m: M }) {
+function Licoes({ m }: { m: M }) {
+  const sessoes = m.licoes.slice(-16).map((s) => ({
+    inicio: s.inicio,
+    fim: s.fim,
+    concluida: s.concluida,
+    rotulo: `${nomeFase(s.chave)} · ${duracao(s.fim - s.inicio)}`,
+  }));
+  const feitas = m.licoes.filter((s) => s.concluida).length;
   return (
     <Secoes
       secoes={[
         {
-          titulo: "Mais difíceis",
+          titulo: "Visão geral",
           conteudo: (
-            <Cartao className="flex-1">
-              {m.dificeis.length ? (
-                <ul className="flex flex-wrap content-start gap-2">
-                  {m.dificeis.slice(0, 12).map((w, i) => (
-                    <motion.li
-                      key={w.id}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ ...MOLA_ENTRADA, delay: i * 0.03 }}
-                      title={`${w.mediaErros.toFixed(1)} erros em média`}
-                      className={`rounded-full px-3 py-1.5 text-sm font-bold ${corErros(w.mediaErros)}`}
+            <>
+              <div className="grid grid-cols-2 gap-3">
+                <KPI
+                  icone="ui/mapa"
+                  rotulo="Concluídas"
+                  valor={m.licoes.length ? feitas : "—"}
+                />
+                <KPI
+                  icone="ui/sol"
+                  rotulo="Média"
+                  valor={m.mediaLicao ? duracao(m.mediaLicao) : "—"}
+                />
+              </div>
+              <Cartao titulo="Acerto por exercício">
+                <BarrasH
+                  itens={m.porJogo.map((j) => ({
+                    chave: j.jogo,
+                    icone: j.icone,
+                    nome: j.nome,
+                    valor: j.semErro,
+                    detalhe: "",
+                  }))}
+                />
+              </Cartao>
+            </>
+          ),
+        },
+        {
+          titulo: "Histórico",
+          conteudo: (
+            <>
+              <Cartao titulo="Sessões">
+                <LinhaTempo sessoes={sessoes} />
+              </Cartao>
+              <Cartao className="min-h-0 flex-1">
+                <Paginado
+                  itens={[...m.licoes].reverse()}
+                  porPagina={8}
+                  vazio="Sem atividade ainda"
+                  render={(s, i) => (
+                    <li
+                      key={i}
+                      className="flex items-center gap-3 py-2 text-sm"
                     >
-                      {nomeAnimal(w.id)}
-                    </motion.li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="m-auto text-sm text-tinta-suave">Nenhuma com erro 🎉</p>
-              )}
-            </Cartao>
-          ),
-        },
-        {
-          titulo: "Tempo × erros",
-          conteudo: (
-            <Cartao className="flex-1">
-              <Dispersao pontos={m.palavras.map((w) => ({ id: w.id, x: w.mediaMs, y: w.mediaErros, rotulo: `${nomeAnimal(w.id)}: ${duracao(w.mediaMs)}, ${w.mediaErros.toFixed(1)} erros` }))} />
-            </Cartao>
-          ),
-        },
-        {
-          titulo: "Todas",
-          conteudo: (
-            <Cartao className="flex-1">
-              <Paginado
-                itens={[...m.palavras].sort((a, b) => b.mediaErros - a.mediaErros)}
-                porPagina={8}
-                vazio="Nenhuma palavra ainda."
-                render={(w) => {
-                  const a = ANIMAIS.find((x) => x.id === w.id);
-                  return (
-                    <li key={w.id} className="flex items-center gap-3 py-2 text-sm">
-                      {a && <Arte src={arteDoAnimal(a)} className="size-8 shrink-0" />}
-                      <span className="min-w-0 flex-1 truncate font-leitura font-bold text-roxo uppercase">{a ? a.silabas.join("·") : w.id}</span>
-                      <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${corErros(w.mediaErros)}`}>{w.mediaErros.toFixed(1)}</span>
+                      <span
+                        className={`size-2.5 shrink-0 rounded-full ${s.concluida ? "bg-verde" : "bg-coral"}`}
+                      />
+                      <div className="min-w-0 flex-1 leading-tight">
+                        <div className="truncate font-bold text-roxo">
+                          {nomeFase(s.chave)}
+                        </div>
+                        <div className="truncate text-xs text-tinta-suave">
+                          {quando(s.inicio)}
+                        </div>
+                      </div>
+                      <span className="text-xs font-bold text-tinta">
+                        {duracao(s.fim - s.inicio)}
+                      </span>
                     </li>
-                  );
-                }}
+                  )}
+                />
+              </Cartao>
+            </>
+          ),
+        },
+        {
+          titulo: "Por lição",
+          conteudo: (
+            <Cartao className="min-h-0 flex-1">
+              <Paginado
+                itens={m.porLicao}
+                porPagina={8}
+                vazio="Sem atividade ainda"
+                render={(l) => (
+                  <li
+                    key={l.chave}
+                    className="flex items-center gap-3 py-2 text-sm"
+                  >
+                    <span className="min-w-0 flex-1 truncate font-bold text-roxo">
+                      {l.nome}
+                    </span>
+                    <span className="font-bold text-amarelo-escuro">
+                      {"★".repeat(l.estrelas)}
+                      {"☆".repeat(3 - l.estrelas)}
+                    </span>
+                  </li>
+                )}
               />
             </Cartao>
           ),
@@ -447,54 +611,195 @@ function Palavras({ m }: { m: M }) {
   );
 }
 
-const NOMES_CAIXAS = ["Nova", "1 dia", "2 dias", "4 dias", "Dominada"];
-const CORES_CAIXAS = ["bg-coral", "bg-amarelo", "bg-azul", "bg-roxo", "bg-verde"];
+const corErros = (e: number) =>
+  e >= 2
+    ? "bg-coral/20 text-coral-escuro"
+    : e > 0.5
+      ? "bg-amarelo-claro text-amarelo-escuro"
+      : "bg-verde/15 text-verde-escuro";
 
-function CartasAba({ m, agora }: { m: M; agora: number }) {
-  const ordenadas = [...m.cartas].sort((a, b) => a.caixa - b.caixa || a.proxima - b.proxima);
-  const vistas = m.cartas.reduce((s, c) => s + (c.vistas ?? 0), 0);
-  const sozinho = m.cartas.reduce((s, c) => s + (c.sozinho ?? 0), 0);
+function Palavras({ m }: { m: M }) {
   return (
     <Secoes
       secoes={[
         {
-          titulo: "Hoje",
+          titulo: "Visão geral",
           conteudo: (
-            <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 min-[400px]:grid-cols-2">
-              <KPI icone="ui/cartas" valor={m.paraHoje} rotulo="Para revisar" />
-              <KPI icone="ui/medalha" valor={`${m.caixas[4]}/${m.cartas.length}`} rotulo="Dominadas" />
-            </div>
+            <>
+              <div className="grid grid-cols-2 gap-3">
+                <KPI
+                  icone="ui/letras"
+                  rotulo="Lidas"
+                  valor={m.palavras.length || "—"}
+                />
+                <KPI
+                  icone="ui/medalha"
+                  rotulo="Dominadas"
+                  valor={m.palavras.length ? m.dominadas : "—"}
+                />
+              </div>
+              <Cartao titulo="Mais difíceis">
+                {m.dificeis.length ? (
+                  <ul className="flex flex-wrap gap-2">
+                    {m.dificeis.slice(0, 10).map((w, i) => (
+                      <motion.li
+                        key={w.id}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ ...MOLA_ENTRADA, delay: i * 0.03 }}
+                        title={`${w.mediaErros.toFixed(1)} erros em média`}
+                        className={`rounded-full px-3 py-1 text-sm font-bold ${corErros(w.mediaErros)}`}
+                      >
+                        {nomeAnimal(w.id)}
+                      </motion.li>
+                    ))}
+                  </ul>
+                ) : (
+                  <span className="text-2xl font-extrabold text-roxo">—</span>
+                )}
+              </Cartao>
+              <Cartao titulo="Tempo × erros" className="min-h-0 flex-1">
+                <Dispersao
+                  preencher
+                  pontos={m.palavras.map((w) => ({
+                    id: w.id,
+                    x: w.mediaMs,
+                    y: w.mediaErros,
+                    rotulo: `${nomeAnimal(w.id)}: ${duracao(w.mediaMs)}, ${w.mediaErros.toFixed(1)} erros`,
+                  }))}
+                />
+              </Cartao>
+            </>
           ),
         },
         {
-          titulo: "Caixas",
+          titulo: "Todas",
           conteudo: (
-            <Cartao className="flex-1 justify-center">
-              <BarraEmpilhada valores={m.caixas} nomes={NOMES_CAIXAS} cores={CORES_CAIXAS} />
-            </Cartao>
+            <>
+              <Cartao className="min-h-0 flex-1">
+                <Paginado
+                  itens={[...m.palavras].sort(
+                    (a, b) => b.mediaErros - a.mediaErros,
+                  )}
+                  porPagina={8}
+                  vazio="Sem atividade ainda"
+                  render={(w) => {
+                    const a = ANIMAIS.find((x) => x.id === w.id);
+                    return (
+                      <li
+                        key={w.id}
+                        className="flex items-center gap-3 py-2 text-sm"
+                      >
+                        {a && (
+                          <Arte
+                            src={arteDoAnimal(a)}
+                            className="size-8 shrink-0"
+                          />
+                        )}
+                        <span className="min-w-0 flex-1 truncate font-leitura font-bold text-roxo uppercase">
+                          {a ? a.silabas.join("·") : w.id}
+                        </span>
+                        <span
+                          className={`rounded-full px-2 py-0.5 text-xs font-bold ${corErros(w.mediaErros)}`}
+                        >
+                          {w.mediaErros.toFixed(1)}
+                        </span>
+                      </li>
+                    );
+                  }}
+                />
+              </Cartao>
+            </>
           ),
         },
+      ]}
+    />
+  );
+}
+
+const NOMES_CAIXAS = ["Nova", "1 dia", "2 dias", "4 dias", "Dominada"];
+const CORES_CAIXAS = [
+  "bg-coral",
+  "bg-amarelo",
+  "bg-azul",
+  "bg-roxo",
+  "bg-verde",
+];
+
+function CartasAba({ m, agora }: { m: M; agora: number }) {
+  const ordenadas = [...m.cartas].sort(
+    (a, b) => a.caixa - b.caixa || a.proxima - b.proxima,
+  );
+  const vistas = m.cartas.reduce((s, c) => s + (c.vistas ?? 0), 0);
+  const sozinho = m.cartas.reduce((s, c) => s + (c.sozinho ?? 0), 0);
+  const vazio = !m.cartas.length;
+  return (
+    <Secoes
+      secoes={[
         {
-          titulo: "Leu sozinho",
+          titulo: "Visão geral",
           conteudo: (
-            <Cartao className="flex-1 items-center justify-center">
-              <Anel valor={vistas ? sozinho / vistas : null} rotulo={vistas ? `${sozinho} de ${vistas}` : "Sem cartas"} tamanho={136} />
-            </Cartao>
+            <>
+              <div className="grid grid-cols-2 gap-3">
+                <KPI
+                  icone="ui/cartas"
+                  rotulo="Para revisar"
+                  valor={vazio ? "—" : m.paraHoje}
+                />
+                <KPI
+                  icone="ui/medalha"
+                  rotulo="Dominadas"
+                  valor={vazio ? "—" : `${m.caixas[4]}/${m.cartas.length}`}
+                />
+              </div>
+              <Cartao titulo="Caixas">
+                <BarraEmpilhada
+                  valores={m.caixas}
+                  nomes={NOMES_CAIXAS}
+                  cores={CORES_CAIXAS}
+                />
+              </Cartao>
+              <Cartao titulo="Leu sozinho">
+                <div className="flex items-center gap-4">
+                  <Anel
+                    valor={vistas ? sozinho / vistas : null}
+                    rotulo=""
+                    tamanho={80}
+                  />
+                  <span className="text-2xl font-extrabold text-roxo">
+                    {vistas ? `${sozinho}/${vistas}` : "—"}
+                  </span>
+                </div>
+              </Cartao>
+            </>
           ),
         },
         {
           titulo: "Lista",
           conteudo: (
-            <Cartao className="flex-1">
+            <Cartao className="min-h-0 flex-1">
               <Paginado
                 itens={ordenadas}
                 porPagina={8}
-                vazio="Ainda não usou as cartas."
+                vazio="Sem atividade ainda"
                 render={(c) => (
-                  <li key={c.id} className="flex items-center gap-3 py-2 text-sm">
-                    <span className={`grid size-7 shrink-0 place-items-center rounded-full text-xs font-extrabold text-branco ${CORES_CAIXAS[c.caixa - 1] ?? "bg-roxo"}`}>{c.caixa}</span>
-                    <span className="min-w-0 flex-1 truncate font-bold text-roxo">{nomeAnimal(c.id)}</span>
-                    <span className="text-xs text-tinta-suave">{c.proxima <= agora ? "hoje" : quando(c.proxima).slice(0, 5)}</span>
+                  <li
+                    key={c.id}
+                    className="flex items-center gap-3 py-2 text-sm"
+                  >
+                    <span
+                      className={`grid size-7 shrink-0 place-items-center rounded-full text-xs font-extrabold text-branco ${CORES_CAIXAS[c.caixa - 1] ?? "bg-roxo"}`}
+                    >
+                      {c.caixa}
+                    </span>
+                    <span className="min-w-0 flex-1 truncate font-bold text-roxo">
+                      {nomeAnimal(c.id)}
+                    </span>
+                    <span className="text-xs text-tinta-suave">
+                      {c.proxima <= agora
+                        ? "hoje"
+                        : quando(c.proxima).slice(0, 5)}
+                    </span>
                   </li>
                 )}
               />
@@ -507,44 +812,80 @@ function CartasAba({ m, agora }: { m: M; agora: number }) {
 }
 
 function NivelAba({ m }: { m: M }) {
-  const dt = (d: string) => new Date(d).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
-  const subiu = m.nivel && m.nivelAntes ? m.nivel.nivel - m.nivelAntes.nivel : null;
+  const dt = (d: string) =>
+    new Date(d).toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+    });
+  const subiu =
+    m.nivel && m.nivelAntes ? m.nivel.nivel - m.nivelAntes.nivel : null;
   const nv = m.nivel ? NIVEIS[m.nivel.nivel - 1] : null;
   return (
     <Secoes
       secoes={[
         {
-          titulo: "Último teste",
+          titulo: "Visão geral",
           conteudo: (
-            <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 min-[400px]:grid-cols-2">
-              <KPI icone={nv?.icone ?? "ui/escada"} valor={m.nivel ? `Nível ${m.nivel.nivel}` : "—"} rotulo={nv?.nome ?? "Sem teste"} tendencia={<Tendencia delta={subiu} texto={subiu === null ? "" : String(Math.abs(subiu))} />} />
-              <KPI icone="ui/nivel" valor={m.nivs.length} rotulo="Testes" />
-            </div>
-          ),
-        },
-        {
-          titulo: "Evolução",
-          conteudo: (
-            <Cartao className="flex-1">
-              <LinhaEvolucao pontos={m.nivs.slice(-10).map((n) => ({ rotulo: dt(n.data), valor: n.nivel }))} max={6} />
-            </Cartao>
+            <>
+              <div className="grid grid-cols-2 gap-3">
+                <KPI
+                  icone={nv?.icone ?? "ui/escada"}
+                  rotulo={nv?.nome ?? "Nível"}
+                  valor={m.nivel ? m.nivel.nivel : "—"}
+                  tendencia={
+                    <Tendencia
+                      delta={subiu}
+                      texto={subiu === null ? "" : String(Math.abs(subiu))}
+                    />
+                  }
+                />
+                <KPI
+                  icone="ui/nivel"
+                  rotulo="Testes"
+                  valor={m.nivs.length || "—"}
+                />
+              </div>
+              <Cartao titulo="Evolução" className="min-h-0 flex-1">
+                <LinhaEvolucao
+                  preencher
+                  pontos={m.nivs
+                    .slice(-10)
+                    .map((n) => ({ rotulo: dt(n.data), valor: n.nivel }))}
+                  max={6}
+                />
+              </Cartao>
+            </>
           ),
         },
         {
           titulo: "Por nível",
           conteudo: (
-            <Cartao className="flex-1">
-              <ul className="flex min-h-0 flex-1 flex-col justify-around gap-1">
+            <Cartao>
+              <ul className="flex flex-col gap-1">
                 {NIVEIS.map((x) => {
                   const ac = m.nivel?.acertos[x.n];
                   return (
-                    <li key={x.n} className={`flex items-center gap-3 rounded-xl px-2 py-1.5 transition-colors duration-300 ${m.nivel?.nivel === x.n ? "bg-amarelo-claro" : ""}`}>
+                    <li
+                      key={x.n}
+                      className={`flex items-center gap-3 rounded-xl px-2 py-1.5 transition-colors duration-300 ${m.nivel?.nivel === x.n ? "bg-amarelo-claro" : ""}`}
+                    >
                       <Arte nome={x.icone} className="size-7 shrink-0" />
-                      <span className="w-6 text-lg font-extrabold text-roxo">{x.n}</span>
-                      <span className="h-2 flex-1 overflow-hidden rounded-full bg-linha">
-                        <motion.span initial={{ width: 0 }} animate={{ width: `${ac ? (ac[0] / Math.max(1, ac[1])) * 100 : 0}%` }} transition={{ ...MOLA_ENTRADA, delay: x.n * 0.05 }} className="block h-full rounded-full bg-verde" />
+                      <span className="w-6 text-lg font-extrabold text-roxo">
+                        {x.n}
                       </span>
-                      <span className="w-10 text-right text-xs font-bold text-tinta-suave">{ac ? `${ac[0]}/${ac[1]}` : "—"}</span>
+                      <span className="h-2 flex-1 overflow-hidden rounded-full bg-linha">
+                        <motion.span
+                          initial={{ width: 0 }}
+                          animate={{
+                            width: `${ac ? (ac[0] / Math.max(1, ac[1])) * 100 : 0}%`,
+                          }}
+                          transition={{ ...MOLA_ENTRADA, delay: x.n * 0.05 }}
+                          className="block h-full rounded-full bg-verde"
+                        />
+                      </span>
+                      <span className="w-10 text-right text-xs font-bold text-tinta-suave">
+                        {ac ? `${ac[0]}/${ac[1]}` : "—"}
+                      </span>
                     </li>
                   );
                 })}
@@ -557,12 +898,23 @@ function NivelAba({ m }: { m: M }) {
   );
 }
 
-function Ajustes({ dados, copias, aplicar }: { dados: Progress; copias: Copia[]; aplicar: (p: Progress, motivo: string) => Promise<void> }) {
+function Ajustes({
+  dados,
+  copias,
+  aplicar,
+}: {
+  dados: Progress;
+  copias: Copia[];
+  aplicar: (p: Progress, motivo: string) => Promise<void>;
+}) {
   const [pais, setPais] = useState(PAISES[0].id as string);
   const terrs = TERRITORIOS.filter((t) => t.pais === pais);
   const [terr, setTerr] = useState(terrs[0]?.id ?? "");
   const [fase, setFase] = useState(0);
-  const [confirmar, setConfirmar] = useState<null | { texto: string; acao: () => Promise<void> }>(null);
+  const [confirmar, setConfirmar] = useState<null | {
+    texto: string;
+    acao: () => Promise<void>;
+  }>(null);
   const tSel = TERRITORIOS.find((t) => t.id === terr) ?? terrs[0];
 
   function pedir(texto: string, acao: () => Promise<void>) {
@@ -570,7 +922,9 @@ function Ajustes({ dados, copias, aplicar }: { dados: Progress; copias: Copia[];
   }
 
   function exportar() {
-    const blob = new Blob([JSON.stringify(dados, null, 2)], { type: "application/json" });
+    const blob = new Blob([JSON.stringify(dados, null, 2)], {
+      type: "application/json",
+    });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download = `progresso-pietro-${new Date().toISOString().slice(0, 10)}.json`;
@@ -582,7 +936,9 @@ function Ajustes({ dados, copias, aplicar }: { dados: Progress; copias: Copia[];
       try {
         const p = JSON.parse(t) as Progress;
         if (!p || typeof p !== "object" || !("fases" in p)) throw new Error();
-        pedir("Trocar o progresso atual pelo do arquivo?", () => aplicar(p, "Progresso importado de arquivo"));
+        pedir("Trocar o progresso atual pelo do arquivo?", () =>
+          aplicar(p, "Progresso importado de arquivo"),
+        );
       } catch {
         alert("Arquivo inválido.");
       }
@@ -593,14 +949,48 @@ function Ajustes({ dados, copias, aplicar }: { dados: Progress; copias: Copia[];
     <div className="grid h-full grid-rows-[auto_auto_1fr] gap-2">
       <Cartao titulo="Colocar o Pietro numa lição">
         <div className="grid grid-cols-3 gap-1.5">
-          <Seletor valor={pais} onChange={(v) => { setPais(v); const t = TERRITORIOS.find((x) => x.pais === v); setTerr(t?.id ?? ""); setFase(0); }} opcoes={PAISES.map((p) => [p.id, p.nome])} />
-          <Seletor valor={tSel?.id ?? ""} onChange={(v) => { setTerr(v); setFase(0); }} opcoes={terrs.map((t) => [t.id, t.nome])} />
-          <Seletor valor={String(fase)} onChange={(v) => setFase(Number(v))} opcoes={(tSel?.fases ?? []).map((f, i) => [String(i), f.titulo])} />
+          <Seletor
+            valor={pais}
+            onChange={(v) => {
+              setPais(v);
+              const t = TERRITORIOS.find((x) => x.pais === v);
+              setTerr(t?.id ?? "");
+              setFase(0);
+            }}
+            opcoes={PAISES.map((p) => [p.id, p.nome])}
+          />
+          <Seletor
+            valor={tSel?.id ?? ""}
+            onChange={(v) => {
+              setTerr(v);
+              setFase(0);
+            }}
+            opcoes={terrs.map((t) => [t.id, t.nome])}
+          />
+          <Seletor
+            valor={String(fase)}
+            onChange={(v) => setFase(Number(v))}
+            opcoes={(tSel?.fases ?? []).map((f, i) => [String(i), f.titulo])}
+          />
         </div>
-        <p className="text-xs text-tinta-suave [@media(max-height:700px)]:hidden">As lições antes dela ficam liberadas (estrelas já ganhas são mantidas); dela em diante voltam a ficar por fazer. Figurinhas do álbum não mudam.</p>
+        <p className="text-xs text-tinta-suave [@media(max-height:700px)]:hidden">
+          As lições antes dela ficam liberadas (estrelas já ganhas são
+          mantidas); dela em diante voltam a ficar por fazer. Figurinhas do
+          álbum não mudam.
+        </p>
         <Acao
           cor="roxo"
-          onClick={() => tSel && pedir(`Colocar o Pietro em ${nomeFase(chaveFase(tSel.id, fase))}?`, () => aplicar(colocarNaFase(dados, chaveFase(tSel.id, fase)), `Colocado em ${nomeFase(chaveFase(tSel.id, fase))}`))}
+          onClick={() =>
+            tSel &&
+            pedir(
+              `Colocar o Pietro em ${nomeFase(chaveFase(tSel.id, fase))}?`,
+              () =>
+                aplicar(
+                  colocarNaFase(dados, chaveFase(tSel.id, fase)),
+                  `Colocado em ${nomeFase(chaveFase(tSel.id, fase))}`,
+                ),
+            )
+          }
         >
           Colocar nesta lição
         </Acao>
@@ -608,15 +998,46 @@ function Ajustes({ dados, copias, aplicar }: { dados: Progress; copias: Copia[];
       <Cartao titulo="Outros ajustes">
         {/* uma linha só no celular, para sobrar altura com o rodapé */}
         <div className="grid grid-cols-4 gap-1.5 [&>button]:px-1.5 [&>button]:text-xs [&>button]:leading-tight sm:[&>button]:px-3 sm:[&>button]:text-sm">
-          <Acao onClick={() => pedir("Deixar todas as cartas para revisar hoje?", () => aplicar(cartasParaHoje(dados), "Cartas liberadas para hoje"))}>Cartas para hoje</Acao>
-          <Acao onClick={() => pedir("Zerar as cartas (todas voltam para a caixa 1)?", () => aplicar(zerarCartas(dados), "Cartas zeradas"))}>Zerar cartas</Acao>
+          <Acao
+            onClick={() =>
+              pedir("Deixar todas as cartas para revisar hoje?", () =>
+                aplicar(cartasParaHoje(dados), "Cartas liberadas para hoje"),
+              )
+            }
+          >
+            Cartas para hoje
+          </Acao>
+          <Acao
+            onClick={() =>
+              pedir("Zerar as cartas (todas voltam para a caixa 1)?", () =>
+                aplicar(zerarCartas(dados), "Cartas zeradas"),
+              )
+            }
+          >
+            Zerar cartas
+          </Acao>
           <Acao onClick={exportar}>Baixar cópia</Acao>
           <label className="grid cursor-pointer place-items-center rounded-md bg-fundo px-2 py-2 text-center text-xs font-bold text-roxo shadow-[0_3px_0_var(--color-linha)] active:translate-y-0.5">
             Carregar cópia
-            <input type="file" accept="application/json" className="hidden" onChange={(e) => e.target.files?.[0] && importar(e.target.files[0])} />
+            <input
+              type="file"
+              accept="application/json"
+              className="hidden"
+              onChange={(e) =>
+                e.target.files?.[0] && importar(e.target.files[0])
+              }
+            />
           </label>
         </div>
-        <Acao cor="perigo" onClick={() => pedir("Recomeçar do zero? (estrelas, fases, figurinhas e cartas; o histórico de acompanhamento fica)", () => aplicar(zerarTudo(dados), "Progresso recomeçado do zero"))}>
+        <Acao
+          cor="perigo"
+          onClick={() =>
+            pedir(
+              "Recomeçar do zero? (estrelas, fases, figurinhas e cartas; o histórico de acompanhamento fica)",
+              () => aplicar(zerarTudo(dados), "Progresso recomeçado do zero"),
+            )
+          }
+        >
           Recomeçar do zero
         </Acao>
       </Cartao>
@@ -628,12 +1049,25 @@ function Ajustes({ dados, copias, aplicar }: { dados: Progress; copias: Copia[];
           render={(c, i) => (
             <li key={i} className="flex items-center gap-2 py-1.5 text-sm">
               <div className="min-w-0 flex-1 leading-tight">
-                <div className="truncate font-bold text-roxo">{quando(c.data)}</div>
+                <div className="truncate font-bold text-roxo">
+                  {quando(c.data)}
+                </div>
                 <div className="truncate text-xs text-tinta-suave">
-                  antes de: {c.motivo} · {Object.keys(c.dados?.fases ?? {}).length} lições · {c.dados?.animaisColetados?.length ?? 0} figurinhas
+                  antes de: {c.motivo} ·{" "}
+                  {Object.keys(c.dados?.fases ?? {}).length} lições ·{" "}
+                  {c.dados?.animaisColetados?.length ?? 0} figurinhas
                 </div>
               </div>
-              <Acao onClick={() => pedir(`Voltar o progresso para como estava em ${quando(c.data)}?`, () => aplicar(c.dados, `Voltou para ${quando(c.data)}`))}>Voltar</Acao>
+              <Acao
+                onClick={() =>
+                  pedir(
+                    `Voltar o progresso para como estava em ${quando(c.data)}?`,
+                    () => aplicar(c.dados, `Voltou para ${quando(c.data)}`),
+                  )
+                }
+              >
+                Voltar
+              </Acao>
             </li>
           )}
         />
@@ -641,7 +1075,13 @@ function Ajustes({ dados, copias, aplicar }: { dados: Progress; copias: Copia[];
 
       <AnimatePresence>
         {confirmar && (
-          <motion.div className="fixed inset-0 z-50 grid place-items-center bg-tinta/40 p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setConfirmar(null)}>
+          <motion.div
+            className="fixed inset-0 z-50 grid place-items-center bg-tinta/40 p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setConfirmar(null)}
+          >
             <motion.div
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
@@ -651,7 +1091,9 @@ function Ajustes({ dados, copias, aplicar }: { dados: Progress; copias: Copia[];
               className="flex w-full max-w-sm flex-col gap-4 rounded-xl bg-branco p-5 text-center shadow-suave"
             >
               <p className="font-bold text-tinta">{confirmar.texto}</p>
-              <p className="text-xs text-tinta-suave">Uma cópia do estado atual é guardada antes, para poder voltar.</p>
+              <p className="text-xs text-tinta-suave">
+                Uma cópia do estado atual é guardada antes, para poder voltar.
+              </p>
               <div className="grid grid-cols-2 gap-2">
                 <Acao onClick={() => setConfirmar(null)}>Cancelar</Acao>
                 <Acao
@@ -673,7 +1115,15 @@ function Ajustes({ dados, copias, aplicar }: { dados: Progress; copias: Copia[];
   );
 }
 
-function Acao({ children, onClick, cor = "neutro" }: { children: ReactNode; onClick: () => void; cor?: "neutro" | "roxo" | "perigo" }) {
+function Acao({
+  children,
+  onClick,
+  cor = "neutro",
+}: {
+  children: ReactNode;
+  onClick: () => void;
+  cor?: "neutro" | "roxo" | "perigo";
+}) {
   const estilo =
     cor === "roxo"
       ? "bg-roxo text-branco shadow-[0_3px_0_rgb(61_53_81/0.35)]"
@@ -681,33 +1131,39 @@ function Acao({ children, onClick, cor = "neutro" }: { children: ReactNode; onCl
         ? "bg-coral/15 text-coral-escuro shadow-[0_3px_0_rgb(61_53_81/0.12)]"
         : "bg-fundo text-roxo shadow-[0_3px_0_var(--color-linha)]";
   return (
-    <motion.button type="button" onClick={onClick} whileHover={{ y: -1 }} whileTap={{ scale: 0.95, y: 2 }} transition={MOLA_TOQUE} className={`min-h-12 rounded-md px-3 py-1.5 text-xs font-bold sm:text-sm ${estilo}`}>
+    <motion.button
+      type="button"
+      onClick={onClick}
+      whileHover={{ y: -1 }}
+      whileTap={{ scale: 0.95, y: 2 }}
+      transition={MOLA_TOQUE}
+      className={`min-h-12 rounded-md px-3 py-1.5 text-xs font-bold sm:text-sm ${estilo}`}
+    >
       {children}
     </motion.button>
   );
 }
 
-function Seletor({ valor, onChange, opcoes }: { valor: string; onChange: (v: string) => void; opcoes: [string, string][] }) {
+function Seletor({
+  valor,
+  onChange,
+  opcoes,
+}: {
+  valor: string;
+  onChange: (v: string) => void;
+  opcoes: [string, string][];
+}) {
   return (
-    <select value={valor} onChange={(e) => onChange(e.target.value)} className="h-12 min-w-0 rounded-md border border-linha bg-fundo px-2 text-xs font-bold text-roxo transition-[box-shadow,translate] duration-150 hover:-translate-y-px hover:shadow-suave focus:ring-2 focus:ring-amarelo focus:outline-none active:translate-y-px sm:text-sm">
+    <select
+      value={valor}
+      onChange={(e) => onChange(e.target.value)}
+      className="h-12 min-w-0 rounded-md border border-linha bg-fundo px-2 text-xs font-bold text-roxo transition-[box-shadow,translate] duration-150 hover:-translate-y-px hover:shadow-suave focus:ring-2 focus:ring-amarelo focus:outline-none active:translate-y-px sm:text-sm"
+    >
       {opcoes.map(([v, n]) => (
         <option key={v} value={v}>
           {n}
         </option>
       ))}
     </select>
-  );
-}
-
-function Segmentos<T extends string>({ valor, onChange, opcoes }: { valor: T; onChange: (v: T) => void; opcoes: [T, string][] }) {
-  return (
-    <div className="flex gap-1 rounded-md bg-branco/70 p-1 shadow-suave">
-      {opcoes.map(([v, n]) => (
-        <motion.button key={v} type="button" onClick={() => onChange(v)} whileTap={{ scale: 0.95 }} className="relative flex-1 rounded py-1 text-xs font-bold text-roxo">
-          {valor === v && <motion.span layoutId={`seg-${opcoes[0][0]}`} className="absolute inset-0 rounded bg-amarelo-claro" transition={MOLA_ENTRADA} />}
-          <span className="relative">{n}</span>
-        </motion.button>
-      ))}
-    </div>
   );
 }

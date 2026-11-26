@@ -4,7 +4,7 @@ import { AnimatePresence, motion, useAnimate } from "motion/react";
 import { useState } from "react";
 import { NOME_MASCOTE } from "@/config";
 import { speak } from "@/lib/speech";
-import { Arte } from "./Arte";
+import { ArteMascote } from "./personagem";
 import { MOLA_ENTRADA, MOLA_TOQUE } from "./movimento";
 
 /**
@@ -48,7 +48,7 @@ export function Mascote({
         aria-label={fala ? `${NOME_MASCOTE}: ${fala}` : NOME_MASCOTE}
         className="shrink-0 origin-bottom"
       >
-        <Arte nome="mascote/pietro" alt="" className={`${cls} animate-flutuar`} />
+        <ArteMascote className={`${cls} animate-flutuar`} />
       </motion.button>
       <AnimatePresence mode="wait">
         {fala && (

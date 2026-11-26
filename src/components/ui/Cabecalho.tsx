@@ -60,7 +60,8 @@ export function Cabecalho({ estreito = false }: { estreito?: boolean }) {
 }
 
 function SeloNivel({ n }: { n: number }) {
-  const info = infoNivel(n);
+  const { genero } = usePerfil();
+  const info = infoNivel(n, genero);
   return (
     <motion.button
       key={n}

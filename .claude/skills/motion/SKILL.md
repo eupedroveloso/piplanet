@@ -66,3 +66,6 @@ Mudanças de estado (aparecer, sumir, trocar de tela, abrir painel): entrada com
 - 2026-11-26: placar compara com o último valor visto (memória do módulo) para contar só a diferença ao voltar do jogo e não pular na hidratação.
 - 2026-11-26: antes de navegar a partir de um toque (nó do mapa), espere ~160 ms para o squash aparecer.
 - 2026-11-26: parallax + entrada no mesmo elemento brigam pelo `y`; separe em duas camadas (pai = parallax com useSpring, filho = entrada). Cenário de fundo fica `fixed z-0` e o conteúdo `relative z-10`.
+- 2026-11-26: explorador andando = `ui/Explorador` (quadros pietro-andando-1..4 a 125 ms; reduzir movimento = quadro 2 parado; `feliz` ao chegar). Trilhinha do jogo, cartão de nível, loading e mapa usam o mesmo sprite e a mesma curva de pulo y [0,-10,0,-6,0] em 0,9 s.
+- 2026-11-26: `pathLength` do Motion não combina com `vectorEffect="non-scaling-stroke"` (o traço sai picotado). Use espessura em unidades do SVG e um quadro com a mesma proporção do viewBox.
+- 2026-11-26: sprite em elemento absoluto perto da borda direita encolhe (shrink-to-fit + `max-width:100%` do img). Use `w-max` no wrapper e `max-w-none` no img.

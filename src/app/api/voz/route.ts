@@ -1,5 +1,4 @@
-import { createHash } from "node:crypto";
-import { gerarVoz, VOZ_MODELO, VOZ_VERSAO, VOZ_VOZ } from "@/lib/voz";
+import { chaveDaVoz, gerarVoz } from "@/lib/voz";
 
 /**
  * VOZ DA JUJU
@@ -26,15 +25,16 @@ export async function GET(req: Request) {
   const texto = normalizar(new URL(req.url).searchParams.get("t") ?? "");
   if (!texto) return new Response("texto vazio", { status: 400 });
 
-  const chave = createHash("sha256").update(VOZ_VERSAO ? `${VOZ_MODELO}|${VOZ_VOZ}|${VOZ_VERSAO}|${texto}` : `${VOZ_MODELO}|${VOZ_VOZ}|${texto}`).digest("hex");
+  const chave = chaveDaVoz(texto);
   const temBanco = !!(process.env.DATABASE_URL_POOLED || process.env.DATABASE_URL);
   const db = temBanco ? (await import("@/lib/db")).db : null;
 
   const guardado = await db?.vozCache.findUnique({ where: { chave } }).catch(() => null);
   if (guardado) return mp3(guardado.audio);
 
-  const audio = await gerarVoz(texto);
-  if (!audio) return new Response("voz indisponível", { status: 503 });
-  await db?.vozCache.upsert({ where: { chave }, create: { chave, texto, audio }, update: {} }).catch(() => null);
-  return mp3(audio);
+  const v = await gerarVoz(texto);
+  if (!v) return new Response("voz indisponível", { status: 503 });
+  const qc = { transcricao: v.transcricao, modelo: v.modelo, duracaoMs: v.duracaoMs, status: v.suspeita ? "suspeita" : v.ouvido ? "conferida" : "pendente" };
+  await db?.vozCache.upsert({ where: { chave }, create: { chave, texto, audio: v.audio, ...qc }, update: {} }).catch(() => null);
+  return mp3(v.audio);
 }

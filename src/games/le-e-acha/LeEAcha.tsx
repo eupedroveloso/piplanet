@@ -6,6 +6,7 @@ import { ANIMAIS, arteDoAnimal, type Animal } from "@/content/animais";
 import { animaisDoTerritorio, type Territorio } from "@/content/jornada";
 import { shuffle } from "@/lib/random";
 import { speak } from "@/lib/speech";
+import { falaDaSilaba } from "@/content/letras";
 import {
   Arte,
   BALANCO,
@@ -75,7 +76,7 @@ function RodadaAchar({
 
   async function lerSilaba(s: string, i: number) {
     setLendo(i);
-    await speak(s);
+    await speak(falaDaSilaba(s));
     setLendo((l) => (l === i ? null : l));
   }
 

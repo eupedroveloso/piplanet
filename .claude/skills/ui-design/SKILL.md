@@ -20,7 +20,7 @@ App de alfabetização para uma criança com autismo leve e hiperfoco em animais
 ## Princípios
 
 00. **REGRA DURA: nenhuma tela rola.** Tudo é one-page e cabe em 100dvh em TODOS os estados (fim, dica, ficha, carta virada, resultados), de 360x640 a 1024x768. `h-dvh overflow-hidden` + `flex-1 min-h-0`; alturas em `dvh`; `justify-center-safe`; listas longas viram páginas (setas, deslizar, bolinhas). Nunca `min-h-dvh`.
-000. **REGRA DURA: respiro e pouco texto.** Um número grande + rótulo de 1 a 3 palavras por cartão; comparação = chip curto (▲ 56 min); no máximo um título por seção; nada de frases explicativas; gap e padding generosos; gráfico antes de texto. Não coube? pagine ou divida, nunca esprema.
+000. **REGRA DURA: respiro e pouco texto.** Um número grande + rótulo de 1 a 3 palavras por cartão; comparação = chip curto (▲ 56 min); no máximo um título por seção; nada de frases explicativas; gap e padding generosos; gráfico antes de texto. Não coube? pagine ou divida, nunca esprema. E respiro ≠ cartão vazio: cartão do tamanho do conteúdo, alinhado ao topo; cada página cheia de informação útil (ex.: 4 KPIs 2x2 + 1 gráfico); só o gráfico cresce para ocupar a sobra; gap 12–16 px, padding 16 px; vazio = mesmos cartões com "—" + um aviso curto.
 0. **A ferramenta é para quem NÃO SABE LER.** Todo botão e toda instrução funcionam sem leitura: ícone grande e claro + fala da Juju ao tocar ou ao aparecer. Rótulos podem existir, mas ícone e voz vêm primeiro; texto nunca é o único meio de entender algo.
 
 1. **Uma ação principal por tela**, grande e óbvia. O resto em segundo plano.
@@ -59,3 +59,5 @@ App de alfabetização para uma criança com autismo leve e hiperfoco em animais
 - 2026-11-26: listas paginadas (painel) calculam quantos itens cabem medindo a altura real (ResizeObserver), em vez de um número fixo por página. Cartões novos em telas cheias substituem um elemento (ex.: "Subiu de nível!" no lugar do ícone de festa) em vez de somar altura.
 - 2026-11-26: marcos e selos sobre outro botão (marco de nível no nó, selo de nível no avatar) são botões IRMÃOS posicionados por cima, nunca aninhados, cada um com voz e área de toque ≥ 48 px (pseudo-elemento).
 - 2026-11-26: o dono achou o /painel apertado e com texto demais ('0 biomas compl...', frases como "das últimas 60 palavras de primeira"). Virou: seções de uma ideia (Esta semana, Leitura, Jornada, Minutos por dia...), KPI = número grande + rótulo curto + chip de tendência, anéis/barras/linha em SVG próprio (`src/app/painel/graficos.tsx`), `Secoes` pagina no celular e mostra 2 colunas no tablet.
+- 2026-11-26: exagerei no respiro (2 KPIs esticados até o rodapé) e o dono pediu "não deixe cards gigantes sem necessidade". Cartões sem `flex-1` levam `shrink-0` (não encolhem nem esticam); listas paginadas e um gráfico por página podem crescer (`flex-1 min-h-0`). Medir cada página em 360x640 e equilibrar entre páginas.
+- 2026-11-26: `duracao(0)` devolve "1 s"; para zero, mostre "—".

@@ -1,30 +1,83 @@
 import "server-only";
-import { Mp3Encoder } from "@breezystack/lamejs";
+import { createHash } from "node:crypto";
 
 /**
- * Gera a fala do jogo SEMPRE pelo OpenRouter (chave OPENROUTER_API_KEY): modelo mais barato openai/gpt-audio-mini,
- * com openai/gpt-audio de reserva só quando o mini não lê a frase certinha.
- * - Voz masculina divertida ("verse"), lendo EXATAMENTE o texto (exemplos + conferência pela transcrição;
- *   se o modelo improvisar, tenta de novo).
- * - O áudio vem cru (PCM 24 kHz) e vira MP3 de 48 kbps (leve para o tablet).
+ * VOZ DO JOGO — sempre pelo OpenRouter (chave OPENROUTER_API_KEY).
+ * Leitura de texto de verdade (TTS) com a ElevenLabs: modelo eleven-flash-v2.5 (o mais barato) e voz "will"
+ * (masculina, amigável e animada, escolhida pelo dono). Endpoint: /api/v1/audio/speech.
+ * Cada áudio é CONFERIDO OUVINDO (modelo ouvinte barato): se não bater com o texto, gera de novo ou marca suspeito.
+ * Nunca usar modelos de conversa (gpt-audio) para isso: eles inventam palavras e trocam sons.
  */
-export const VOZ_MODELO = process.env.VOZ_MODELO || "openai/gpt-audio-mini";
-export const VOZ_VOZ = process.env.VOZ_VOZ || "verse";
-/** Muda quando a instrução muda: as falas antigas deixam de valer e são geradas de novo. */
-export const VOZ_VERSAO = "";
+export const VOZ_MODELO = process.env.VOZ_TTS_MODELO || "elevenlabs/eleven-flash-v2.5";
+export const VOZ_VOZ = process.env.VOZ_TTS_VOZ || "will";
+/** Muda quando algo da geração muda: as falas antigas deixam de valer e são geradas de novo. */
+export const VOZ_VERSAO = "tts1";
 
-const SISTEMA =
-  "Você é um dublador brasileiro de desenho animado infantil, voz masculina divertida, animada e carinhosa. " +
-  "Fale SEMPRE em português do Brasil, com sotaque brasileiro, mesmo quando a palavra existir em outra língua " +
-  "(ex.: panda, peru, coala, lobo, tigre, canguru, escorpião são palavras em português e devem soar em português). " +
-  "Você funciona como um leitor de texto (text-to-speech): recebe um roteiro e LÊ EM VOZ ALTA exatamente as palavras dele, " +
-  "na ordem, sem trocar, sem responder, sem comentar e sem acrescentar nada. Mesmo que o roteiro seja uma pergunta ou uma ordem, apenas leia.";
-const EXEMPLOS: [string, string][] = [
-  ["Panda.", "Panda."],
-  ["Toque no bicho!", "Toque no bicho!"],
-  ["Qual é o nome dele?", "Qual é o nome dele?"],
-  ["Monte a palavra pato.", "Monte a palavra pato."],
-];
+/** Modelo que OUVE o áudio gerado e transcreve (barato), para conferir se a fala saiu certa. */
+const VOZ_OUVINTE = process.env.VOZ_OUVINTE || "google/gemini-2.5-flash-lite";
+
+export interface VozGerada {
+  audio: Uint8Array<ArrayBuffer>;
+  transcricao: string;
+  modelo: string;
+  duracaoMs: number;
+  /** Não bateu ao ouvir (fica para revisão na tela /vozes). */
+  suspeita: boolean;
+  /** O áudio foi ouvido e conferido pelo modelo ouvinte. */
+  ouvido: boolean;
+}
+
+/** Chave do áudio no cache (VozCache): muda se o modelo, a voz ou a versão mudarem. */
+export function chaveDaVoz(texto: string) {
+  return createHash("sha256").update(`${VOZ_MODELO}|${VOZ_VOZ}|${VOZ_VERSAO}|${texto}`).digest("hex");
+}
+
+async function falar(texto: string, chave: string): Promise<Uint8Array<ArrayBuffer> | null> {
+  const r = await fetch("https://openrouter.ai/api/v1/audio/speech", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${chave}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ model: VOZ_MODELO, input: texto, voice: VOZ_VOZ, response_format: "mp3" }),
+    signal: AbortSignal.timeout(30_000),
+  }).catch(() => null);
+  if (!r?.ok) return null;
+  const tipo = r.headers.get("content-type") ?? "";
+  if (!tipo.includes("audio") && !tipo.includes("octet")) return null;
+  return new Uint8Array(await r.arrayBuffer());
+}
+
+/** Transcreve o MP3 (o que realmente foi falado). null se não conseguir ouvir. */
+export async function ouvir(mp3: Uint8Array): Promise<string | null> {
+  const chave = process.env.OPENROUTER_API_KEY;
+  if (!chave) return null;
+  const r = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${chave}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: VOZ_OUVINTE,
+      temperature: 0,
+      messages: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "text",
+              text:
+                "Transcreva exatamente o que é falado neste áudio, em português do Brasil, palavra por palavra " +
+                "(inclusive repetições, gaguejos e palavras erradas). Responda só com a transcrição. " +
+                "Se não der para entender, responda [ININTELIGIVEL].",
+            },
+            { type: "input_audio", input_audio: { data: Buffer.from(mp3).toString("base64"), format: "mp3" } },
+          ],
+        },
+      ],
+    }),
+    signal: AbortSignal.timeout(20_000),
+  }).catch(() => null);
+  if (!r?.ok) return null;
+  const j = await r.json().catch(() => null);
+  const t = j?.choices?.[0]?.message?.content;
+  return typeof t === "string" ? t.trim() : null;
+}
 
 const palavras = (s: string) =>
   s
@@ -35,94 +88,49 @@ const palavras = (s: string) =>
     .split(/\s+/)
     .filter(Boolean);
 
-/** A transcrição bate com o texto? (tolera pontuação; números podem vir por extenso) */
-function confere(texto: string, falado: string) {
+/** Distância de edição entre listas de palavras. */
+function distancia(a: string[], b: string[]) {
+  const d = Array.from({ length: a.length + 1 }, (_, i) => [i, ...Array(b.length).fill(0)]);
+  for (let j = 1; j <= b.length; j++) d[0][j] = j;
+  for (let i = 1; i <= a.length; i++)
+    for (let j = 1; j <= b.length; j++)
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+  return d[a.length][b.length];
+}
+
+/**
+ * O que foi OUVIDO bate com o texto?
+ * - Sílaba/letra (1 palavra de até 5 letras): o ouvinte erra a grafia ("éle" → "L", "lê"), então só exige
+ *   UM som, sem repetição nem lixo.
+ * - Palavra solta: tem que ser igual. Frases: no máximo 1 palavra diferente a cada 8, sem palavras a mais.
+ */
+export function ouvidoConfere(texto: string, ouvido: string) {
+  if (/ININTELIGIVEL/i.test(ouvido)) return false;
   const a = palavras(texto);
-  const b = palavras(falado);
-  if (a.join(" ") === b.join(" ")) return true;
-  // números escritos como algarismo podem ser transcritos por extenso: compara só o resto
-  const semNum = (x: string[]) => x.filter((w) => !/\d/.test(w));
-  return a.some((w) => /\d/.test(w)) && Math.abs(a.length - b.length) <= 2 && semNum(a).every((w) => b.includes(w));
+  const b = palavras(ouvido);
+  if (!b.length) return false;
+  if (a.length === 1) {
+    if (b.length !== 1) return false;
+    return a[0].length <= 5 || a[0] === b[0];
+  }
+  return distancia(a, b) <= Math.max(1, Math.floor(a.length / 8)) && b.length <= a.length + 1;
 }
 
-async function umaTentativa(texto: string, chave: string, modelo: string): Promise<{ pcm: Buffer; falado: string } | null> {
-  const mensagens = [{ role: "system", content: SISTEMA }];
-  for (const [u, a] of EXEMPLOS) mensagens.push({ role: "user", content: `Roteiro: ${u}` }, { role: "assistant", content: a });
-  mensagens.push({ role: "user", content: `Roteiro: ${texto}` });
+/** Duração aproximada do MP3 (48 kbps–128 kbps varia; usa o tamanho / taxa típica de 64 kbps). */
+const duracaoAprox = (bytes: number) => Math.round((bytes * 8) / 64);
 
-  const r = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${chave}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: modelo,
-      stream: true,
-      modalities: ["text", "audio"],
-      audio: { voice: VOZ_VOZ, format: "pcm16" },
-      messages: mensagens,
-    }),
-  }).catch(() => null);
-  if (!r?.ok || !r.body) return null;
-
-  const partes: Buffer[] = [];
-  let falado = "";
-  let resto = "";
-  const leitor = r.body.getReader();
-  const dec = new TextDecoder();
-  for (;;) {
-    const { done, value } = await leitor.read();
-    if (done) break;
-    resto += dec.decode(value, { stream: true });
-    const linhas = resto.split("\n");
-    resto = linhas.pop() ?? "";
-    for (const l of linhas) {
-      const t = l.trim();
-      if (!t.startsWith("data:") || t.endsWith("[DONE]")) continue;
-      try {
-        const j = JSON.parse(t.slice(5));
-        for (const c of j.choices ?? []) {
-          const a = c.delta?.audio;
-          if (a?.data) partes.push(Buffer.from(a.data, "base64"));
-          if (a?.transcript) falado += a.transcript;
-        }
-      } catch {
-        /* linha incompleta */
-      }
-    }
-  }
-  const pcm = Buffer.concat(partes);
-  return pcm.length ? { pcm, falado } : null;
-}
-
-function paraMp3(pcm: Buffer): Uint8Array<ArrayBuffer> {
-  const amostras = new Int16Array(pcm.buffer, pcm.byteOffset, Math.floor(pcm.length / 2));
-  const enc = new Mp3Encoder(1, 24000, 48);
-  const blocos: Uint8Array[] = [];
-  for (let i = 0; i < amostras.length; i += 1152) {
-    const b = enc.encodeBuffer(amostras.subarray(i, i + 1152));
-    if (b.length) blocos.push(new Uint8Array(b));
-  }
-  const fim = enc.flush();
-  if (fim.length) blocos.push(new Uint8Array(fim));
-  const total = blocos.reduce((s, b) => s + b.length, 0);
-  const out = new Uint8Array(total);
-  let p = 0;
-  for (const b of blocos) {
-    out.set(b, p);
-    p += b.length;
-  }
-  return out;
-}
-
-/** Modelo de reserva (mais obediente, mais caro): só para as frases em que o mini não lê certo. */
-const VOZ_MODELO_RESERVA = process.env.VOZ_MODELO_RESERVA || "openai/gpt-audio";
-
-/** Gera o MP3 da frase pelo OpenRouter: 3 tentativas com o modelo barato e 2 com o de reserva, conferindo a leitura. */
-export async function gerarVoz(texto: string): Promise<Uint8Array<ArrayBuffer> | null> {
+/** Gera a fala (ElevenLabs via OpenRouter) e confere ouvindo; até 2 tentativas. */
+export async function gerarVoz(texto: string): Promise<VozGerada | null> {
   const chave = process.env.OPENROUTER_API_KEY;
   if (!chave) return null;
-  for (const modelo of [VOZ_MODELO, VOZ_MODELO, VOZ_MODELO, VOZ_MODELO_RESERVA, VOZ_MODELO_RESERVA]) {
-    const r = await umaTentativa(texto, chave, modelo);
-    if (r && confere(texto, r.falado)) return paraMp3(r.pcm);
+  let ultima: VozGerada | null = null;
+  for (let i = 0; i < 2; i++) {
+    const audio = await falar(texto, chave);
+    if (!audio) continue;
+    const ouvido = await ouvir(audio);
+    const v: VozGerada = { audio, transcricao: ouvido ?? "", modelo: `${VOZ_MODELO}:${VOZ_VOZ}`, duracaoMs: duracaoAprox(audio.length), suspeita: false, ouvido: ouvido !== null };
+    if (ouvido === null || ouvidoConfere(texto, ouvido)) return v;
+    ultima = { ...v, suspeita: true };
   }
-  return null;
+  return ultima;
 }

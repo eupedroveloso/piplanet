@@ -2,7 +2,7 @@
 
 import { Component, useEffect, useRef, useState, type ReactNode } from "react";
 import { speak } from "@/lib/speech";
-import { Arte, Botao } from "@/components/ui";
+import { Arte, ArteMascote, Botao } from "@/components/ui";
 
 /**
  * PROTEÇÃO DA CENA 3D
@@ -65,7 +65,7 @@ export function ProtecaoCena({ children }: { children: ReactNode }) {
       {falhas >= 2 ? (
         <div className="grid h-full place-items-center">
           <div className="flex flex-col items-center gap-4">
-            <Arte nome="mascote/pietro" className="size-24 animate-flutuar" />
+            <ArteMascote className="size-24 animate-flutuar" />
             <Botao cor="amarelo" tamanho="lg" aria-label="Tentar de novo" onClick={tentar} icone={<Arte nome="ui/play" className="size-8" />}>
               ↻
             </Botao>
