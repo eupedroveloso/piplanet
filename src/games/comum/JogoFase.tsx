@@ -204,7 +204,7 @@ export function JogoFase({
                     aria-label={a.nome}
                     className="grid size-16 place-items-center rounded-md bg-branco/70 sm:size-20"
                   >
-                    <Arte src={arteDoAnimal(a)} className="size-14" />
+                    <Arte src={arteDoAnimal(a)} className="size-12 sm:size-14" />
                   </motion.button>
                 ))}
             </motion.div>

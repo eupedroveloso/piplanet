@@ -357,10 +357,10 @@ export function Balao({ alvo, objRef }: { alvo: THREE.Vector3; objRef: RefObject
   });
   return (
     <group ref={ref} position={alvo}>
-      <mesh geometry={geo} scale={[1, 1.15, 1]} castShadow>
+      <mesh geometry={geo} scale={[1, 1.15, 1]}>
         <meshStandardMaterial vertexColors flatShading />
       </mesh>
-      <mesh position={[0, -1.05, 0]} castShadow>
+      <mesh position={[0, -1.05, 0]}>
         <cylinderGeometry args={[0.32, 0.12, 0.25, 8]} />
         <meshStandardMaterial color="#f25f5c" flatShading />
       </mesh>
@@ -373,7 +373,7 @@ export function Balao({ alvo, objRef }: { alvo: THREE.Vector3; objRef: RefObject
           </mesh>
         );
       })}
-      <mesh position={[0, -1.78, 0]} castShadow>
+      <mesh position={[0, -1.78, 0]}>
         <boxGeometry args={[0.46, 0.3, 0.46]} />
         <meshStandardMaterial color="#b07a4a" flatShading />
       </mesh>

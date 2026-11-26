@@ -17,6 +17,12 @@ export function Entrar() {
   const [erro, setErro] = useState(false);
   const [enviando, setEnviando] = useState(false);
 
+  // Quem não sabe ler ouve a pergunta assim que a tela aparece
+  useEffect(() => {
+    const t = setTimeout(() => speak("Quem vai jogar? Toque no seu bicho."), 600);
+    return () => clearTimeout(t);
+  }, []);
+
   async function entrar(p: Perfil, s = "") {
     setEnviando(true);
     const r = await fetch("/api/entrar", {
@@ -54,10 +60,20 @@ export function Entrar() {
   }
 
   return (
-    <div className="flex min-h-dvh flex-col items-center justify-center gap-8 px-4 py-8" style={{ background: "linear-gradient(180deg, #a9c1ff 0%, #cdd8ff 45%, #f1e8ff 100%)" }}>
+    <div className="flex min-h-dvh flex-col items-center justify-center gap-6 px-4 pt-[max(env(safe-area-inset-top),2rem)] pb-[max(env(safe-area-inset-bottom),2rem)] sm:gap-8" style={{ background: "linear-gradient(180deg, #a9c1ff 0%, #cdd8ff 45%, #f1e8ff 100%)" }}>
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={MOLA_ENTRADA} className="flex flex-col items-center gap-2">
-        <Arte nome="animais/coruja" className="size-24 animate-flutuar" />
-        <h1 className="rounded-full bg-branco/90 px-5 py-1 text-3xl font-extrabold text-roxo shadow-suave">Quem vai jogar?</h1>
+        <motion.button
+          type="button"
+          aria-label="Quem vai jogar?"
+          onClick={() => speak("Quem vai jogar? Toque no seu bicho.")}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.92 }}
+          transition={MOLA_TOQUE}
+          className="flex flex-col items-center gap-2"
+        >
+          <Arte nome="animais/coruja" className="size-20 animate-flutuar sm:size-24" />
+          <h1 className="rounded-full bg-branco/90 px-5 py-1 text-2xl font-extrabold text-roxo shadow-suave sm:text-3xl">Quem vai jogar?</h1>
+        </motion.button>
       </motion.div>
 
       <AnimatePresence mode="wait">
@@ -100,14 +116,22 @@ export function Entrar() {
             transition={erro ? { duration: 0.4 } : MOLA_ENTRADA}
             className="flex w-full max-w-xs flex-col items-center gap-4 rounded-xl bg-branco p-6 shadow-[0_8px_0_rgb(61_53_81/0.15)]"
           >
-            <div className="flex items-center gap-3">
+            <div className="flex w-full items-center gap-3">
+              <BotaoRedondo aria-label="Voltar" fala="Voltar" onClick={() => setEscolhido(null)}>
+                <Arte nome="ui/voltar" className="size-7" />
+              </BotaoRedondo>
               <Arte nome={escolhido.avatar} className="size-12" />
               <span className="text-2xl font-extrabold text-roxo">{escolhido.nome}</span>
             </div>
             {/* bolinhas da senha */}
             <div className="flex h-6 items-center gap-2" aria-label={`${senha.length} dígitos`}>
               {Array.from({ length: Math.max(4, senha.length) }, (_, i) => (
-                <span key={i} className={`size-4 rounded-full ${i < senha.length ? "bg-roxo" : "bg-linha"}`} />
+                <motion.span
+                  key={i}
+                  animate={{ scale: i < senha.length ? [1, 1.35, 1] : 1 }}
+                  transition={{ duration: 0.25 }}
+                  className={`size-4 rounded-full transition-colors duration-200 ${i < senha.length ? "bg-roxo" : "bg-linha"}`}
+                />
               ))}
             </div>
             <div className="grid w-full grid-cols-3 gap-2">
@@ -115,7 +139,8 @@ export function Entrar() {
                 <motion.button
                   key={d}
                   type="button"
-                  whileTap={{ scale: 0.9 }}
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.9, y: 2 }}
                   transition={MOLA_TOQUE}
                   disabled={enviando}
                   aria-label={d === "⌫" ? "Apagar" : d === "✓" ? "Entrar" : d}
@@ -132,9 +157,6 @@ export function Entrar() {
                 </motion.button>
               ))}
             </div>
-            <button type="button" onClick={() => setEscolhido(null)} className="text-sm font-bold text-tinta-suave" aria-label="Voltar">
-              ← voltar
-            </button>
           </motion.div>
         )}
       </AnimatePresence>

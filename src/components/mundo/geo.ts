@@ -126,21 +126,6 @@ export function texturaGlobo(liberados: Record<PaisId, boolean>, largura = 2048)
     return null;
   };
 
-  // Destinos no mar (ex.: Oceano): mancha turquesa clara com recife
-  for (const p of PAISES.filter((x) => !x.iso.length)) {
-    const cx = px(p.lon);
-    const cy = py(p.lat);
-    const r = W * 0.045;
-    const grad = g.createRadialGradient(cx, cy, r * 0.1, cx, cy, r);
-    grad.addColorStop(0, liberados[p.id] ? "#b7f5ea" : "#cfd6e6");
-    grad.addColorStop(0.6, liberados[p.id] ? "#5fdcd0" : "#a9b4cc");
-    grad.addColorStop(1, "rgba(58,166,221,0)");
-    g.fillStyle = grad;
-    g.beginPath();
-    g.ellipse(cx, cy, r * 1.3, r, 0, 0, Math.PI * 2);
-    g.fill();
-  }
-
   const fc = feature(topo, paises) as unknown as GeoJSON.FeatureCollection<GeoJSON.Geometry>;
   for (const f of fc.features) {
     const id = String(f.id);

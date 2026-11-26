@@ -33,16 +33,12 @@
   </g>
 
   <g id="sino" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M54 116 C50 64 86 26 128 26 C170 26 206 64 202 116 q-9.25 10 -18.5 0 q-9.25 10 -18.5 0 q-9.25 10 -18.5 0 q-9.25 10 -18.5 0 q-9.25 10 -18.5 0 q-9.25 10 -18.5 0 q-9.25 10 -18.5 0 q-9.25 10 -18.5 0 Z" fill="url(#medusa-sino)" opacity="0.92"/>
+    <path d="M54 116 C50 64 86 26 128 26 C170 26 206 64 202 116 q-9.25 10 -18.5 0 q-9.25 10 -18.5 0 q-9.25 10 -18.5 0 q-9.25 10 -18.5 0 q-9.25 10 -18.5 0 q-9.25 10 -18.5 0 q-9.25 10 -18.5 0 q-9.25 10 -18.5 0 Z" fill="url(#medusa-sino)" opacity="0.88"/>
     <g clip-path="url(#medusa-clip-sino)" fill="none">
-      <!-- canais radiais -->
-      <g stroke="#e58ac8" stroke-width="1.6" opacity="0.6">
-        <path d="M128 60 L128 124 M128 60 L92 124 M128 60 L164 124 M128 60 L66 118 M128 60 L190 118"/>
-      </g>
-      <!-- gônadas em ferradura (4 anéis, só se vê 3) -->
-      <g stroke="#d36fb8" stroke-width="3" opacity="0.45">
-        <path d="M104 52 a10 10 0 1 1 0 0.1"/>
-        <path d="M152 52 a10 10 0 1 1 0 0.1"/>
+      <!-- sino interno (subumbrela) visto pela transparência -->
+      <path d="M78 116 C76 76 100 52 128 52 C156 52 180 76 178 116" fill="#ffffff" fill-opacity="0.2" stroke="#e58ac8" stroke-width="2" stroke-opacity="0.6"/>
+      <g stroke="#e58ac8" stroke-width="1.4" opacity="0.45">
+        <path d="M100 62 Q90 86 88 116 M156 62 Q166 86 168 116 M128 52 L128 70"/>
       </g>
       <!-- borda interna mais clara -->
       <path d="M58 108 C70 114 186 114 198 108" stroke="#ffe0f2" stroke-width="5" opacity="0.8"/>
