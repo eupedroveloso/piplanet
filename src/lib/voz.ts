@@ -10,7 +10,7 @@ import { Mp3Encoder } from "@breezystack/lamejs";
 export const VOZ_MODELO = process.env.VOZ_MODELO || "openai/gpt-audio-mini";
 export const VOZ_VOZ = process.env.VOZ_VOZ || "verse";
 /** Muda quando a instrução muda: as falas antigas deixam de valer e são geradas de novo. */
-export const VOZ_VERSAO = "2-ptbr";
+export const VOZ_VERSAO = "";
 
 const SISTEMA =
   "Você é um dublador brasileiro de desenho animado infantil, voz masculina divertida, animada e carinhosa. " +

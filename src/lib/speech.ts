@@ -70,13 +70,14 @@ function falarNatural(text: string, rate: number): Promise<boolean> {
       audio.pause();
       fim(true);
     };
-    // se demorar demais para começar, desiste e usa a voz do navegador
+    // a voz natural pode levar alguns segundos na PRIMEIRA vez de uma frase (ela é gerada e guardada):
+    // espera por ela; só desiste (e usa a voz do navegador) se passar muito tempo
     const limite = setTimeout(() => {
       if (audio.currentTime === 0) {
         audio.pause();
         fim(false);
       }
-    }, 2500);
+    }, 15000);
     audio.onended = () => fim(true);
     audio.onerror = () => fim(false);
     audio.play().catch(() => fim(false));
@@ -93,7 +94,7 @@ export async function speak(text: string, opts: { rate?: number } = {}): Promise
   if (Date.now() > semVozNaturalAte) {
     const ok = await falarNatural(text, rate);
     if (ok) return;
-    semVozNaturalAte = Date.now() + 60_000;
+    semVozNaturalAte = Date.now() + 30_000;
   }
   await falarNavegador(text, rate);
 }
