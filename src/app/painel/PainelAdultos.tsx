@@ -442,7 +442,7 @@ function Resumo({
       titulo="Minutos por dia, últimos 14 dias"
       className="min-h-0 flex-1"
     >
-      <BarrasDias dados={m.porDia} preencher={!baixa} />
+      <BarrasDias dados={m.porDia} preencher />
     </Cartao>
   );
 
