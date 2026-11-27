@@ -248,10 +248,12 @@ export function recomendacoes(p: Progress, nome: string, agora = Date.now()): Re
   const sessoes = p.sessoes ?? [];
   const nomes = (l: SituacaoPalavra[]) => l.slice(0, 3).map((s) => s.animal.nome.toUpperCase()).join(", ");
 
+  // com o estudo de hoje já feito, a ação passa a ser a de amanhã (não pede de novo o que já foi feito)
+  const hojeFeito = estudoDoDia(p, diaDe(agora)).completo;
   if (m.emReforco.length)
     out.push({
       icone: "ui/coracao",
-      acao: `Fazer o Estudo do dia: o Reforçar revisa ${nomes(m.emReforco)}${m.emReforco.length > 3 ? " e outras" : ""}.`,
+      acao: `${hojeFeito ? "Amanhã, no Estudo do dia" : "Fazer o Estudo do dia"}: o Reforçar revisa ${nomes(m.emReforco)}${m.emReforco.length > 3 ? " e outras" : ""}.`,
       porque: `${m.emReforco.length} ${m.emReforco.length === 1 ? "palavra ainda tem" : "palavras ainda têm"} erro. Cada uma sai da lista depois de ${ACERTOS_PARA_SUPERAR} leituras seguidas sem errar.`,
     });
 
