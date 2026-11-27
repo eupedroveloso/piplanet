@@ -477,6 +477,15 @@ const assinar = (cb: () => void) => {
 const useLargo = () =>
   useSyncExternalStore(assinar, () => window.matchMedia("(min-width: 768px) and (min-height: 700px)").matches, () => false);
 
+const MQ_BAIXA = "(max-height: 700px)";
+const assinarBaixa = (cb: () => void) => {
+  const mq = window.matchMedia(MQ_BAIXA);
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+};
+/** Tela baixa (celular com a barra do navegador, ~640 px): use para mover blocos para outra seção em vez de espremer. */
+export const useTelaBaixa = () => useSyncExternalStore(assinarBaixa, () => window.matchMedia(MQ_BAIXA).matches, () => false);
+
 /**
  * Divide a aba em seções. No celular: uma por vez, com bolinhas, setas e deslizar (sem rolagem).
  * No tablet/desktop: todas lado a lado em 2 colunas.

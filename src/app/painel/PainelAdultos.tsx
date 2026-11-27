@@ -47,6 +47,7 @@ import {
   LinhaEvolucao,
   LinhaTempo,
   Secoes,
+  useTelaBaixa,
   Tendencia,
 } from "./graficos";
 
@@ -420,6 +421,17 @@ function Resumo({
       ? m.semErro - m.semErroAntes
       : null;
 
+  // em telas baixas o gráfico ganha uma seção própria (não fica espremido sob os 4 indicadores)
+  const baixa = useTelaBaixa();
+  const grafico = (
+    <Cartao
+      titulo="Minutos por dia, últimos 14 dias"
+      className="min-h-0 flex-1"
+    >
+      <BarrasDias dados={m.porDia} preencher={!baixa} />
+    </Cartao>
+  );
+
   return (
     <Secoes
       secoes={[
@@ -469,15 +481,11 @@ function Resumo({
                   valor={m.tempoHoje >= 60000 ? duracao(m.tempoHoje) : "—"}
                 />
               </div>
-              <Cartao
-                titulo="Minutos por dia, últimos 14 dias"
-                className="min-h-0 flex-1"
-              >
-                <BarrasDias dados={m.porDia} preencher />
-              </Cartao>
+              {!baixa && grafico}
             </>
           ),
         },
+        ...(baixa ? [{ titulo: "Minutos por dia", conteudo: grafico }] : []),
         {
           titulo: "Leitura",
           conteudo: (
@@ -1031,132 +1039,167 @@ function Ajustes({
   }
 
   return (
-    <div className="grid h-full min-w-0 grid-cols-1 grid-rows-[auto_auto_1fr] gap-2">
-      <Cartao titulo="Colocar o Pietro numa lição">
-        <div className="grid grid-cols-3 gap-1.5">
-          <Seletor
-            valor={pais}
-            onChange={(v) => {
-              setPais(v);
-              const t = TERRITORIOS.find((x) => x.pais === v);
-              setTerr(t?.id ?? "");
-              setFase(0);
-            }}
-            opcoes={PAISES.map((p) => [p.id, p.nome])}
-          />
-          <Seletor
-            valor={tSel?.id ?? ""}
-            onChange={(v) => {
-              setTerr(v);
-              setFase(0);
-            }}
-            opcoes={terrs.map((t) => [t.id, t.nome])}
-          />
-          <Seletor
-            valor={String(fase)}
-            onChange={(v) => setFase(Number(v))}
-            opcoes={(tSel?.fases ?? []).map((f, i) => [String(i), f.titulo])}
-          />
-        </div>
-        <p className="text-xs text-tinta-suave [@media(max-height:700px)]:hidden">
-          As lições antes dela ficam liberadas (estrelas já ganhas são
-          mantidas); dela em diante voltam a ficar por fazer. Figurinhas do
-          álbum não mudam.
-        </p>
-        <Acao
-          cor="roxo"
-          onClick={() =>
-            tSel &&
-            pedir(
-              `Colocar o Pietro em ${nomeFase(chaveFase(tSel.id, fase))}?`,
-              () =>
-                aplicar(
-                  colocarNaFase(dados, chaveFase(tSel.id, fase)),
-                  `Colocado em ${nomeFase(chaveFase(tSel.id, fase))}`,
-                ),
-            )
-          }
-        >
-          Colocar nesta lição
-        </Acao>
-      </Cartao>
-      <Cartao titulo="Outros ajustes">
-        {/* uma linha só no celular, para sobrar altura com o rodapé */}
-        <div className="grid grid-cols-4 gap-1.5 [&>button]:px-1.5 [&>button]:text-xs [&>button]:leading-tight sm:[&>button]:px-3 sm:[&>button]:text-sm">
-          <Acao
-            onClick={() =>
-              pedir("Deixar todas as cartas para revisar hoje?", () =>
-                aplicar(cartasParaHoje(dados), "Cartas liberadas para hoje"),
-              )
-            }
-          >
-            Cartas para hoje
-          </Acao>
-          <Acao
-            onClick={() =>
-              pedir("Zerar as cartas (todas voltam para a caixa 1)?", () =>
-                aplicar(zerarCartas(dados), "Cartas zeradas"),
-              )
-            }
-          >
-            Zerar cartas
-          </Acao>
-          <Acao onClick={exportar}>Baixar cópia</Acao>
-          <label className="grid cursor-pointer place-items-center rounded-md bg-fundo px-2 py-2 text-center text-xs font-bold text-roxo shadow-[0_3px_0_var(--color-linha)] active:translate-y-0.5">
-            Carregar cópia
-            <input
-              type="file"
-              accept="application/json"
-              className="hidden"
-              onChange={(e) =>
-                e.target.files?.[0] && importar(e.target.files[0])
-              }
-            />
-          </label>
-        </div>
-        <Acao
-          cor="perigo"
-          onClick={() =>
-            pedir(
-              "Recomeçar do zero? (estrelas, fases, figurinhas e cartas; o histórico de acompanhamento fica)",
-              () => aplicar(zerarTudo(dados), "Progresso recomeçado do zero"),
-            )
-          }
-        >
-          Recomeçar do zero
-        </Acao>
-      </Cartao>
-      <Cartao titulo="Voltar a um ponto anterior" className="min-h-0">
-        <Paginado
-          itens={copias}
-          porPagina={3}
-          vazio="Ainda não há cópias. Uma é guardada antes de cada ajuste e uma por dia."
-          render={(c, i) => (
-            <li key={i} className="flex items-center gap-2 py-1.5 text-sm">
-              <div className="min-w-0 flex-1 leading-tight">
-                <div className="truncate font-bold text-roxo">
-                  {quando(c.data)}
-                </div>
-                <div className="truncate text-xs text-tinta-suave">
-                  antes de: {c.motivo} ·{" "}
-                  {Object.keys(c.dados?.fases ?? {}).length} lições ·{" "}
-                  {c.dados?.animaisColetados?.length ?? 0} figurinhas
-                </div>
-              </div>
-              <Acao
-                onClick={() =>
-                  pedir(
-                    `Voltar o progresso para como estava em ${quando(c.data)}?`,
-                    () => aplicar(c.dados, `Voltou para ${quando(c.data)}`),
-                  )
-                }
+    <>
+      {/* Duas seções: corrigir (lição e outros ajustes) e voltar a uma cópia, com a altura toda para a lista */}
+      <Secoes
+        secoes={[
+          {
+            titulo: "Corrigir",
+            conteudo: (
+              <>
+                <Cartao titulo="Colocar o Pietro numa lição">
+                  <div className="grid grid-cols-3 gap-1.5">
+                    <Seletor
+                      valor={pais}
+                      onChange={(v) => {
+                        setPais(v);
+                        const t = TERRITORIOS.find((x) => x.pais === v);
+                        setTerr(t?.id ?? "");
+                        setFase(0);
+                      }}
+                      opcoes={PAISES.map((p) => [p.id, p.nome])}
+                    />
+                    <Seletor
+                      valor={tSel?.id ?? ""}
+                      onChange={(v) => {
+                        setTerr(v);
+                        setFase(0);
+                      }}
+                      opcoes={terrs.map((t) => [t.id, t.nome])}
+                    />
+                    <Seletor
+                      valor={String(fase)}
+                      onChange={(v) => setFase(Number(v))}
+                      opcoes={(tSel?.fases ?? []).map((f, i) => [
+                        String(i),
+                        f.titulo,
+                      ])}
+                    />
+                  </div>
+                  <p className="text-xs text-tinta-suave [@media(max-height:700px)]:hidden">
+                    As lições antes dela ficam liberadas (estrelas já ganhas são
+                    mantidas); dela em diante voltam a ficar por fazer.
+                    Figurinhas do álbum não mudam.
+                  </p>
+                  <Acao
+                    cor="roxo"
+                    onClick={() =>
+                      tSel &&
+                      pedir(
+                        `Colocar o Pietro em ${nomeFase(chaveFase(tSel.id, fase))}?`,
+                        () =>
+                          aplicar(
+                            colocarNaFase(dados, chaveFase(tSel.id, fase)),
+                            `Colocado em ${nomeFase(chaveFase(tSel.id, fase))}`,
+                          ),
+                      )
+                    }
+                  >
+                    Colocar nesta lição
+                  </Acao>
+                </Cartao>
+                <Cartao titulo="Outros ajustes">
+                  {/* uma linha só no celular, para sobrar altura com o rodapé */}
+                  <div className="grid grid-cols-4 gap-1.5 [&>button]:px-1.5 [&>button]:text-xs [&>button]:leading-tight sm:[&>button]:px-3 sm:[&>button]:text-sm">
+                    <Acao
+                      onClick={() =>
+                        pedir("Deixar todas as cartas para revisar hoje?", () =>
+                          aplicar(
+                            cartasParaHoje(dados),
+                            "Cartas liberadas para hoje",
+                          ),
+                        )
+                      }
+                    >
+                      Cartas para hoje
+                    </Acao>
+                    <Acao
+                      onClick={() =>
+                        pedir(
+                          "Zerar as cartas (todas voltam para a caixa 1)?",
+                          () => aplicar(zerarCartas(dados), "Cartas zeradas"),
+                        )
+                      }
+                    >
+                      Zerar cartas
+                    </Acao>
+                    <Acao onClick={exportar}>Baixar cópia</Acao>
+                    <label className="grid cursor-pointer place-items-center rounded-md bg-fundo px-2 py-2 text-center text-xs font-bold text-roxo shadow-[0_3px_0_var(--color-linha)] active:translate-y-0.5">
+                      Carregar cópia
+                      <input
+                        type="file"
+                        accept="application/json"
+                        className="hidden"
+                        onChange={(e) =>
+                          e.target.files?.[0] && importar(e.target.files[0])
+                        }
+                      />
+                    </label>
+                  </div>
+                  <Acao
+                    cor="perigo"
+                    onClick={() =>
+                      pedir(
+                        "Recomeçar do zero? (estrelas, fases, figurinhas e cartas; o histórico de acompanhamento fica)",
+                        () =>
+                          aplicar(
+                            zerarTudo(dados),
+                            "Progresso recomeçado do zero",
+                          ),
+                      )
+                    }
+                  >
+                    Recomeçar do zero
+                  </Acao>
+                </Cartao>
+              </>
+            ),
+          },
+          {
+            titulo: "Voltar a um ponto anterior",
+            conteudo: (
+              <Cartao
+                titulo="Voltar a um ponto anterior"
+                className="min-h-0 flex-1"
               >
-                Voltar
-              </Acao>
-            </li>
-          )}
-        />
-      </Cartao>
+                <Paginado
+                  itens={copias}
+                  porPagina={3}
+                  vazio="Ainda não há cópias. Uma é guardada antes de cada ajuste e uma por dia."
+                  render={(c, i) => (
+                    <li
+                      key={i}
+                      className="flex items-center gap-2 py-1.5 text-sm"
+                    >
+                      <div className="min-w-0 flex-1 leading-tight">
+                        <div className="truncate font-bold text-roxo">
+                          {quando(c.data)}
+                        </div>
+                        <div className="truncate text-xs text-tinta-suave">
+                          antes de: {c.motivo} ·{" "}
+                          {Object.keys(c.dados?.fases ?? {}).length} lições ·{" "}
+                          {c.dados?.animaisColetados?.length ?? 0} figurinhas
+                        </div>
+                      </div>
+                      <Acao
+                        onClick={() =>
+                          pedir(
+                            `Voltar o progresso para como estava em ${quando(c.data)}?`,
+                            () =>
+                              aplicar(c.dados, `Voltou para ${quando(c.data)}`),
+                          )
+                        }
+                      >
+                        Voltar
+                      </Acao>
+                    </li>
+                  )}
+                />
+              </Cartao>
+            ),
+          },
+        ]}
+      />
 
       <AnimatePresence>
         {confirmar && (
@@ -1205,7 +1248,7 @@ function Ajustes({
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </>
   );
 }
 
