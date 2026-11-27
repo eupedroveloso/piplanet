@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, type PanInfo } from "motion/react";
-import { useState, useSyncExternalStore, type ReactNode } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { Arte, BotaoRedondo, MOLA_ENTRADA } from "@/components/ui";
 
 /**
@@ -20,8 +20,18 @@ const pct = (v: number | null) => (v === null ? "—" : `${Math.round(v * 100)}%
  */
 export function Ajuda({ texto }: { texto: string }) {
   const [aberta, setAberta] = useState(false);
+  const raiz = useRef<HTMLSpanElement>(null);
+  // fecha ao tocar em qualquer ponto fora (listener no documento: funciona mesmo dentro de elementos com transform)
+  useEffect(() => {
+    if (!aberta) return;
+    const fora = (e: PointerEvent) => {
+      if (!raiz.current?.contains(e.target as Node)) setAberta(false);
+    };
+    document.addEventListener("pointerdown", fora);
+    return () => document.removeEventListener("pointerdown", fora);
+  }, [aberta]);
   return (
-    <span className="relative -m-3 shrink-0">
+    <span ref={raiz} className="relative -m-3 shrink-0">
       <motion.button
         type="button"
         aria-label="O que é isto?"
@@ -39,7 +49,6 @@ export function Ajuda({ texto }: { texto: string }) {
       <AnimatePresence>
         {aberta && (
           <>
-            <span className="fixed inset-0 z-30" onClick={() => setAberta(false)} aria-hidden />
             <motion.span
               role="tooltip"
               initial={{ opacity: 0, y: -4, scale: 0.96 }}
@@ -168,14 +177,14 @@ export function Anel({ valor, rotulo, cor = "stroke-verde", tamanho = 96 }: { va
 }
 
 /** Barras de minutos por dia, com linha de base, valor máximo e média tracejada. */
-export function BarrasDias({ dados }: { dados: { rotulo: string; min: number }[] }) {
+export function BarrasDias({ dados, preencher = false }: { dados: { rotulo: string; min: number }[]; preencher?: boolean }) {
   const max = Math.max(1, ...dados.map((d) => d.min));
   const ativos = dados.filter((d) => d.min > 0);
   const media = ativos.length ? ativos.reduce((s, d) => s + d.min, 0) / ativos.length : 0;
   const marcas = new Set([0, Math.floor(dados.length / 2), dados.length - 1]);
   return (
-    <div className="flex flex-col gap-1">
-      <div className="relative flex h-32 items-end gap-1 border-b-2 border-linha pt-4 [@media(max-height:700px)]:h-[4.5rem]">
+    <div className={`flex flex-col gap-1 ${preencher ? "min-h-0 flex-1" : ""}`}>
+      <div className={`relative flex items-end gap-1 border-b-2 border-linha pt-4 ${preencher ? "min-h-12 flex-1" : "h-32 [@media(max-height:700px)]:h-[4.5rem]"}`}>
         <span className="absolute top-0 left-0 text-xs text-tinta-suave">{max} min</span>
         {media > 0 && (
           <motion.div
@@ -337,7 +346,8 @@ export function RankingPalavras({
   const peso = (i: { erros: number; vezes: number }) => i.erros / Math.max(1, i.vezes);
   const max = Math.max(1e-9, ...itens.map(peso));
   return (
-    <ul className="flex flex-col gap-2.5">
+    // em telas baixas (celular com barra do navegador) mostra só o top 3, para caber sem rolagem
+    <ul className="flex flex-col gap-2.5 [@media(max-height:700px)]:[&>li:nth-child(n+4)]:hidden">
       {itens.map((it, k) => {
         const p = peso(it);
         const cor = p >= 2 ? "coral" : p > 0.5 ? "amarelo" : "verde";
@@ -398,7 +408,7 @@ export function BarraEmpilhada({ valores, nomes, cores }: { valores: number[]; n
             />
           ))}
       </div>
-      <ul className="grid grid-cols-2 gap-x-3 gap-y-1 sm:grid-cols-3">
+      <ul className="grid grid-cols-3 gap-x-3 gap-y-1">
         {valores.map((v, i) => (
           <li key={i} className="flex items-center gap-1.5 text-xs text-tinta">
             <i className={`size-3 shrink-0 rounded-sm ${cores[i]}`} />

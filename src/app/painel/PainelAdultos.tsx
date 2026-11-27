@@ -8,7 +8,6 @@ import { infoNivel } from "@/content/niveis";
 import { chaveFase, nivelAtual, TERRITORIOS } from "@/content/jornada";
 import { NIVEIS } from "@/games/nivelamento/Nivelamento";
 import type { Progress } from "@/lib/progress";
-import { usePerfil } from "@/lib/perfil";
 import {
   Arte,
   BotaoRedondo,
@@ -71,7 +70,6 @@ const ABAS: { id: Aba; nome: string; icone: string }[] = [
 const agoraMs = () => Date.now();
 
 export function PainelAdultos() {
-  const perfil = usePerfil();
   const [aba, setAba] = useState<Aba>("resumo");
   const [dados, setDados] = useState<Progress | null>(null);
   const [copias, setCopias] = useState<Copia[]>([]);
@@ -178,11 +176,11 @@ export function PainelAdultos() {
               </span>
             </h1>
             <p className="flex min-w-0 items-center gap-1.5 text-xs text-tinta-suave">
-              <span className="truncate">
-                {perfil.nome} ·{" "}
+              {/* curto para caber em 360 sem reticências */}
+              <span>
                 {m?.ultima
-                  ? `última atividade ${quando(m.ultima)}`
-                  : "sem atividade registrada ainda"}
+                  ? `última vez ${quando(m.ultima)}`
+                  : "sem atividade ainda"}
               </span>
               {/* Só aparece em teste local (o servidor local não grava no banco, de propósito) */}
               {!temBanco && (
@@ -328,7 +326,7 @@ function Paginado<T>({
       const semBarra = Math.floor(h / LINHA_PX);
       setCabem(
         Math.max(
-          2,
+          1,
           Math.min(
             maximo,
             itens.length <= semBarra
@@ -471,8 +469,11 @@ function Resumo({
                   valor={m.tempoHoje >= 60000 ? duracao(m.tempoHoje) : "—"}
                 />
               </div>
-              <Cartao titulo="Minutos por dia, últimos 14 dias">
-                <BarrasDias dados={m.porDia} />
+              <Cartao
+                titulo="Minutos por dia, últimos 14 dias"
+                className="min-h-0 flex-1"
+              >
+                <BarrasDias dados={m.porDia} preencher />
               </Cartao>
             </>
           ),
@@ -814,6 +815,16 @@ export function CartasAba({ m, agora }: { m: M; agora: number }) {
                   unidade={`de ${m.cartas.length}`}
                   ajuda="Uma carta é dominada quando foi lida certo várias vezes seguidas, em dias diferentes."
                 />
+                <KPI
+                  className="col-span-2"
+                  icone="ui/estrela"
+                  rotulo="Leu sozinho (sem ouvir antes)"
+                  valor={
+                    vistas ? `${Math.round((sozinho / vistas) * 100)}%` : "—"
+                  }
+                  unidade={vistas ? `${sozinho} de ${vistas} vezes` : undefined}
+                  ajuda="Vezes em que leu a carta antes de tocar no som, somando todas as cartas vistas até hoje."
+                />
               </div>
               <Cartao
                 titulo="Cartas por caixa (revisão espaçada)"
@@ -824,21 +835,6 @@ export function CartasAba({ m, agora }: { m: M; agora: number }) {
                   nomes={NOMES_CAIXAS}
                   cores={CORES_CAIXAS}
                 />
-              </Cartao>
-              <Cartao
-                titulo="Leu sozinho (sem ouvir antes)"
-                ajuda="Vezes em que leu a carta antes de tocar no som, somando todas as cartas vistas até hoje."
-              >
-                <div className="flex items-center gap-4">
-                  <Anel
-                    valor={vistas ? sozinho / vistas : null}
-                    rotulo=""
-                    tamanho={80}
-                  />
-                  <span className="text-2xl font-extrabold text-roxo">
-                    {vistas ? `${sozinho}/${vistas}` : "—"}
-                  </span>
-                </div>
               </Cartao>
             </>
           ),
@@ -1035,7 +1031,7 @@ function Ajustes({
   }
 
   return (
-    <div className="grid h-full grid-rows-[auto_auto_1fr] gap-2">
+    <div className="grid h-full min-w-0 grid-cols-1 grid-rows-[auto_auto_1fr] gap-2">
       <Cartao titulo="Colocar o Pietro numa lição">
         <div className="grid grid-cols-3 gap-1.5">
           <Seletor
@@ -1261,7 +1257,7 @@ function Seletor({
     <select
       value={valor}
       onChange={(e) => onChange(e.target.value)}
-      className="h-12 min-w-0 rounded-md border border-linha bg-fundo px-2 text-xs font-bold text-roxo transition-[box-shadow,translate] duration-150 hover:-translate-y-px hover:shadow-suave focus:ring-2 focus:ring-amarelo focus:outline-none active:translate-y-px sm:text-sm"
+      className="h-12 w-full min-w-0 truncate rounded-md border border-linha bg-fundo px-2 text-xs font-bold text-roxo transition-[box-shadow,translate] duration-150 hover:-translate-y-px hover:shadow-suave focus:ring-2 focus:ring-amarelo focus:outline-none active:translate-y-px sm:text-sm"
     >
       {opcoes.map(([v, n]) => (
         <option key={v} value={v}>

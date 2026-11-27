@@ -105,8 +105,8 @@ export function TelaEspelho({
       <div className="flex shrink-0 items-center gap-2.5">
         <SeletorCrianca alvo={alvo} />
         <div className="flex min-w-0 flex-1 items-center gap-2">
-          <Arte nome={icone} className="size-7 shrink-0" />
-          <h1 className="truncate text-lg font-extrabold text-roxo sm:text-xl">
+          <Arte nome={icone} className="hidden size-7 shrink-0 sm:block" />
+          <h1 className="text-base leading-tight font-extrabold text-roxo sm:text-xl">
             {titulo} {noGenero(crianca.genero, "do", "da")} {crianca.nome}
           </h1>
         </div>

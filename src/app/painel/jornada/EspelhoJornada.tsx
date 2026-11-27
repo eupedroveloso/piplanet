@@ -83,7 +83,7 @@ export function EspelhoJornada() {
 function PorNivel({ fases, genero, faseAtual }: { fases: InfoFase[]; genero: "m" | "f"; faseAtual?: InfoFase }) {
   return (
     <Cartao titulo="Níveis de leitura" ajuda="Cada nível tem palavras um pouco mais difíceis. A barra mostra as lições concluídas no nível.">
-      <ul className="flex flex-col gap-3">
+      <ul className="flex flex-col gap-2 [@media(max-height:700px)]:gap-1">
         {NIVEIS_JORNADA.map((nv, k) => {
           const doNivel = fases.filter((f) => f.nivel === nv.n);
           const feitas = doNivel.filter((f) => f.feita);
@@ -98,7 +98,7 @@ function PorNivel({ fases, genero, faseAtual }: { fases: InfoFase[]; genero: "m"
               initial={{ opacity: 0, x: -8 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ ...MOLA_ENTRADA, delay: k * 0.05 }}
-              className={`flex items-center gap-3 rounded-xl px-2 py-1.5 transition-colors duration-300 ${aqui ? "bg-amarelo-claro" : ""}`}
+              className={`flex items-center gap-3 rounded-xl px-2 py-1 transition-colors duration-300 ${aqui ? "bg-amarelo-claro" : ""}`}
             >
               <span className="relative grid size-10 shrink-0 place-items-center rounded-full bg-roxo-claro">
                 <Arte nome={nv.icone} className={`size-7 ${feitas.length || aqui ? "" : "opacity-40 grayscale"}`} />
@@ -106,7 +106,7 @@ function PorNivel({ fases, genero, faseAtual }: { fases: InfoFase[]; genero: "m"
               </span>
               <span className="flex min-w-0 flex-1 flex-col gap-1">
                 <span className="flex items-baseline justify-between gap-2">
-                  <span className="truncate text-sm font-bold text-roxo">
+                  <span className="text-sm leading-tight font-bold text-roxo">
                     {nv.n}. {info.nome}
                   </span>
                   <span className="shrink-0 text-xs font-bold text-tinta-suave">
@@ -139,7 +139,7 @@ function PorNivel({ fases, genero, faseAtual }: { fases: InfoFase[]; genero: "m"
 function PorPais({ fases, fasesProgresso }: { fases: InfoFase[]; fasesProgresso: Record<string, unknown> }) {
   return (
     <Cartao titulo="Países, em ordem">
-      <ul className="flex flex-col gap-2.5">
+      <ul className="flex flex-col gap-2 [@media(max-height:700px)]:gap-0.5">
         {PAISES.map((p, k) => {
           const doPais = fases.filter((f) => f.t.pais === p.id);
           if (!doPais.length) return null;
@@ -155,9 +155,9 @@ function PorPais({ fases, fasesProgresso }: { fases: InfoFase[]; fasesProgresso:
               initial={{ opacity: 0, x: -8 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ ...MOLA_ENTRADA, delay: k * 0.04 }}
-              className={`flex items-center gap-3 rounded-xl px-2 py-1 transition-colors duration-300 ${aqui ? "bg-amarelo-claro" : ""}`}
+              className={`flex items-center gap-3 rounded-xl px-2 py-1 transition-colors duration-300 [@media(max-height:700px)]:py-0.5 ${aqui ? "bg-amarelo-claro" : ""}`}
             >
-              <span className="relative grid size-10 shrink-0 place-items-center rounded-full bg-roxo-claro">
+              <span className="relative grid size-10 shrink-0 place-items-center rounded-full bg-roxo-claro [@media(max-height:700px)]:size-9">
                 {capa && <Arte src={arteDoAnimal(capa)} className={`size-7 ${livre ? "" : "opacity-40 grayscale"}`} />}
                 {!livre && <Arte nome="ui/cadeado" className="absolute -right-1 -bottom-1 size-4" />}
                 {completo && <Arte nome="ui/medalha" className="absolute -right-1 -bottom-1 size-5" />}
@@ -165,7 +165,7 @@ function PorPais({ fases, fasesProgresso }: { fases: InfoFase[]; fasesProgresso:
               </span>
               <span className="flex min-w-0 flex-1 flex-col gap-1">
                 <span className="flex items-baseline justify-between gap-2">
-                  <span className={`truncate text-sm font-bold ${livre ? "text-roxo" : "text-tinta-suave"}`}>{p.nome}</span>
+                  <span className={`text-sm leading-tight font-bold ${livre ? "text-roxo" : "text-tinta-suave"}`}>{p.nome}</span>
                   <span className="shrink-0 text-xs font-bold text-tinta-suave">
                     {feitas.length}/{doPais.length} · <span className="text-amarelo-escuro">★ {estrelas}</span>
                   </span>
@@ -233,7 +233,7 @@ function FaseAFase({ fases, muitoErro, faseAtual }: { fases: InfoFase[]; muitoEr
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -16, transition: { duration: 0.12 } }}
             transition={MOLA_ENTRADA}
-            className="grid grid-cols-5 gap-2 sm:grid-cols-6"
+            className="grid grid-cols-[repeat(auto-fill,minmax(3rem,1fr))] gap-2"
           >
             {doBioma.map((f) => {
               const ativa = selecionada?.chave === f.chave;
