@@ -96,7 +96,7 @@ export function TrilhaEstudo() {
             whileHover={{ y: -3 }}
             whileTap={{ scale: 0.88 }}
             transition={{ ...MOLA_ENTRADA, delay: 0.4 + k * 0.12 }}
-            className="relative grid size-11 place-items-center rounded-full bg-branco shadow-suave ring-2 ring-verde"
+            className="relative grid size-12 place-items-center rounded-full bg-branco shadow-suave ring-2 ring-verde"
           >
             <Arte src={arteDoAnimal(s.animal)} className="size-8" />
             <Arte nome="ui/estrela" className="absolute -top-1.5 -right-1.5 size-5" />
@@ -114,15 +114,18 @@ export function TrilhaEstudo() {
           Estudo do dia
         </h1>
         {seguidos > 0 && (
-          <button
+          <motion.button
             type="button"
-            onClick={() => speak(`${seguidos} ${seguidos === 1 ? "dia" : "dias"} seguidos de estudo!`)}
-            aria-label={`${seguidos} dias seguidos`}
-            className="flex items-center gap-1 rounded-full bg-amarelo px-3 py-1 text-lg font-extrabold text-roxo shadow-[0_4px_0_var(--color-amarelo-escuro)] transition-transform active:scale-95"
+            onClick={() => speak(seguidos === 1 ? "1 dia seguido de estudo!" : `${seguidos} dias seguidos de estudo!`)}
+            aria-label={seguidos === 1 ? "1 dia seguido" : `${seguidos} dias seguidos`}
+            whileHover={{ y: -2 }}
+            whileTap={{ scale: 0.92 }}
+            transition={MOLA_TOQUE}
+            className="flex h-12 min-w-12 items-center justify-center gap-1 rounded-full bg-amarelo px-3 text-lg font-extrabold text-roxo shadow-[0_4px_0_var(--color-amarelo-escuro)]"
           >
             <Arte nome="ui/estrela" className="size-6" />
             {seguidos}
-          </button>
+          </motion.button>
         )}
       </motion.div>
 

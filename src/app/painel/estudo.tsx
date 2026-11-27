@@ -6,7 +6,7 @@ import { JOGOS } from "@/content/jornada";
 import { ACERTOS_PARA_SUPERAR, diaDe, estudoDoDia, exerciciosDoDia, melhora, palavrasParaReforcar, recomendacoes } from "@/lib/estudo";
 import type { Progress } from "@/lib/progress";
 import { Arte, MOLA_ENTRADA } from "@/components/ui";
-import { Cartao, KPI, Secoes } from "./graficos";
+import { Cartao, KPI, Secoes, useTelaBaixa } from "./graficos";
 
 /**
  * ESTUDO E REFORÇO no painel dos Pais (somente leitura, progresso da criança vindo do banco).
@@ -20,19 +20,22 @@ import { Cartao, KPI, Secoes } from "./graficos";
 export function Recomendacoes({ p, nome, agora, titulo = true }: { p: Progress; nome: string; agora: number; titulo?: boolean }) {
   const recs = recomendacoes(p, nome, agora || undefined);
   return (
-    <Cartao titulo={titulo ? "O que fazer para errar menos" : undefined} ajuda="Ações sugeridas a partir dos erros, do jogo e da frequência de estudo da criança. A mais importante vem primeiro.">
+    <Cartao
+      titulo={titulo ? "O que fazer para errar menos" : undefined}
+      ajuda={titulo ? "Ações sugeridas a partir dos erros, do jogo e da frequência de estudo da criança. A mais importante vem primeiro." : undefined}
+    >
       {recs.length ? (
-        <ol className="flex flex-col gap-3 [@media(max-height:700px)]:gap-2 [@media(max-height:700px)]:[&>li:nth-child(n+4)]:hidden">
+        <ol className="flex flex-col gap-3 [@media(max-height:820px)]:gap-2 [@media(max-height:820px)]:[&>li:nth-child(n+4)]:hidden [@media(max-height:700px)]:[&>li:nth-child(n+3)]:hidden">
           {recs.map((r, k) => (
             <motion.li
               key={r.acao}
               initial={{ opacity: 0, x: -8 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ ...MOLA_ENTRADA, delay: k * 0.06 }}
-              className={`flex items-start gap-3 rounded-xl p-2.5 ${k === 0 ? "bg-amarelo-claro" : "bg-fundo"}`}
+              className={`flex items-start gap-3 rounded-xl p-2.5 [@media(max-height:700px)]:p-2 ${k === 0 ? "bg-amarelo-claro" : "bg-fundo"}`}
             >
-              <span className="grid size-10 shrink-0 place-items-center rounded-full bg-branco shadow-suave">
-                <Arte nome={r.icone} className="size-7" />
+              <span className="grid size-10 shrink-0 place-items-center rounded-full bg-branco shadow-suave [@media(max-height:700px)]:size-9">
+                <Arte nome={r.icone} className="size-7 [@media(max-height:700px)]:size-6" />
               </span>
               <span className="flex min-w-0 flex-col gap-1">
                 <span className="text-sm leading-snug font-bold text-roxo">{r.acao}</span>
@@ -58,7 +61,7 @@ function Superadas({ p, agora }: { p: Progress; agora: number }) {
   return (
     <Cartao titulo="Palavras superadas" ajuda={`Errava a palavra e agora leu ${ACERTOS_PARA_SUPERAR} vezes seguidas sem errar. "Antes" é a leitura com mais erros.`}>
       {sup.length ? (
-        <ul className="flex flex-col gap-2">
+        <ul className="flex flex-col gap-2 [@media(max-height:700px)]:[&>li:nth-child(n+5)]:hidden">
           {sup.map((s, k) => (
             <motion.li
               key={s.animal.id}
@@ -90,7 +93,7 @@ function EmReforco({ p, agora }: { p: Progress; agora: number }) {
   return (
     <Cartao titulo="Em reforço" ajuda={`Palavras com erro que a criança está revisando no Reforçar. Saem da lista com ${ACERTOS_PARA_SUPERAR} leituras seguidas sem erro.`}>
       {em.length ? (
-        <ul className="flex flex-col gap-2.5">
+        <ul className="flex flex-col gap-2.5 [@media(max-height:700px)]:gap-2 [@media(max-height:700px)]:[&>li:nth-child(n+6)]:hidden">
           {em.map((s, k) => (
             <motion.li
               key={s.animal.id}
@@ -174,6 +177,8 @@ function TrilhaDoDia({ p, agora }: { p: Progress; agora: number }) {
 /** Aba "Estudo" do painel: o que fazer, melhora e o estudo de hoje. */
 export function EstudoAba({ p, nome, agora }: { p: Progress; nome: string; agora: number }) {
   const m = melhora(p, agora || undefined);
+  // em telas baixas, "hoje" e "em reforço" viram páginas separadas (não cabem juntos sem espremer)
+  const baixa = useTelaBaixa();
   return (
     <Secoes
       secoes={[
@@ -196,15 +201,22 @@ export function EstudoAba({ p, nome, agora }: { p: Progress; nome: string; agora
             </>
           ),
         },
-        {
-          titulo: "Reforço e hoje",
-          conteudo: (
-            <>
-              <TrilhaDoDia p={p} agora={agora} />
-              <EmReforco p={p} agora={agora} />
-            </>
-          ),
-        },
+        ...(baixa
+          ? [
+              { titulo: "Estudo de hoje", conteudo: <TrilhaDoDia p={p} agora={agora} /> },
+              { titulo: "Em reforço", conteudo: <EmReforco p={p} agora={agora} /> },
+            ]
+          : [
+              {
+                titulo: "Reforço e hoje",
+                conteudo: (
+                  <>
+                    <TrilhaDoDia p={p} agora={agora} />
+                    <EmReforco p={p} agora={agora} />
+                  </>
+                ),
+              },
+            ]),
       ]}
     />
   );
