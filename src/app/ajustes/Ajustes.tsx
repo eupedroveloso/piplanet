@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { trocarPerfil, usePerfil } from "@/lib/perfil";
@@ -113,6 +114,31 @@ export function Ajustes() {
           <motion.span layout transition={MOLA_TOQUE} className={`absolute top-1 size-7 rounded-full bg-branco shadow ${voz ? "right-1" : "left-1"}`} />
         </span>
       </motion.button>
+
+      {/* Meu nível de leitura (saiu do rodapé para caber no celular): só para as crianças */}
+      {!perfil.temSenha && (
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ...MOLA_ENTRADA, delay: 0.15 }}
+          whileHover={{ y: -2 }}
+          whileTap={{ scale: 0.96 }}
+          className="w-full max-w-md"
+        >
+          <Link
+            href="/nivelamento"
+            onClick={() => speak("Meu nível de leitura")}
+            aria-label="Meu nível de leitura"
+            className="flex w-full items-center gap-3 rounded-xl bg-branco p-4 shadow-suave"
+          >
+            <span className="grid size-12 shrink-0 place-items-center rounded-full bg-amarelo-claro">
+              <Arte nome="ui/escada" className="size-8" />
+            </span>
+            <span className="flex-1 text-left text-lg font-extrabold text-roxo">Meu nível</span>
+            <Arte nome="ui/play" className="size-8" />
+          </Link>
+        </motion.div>
+      )}
 
       {/* Trocar de conta (para adultos) */}
       <motion.button

@@ -26,7 +26,6 @@ const ITENS = [
   { href: "/estudo", rotulo: "Estudo", icone: "ui/sol", fala: "Estudo do dia" },
   { href: "/cartas", rotulo: "Cartas", icone: "ui/cartas", fala: "Cartas dos bichos" },
   { href: "/album", rotulo: "Álbum", icone: "ui/album", fala: "Álbum de bichos" },
-  { href: "/nivelamento", rotulo: "Nível", icone: "ui/escada", fala: "Meu nível de leitura" },
 ];
 
 const MotionLink = motion.create(Link);

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { arteDoAnimal } from "@/content/animais";
 import { Arte, Comemoracao, Explorador, MOLA_ENTRADA, MOLA_TOQUE } from "@/components/ui";
-import { diaDe, diasSeguidos, estudoDoDia, exerciciosDoDia, palavrasParaReforcar } from "@/lib/estudo";
+import { diaDe, diasSeguidos, estudoDoDia, exerciciosDoDia, melhora, palavrasParaReforcar } from "@/lib/estudo";
 import { JOGOS } from "@/content/jornada";
 import { progressStore, type Progress } from "@/lib/progress";
 import { usePerfil } from "@/lib/perfil";
@@ -34,7 +34,7 @@ export function TrilhaEstudo() {
   }, [plano]);
 
   if (!pronto || !plano) return <div className="flex-1" />;
-  const { feito, reforcar, jogoHoje, seguidos } = plano;
+  const { feito, reforcar, jogoHoje, seguidos, superadas } = plano;
   const paradas = [
     {
       id: "exercicios",
@@ -69,12 +69,41 @@ export function TrilhaEstudo() {
       href: null,
       icone: "ui/trofeu",
       rotulo: "Conquista",
-      fala: genero === "f" ? "Estudo do dia completo! Você é uma exploradora incrível!" : "Estudo do dia completo! Você é um explorador incrível!",
+      fala:
+        (genero === "f" ? "Estudo do dia completo! Você é uma exploradora incrível!" : "Estudo do dia completo! Você é um explorador incrível!") +
+        (superadas.length ? ` Você melhorou em ${superadas.map((s) => s.animal.nome).join(", ")}!` : ""),
       feita: false,
-      extra: null,
+      extra: null as React.ReactNode,
     },
   ];
   const completo = paradas[0].feita && paradas[1].feita;
+  // Dia completo: a conquista mostra os bichos que ele SUPEROU (errava e agora lê sem errar), com comemoração
+  if (completo && superadas.length)
+    paradas[2].extra = (
+      <span className="flex flex-wrap gap-1.5">
+        {superadas.map((s, k) => (
+          <motion.span
+            key={s.animal.id}
+            role="button"
+            tabIndex={0}
+            aria-label={s.animal.nome}
+            onClick={(e) => {
+              e.stopPropagation();
+              speak(`${s.animal.nome}: superou!`);
+            }}
+            initial={{ opacity: 0, scale: 0.4, y: 8 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            whileHover={{ y: -3 }}
+            whileTap={{ scale: 0.88 }}
+            transition={{ ...MOLA_ENTRADA, delay: 0.4 + k * 0.12 }}
+            className="relative grid size-11 place-items-center rounded-full bg-branco shadow-suave ring-2 ring-verde"
+          >
+            <Arte src={arteDoAnimal(s.animal)} className="size-8" />
+            <Arte nome="ui/estrela" className="absolute -top-1.5 -right-1.5 size-5" />
+          </motion.span>
+        ))}
+      </span>
+    );
   const vez = paradas.findIndex((x) => !x.feita);
 
   return (
@@ -107,8 +136,8 @@ export function TrilhaEstudo() {
           const conteudo = (
             <>
               <motion.span
-                animate={daVez && !conquista ? { scale: [1, 1.06, 1] } : { scale: 1 }}
-                transition={daVez ? { duration: 2.2, repeat: Infinity, ease: "easeInOut" } : MOLA_TOQUE}
+                animate={daVez && !conquista ? { scale: [1, 1.06, 1] } : conquista && completo ? { scale: [1, 1.1, 1], rotate: [0, -4, 4, 0] } : { scale: 1 }}
+                transition={daVez && !conquista ? { duration: 2.2, repeat: Infinity, ease: "easeInOut" } : conquista && completo ? { duration: 1.2, delay: 0.3, ease: "easeInOut" } : MOLA_TOQUE}
                 className={`relative grid size-[5.5rem] shrink-0 place-items-center rounded-full sm:size-[6.5rem] ${
                   x.feita
                     ? "bg-verde shadow-[0_6px_0_var(--color-verde-escuro)]"
@@ -172,10 +201,14 @@ function montar(p: Progress, dia: string) {
   const reforcar = palavrasParaReforcar(p);
   const jogoHoje = exerciciosDoDia(p, dia).fase.jogo;
   const seguidos = diasSeguidos(p);
+  // as superadas mais recentes (última leitura mais nova primeiro), no máximo 5
+  const superadas = [...melhora(p).superadas]
+    .sort((a, b) => (b.leituras[b.leituras.length - 1]?.data ?? 0) - (a.leituras[a.leituras.length - 1]?.data ?? 0))
+    .slice(0, 5);
   const fala = !feito.exercicios
     ? "Estudo do dia! Primeiro, os exercícios. Toque no círculo amarelo."
     : !feito.reforco && reforcar.length
       ? "Muito bem! Agora vamos reforçar as palavras que ficaram difíceis."
       : "Estudo do dia completo! Volte amanhã para continuar.";
-  return { feito, reforcar, jogoHoje, seguidos, fala };
+  return { feito, reforcar, jogoHoje, seguidos, superadas, fala };
 }
