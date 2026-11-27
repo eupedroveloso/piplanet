@@ -169,9 +169,9 @@ export function metricas(p: Progress, agora: number) {
   const territoriosCompletos = TERRITORIOS.filter((t) => t.fases.every((_, i) => `${t.id}/${i}` in p.fases)).length;
 
   // lições
-  const licoes = sessoes.filter((s) => s.tipo === "fase");
-  // palavras lidas em qualquer lição: jornada, estudo do dia e reforço
-  const bichos = sessoes.filter((s) => s.tipo === "fase" || s.tipo === "estudo" || s.tipo === "reforco").flatMap((s) => (s.bichos ?? []).map((b) => ({ ...b, jogo: s.jogo, data: s.inicio })));
+  // lições: as da jornada e as do estudo do dia (exercícios e reforço)
+  const licoes = sessoes.filter((s) => s.tipo === "fase" || s.tipo === "estudo" || s.tipo === "reforco");
+  const bichos = licoes.flatMap((s) => (s.bichos ?? []).map((b) => ({ ...b, jogo: s.jogo, data: s.inicio })));
   const recentes = bichos.slice(-60);
   const semErro = recentes.length ? recentes.filter((b) => b.erros === 0).length / recentes.length : null;
   const comDica = recentes.length ? recentes.filter((b) => b.erros >= 2).length / recentes.length : null;

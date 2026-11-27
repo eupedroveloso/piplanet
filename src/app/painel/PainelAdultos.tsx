@@ -499,7 +499,7 @@ function Resumo({
                 <KPI
                   icone="ui/sol"
                   rotulo="Tempo jogando hoje"
-                  valor={m.tempoHoje >= 60000 ? duracao(m.tempoHoje) : "—"}
+                  valor={m.tempoHoje > 0 ? duracao(m.tempoHoje) : "—"}
                 />
               </div>
               {!baixa && grafico}
@@ -527,10 +527,10 @@ function Resumo({
                       }
                     />
                   </div>
-                  {/* a dica automática saiu dos jogos: "com dica" agora é "precisou de 2+ tentativas" */}
+                  {/* palavras com 2 erros ou mais (a conta é erros >= 2; 1 erro já aparece como "não acertou de primeira") */}
                   <Anel
                     valor={m.comDica}
-                    rotulo="Precisou de 2+ tentativas"
+                    rotulo="Errou 2 vezes ou mais"
                     cor="stroke-coral"
                   />
                 </div>
