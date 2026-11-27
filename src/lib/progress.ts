@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useSyncExternalStore } from "react";
+import { ANIMAIS } from "@/content/animais";
 import { perfilPorId } from "@/content/perfis";
 import { chaveDoPerfil, createPersistentStore, perfilAtual } from "./store";
 
@@ -86,12 +87,14 @@ export const progressStore = createPersistentStore<Progress>(chaveDoPerfil("pg:p
 });
 
 const semAssinatura = () => () => {};
+const TODOS_OS_BICHOS = ANIMAIS.map((a) => a.id);
 
 /** Progresso do perfil atual. `tudoLiberado` vem do perfil (ex.: a conta Pais tem tudo aberto). */
 export function useProgress(): Progress & { tudoLiberado: boolean } {
   const p = progressStore.useStore();
   const liberado = useSyncExternalStore(semAssinatura, () => !!perfilPorId(perfilAtual())?.tudoLiberado, () => false);
-  return useMemo(() => ({ ...p, tudoLiberado: liberado }), [p, liberado]);
+  // tudo liberado (visitante): o álbum e as cartas também vêm completos, com todos os bichos
+  return useMemo(() => ({ ...p, animaisColetados: liberado ? TODOS_OS_BICHOS : p.animaisColetados, tudoLiberado: liberado }), [p, liberado]);
 }
 
 /** "Tudo concluído" para efeito de desbloqueio: qualquer chave existe. */

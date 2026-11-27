@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { useState, type ReactNode } from "react";
+import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { usePreCarregar } from "@/lib/precarregar";
 
 /**
@@ -59,6 +59,12 @@ export function ImagemSuave({
 }) {
   const [pronta, setPronta] = useState(false);
   const [ultimo, setUltimo] = useState(src);
+  const ref = useRef<HTMLImageElement>(null);
+  // imagem que já veio do cache (carregou antes do React ligar o onLoad): mostra na hora, sem ficar invisível
+  useLayoutEffect(() => {
+    const img = ref.current;
+    if (img?.complete && img.naturalWidth > 0) queueMicrotask(() => setPronta(true));
+  }, [src]);
   // trocou a imagem: volta ao placeholder até a nova carregar
   if (ultimo !== src) {
     setUltimo(src);
@@ -73,7 +79,9 @@ export function ImagemSuave({
         alt={alt}
         draggable={false}
         decoding="async"
+        ref={ref}
         onLoad={() => setPronta(true)}
+        onError={() => setPronta(true)}
         initial={{ opacity: 0 }}
         animate={{ opacity: pronta ? 1 : 0 }}
         transition={{ duration: 0.35, ease: "easeOut" }}

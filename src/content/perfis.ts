@@ -28,7 +28,7 @@ export interface Perfil {
 export const PERFIS: Perfil[] = [
   { id: "pietro", nome: "Pietro", avatar: "mascote/pietro-rosto", temSenha: false, personagem: "pietro", genero: "m" },
   { id: "perola", nome: "Pérola", avatar: "mascote/perola-rosto", temSenha: false, personagem: "perola", genero: "f" },
-  { id: "visitante", nome: "Visitante", avatar: "mascote/pietro-rosto", temSenha: false, personagem: "pietro", genero: "m", visitante: true },
+  { id: "visitante", nome: "Visitante", avatar: "mascote/pietro-rosto", temSenha: false, personagem: "pietro", genero: "m", visitante: true, tudoLiberado: true },
   { id: "pais", nome: "Pais", avatar: "animais/coruja", temSenha: true, personagem: "pietro", genero: "m", tudoLiberado: true },
 ];
 

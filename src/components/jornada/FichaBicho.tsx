@@ -6,6 +6,8 @@ import { arteDoAnimal, type Animal } from "@/content/animais";
 import { FOTOS } from "@/content/fotos";
 import { curiosidadesDe, falarSobre } from "@/lib/falar-bicho";
 import { speak } from "@/lib/speech";
+import { usePerfil } from "@/lib/perfil";
+import { CameraBicho } from "./CameraBicho";
 import { Arte, BotaoRedondo, Esqueleto, ImagemSuave, fonteQueCabe, fonteQueCabeEm, MOLA_ENTRADA, MOLA_TOQUE } from "@/components/ui";
 
 /**
@@ -15,6 +17,9 @@ import { Arte, BotaoRedondo, Esqueleto, ImagemSuave, fonteQueCabe, fonteQueCabeE
  */
 export function FichaBicho({ animal, onFechar }: { animal: Animal | null; onFechar: () => void }) {
   const [vez, setVez] = useState(0);
+  const [camera, setCamera] = useState(false);
+  // por enquanto, o "bicho na câmera" só aparece para o visitante (teste)
+  const comCamera = !!usePerfil().visitante;
   const foto = animal ? FOTOS[animal.id] : undefined;
 
   useEffect(() => {
@@ -112,6 +117,11 @@ export function FichaBicho({ animal, onFechar }: { animal: Animal | null; onFech
                     <Arte nome="ui/lampada" className="size-9" />
                   </motion.span>
                 </BotaoRedondo>
+                {comCamera && (
+                  <BotaoRedondo aria-label="Ver o bicho na câmera" onClick={() => setCamera(true)} className="size-16 ring-4 ring-azul">
+                    <Arte nome="ui/camera" className="size-9" />
+                  </BotaoRedondo>
+                )}
               </div>
               {/* bolinhas: quantas curiosidades existem */}
               <div className="flex gap-1.5" aria-hidden>
@@ -133,6 +143,7 @@ export function FichaBicho({ animal, onFechar }: { animal: Animal | null; onFech
           </motion.div>
         </motion.div>
       )}
+      {animal && camera && <CameraBicho key="camera" animal={animal} onFechar={() => setCamera(false)} />}
     </AnimatePresence>
   );
 }
