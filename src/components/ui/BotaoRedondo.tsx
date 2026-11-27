@@ -39,6 +39,10 @@ export function BotaoRedondo({
     <motion.button
       type="button"
       {...TOQUE}
+      // desabilitado: sem hover/toque e volta à posição normal (não fica "levantado" preso)
+      whileHover={props.disabled ? undefined : TOQUE.whileHover}
+      whileTap={props.disabled ? undefined : TOQUE.whileTap}
+      animate={props.disabled ? { y: 0, scale: 1 } : undefined}
       className={`${BASE} ${className}`}
       onClick={(e) => {
         if (fala !== false) speak(fala ?? props["aria-label"]);

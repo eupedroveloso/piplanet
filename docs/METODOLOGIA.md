@@ -53,7 +53,7 @@ Nada de ranking, tempo, vidas ou perda de pontos.
 - **Para quem ainda não lê:** toda instrução é falada pela Juju e todo botão tem ícone; o texto nunca é o único caminho. Só o exercício de leitura em si depende de ler, e mesmo nele tocar numa peça lê o que está escrito.
 
 - **Sem punição.** Nada de vidas, tempo ou som de erro. A peça errada só balança e a sílaba é lida.
-- **Aprendizagem sem erro (errorless):** depois de 2 tentativas erradas, a peça certa brilha. A dica aparece sozinha, sem ele pedir.
+- **Erro sem revelar a resposta:** a peça errada balança e toca um som curto e suave de erro (`somDeErro`, em `src/lib/sons.ts`). A peça certa nunca é mostrada; ele tenta de novo até achar. (Decisão da família, nov/2026.)
 - **Previsibilidade:** mesmo layout em todas as telas, rodadas curtas (5 bichos), bolinhas de progresso mostrando quanto falta, fim claro.
 - **Carga sensorial baixa:** cores calmas, animações suaves, botão de desligar a voz sempre visível. Respeita "reduzir movimento" do aparelho.
 - **Alvos grandes:** botões grandes para o dedo, pensados para tablet.

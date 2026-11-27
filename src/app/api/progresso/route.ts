@@ -30,7 +30,9 @@ async function quem() {
 }
 
 function pode(eu: string | null, alvo: string) {
-  return !!eu && !!perfilPorId(alvo) && (eu === alvo || ADULTOS.has(eu));
+  const p = perfilPorId(alvo);
+  // o visitante não grava no banco (progresso só no aparelho)
+  return !!eu && !!p && !p.visitante && (eu === alvo || ADULTOS.has(eu));
 }
 
 async function banco() {

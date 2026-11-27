@@ -5,6 +5,7 @@ import { ANIMAIS, type Animal } from "@/content/animais";
 import type { Territorio } from "@/content/jornada";
 import { shuffle } from "@/lib/random";
 import { speak } from "@/lib/speech";
+import { somDeErro } from "@/lib/sons";
 import { falaDaLetra, falaDaSilaba } from "@/content/letras";
 import { fraseDe, PALAVRAS_EXTRAS } from "@/content/frases";
 import { Arte, BotaoRedondo, Casinha, Peca } from "@/components/ui";
@@ -20,10 +21,9 @@ import { CirculoBicho, JogoFase, type RodadaProps } from "../comum/JogoFase";
  * - frase: as peças são PALAVRAS; ele ouve a frase e coloca as palavras na ordem
  *   (O · GATO · MIA). Para quem ainda não lê, a frase pode ser ouvida quantas vezes quiser.
  *
- * Toda peça tocada é lida. Erro só balança a peça. Após 2 erros na mesma casa, a peça certa pula.
+ * Toda peça tocada é lida. Erro balança a peça e faz um som de erro; a peça certa NUNCA é mostrada.
  */
 
-const ERROS_ATE_DICA = 2;
 const LETRAS_EXTRAS = "abcdefgijlmnoprstuvz";
 
 type Modo = "silabas" | "letras" | "frase";
@@ -73,7 +73,6 @@ function RodadaMontar({ animal, fase, acertou, errar, acertar, modo }: RodadaPro
     speak(palavras.join(" "));
   };
   const [feitas, setFeitas] = useState(0);
-  const [errosCasa, setErrosCasa] = useState(0);
   const [balancando, setBalancando] = useState<string | null>(null);
   /** Qual peça entrou em cada casinha (só para a animação de encaixe). */
   const [encaixes, setEncaixes] = useState<string[]>([]);
@@ -83,7 +82,7 @@ function RodadaMontar({ animal, fase, acertou, errar, acertar, modo }: RodadaPro
     // durante a pausa entre sílabas ou antes do acerto, toques não contam (nem como erro)
     if (acertou || tile.used || trancado) return;
     if (tile.text !== unidades[feitas]) {
-      setErrosCasa((e) => e + 1);
+      somDeErro();
       errar();
       setBalancando(tile.id);
       setTimeout(() => setBalancando(null), 450);
@@ -95,7 +94,6 @@ function RodadaMontar({ animal, fase, acertou, errar, acertar, modo }: RodadaPro
     setPecas((ps) => ps.map((p) => (p.id === tile.id ? { ...p, used: true } : p)));
     setFeitas(total);
     setEncaixes((e) => [...e, tile.id]);
-    setErrosCasa(0);
 
     // A fala entra na fila e toca inteira; o JOGO NÃO ESPERA a voz (as peças aparecem no tempo certo,
     // mesmo se o áudio demorar). Pequenas pausas só para a criança ver a peça encaixar.
@@ -123,7 +121,6 @@ function RodadaMontar({ animal, fase, acertou, errar, acertar, modo }: RodadaPro
     }
   }
 
-  const dica = errosCasa >= ERROS_ATE_DICA ? pecas.find((p) => !p.used && p.text === unidades[feitas])?.id : undefined;
   // Palavras longas (RI·NO·CE·RON·TE) usam o bloco menor para caber numa linha no celular
   const pequeno = modo !== "silabas" || unidades.length >= 4;
   const bloco = modo === "silabas" && unidades.length >= 5 ? "xs" : pequeno ? "sm" : "md";
@@ -184,7 +181,7 @@ function RodadaMontar({ animal, fase, acertou, errar, acertar, modo }: RodadaPro
               usada={p.used}
               tamanho={bloco}
               onToque={() => tocar(p)}
-              estado={balancando === p.id ? "balancar" : dica === p.id ? "dica" : "normal"}
+              estado={balancando === p.id ? "balancar" : "normal"}
             />
           ))}
         </div>

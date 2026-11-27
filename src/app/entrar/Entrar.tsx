@@ -132,7 +132,7 @@ export function Entrar() {
           >
             {/* As crianças são o foco: dois cartões grandes lado a lado, pulsando no mesmo ritmo (previsível) */}
             <div className="grid w-full max-w-md grid-cols-2 gap-3 sm:gap-5">
-              {PERFIS.filter((p) => !p.temSenha).map((p) => (
+              {PERFIS.filter((p) => !p.temSenha && !p.visitante).map((p) => (
                 <motion.button
                   key={p.id}
                   type="button"

@@ -16,7 +16,8 @@ function senhaCerta(digitada: string, certa: string | undefined) {
 export async function POST(req: Request) {
   const { perfil, senha } = (await req.json().catch(() => ({}))) as { perfil?: string; senha?: string };
   const p = perfilPorId(perfil);
-  if (!p) return NextResponse.json({ ok: false, erro: "perfil" }, { status: 400 });
+  // o visitante só entra pelo link /visitante
+  if (!p || p.visitante) return NextResponse.json({ ok: false, erro: "perfil" }, { status: 400 });
   if (p.temSenha) {
     // Senha padrão 0001 (proteção simples); SENHA_PAIS no ambiente tem prioridade.
     const certa = process.env[`SENHA_${p.id.toUpperCase()}`] || "0001";

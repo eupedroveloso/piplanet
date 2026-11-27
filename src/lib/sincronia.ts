@@ -2,6 +2,7 @@
 
 import { mesclar } from "./mesclar";
 import { progressStore, type Progress } from "./progress";
+import { perfilPorId } from "@/content/perfis";
 import { perfilAtual } from "./store";
 
 /**
@@ -20,6 +21,7 @@ const chaveBase = () => `pg:sync:${perfilAtual()}`;
 const base = () => Number(localStorage.getItem(chaveBase()) ?? 0);
 
 async function sincronizar(keepalive = false) {
+  if (perfilPorId(perfilAtual())?.visitante) return; // visitante: progresso só no aparelho
   if (enviando) {
     deNovo = true;
     return;

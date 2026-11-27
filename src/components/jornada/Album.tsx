@@ -22,8 +22,10 @@ function indiceAtual(p: Progress) {
  * setas grandes (com voz) e bolinhas de página. Dá para deslizar o dedo para os lados.
  * Bicho lido aparece colorido e abre a ficha; o que falta fica em silhueta, balança e avisa com carinho.
  */
-export function Album() {
-  const progresso = useProgress();
+export function Album({ progresso: externo }: { progresso?: Progress } = {}) {
+  // espelho dos Pais: usa o progresso da criança escolhida (banco); senão, o do próprio jogador
+  const proprio = useProgress();
+  const progresso = externo ?? proprio;
   const { animaisColetados } = progresso;
   const [pagina, setPagina] = useState<number | null>(null);
   const [direcao, setDirecao] = useState(1);

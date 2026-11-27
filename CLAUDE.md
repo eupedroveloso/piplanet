@@ -4,7 +4,7 @@
 
 Plataforma de alfabetização com tema de animais para uma criança com autismo leve e hiperfoco em animais. Mapa 3D em três níveis (`src/components/mundo/`): planeta → país (ilha com a silhueta real, Natural Earth) → bioma. Seis países (Brasil, EUA, Rússia, China, Austrália, África), cada um com biomas reais e bichos pela origem real (`src/content/paises.ts`). Começa no Brasil e libera os próximos. Deploy grátis na Vercel.
 
-- Pedagogia: siga `docs/METODOLOGIA.md` (método fônico, sem punição, dica automática, rodadas curtas, gamificação sem perda).
+- Pedagogia: siga `docs/METODOLOGIA.md` (método fônico, sem punição, sem mostrar a resposta certa no erro (só balança e faz som de erro), rodadas curtas, gamificação sem perda).
 - Visual: siga `docs/DESIGN-SYSTEM.md`. Só tokens de `src/app/globals.css`, componentes de `@/components/ui`, ilustrações de `public/arte/` (Fluent Emoji Flat). Vitrine em `/design-system`.
 - **REGRA DURA: o público AINDA NÃO SABE LER.** Toda instrução é falada (voz da Juju) e todo botão/ação tem ícone grande e claro; texto nunca é o único meio de entender algo. Só o que é exercício de leitura (sílabas, palavras, frases) depende de ler.
 - **REGRA DURA: nada apertado e pouco texto.** Interfaces com respiro (margens e espaçamento generosos). Nada de excesso de subtítulos ou textos explicativos: um número ou ícone grande e um rótulo curto. Se não couber, divida em páginas ou abas em vez de espremer. Mas respiro não é desperdício: cartões do tamanho do conteúdo, sem esticar, e cada tela com informação útil. Vale também para o painel dos pais.

@@ -4,17 +4,10 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState, type ReactNode } from "react";
 import { arteDoAnimal, ANIMAIS } from "@/content/animais";
 import { PAISES } from "@/content/paises";
-import { infoNivel, NIVEIS_JORNADA } from "@/content/niveis";
-import {
-  chaveFase,
-  nivelAtual,
-  nivelDaFase,
-  SEQUENCIA,
-  TERRITORIOS,
-} from "@/content/jornada";
+import { infoNivel } from "@/content/niveis";
+import { chaveFase, nivelAtual, TERRITORIOS } from "@/content/jornada";
 import { NIVEIS } from "@/games/nivelamento/Nivelamento";
 import type { Progress } from "@/lib/progress";
-import { usePerfil } from "@/lib/perfil";
 import {
   Arte,
   BotaoRedondo,
@@ -39,6 +32,7 @@ import {
   type Copia,
   alvoAtual,
   escolherAlvo,
+  useAlvo,
   VAZIO,
 } from "./dados";
 import { CRIANCAS, noGenero, perfilPorId } from "@/content/perfis";
@@ -48,12 +42,12 @@ import {
   BarrasDias,
   BarrasH,
   Cartao,
-  Dispersao,
-  JornadaNiveis,
+  RankingPalavras,
   KPI,
   LinhaEvolucao,
   LinhaTempo,
   Secoes,
+  useTelaBaixa,
   Tendencia,
 } from "./graficos";
 
@@ -77,7 +71,6 @@ const ABAS: { id: Aba; nome: string; icone: string }[] = [
 const agoraMs = () => Date.now();
 
 export function PainelAdultos() {
-  const perfil = usePerfil();
   const [aba, setAba] = useState<Aba>("resumo");
   const [dados, setDados] = useState<Progress | null>(null);
   const [copias, setCopias] = useState<Copia[]>([]);
@@ -85,7 +78,7 @@ export function PainelAdultos() {
   const [carregando, setCarregando] = useState(true);
   const [aviso, setAviso] = useState("");
   const [agora, setAgora] = useState(0);
-  const [alvo, setAlvo] = useState(alvoAtual());
+  const alvo = useAlvo();
   const crianca = perfilPorId(alvo) ?? CRIANCAS()[0];
 
   // título da aba acompanha a criança escolhida
@@ -97,7 +90,6 @@ export function PainelAdultos() {
   async function trocarCrianca(id: string) {
     if (id === alvo) return;
     escolherAlvo(id);
-    setAlvo(id);
     setDados(null); // não mostra números da outra criança enquanto carrega
     setCarregando(true);
     aplicarCarregado(await carregar(), agoraMs());
@@ -185,11 +177,11 @@ export function PainelAdultos() {
               </span>
             </h1>
             <p className="flex min-w-0 items-center gap-1.5 text-xs text-tinta-suave">
-              <span className="truncate">
-                {perfil.nome} ·{" "}
+              {/* curto para caber em 360 sem reticências */}
+              <span>
                 {m?.ultima
-                  ? `última atividade ${quando(m.ultima)}`
-                  : "sem atividade registrada ainda"}
+                  ? `última vez ${quando(m.ultima)}`
+                  : "sem atividade ainda"}
               </span>
               {/* Só aparece em teste local (o servidor local não grava no banco, de propósito) */}
               {!temBanco && (
@@ -335,7 +327,7 @@ function Paginado<T>({
       const semBarra = Math.floor(h / LINHA_PX);
       setCabem(
         Math.max(
-          2,
+          1,
           Math.min(
             maximo,
             itens.length <= semBarra
@@ -428,28 +420,29 @@ function Resumo({
     m.semErro !== null && m.semErroAntes !== null
       ? m.semErro - m.semErroAntes
       : null;
-  const niveis = NIVEIS_JORNADA.map((nv) => {
-    const ks = SEQUENCIA.filter((k) => nivelDaFase(k) === nv.n);
-    return {
-      n: nv.n,
-      icone: nv.icone,
-      nome: nv.nome,
-      total: ks.length,
-      feitas: ks.filter((k) => k in fases).length,
-    };
-  });
+
+  // em telas baixas o gráfico ganha uma seção própria (não fica espremido sob os 4 indicadores)
+  const baixa = useTelaBaixa();
+  const grafico = (
+    <Cartao
+      titulo="Minutos por dia, últimos 14 dias"
+      className="min-h-0 flex-1"
+    >
+      <BarrasDias dados={m.porDia} preencher />
+    </Cartao>
+  );
 
   return (
     <Secoes
       secoes={[
         {
-          titulo: "Semana",
+          titulo: "Últimos 7 dias",
           conteudo: (
             <>
               <div className="grid grid-cols-2 gap-3">
                 <KPI
-                  icone="ui/sol"
-                  rotulo="Tempo"
+                  icone="ui/nivel"
+                  rotulo="Tempo jogando (7 dias)"
                   valor={min7 ? duracao(min7 * 60000) : "—"}
                   tendencia={
                     vazio ? null : (
@@ -459,11 +452,19 @@ function Resumo({
                       />
                     )
                   }
+                  ajuda="Soma do tempo nas lições e nas cartas nos últimos 7 dias. A seta compara com os 7 dias anteriores."
+                />
+                <KPI
+                  icone="ui/bandeira"
+                  rotulo="Dias que jogou (7 dias)"
+                  valor={vazio ? "—" : m.diasAtivos7}
+                  unidade="de 7"
                 />
                 <KPI
                   icone="ui/mapa"
-                  rotulo="Lições"
+                  rotulo="Lições concluídas (7 dias)"
                   valor={vazio ? "—" : lic7}
+                  unidade={lic7 === 1 ? "lição" : "lições"}
                   tendencia={
                     vazio ? null : (
                       <Tendencia
@@ -472,28 +473,30 @@ function Resumo({
                       />
                     )
                   }
+                  ajuda="Lições terminadas até o fim nos últimos 7 dias. A seta compara com os 7 dias anteriores."
                 />
                 <KPI
-                  icone="ui/estrela"
-                  rotulo="Estrelas"
-                  valor={m.estrelas || "—"}
+                  icone="ui/sol"
+                  rotulo="Tempo jogando hoje"
+                  valor={m.tempoHoje > 0 ? duracao(m.tempoHoje) : "—"}
                 />
-                <KPI icone={nj.icone} rotulo="Nível" valor={nAtual} />
               </div>
-              <Cartao titulo="Minutos por dia">
-                <BarrasDias dados={m.porDia} />
-              </Cartao>
+              {!baixa && grafico}
             </>
           ),
         },
+        ...(baixa ? [{ titulo: "Minutos por dia", conteudo: grafico }] : []),
         {
-          titulo: "Leitura e jornada",
+          titulo: "Leitura",
           conteudo: (
             <>
-              <Cartao titulo="Leitura">
+              <Cartao
+                titulo="Leitura · últimas 60 palavras"
+                ajuda="Cada palavra montada ou encontrada nas lições conta uma vez. Comparamos as 60 mais recentes com as 60 anteriores."
+              >
                 <div className="flex items-start justify-around gap-4">
                   <div className="flex flex-col items-center gap-1.5">
-                    <Anel valor={m.semErro} rotulo="De primeira" />
+                    <Anel valor={m.semErro} rotulo="Acertou de primeira" />
                     <Tendencia
                       delta={evol}
                       texto={
@@ -503,16 +506,29 @@ function Resumo({
                       }
                     />
                   </div>
+                  {/* palavras com 2 erros ou mais (a conta é erros >= 2; 1 erro já aparece como "não acertou de primeira") */}
                   <Anel
-                    valor={m.comDica === null ? null : 1 - m.comDica}
-                    rotulo="Sem dica"
-                    cor="stroke-roxo"
+                    valor={m.comDica}
+                    rotulo="Errou 2 vezes ou mais"
+                    cor="stroke-coral"
                   />
                 </div>
               </Cartao>
-              <Cartao titulo={`Jornada · nível ${nAtual}`}>
-                <JornadaNiveis niveis={niveis} atual={nAtual} />
-              </Cartao>
+              <div className="grid grid-cols-2 gap-3">
+                <KPI
+                  icone="ui/estrela"
+                  rotulo="Estrelas ganhas (total)"
+                  valor={m.estrelas || "—"}
+                  ajuda="Cada lição dá de 1 a 3 estrelas, conforme os erros; vale a melhor vez."
+                />
+                <KPI
+                  icone={nj.icone}
+                  rotulo={`Nível da jornada · ${nj.nome}`}
+                  valor={nAtual}
+                  unidade="de 5"
+                  ajuda="Nível das palavras da próxima lição, de 1 (curtinhas) a 5 (gigantes). Veja o caminho na aba Jornada."
+                />
+              </div>
             </>
           ),
         },
@@ -539,16 +555,21 @@ function Licoes({ m }: { m: M }) {
               <div className="grid grid-cols-2 gap-3">
                 <KPI
                   icone="ui/mapa"
-                  rotulo="Concluídas"
+                  rotulo="Lições concluídas (desde o início)"
                   valor={m.licoes.length ? feitas : "—"}
+                  unidade={feitas === 1 ? "lição" : "lições"}
                 />
                 <KPI
                   icone="ui/sol"
-                  rotulo="Média"
+                  rotulo="Tempo médio por lição"
                   valor={m.mediaLicao ? duracao(m.mediaLicao) : "—"}
+                  ajuda="Média das lições terminadas até o fim (as deixadas no meio não entram)."
                 />
               </div>
-              <Cartao titulo="Acerto por exercício">
+              <Cartao
+                titulo="Acertou de primeira, por tipo de exercício"
+                ajuda="Porcentagem das palavras resolvidas sem nenhum erro em cada tipo de exercício, desde o início."
+              >
                 <BarrasH
                   itens={m.porJogo.map((j) => ({
                     chave: j.jogo,
@@ -566,7 +587,7 @@ function Licoes({ m }: { m: M }) {
           titulo: "Histórico",
           conteudo: (
             <>
-              <Cartao titulo="Sessões">
+              <Cartao titulo="Últimas 16 sessões de lição">
                 <LinhaTempo sessoes={sessoes} />
               </Cartao>
               <Cartao className="min-h-0 flex-1">
@@ -649,54 +670,78 @@ function Palavras({ m }: { m: M }) {
               <div className="grid grid-cols-2 gap-3">
                 <KPI
                   icone="ui/letras"
-                  rotulo="Lidas"
+                  rotulo="Palavras já lidas (desde o início)"
                   valor={m.palavras.length || "—"}
+                  unidade={m.palavras.length === 1 ? "palavra" : "palavras"}
                 />
                 <KPI
                   icone="ui/medalha"
-                  rotulo="Dominadas"
+                  rotulo="Palavras dominadas"
                   valor={m.palavras.length ? m.dominadas : "—"}
+                  ajuda="Palavras lidas 2 vezes ou mais, quase sem erro (no máximo 1 erro a cada 2 leituras)."
                 />
               </div>
-              <Cartao titulo="Mais difíceis">
-                {m.dificeis.length ? (
-                  <ul className="flex flex-wrap gap-2">
-                    {m.dificeis.slice(0, 10).map((w, i) => (
-                      <motion.li
-                        key={w.id}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ ...MOLA_ENTRADA, delay: i * 0.03 }}
-                        title={`${w.mediaErros.toFixed(1)} erros em média`}
-                        className={`rounded-full px-3 py-1 text-sm font-bold ${corErros(w.mediaErros)}`}
-                      >
-                        {nomeAnimal(w.id)}
-                      </motion.li>
-                    ))}
-                  </ul>
-                ) : (
-                  <span className="text-2xl font-extrabold text-roxo">—</span>
-                )}
-              </Cartao>
-              <Cartao titulo="Tempo × erros" className="min-h-0 flex-1">
-                <Dispersao
-                  preencher
-                  pontos={m.palavras.map((w) => ({
-                    id: w.id,
-                    x: w.mediaMs,
-                    y: w.mediaErros,
-                    rotulo: `${nomeAnimal(w.id)}: ${duracao(w.mediaMs)}, ${w.mediaErros.toFixed(1)} erros`,
-                  }))}
+              <Cartao
+                titulo="Palavras mais difíceis (desde o início)"
+                ajuda="Total de tentativas erradas e em quantas leituras a palavra apareceu, com o tempo de cada leitura. Das que mais erram por leitura para as que menos erram."
+              >
+                <RankingPalavras
+                  vazio="Nenhuma palavra com erro ainda"
+                  itens={m.dificeis.slice(0, 5).map((w) => {
+                    const a = ANIMAIS.find((x) => x.id === w.id);
+                    return {
+                      id: w.id,
+                      nome: nomeAnimal(w.id),
+                      arte: a ? arteDoAnimal(a) : undefined,
+                      erros: w.erros,
+                      vezes: w.vezes,
+                      ms: w.mediaMs,
+                    };
+                  })}
                 />
               </Cartao>
             </>
           ),
         },
         {
-          titulo: "Todas",
+          titulo: "Já domina e todas",
           conteudo: (
             <>
-              <Cartao className="min-h-0 flex-1">
+              <Cartao
+                titulo="Já domina"
+                ajuda="Palavras lidas 2 vezes ou mais, quase sem erro (no máximo 1 erro a cada 2 leituras)."
+              >
+                {m.dominadas ? (
+                  <ul className="flex flex-wrap gap-2">
+                    {m.palavras
+                      .filter((w) => w.vezes >= 2 && w.mediaErros < 0.5)
+                      .slice(0, 8)
+                      .map((w, i) => {
+                        const a = ANIMAIS.find((x) => x.id === w.id);
+                        return (
+                          <motion.li
+                            key={w.id}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ ...MOLA_ENTRADA, delay: i * 0.03 }}
+                            className="flex items-center gap-1.5 rounded-full bg-verde/15 py-1 pr-3 pl-1 text-sm font-bold text-verde-escuro"
+                          >
+                            {a && (
+                              <Arte src={arteDoAnimal(a)} className="size-6" />
+                            )}
+                            {nomeAnimal(w.id)}
+                          </motion.li>
+                        );
+                      })}
+                  </ul>
+                ) : (
+                  <span className="text-2xl font-extrabold text-roxo">—</span>
+                )}
+              </Cartao>
+              <Cartao
+                titulo="Todas as palavras lidas"
+                className="min-h-0 flex-1"
+              >
                 <Paginado
                   itens={[...m.palavras].sort(
                     (a, b) => b.mediaErros - a.mediaErros,
@@ -719,10 +764,14 @@ function Palavras({ m }: { m: M }) {
                         <span className="min-w-0 flex-1 truncate font-leitura font-bold text-roxo uppercase">
                           {a ? a.silabas.join("·") : w.id}
                         </span>
-                        <span
-                          className={`rounded-full px-2 py-0.5 text-xs font-bold ${corErros(w.mediaErros)}`}
-                        >
-                          {w.mediaErros.toFixed(1)}
+                        <span className="shrink-0 text-right text-xs leading-tight text-tinta-suave">
+                          <b
+                            className={`rounded-full px-2 py-0.5 ${corErros(w.mediaErros)}`}
+                          >
+                            {w.erros} {w.erros === 1 ? "erro" : "erros"}
+                          </b>{" "}
+                          em {w.vezes} {w.vezes === 1 ? "leitura" : "leituras"}{" "}
+                          · {Math.max(1, Math.round(w.mediaMs / 1000))} s
                         </span>
                       </li>
                     );
@@ -746,7 +795,7 @@ const CORES_CAIXAS = [
   "bg-verde",
 ];
 
-function CartasAba({ m, agora }: { m: M; agora: number }) {
+export function CartasAba({ m, agora }: { m: M; agora: number }) {
   const ordenadas = [...m.cartas].sort(
     (a, b) => a.caixa - b.caixa || a.proxima - b.proxima,
   );
@@ -763,33 +812,37 @@ function CartasAba({ m, agora }: { m: M; agora: number }) {
               <div className="grid grid-cols-2 gap-3">
                 <KPI
                   icone="ui/cartas"
-                  rotulo="Para revisar"
+                  rotulo="Cartas para revisar hoje"
                   valor={vazio ? "—" : m.paraHoje}
+                  unidade={m.paraHoje === 1 ? "carta" : "cartas"}
                 />
                 <KPI
                   icone="ui/medalha"
-                  rotulo="Dominadas"
-                  valor={vazio ? "—" : `${m.caixas[4]}/${m.cartas.length}`}
+                  rotulo="Cartas dominadas (caixa 5)"
+                  valor={vazio ? "—" : m.caixas[4]}
+                  unidade={`de ${m.cartas.length}`}
+                  ajuda="Uma carta é dominada quando foi lida certo várias vezes seguidas, em dias diferentes."
+                />
+                <KPI
+                  className="col-span-2"
+                  icone="ui/estrela"
+                  rotulo="Leu sozinho (sem ouvir antes)"
+                  valor={
+                    vistas ? `${Math.round((sozinho / vistas) * 100)}%` : "—"
+                  }
+                  unidade={vistas ? `${sozinho} de ${vistas} vezes` : undefined}
+                  ajuda="Vezes em que leu a carta antes de tocar no som, somando todas as cartas vistas até hoje."
                 />
               </div>
-              <Cartao titulo="Caixas">
+              <Cartao
+                titulo="Cartas por caixa (revisão espaçada)"
+                ajuda="Acertou, a carta sobe de caixa e volta mais tarde (1, 2, 4 dias...). Errou, volta para a caixa 1 e aparece de novo logo."
+              >
                 <BarraEmpilhada
                   valores={m.caixas}
                   nomes={NOMES_CAIXAS}
                   cores={CORES_CAIXAS}
                 />
-              </Cartao>
-              <Cartao titulo="Leu sozinho">
-                <div className="flex items-center gap-4">
-                  <Anel
-                    valor={vistas ? sozinho / vistas : null}
-                    rotulo=""
-                    tamanho={80}
-                  />
-                  <span className="text-2xl font-extrabold text-roxo">
-                    {vistas ? `${sozinho}/${vistas}` : "—"}
-                  </span>
-                </div>
               </Cartao>
             </>
           ),
@@ -812,13 +865,26 @@ function CartasAba({ m, agora }: { m: M; agora: number }) {
                     >
                       {c.caixa}
                     </span>
-                    <span className="min-w-0 flex-1 truncate font-bold text-roxo">
-                      {nomeAnimal(c.id)}
+                    <span className="flex min-w-0 flex-1 flex-col leading-tight">
+                      <span className="truncate font-bold text-roxo">
+                        {nomeAnimal(c.id)}
+                      </span>
+                      <span className="truncate text-xs text-tinta-suave">
+                        vista {c.vistas ?? 0}× · leu{" "}
+                        {noGenero(
+                          perfilPorId(alvoAtual())?.genero ?? "m",
+                          "sozinho",
+                          "sozinha",
+                        )}{" "}
+                        {c.sozinho ?? 0}×
+                      </span>
                     </span>
-                    <span className="text-xs text-tinta-suave">
-                      {c.proxima <= agora
-                        ? "hoje"
-                        : quando(c.proxima).slice(0, 5)}
+                    <span className="shrink-0 text-right text-xs leading-tight text-tinta-suave">
+                      {c.proxima <= agora ? (
+                        <b className="text-roxo">revisar hoje</b>
+                      ) : (
+                        <>volta {quando(c.proxima).slice(0, 5)}</>
+                      )}
                     </span>
                   </li>
                 )}
@@ -850,8 +916,10 @@ function NivelAba({ m }: { m: M }) {
               <div className="grid grid-cols-2 gap-3">
                 <KPI
                   icone={nv?.icone ?? "ui/escada"}
-                  rotulo={nv?.nome ?? "Nível"}
+                  rotulo={`Nível no último teste${nv ? ` · ${nv.nome}` : ""}`}
                   valor={m.nivel ? m.nivel.nivel : "—"}
+                  unidade="de 6"
+                  ajuda="Teste de leitura feito em Nível, no menu da criança. Vai de 1 (sílabas) a 6 (frases inteiras). A seta compara com o teste anterior."
                   tendencia={
                     <Tendencia
                       delta={subiu}
@@ -861,11 +929,15 @@ function NivelAba({ m }: { m: M }) {
                 />
                 <KPI
                   icone="ui/nivel"
-                  rotulo="Testes"
+                  rotulo="Testes de leitura feitos"
                   valor={m.nivs.length || "—"}
+                  unidade={m.nivs.length === 1 ? "teste" : "testes"}
                 />
               </div>
-              <Cartao titulo="Evolução" className="min-h-0 flex-1">
+              <Cartao
+                titulo="Nível em cada teste de leitura"
+                className="min-h-0 flex-1"
+              >
                 <LinhaEvolucao
                   preencher
                   pontos={m.nivs
@@ -880,7 +952,7 @@ function NivelAba({ m }: { m: M }) {
         {
           titulo: "Por nível",
           conteudo: (
-            <Cartao>
+            <Cartao titulo="Acertos no último teste, por nível">
               <ul className="flex flex-col gap-1">
                 {NIVEIS.map((x) => {
                   const ac = m.nivel?.acertos[x.n];
@@ -967,132 +1039,167 @@ function Ajustes({
   }
 
   return (
-    <div className="grid h-full grid-rows-[auto_auto_1fr] gap-2">
-      <Cartao titulo="Colocar o Pietro numa lição">
-        <div className="grid grid-cols-3 gap-1.5">
-          <Seletor
-            valor={pais}
-            onChange={(v) => {
-              setPais(v);
-              const t = TERRITORIOS.find((x) => x.pais === v);
-              setTerr(t?.id ?? "");
-              setFase(0);
-            }}
-            opcoes={PAISES.map((p) => [p.id, p.nome])}
-          />
-          <Seletor
-            valor={tSel?.id ?? ""}
-            onChange={(v) => {
-              setTerr(v);
-              setFase(0);
-            }}
-            opcoes={terrs.map((t) => [t.id, t.nome])}
-          />
-          <Seletor
-            valor={String(fase)}
-            onChange={(v) => setFase(Number(v))}
-            opcoes={(tSel?.fases ?? []).map((f, i) => [String(i), f.titulo])}
-          />
-        </div>
-        <p className="text-xs text-tinta-suave [@media(max-height:700px)]:hidden">
-          As lições antes dela ficam liberadas (estrelas já ganhas são
-          mantidas); dela em diante voltam a ficar por fazer. Figurinhas do
-          álbum não mudam.
-        </p>
-        <Acao
-          cor="roxo"
-          onClick={() =>
-            tSel &&
-            pedir(
-              `Colocar o Pietro em ${nomeFase(chaveFase(tSel.id, fase))}?`,
-              () =>
-                aplicar(
-                  colocarNaFase(dados, chaveFase(tSel.id, fase)),
-                  `Colocado em ${nomeFase(chaveFase(tSel.id, fase))}`,
-                ),
-            )
-          }
-        >
-          Colocar nesta lição
-        </Acao>
-      </Cartao>
-      <Cartao titulo="Outros ajustes">
-        {/* uma linha só no celular, para sobrar altura com o rodapé */}
-        <div className="grid grid-cols-4 gap-1.5 [&>button]:px-1.5 [&>button]:text-xs [&>button]:leading-tight sm:[&>button]:px-3 sm:[&>button]:text-sm">
-          <Acao
-            onClick={() =>
-              pedir("Deixar todas as cartas para revisar hoje?", () =>
-                aplicar(cartasParaHoje(dados), "Cartas liberadas para hoje"),
-              )
-            }
-          >
-            Cartas para hoje
-          </Acao>
-          <Acao
-            onClick={() =>
-              pedir("Zerar as cartas (todas voltam para a caixa 1)?", () =>
-                aplicar(zerarCartas(dados), "Cartas zeradas"),
-              )
-            }
-          >
-            Zerar cartas
-          </Acao>
-          <Acao onClick={exportar}>Baixar cópia</Acao>
-          <label className="grid cursor-pointer place-items-center rounded-md bg-fundo px-2 py-2 text-center text-xs font-bold text-roxo shadow-[0_3px_0_var(--color-linha)] active:translate-y-0.5">
-            Carregar cópia
-            <input
-              type="file"
-              accept="application/json"
-              className="hidden"
-              onChange={(e) =>
-                e.target.files?.[0] && importar(e.target.files[0])
-              }
-            />
-          </label>
-        </div>
-        <Acao
-          cor="perigo"
-          onClick={() =>
-            pedir(
-              "Recomeçar do zero? (estrelas, fases, figurinhas e cartas; o histórico de acompanhamento fica)",
-              () => aplicar(zerarTudo(dados), "Progresso recomeçado do zero"),
-            )
-          }
-        >
-          Recomeçar do zero
-        </Acao>
-      </Cartao>
-      <Cartao titulo="Voltar a um ponto anterior" className="min-h-0">
-        <Paginado
-          itens={copias}
-          porPagina={3}
-          vazio="Ainda não há cópias. Uma é guardada antes de cada ajuste e uma por dia."
-          render={(c, i) => (
-            <li key={i} className="flex items-center gap-2 py-1.5 text-sm">
-              <div className="min-w-0 flex-1 leading-tight">
-                <div className="truncate font-bold text-roxo">
-                  {quando(c.data)}
-                </div>
-                <div className="truncate text-xs text-tinta-suave">
-                  antes de: {c.motivo} ·{" "}
-                  {Object.keys(c.dados?.fases ?? {}).length} lições ·{" "}
-                  {c.dados?.animaisColetados?.length ?? 0} figurinhas
-                </div>
-              </div>
-              <Acao
-                onClick={() =>
-                  pedir(
-                    `Voltar o progresso para como estava em ${quando(c.data)}?`,
-                    () => aplicar(c.dados, `Voltou para ${quando(c.data)}`),
-                  )
-                }
+    <>
+      {/* Duas seções: corrigir (lição e outros ajustes) e voltar a uma cópia, com a altura toda para a lista */}
+      <Secoes
+        secoes={[
+          {
+            titulo: "Corrigir",
+            conteudo: (
+              <>
+                <Cartao titulo="Colocar o Pietro numa lição">
+                  <div className="grid grid-cols-3 gap-1.5">
+                    <Seletor
+                      valor={pais}
+                      onChange={(v) => {
+                        setPais(v);
+                        const t = TERRITORIOS.find((x) => x.pais === v);
+                        setTerr(t?.id ?? "");
+                        setFase(0);
+                      }}
+                      opcoes={PAISES.map((p) => [p.id, p.nome])}
+                    />
+                    <Seletor
+                      valor={tSel?.id ?? ""}
+                      onChange={(v) => {
+                        setTerr(v);
+                        setFase(0);
+                      }}
+                      opcoes={terrs.map((t) => [t.id, t.nome])}
+                    />
+                    <Seletor
+                      valor={String(fase)}
+                      onChange={(v) => setFase(Number(v))}
+                      opcoes={(tSel?.fases ?? []).map((f, i) => [
+                        String(i),
+                        f.titulo,
+                      ])}
+                    />
+                  </div>
+                  <p className="text-xs text-tinta-suave [@media(max-height:700px)]:hidden">
+                    As lições antes dela ficam liberadas (estrelas já ganhas são
+                    mantidas); dela em diante voltam a ficar por fazer.
+                    Figurinhas do álbum não mudam.
+                  </p>
+                  <Acao
+                    cor="roxo"
+                    onClick={() =>
+                      tSel &&
+                      pedir(
+                        `Colocar o Pietro em ${nomeFase(chaveFase(tSel.id, fase))}?`,
+                        () =>
+                          aplicar(
+                            colocarNaFase(dados, chaveFase(tSel.id, fase)),
+                            `Colocado em ${nomeFase(chaveFase(tSel.id, fase))}`,
+                          ),
+                      )
+                    }
+                  >
+                    Colocar nesta lição
+                  </Acao>
+                </Cartao>
+                <Cartao titulo="Outros ajustes">
+                  {/* uma linha só no celular, para sobrar altura com o rodapé */}
+                  <div className="grid grid-cols-4 gap-1.5 [&>button]:px-1.5 [&>button]:text-xs [&>button]:leading-tight sm:[&>button]:px-3 sm:[&>button]:text-sm">
+                    <Acao
+                      onClick={() =>
+                        pedir("Deixar todas as cartas para revisar hoje?", () =>
+                          aplicar(
+                            cartasParaHoje(dados),
+                            "Cartas liberadas para hoje",
+                          ),
+                        )
+                      }
+                    >
+                      Cartas para hoje
+                    </Acao>
+                    <Acao
+                      onClick={() =>
+                        pedir(
+                          "Zerar as cartas (todas voltam para a caixa 1)?",
+                          () => aplicar(zerarCartas(dados), "Cartas zeradas"),
+                        )
+                      }
+                    >
+                      Zerar cartas
+                    </Acao>
+                    <Acao onClick={exportar}>Baixar cópia</Acao>
+                    <label className="grid cursor-pointer place-items-center rounded-md bg-fundo px-2 py-2 text-center text-xs font-bold text-roxo shadow-[0_3px_0_var(--color-linha)] active:translate-y-0.5">
+                      Carregar cópia
+                      <input
+                        type="file"
+                        accept="application/json"
+                        className="hidden"
+                        onChange={(e) =>
+                          e.target.files?.[0] && importar(e.target.files[0])
+                        }
+                      />
+                    </label>
+                  </div>
+                  <Acao
+                    cor="perigo"
+                    onClick={() =>
+                      pedir(
+                        "Recomeçar do zero? (estrelas, fases, figurinhas e cartas; o histórico de acompanhamento fica)",
+                        () =>
+                          aplicar(
+                            zerarTudo(dados),
+                            "Progresso recomeçado do zero",
+                          ),
+                      )
+                    }
+                  >
+                    Recomeçar do zero
+                  </Acao>
+                </Cartao>
+              </>
+            ),
+          },
+          {
+            titulo: "Voltar a um ponto anterior",
+            conteudo: (
+              <Cartao
+                titulo="Voltar a um ponto anterior"
+                className="min-h-0 flex-1"
               >
-                Voltar
-              </Acao>
-            </li>
-          )}
-        />
-      </Cartao>
+                <Paginado
+                  itens={copias}
+                  porPagina={3}
+                  vazio="Ainda não há cópias. Uma é guardada antes de cada ajuste e uma por dia."
+                  render={(c, i) => (
+                    <li
+                      key={i}
+                      className="flex items-center gap-2 py-1.5 text-sm"
+                    >
+                      <div className="min-w-0 flex-1 leading-tight">
+                        <div className="truncate font-bold text-roxo">
+                          {quando(c.data)}
+                        </div>
+                        <div className="truncate text-xs text-tinta-suave">
+                          antes de: {c.motivo} ·{" "}
+                          {Object.keys(c.dados?.fases ?? {}).length} lições ·{" "}
+                          {c.dados?.animaisColetados?.length ?? 0} figurinhas
+                        </div>
+                      </div>
+                      <Acao
+                        onClick={() =>
+                          pedir(
+                            `Voltar o progresso para como estava em ${quando(c.data)}?`,
+                            () =>
+                              aplicar(c.dados, `Voltou para ${quando(c.data)}`),
+                          )
+                        }
+                      >
+                        Voltar
+                      </Acao>
+                    </li>
+                  )}
+                />
+              </Cartao>
+            ),
+          },
+        ]}
+      />
 
       <AnimatePresence>
         {confirmar && (
@@ -1141,7 +1248,7 @@ function Ajustes({
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </>
   );
 }
 
@@ -1193,7 +1300,7 @@ function Seletor({
     <select
       value={valor}
       onChange={(e) => onChange(e.target.value)}
-      className="h-12 min-w-0 rounded-md border border-linha bg-fundo px-2 text-xs font-bold text-roxo transition-[box-shadow,translate] duration-150 hover:-translate-y-px hover:shadow-suave focus:ring-2 focus:ring-amarelo focus:outline-none active:translate-y-px sm:text-sm"
+      className="h-12 w-full min-w-0 truncate rounded-md border border-linha bg-fundo px-2 text-xs font-bold text-roxo transition-[box-shadow,translate] duration-150 hover:-translate-y-px hover:shadow-suave focus:ring-2 focus:ring-amarelo focus:outline-none active:translate-y-px sm:text-sm"
     >
       {opcoes.map(([v, n]) => (
         <option key={v} value={v}>

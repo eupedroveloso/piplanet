@@ -4,7 +4,7 @@
  * com SENHA_PAIS no ambiente), conferida no servidor.
  * Cada perfil tem o próprio progresso salvo no aparelho.
  */
-export type PerfilId = "pietro" | "perola" | "pais";
+export type PerfilId = "pietro" | "perola" | "pais" | "visitante";
 
 export interface Perfil {
   id: PerfilId;
@@ -18,16 +18,22 @@ export interface Perfil {
   genero: "m" | "f";
   /** Todos os países, biomas e lições abertos (sem precisar completar a sequência). */
   tudoLiberado?: boolean;
+  /**
+   * Visitante: só entra pelo link /visitante (não aparece na tela de entrada nem no painel dos Pais)
+   * e o progresso fica só no aparelho (não vai para o banco).
+   */
+  visitante?: boolean;
 }
 
 export const PERFIS: Perfil[] = [
   { id: "pietro", nome: "Pietro", avatar: "mascote/pietro-rosto", temSenha: false, personagem: "pietro", genero: "m" },
   { id: "perola", nome: "Pérola", avatar: "mascote/perola-rosto", temSenha: false, personagem: "perola", genero: "f" },
+  { id: "visitante", nome: "Visitante", avatar: "mascote/pietro-rosto", temSenha: false, personagem: "pietro", genero: "m", visitante: true },
   { id: "pais", nome: "Pais", avatar: "animais/coruja", temSenha: true, personagem: "pietro", genero: "m", tudoLiberado: true },
 ];
 
 /** As crianças (perfis sem senha), acompanhadas pelos Pais no painel. */
-export const CRIANCAS = () => PERFIS.filter((p) => !p.temSenha);
+export const CRIANCAS = () => PERFIS.filter((p) => !p.temSenha && !p.visitante);
 
 /** Palavra no gênero do perfil: sozinho/sozinha, Explorador/Exploradora. */
 export const noGenero = (g: "m" | "f", masc: string, fem: string) => (g === "f" ? fem : masc);

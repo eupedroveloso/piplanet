@@ -114,7 +114,8 @@ export function Ajustes() {
         </span>
       </motion.button>
 
-      {/* Trocar de conta (para adultos) */}
+      {/* Trocar de conta (para adultos). O visitante não vê: senão entraria no progresso do Pietro ou da Pérola */}
+      {!perfil.visitante && (
       <motion.button
         type="button"
         onClick={() => setPortao(true)}
@@ -128,6 +129,7 @@ export function Ajustes() {
         Trocar de conta
         <Arte nome="ui/cadeado" className="size-4 opacity-60" />
       </motion.button>
+      )}
 
       <AnimatePresence>{portao && <PortaoAdulto onFechar={() => setPortao(false)} onOk={trocarPerfil} />}</AnimatePresence>
     </main>
