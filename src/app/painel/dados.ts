@@ -1,5 +1,6 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import { ANIMAIS } from "@/content/animais";
 import { JOGOS, SEQUENCIA, TERRITORIOS, territorioPorId, type JogoId } from "@/content/jornada";
 import type { Progress, Sessao } from "@/lib/progress";
@@ -12,10 +13,30 @@ import type { Progress, Sessao } from "@/lib/progress";
  * Criança acompanhada no painel (Pietro ou Pérola). O seletor do painel troca com escolherAlvo()
  * e depois recarrega.
  */
-let ALVO = "pietro";
+const CHAVE_ALVO = "pg:alvo";
+/** Lida do sessionStorage ao carregar o módulo no navegador: a escolha vale entre as telas dos Pais. */
+let ALVO = (typeof window !== "undefined" && (() => { try { return sessionStorage.getItem(CHAVE_ALVO); } catch { return null; } })()) || "pietro";
+const ouvintesAlvo = new Set<() => void>();
 export const alvoAtual = () => ALVO;
 export function escolherAlvo(id: string) {
   ALVO = id;
+  try {
+    sessionStorage.setItem(CHAVE_ALVO, id);
+  } catch {
+    /* modo privado: vale só nesta tela */
+  }
+  ouvintesAlvo.forEach((f) => f());
+}
+/** Criança escolhida, reativa (no servidor assume o Pietro; no navegador lê a escolha guardada). */
+export function useAlvo(): string {
+  return useSyncExternalStore(
+    (f) => {
+      ouvintesAlvo.add(f);
+      return () => ouvintesAlvo.delete(f);
+    },
+    alvoAtual,
+    () => "pietro",
+  );
 }
 const CHAVE_LOCAL_DE = () => `pg:progress:v3:${ALVO}`;
 const CHAVE_COPIAS_DE = () => `pg:copias:${ALVO}`;

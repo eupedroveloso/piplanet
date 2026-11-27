@@ -14,13 +14,60 @@ const pct = (v: number | null) => (v === null ? "—" : `${Math.round(v * 100)}%
 
 // ── Moldura ──────────────────────────────────────────────────────────────────
 
-export function Cartao({ titulo, acao, children, className = "" }: { titulo?: string; acao?: ReactNode; children: ReactNode; className?: string }) {
+/**
+ * "?" discreto que abre uma explicação de 1 frase (toque abre/fecha; tocar fora fecha).
+ * Visual de 22 px, mas a área de toque tem 48 px (margem negativa: não empurra o layout).
+ */
+export function Ajuda({ texto }: { texto: string }) {
+  const [aberta, setAberta] = useState(false);
+  return (
+    <span className="relative -m-3 shrink-0">
+      <motion.button
+        type="button"
+        aria-label="O que é isto?"
+        aria-expanded={aberta}
+        onClick={(e) => {
+          e.stopPropagation();
+          setAberta((a) => !a);
+        }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.88 }}
+        className="grid size-12 place-items-center"
+      >
+        <span className={`grid size-[22px] place-items-center rounded-full text-xs font-extrabold transition-colors duration-200 ${aberta ? "bg-roxo text-branco" : "bg-roxo-claro text-roxo"}`}>?</span>
+      </motion.button>
+      <AnimatePresence>
+        {aberta && (
+          <>
+            <span className="fixed inset-0 z-30" onClick={() => setAberta(false)} aria-hidden />
+            <motion.span
+              role="tooltip"
+              initial={{ opacity: 0, y: -4, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -4, transition: { duration: 0.12 } }}
+              transition={MOLA_ENTRADA}
+              onClick={() => setAberta(false)}
+              className="absolute top-full right-1 z-40 w-56 rounded-xl bg-tinta px-3 py-2.5 text-left text-xs leading-snug font-semibold text-branco shadow-suave normal-case tracking-normal"
+            >
+              {texto}
+            </motion.span>
+          </>
+        )}
+      </AnimatePresence>
+    </span>
+  );
+}
+
+export function Cartao({ titulo, ajuda, acao, children, className = "" }: { titulo?: string; ajuda?: string; acao?: ReactNode; children: ReactNode; className?: string }) {
   return (
     <section className={`flex min-h-0 flex-col gap-3 rounded-2xl bg-branco p-4 shadow-suave ${className.includes("flex-1") ? "" : "shrink-0"} ${className}`}>
-      {(titulo || acao) && (
+      {(titulo || acao || ajuda) && (
         <div className="flex items-center justify-between gap-2">
           {titulo && <h2 className="text-xs font-extrabold tracking-wide text-tinta-suave uppercase">{titulo}</h2>}
-          {acao}
+          <span className="flex items-center gap-2">
+            {acao}
+            {ajuda && <Ajuda texto={ajuda} />}
+          </span>
         </div>
       )}
       {children}
@@ -44,8 +91,28 @@ export function Tendencia({ delta, texto, invertido = false }: { delta: number |
   );
 }
 
-/** Cartão de indicador compacto (do tamanho do conteúdo): ícone + rótulo curto, número grande e chip de tendência. */
-export function KPI({ icone, valor, rotulo, tendencia, className = "" }: { icone: string; valor: ReactNode; rotulo: string; tendencia?: ReactNode; className?: string }) {
+/**
+ * Cartão de indicador: rótulo que diz O QUE é e de QUAL período (pode quebrar em 2 linhas, sem truncar),
+ * número grande com a unidade junto, chip de tendência e, se precisar, um "?" com 1 frase de explicação.
+ */
+export function KPI({
+  icone,
+  valor,
+  unidade,
+  rotulo,
+  tendencia,
+  ajuda,
+  className = "",
+}: {
+  icone: string;
+  valor: ReactNode;
+  unidade?: string;
+  rotulo: string;
+  tendencia?: ReactNode;
+  ajuda?: string;
+  className?: string;
+}) {
+  const vazio = valor === "—";
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
@@ -54,12 +121,16 @@ export function KPI({ icone, valor, rotulo, tendencia, className = "" }: { icone
       transition={MOLA_ENTRADA}
       className={`flex min-w-0 shrink-0 flex-col gap-1.5 rounded-2xl bg-branco p-4 shadow-suave ${className}`}
     >
-      <span className="flex items-center gap-1.5">
+      <span className="flex items-start gap-1.5">
         <Arte nome={icone} className="size-5 shrink-0" />
-        <span className="truncate text-xs font-bold text-tinta-suave">{rotulo}</span>
+        <span className="min-w-0 flex-1 text-xs leading-snug font-bold text-tinta-suave">{rotulo}</span>
+        {ajuda && <Ajuda texto={ajuda} />}
       </span>
-      <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
-        <span className="text-2xl leading-none font-extrabold text-roxo">{valor}</span>
+      <span className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+        <span className="text-2xl leading-none font-extrabold text-roxo">
+          {valor}
+          {unidade && !vazio && <span className="ml-1 text-sm font-bold text-tinta-suave">{unidade}</span>}
+        </span>
         {tendencia}
       </span>
     </motion.div>
@@ -212,11 +283,12 @@ export function LinhaTempo({ sessoes }: { sessoes: { inicio: number; fim: number
       </div>
       <div className="flex justify-between text-xs text-tinta-suave">
         <span>{new Date(sessoes[0].inicio).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })}</span>
-        <span className="flex items-center gap-3">
-          <span className="flex items-center gap-1"><i className="size-2.5 rounded-sm bg-verde" />feita</span>
-          <span className="flex items-center gap-1"><i className="size-2.5 rounded-sm bg-coral" />parou</span>
-        </span>
         <span>hoje</span>
+      </div>
+      <div className="flex items-center gap-4 text-xs text-tinta">
+        <span className="flex items-center gap-1.5"><i className="size-2.5 rounded-sm bg-verde" />concluída</span>
+        <span className="flex items-center gap-1.5"><i className="size-2.5 rounded-sm bg-coral" />parou no meio</span>
+        <span className="ml-auto text-tinta-suave">altura = duração</span>
       </div>
     </div>
   );
@@ -245,6 +317,66 @@ export function Dispersao({ pontos, preencher = false }: { pontos: { id: string;
         ))}
       </div>
     </div>
+  );
+}
+
+const leituras = (n: number) => `${n} ${n === 1 ? "leitura" : "leituras"}`;
+
+/**
+ * Ranking de palavras (bichos): arte + nome, TOTAL de erros "em N leituras" e tempo por leitura em segundos
+ * inteiros (sem casas decimais). A ordem e o tamanho da barra usam a proporção erros/leitura.
+ */
+export function RankingPalavras({
+  itens,
+  vazio = "Nenhuma ainda",
+}: {
+  itens: { id: string; nome: string; arte?: string; erros: number; vezes: number; ms: number }[];
+  vazio?: string;
+}) {
+  if (!itens.length) return <p className="text-sm text-tinta-suave">{vazio}</p>;
+  const peso = (i: { erros: number; vezes: number }) => i.erros / Math.max(1, i.vezes);
+  const max = Math.max(1e-9, ...itens.map(peso));
+  return (
+    <ul className="flex flex-col gap-2.5">
+      {itens.map((it, k) => {
+        const p = peso(it);
+        const cor = p >= 2 ? "coral" : p > 0.5 ? "amarelo" : "verde";
+        return (
+          <motion.li
+            key={it.id}
+            initial={{ opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ ...MOLA_ENTRADA, delay: k * 0.05 }}
+            className="flex items-center gap-2.5"
+          >
+            <span className="w-4 shrink-0 text-right text-xs font-extrabold text-tinta-suave">{k + 1}</span>
+            {it.arte ? <Arte src={it.arte} className="size-8 shrink-0" /> : <span className="size-8 shrink-0" />}
+            <span className="flex min-w-0 flex-1 flex-col gap-1">
+              <span className="flex items-baseline justify-between gap-2">
+                <span className="truncate text-sm font-bold text-roxo">{it.nome}</span>
+                <span className="shrink-0 text-xs text-tinta-suave">
+                  <b className={cor === "coral" ? "text-coral-escuro" : cor === "amarelo" ? "text-amarelo-escuro" : "text-verde-escuro"}>
+                    {it.erros} {it.erros === 1 ? "erro" : "erros"}
+                  </b>{" "}
+                  em {leituras(it.vezes)}
+                </span>
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="h-2 flex-1 overflow-hidden rounded-full bg-linha/70">
+                  <motion.span
+                    initial={{ width: 0 }}
+                    animate={{ width: `${(p / max) * 100}%` }}
+                    transition={{ ...MOLA_ENTRADA, delay: k * 0.05 }}
+                    className={`block h-full rounded-full ${cor === "coral" ? "bg-coral" : cor === "amarelo" ? "bg-amarelo" : "bg-verde"}`}
+                  />
+                </span>
+                <span className="w-16 shrink-0 text-right text-xs text-tinta-suave">{Math.max(1, Math.round(it.ms / 1000))} s/leitura</span>
+              </span>
+            </span>
+          </motion.li>
+        );
+      })}
+    </ul>
   );
 }
 
@@ -347,7 +479,7 @@ export function Secoes({ secoes }: { secoes: { titulo: string; conteudo: ReactNo
 
   if (largo || secoes.length === 1) {
     return (
-      <div className={`grid h-full min-h-0 content-start items-start gap-4 ${secoes.length > 1 ? "grid-cols-2" : ""}`}>
+      <div className={`grid h-full min-h-0 content-start items-start gap-4 ${secoes.length > 1 ? "grid-cols-2" : ""} ${secoes.length >= 3 ? "lg:grid-cols-3" : ""}`}>
         {secoes.map((s) => (
           <div key={s.titulo} className="flex h-full min-h-0 flex-col gap-3">
             {s.conteudo}

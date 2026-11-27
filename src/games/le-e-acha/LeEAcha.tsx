@@ -6,6 +6,7 @@ import { ANIMAIS, arteDoAnimal, type Animal } from "@/content/animais";
 import { animaisDoTerritorio, type Territorio } from "@/content/jornada";
 import { shuffle } from "@/lib/random";
 import { speak } from "@/lib/speech";
+import { somDeErro } from "@/lib/sons";
 import { falaDaSilaba } from "@/content/letras";
 import {
   Arte,
@@ -21,10 +22,9 @@ import { JogoFase, type RodadaProps } from "../comum/JogoFase";
  * LÊ E ACHA
  * A palavra aparece com as sílabas JÁ MONTADAS (GA · TO). Ele lê e toca no bicho certo.
  * Tocar numa sílaba lê só aquela sílaba (apoio à decodificação, sem entregar a palavra).
- * Bicho errado: balança e diz o nome dele ("esse é o pato"). Após 2 erros, o certo pula.
+ * Bicho errado: balança, faz um som de erro e diz o nome dele ("esse é o pato"). O certo NUNCA é mostrado.
  */
 
-const ERROS_ATE_DICA = 2;
 
 export function LeEAcha({
   territorio,
@@ -70,7 +70,6 @@ function RodadaAchar({
   const [opcoes] = useState(() =>
     montarOpcoes(animal, territorio, fase.distratores),
   );
-  const [erros, setErros] = useState(0);
   const [balancando, setBalancando] = useState<string | null>(null);
   const [lendo, setLendo] = useState<number | null>(null);
 
@@ -86,14 +85,12 @@ function RodadaAchar({
       acertar();
       return;
     }
-    setErros((e) => e + 1);
+    somDeErro();
     errar();
     setBalancando(a.id);
     setTimeout(() => setBalancando(null), 450);
     speak(`Esse é ${a.nome}.`);
   }
-
-  const dica = erros >= ERROS_ATE_DICA;
 
   return (
     <>
@@ -159,23 +156,15 @@ function RodadaAchar({
                 animate={
                   balancando === a.id
                     ? BALANCO
-                    : dica && certo && !acertou
-                      ? { y: [0, -10, 0] }
-                      : acertou && certo
+                    : acertou && certo
                         ? { scale: [1, 1.18, 1.08] }
                         : { x: 0, y: 0, scale: 1 }
                 }
-                transition={
-                  dica && certo && !acertou
-                    ? { duration: 1, repeat: Infinity, ease: "easeInOut" }
-                    : { duration: 0.4 }
-                }
+                transition={{ duration: 0.4 }}
                 className={`relative grid size-[var(--lado)] min-h-14 min-w-14 place-items-center rounded-xl bg-branco transition-[opacity,box-shadow] duration-300 sm:size-44 ${
                   acertou && certo
                     ? "shadow-[0_8px_0_var(--color-verde-escuro)] ring-4 ring-verde"
-                    : dica && certo
-                      ? "shadow-[0_8px_0_var(--color-amarelo-escuro)] ring-4 ring-amarelo"
-                      : "shadow-[0_8px_0_var(--t-chao)]"
+                    : "shadow-[0_8px_0_var(--t-chao)]"
                 } ${acertou && !certo ? "opacity-30" : ""}`}
               >
                 <Arte src={arteDoAnimal(a)} className="size-[70%] sm:size-32" />

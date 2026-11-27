@@ -18,7 +18,7 @@
      se não bater com o texto, gera de novo; se continuar errado, marca `suspeita` para revisão.
 3. **Nunca** usar modelos de conversa (`openai/gpt-audio*`) para voz: eles inventam palavras e trocam sons
    ("facenda", "EL sobremesa de balé"). Nunca usar o Magnific.
-4. Sílabas soltas são faladas com a vogal final aberta (`falaDaSilaba`: "to" → "tó"); letras pelo nome
+4. Sílabas são faladas como estão escritas, sem acento inventado (`falaDaSilaba`); acento só quando a palavra tem (o "á" de sabiá). Letras pelo nome, e "a", "i", "u" sem acento; letras pelo nome
    (`falaDaLetra`: "l" → "éle", "v" → "vê"). Sons curtos tocam na velocidade natural (não esticar).
 5. A voz do sistema (Web Speech) só toca se a voz natural **falhar de verdade**. Som bloqueado antes do primeiro
    toque espera e toca no primeiro toque. Um tocador só para o app inteiro (iPad/iPhone).

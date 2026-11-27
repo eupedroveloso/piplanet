@@ -14,6 +14,13 @@ const PAINEL = { href: "/painel", rotulo: "Painel", icone: "ui/nivel", fala: "Ap
 
 const AJUSTES = { href: "/ajustes", rotulo: "Ajustes", icone: "ui/ajustes", fala: "Ajustes" };
 
+/** Espelhos somente leitura da criança escolhida (conta Pais). */
+const ESPELHOS = [
+  { href: "/painel/jornada", rotulo: "Jornada", icone: "ui/mapa", fala: "Jornada da criança" },
+  { href: "/painel/cartas", rotulo: "Cartas", icone: "ui/cartas", fala: "Cartas da criança" },
+  { href: "/painel/album", rotulo: "Álbum", icone: "ui/album", fala: "Álbum da criança" },
+];
+
 const ITENS = [
   { href: "/", rotulo: "Jornada", icone: "ui/mapa", fala: "Mapa" },
   { href: "/cartas", rotulo: "Cartas", icone: "ui/cartas", fala: "Cartas dos bichos" },
@@ -30,9 +37,9 @@ const MotionLink = motion.create(Link);
 export function NavInferior() {
   const path = usePathname();
   const perfil = usePerfil();
-  // Adultos: Painel no lugar do Nível (cabe no celular). Todos: Ajustes no fim.
-  const itens = perfil.temSenha ? [PAINEL, ...ITENS.filter((i) => i.href !== "/nivelamento"), AJUSTES] : [...ITENS, AJUSTES];
-  const ativoRota = itens.find((it) => (it.href === "/" ? path === "/" : path.startsWith(it.href)))?.href;
+  // Adultos: só ESPELHOS da criança (não jogam): Painel, Jornada, Cartas e Álbum dela, e Ajustes no fim.
+  const itens = perfil.temSenha ? [PAINEL, ...ESPELHOS, AJUSTES] : [...ITENS, AJUSTES];
+  const ativoRota = itens.find((it) => (it.href === "/" || it.href === "/painel" ? path === it.href : path.startsWith(it.href)))?.href;
   const [tocado, setTocado] = useState<{ href: string; em: string } | null>(null);
   // A página fica guardada (escondida) pelo <Activity> do Next ao navegar: ao esconder, esquece o item tocado,
   // senão na volta a pílula ficaria na aba de onde se saiu

@@ -4,8 +4,8 @@
  * Escrito como se fala, para a voz não ler a letra solta em outra língua.
  */
 const NOMES: Record<string, string> = {
-  a: "á", b: "bê", c: "cê", d: "dê", e: "é", f: "éfe", g: "gê", h: "agá", i: "í", j: "jota", k: "cá",
-  l: "éle", m: "ême", n: "êne", o: "ó", p: "pê", q: "quê", r: "érre", s: "ésse", t: "tê", u: "ú", v: "vê",
+  a: "a", b: "bê", c: "cê", d: "dê", e: "é", f: "éfe", g: "gê", h: "agá", i: "i", j: "jota", k: "cá",
+  l: "éle", m: "ême", n: "êne", o: "ó", p: "pê", q: "quê", r: "érre", s: "ésse", t: "tê", u: "u", v: "vê",
   w: "dáblio", x: "xis", y: "ípsilon", z: "zê",
   á: "á com acento", à: "á com crase", â: "â com chapéu", ã: "á com til",
   é: "é com acento", ê: "ê com chapéu", í: "í com acento",
@@ -21,13 +21,9 @@ export function falaDaLetra(letra: string): string {
 export const TODAS_AS_LETRAS = Object.keys(NOMES);
 
 /**
- * Como a voz fala uma SÍLABA sozinha (vogal final aberta: "to" → "tó", "pe" → "pé", "pa" → "pá").
- * Sílaba solta sem acento é ambígua para a voz (to = "tu"? "tô"? "tó"?) e saía estranha; com a vogal final
- * marcada, ela soa clara e sempre igual.
+ * Como a voz fala uma SÍLABA: do jeito que está escrita, sem acento inventado. Acento só quando a palavra
+ * tem acento de verdade (ex.: o "á" de sabiá). Regra do dono: "vá-cá" e "gá-ló" soavam errados.
  */
 export function falaDaSilaba(silaba: string): string {
-  const s = silaba.toLowerCase();
-  if (/[áàâãéêíóôõú]/.test(s)) return s;
-  // vogal final aberta, como o dono pediu: "to" → "tó", "pe" → "pé", "ca" → "cá"
-  return s.replace(/a$/, "á").replace(/e$/, "é").replace(/o$/, "ó");
+  return silaba.toLowerCase();
 }

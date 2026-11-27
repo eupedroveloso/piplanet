@@ -19,6 +19,6 @@ Os jogos aparecem como **fases** dentro dos territórios da ilha.
 
 ## Regras de todo jogo
 
-- Seguir `docs/METODOLOGIA.md`: sem punição, dica automática, rodadas curtas com fim claro.
+- Seguir `docs/METODOLOGIA.md`: sem punição, erro com balanço e som (sem revelar a resposta), rodadas curtas com fim claro.
 - Ao terminar: `concluirFase(chave, estrelas, pontos)` e `ganharPatinhas()`. Cada bicho lido: `coletarAnimal(id)`.
 - Embaralhar só dentro de eventos (ex.: botão "Começar"), nunca durante a renderização.

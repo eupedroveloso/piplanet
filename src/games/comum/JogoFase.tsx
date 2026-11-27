@@ -52,7 +52,7 @@ export interface RodadaProps {
   territorio: Territorio;
   fase: Fase;
   acertou: boolean;
-  /** Chame a cada tentativa errada (não pune, só conta para as estrelas e a dica). */
+  /** Chame a cada tentativa errada (não pune, só conta para as estrelas). */
   errar: () => void;
   /** Chame quando o bicho for resolvido. */
   acertar: () => void;
@@ -454,6 +454,20 @@ export function JogoFase({
               )}
             </AnimatePresence>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Erro: a tela pisca em vermelho (rápido e suave, sem tremer nada). A chave muda a cada erro. */}
+      <AnimatePresence>
+        {errosFase > 0 && etapa === "jogando" && (
+          <motion.div
+            key={errosFase}
+            aria-hidden
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 1, 0] }}
+            transition={{ duration: 0.5, times: [0, 0.25, 1], ease: "easeOut" }}
+            className="pointer-events-none fixed inset-0 z-50 bg-coral/30 shadow-[inset_0_0_0_10px_var(--color-coral),inset_0_0_80px_var(--color-coral)]"
+          />
         )}
       </AnimatePresence>
     </div>
