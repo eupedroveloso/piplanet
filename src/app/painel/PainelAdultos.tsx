@@ -50,6 +50,7 @@ import {
   useTelaBaixa,
   Tendencia,
 } from "./graficos";
+import { EstudoAba, Recomendacoes } from "./estudo";
 
 /**
  * PAINEL DOS PAIS
@@ -57,12 +58,13 @@ import {
  * E permite corrigir: colocar numa fase, refazer cartas, recomeçar, voltar a uma cópia anterior.
  * Uma tela só, sem rolagem: abas e listas paginadas.
  */
-type Aba = "resumo" | "licoes" | "palavras" | "cartas" | "nivel" | "ajustes";
+type Aba = "resumo" | "estudo" | "licoes" | "palavras" | "nivel" | "ajustes";
 const ABAS: { id: Aba; nome: string; icone: string }[] = [
   { id: "resumo", nome: "Resumo", icone: "ui/estrela" },
+  // Estudo e reforço (as cartas continuam no espelho "Cartas" do rodapé)
+  { id: "estudo", nome: "Estudo", icone: "ui/sol" },
   { id: "licoes", nome: "Lições", icone: "ui/mapa" },
   { id: "palavras", nome: "Palavras", icone: "ui/letras" },
-  { id: "cartas", nome: "Cartas", icone: "ui/cartas" },
   { id: "nivel", nome: "Nível", icone: "ui/escada" },
   { id: "ajustes", nome: "Ajustes", icone: "ui/cadeado" },
 ];
@@ -267,11 +269,19 @@ export function PainelAdultos() {
               className="h-full"
             >
               {aba === "resumo" && (
-                <Resumo m={m} fases={base.fases} agora={agora} />
+                <Resumo
+                  m={m}
+                  fases={base.fases}
+                  agora={agora}
+                  p={base}
+                  nome={crianca.nome}
+                />
               )}
               {aba === "licoes" && <Licoes m={m} />}
               {aba === "palavras" && <Palavras m={m} />}
-              {aba === "cartas" && <CartasAba m={m} agora={agora} />}
+              {aba === "estudo" && (
+                <EstudoAba p={base} nome={crianca.nome} agora={agora} />
+              )}
               {aba === "nivel" && <NivelAba m={m} />}
               {aba === "ajustes" && (
                 <Ajustes dados={base} copias={copias} aplicar={aplicar} />
@@ -401,10 +411,14 @@ function Resumo({
   m,
   fases,
   agora,
+  p,
+  nome,
 }: {
   m: M;
   fases: Progress["fases"];
   agora: number;
+  p: Progress;
+  nome: string;
 }) {
   const vazio = !m.licoes.length && !m.sessoesCartas.length;
   const nAtual = nivelAtual(fases);
@@ -435,6 +449,13 @@ function Resumo({
   return (
     <Secoes
       secoes={[
+        // o mais importante para o pai/mãe vem primeiro
+        {
+          titulo: "O que fazer para errar menos",
+          conteudo: (
+            <Recomendacoes p={p} nome={nome} agora={agora} titulo={false} />
+          ),
+        },
         {
           titulo: "Últimos 7 dias",
           conteudo: (

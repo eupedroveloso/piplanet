@@ -9,7 +9,7 @@ import { somDeErro } from "@/lib/sons";
 import { falaDaLetra, falaDaSilaba } from "@/content/letras";
 import { fraseDe, PALAVRAS_EXTRAS } from "@/content/frases";
 import { Arte, BotaoRedondo, Casinha, Peca } from "@/components/ui";
-import { CirculoBicho, JogoFase, type RodadaProps } from "../comum/JogoFase";
+import { CirculoBicho, JogoFase, type ModoEstudo, type RodadaProps } from "../comum/JogoFase";
 
 /**
  * MONTA O BICHO (modo "silabas") e MONTA A SÍLABA (modo "letras").
@@ -29,8 +29,8 @@ const LETRAS_EXTRAS = "abcdefgijlmnoprstuvz";
 type Modo = "silabas" | "letras" | "frase";
 type Tile = { id: string; text: string; used: boolean };
 
-export function MontaOBicho({ territorio, faseIdx, modo }: { territorio: Territorio; faseIdx: number; modo: Modo }) {
-  return <JogoFase territorio={territorio} faseIdx={faseIdx} rodada={(p) => <RodadaMontar {...p} modo={modo} />} />;
+export function MontaOBicho({ territorio, faseIdx, modo, estudo }: { territorio: Territorio; faseIdx: number; modo: Modo; estudo?: ModoEstudo }) {
+  return <JogoFase territorio={territorio} faseIdx={faseIdx} estudo={estudo} rodada={(p) => <RodadaMontar {...p} modo={modo} />} />;
 }
 
 function pecasDeSilabas(animal: Animal, distratores: number): Tile[] {

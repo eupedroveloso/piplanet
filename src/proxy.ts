@@ -10,7 +10,7 @@ export async function proxy(request: NextRequest) {
   }
   // a conta Pais não joga: só vê o espelho das crianças no painel (jogo, mapa, cartas, álbum e nível levam ao painel)
   const caminho = request.nextUrl.pathname;
-  const deJogo = caminho === "/" || ["/jogar", "/nivelamento", "/cartas", "/album"].some((r) => caminho === r || caminho.startsWith(`${r}/`));
+  const deJogo = caminho === "/" || ["/jogar", "/nivelamento", "/cartas", "/album", "/estudo"].some((r) => caminho === r || caminho.startsWith(`${r}/`));
   if (perfil === "pais" && deJogo) return NextResponse.redirect(new URL("/painel", request.url));
   if (perfil) return NextResponse.next();
   const url = new URL("/entrar", request.url);
