@@ -16,7 +16,7 @@ import {
   MOLA_TOQUE,
   fonteQueCabe,
 } from "@/components/ui";
-import { JogoFase, type RodadaProps } from "../comum/JogoFase";
+import { JogoFase, type ModoEstudo, type RodadaProps } from "../comum/JogoFase";
 
 /**
  * LÊ E ACHA
@@ -29,14 +29,17 @@ import { JogoFase, type RodadaProps } from "../comum/JogoFase";
 export function LeEAcha({
   territorio,
   faseIdx,
+  estudo,
 }: {
   territorio: Territorio;
   faseIdx: number;
+  estudo?: ModoEstudo;
 }) {
   return (
     <JogoFase
       territorio={territorio}
       faseIdx={faseIdx}
+      estudo={estudo}
       rodada={(p) => <RodadaAchar {...p} />}
     />
   );

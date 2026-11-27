@@ -24,6 +24,7 @@ import { shuffle } from "@/lib/random";
 import { falarEmSequencia, speak, stopSpeaking } from "@/lib/speech";
 import { falarSobre, VOCE_SABIA } from "@/lib/falar-bicho";
 import { infoNivel } from "@/content/niveis";
+import type { TipoEstudo } from "@/lib/estudo";
 import {
   Arte,
   TrilhaProgresso,
@@ -60,22 +61,37 @@ export interface RodadaProps {
 
 type Etapa = "inicio" | "jogando" | "acertou" | "fim";
 
+/**
+ * Rodada fora da jornada (Estudo diário): fila de bichos pronta, sem concluir fase nem avançar no mapa.
+ * Ao terminar, chama `aoConcluir` e o botão do fim volta para `voltar`.
+ */
+export interface ModoEstudo {
+  tipo: TipoEstudo;
+  dia: string;
+  fase: Fase;
+  fila: Animal[];
+  voltar: string;
+  aoConcluir?: (r: { estrelas: number; erros: number }) => void;
+}
+
 export function JogoFase({
   territorio,
   faseIdx,
   rodada,
+  estudo,
 }: {
   territorio: Territorio;
   faseIdx: number;
   rodada: (p: RodadaProps) => ReactNode;
+  estudo?: ModoEstudo;
 }) {
-  const fase = territorio.fases[faseIdx];
+  const fase = estudo?.fase ?? territorio.fases[faseIdx];
   // Ilustrações de todos os bichos do bioma (usados nas rodadas e nas opções) prontas antes de começar
   const artesProntas = usePreCarregar(animaisDoTerritorio(territorio.id).map(arteDoAnimal));
   const { genero } = usePerfil();
   const info = JOGOS[fase.jogo];
   const chave = chaveFase(territorio.id, faseIdx);
-  const proxChave = SEQUENCIA[SEQUENCIA.indexOf(chave) + 1];
+  const proxChave = estudo ? undefined : SEQUENCIA[SEQUENCIA.indexOf(chave) + 1];
 
   const [etapa, setEtapa] = useState<Etapa>("inicio");
   const [fila, setFila] = useState<Animal[]>([]);
@@ -90,7 +106,7 @@ export function JogoFase({
   const animal = fila[indice];
 
   // Registro para o painel dos adultos: tempo da lição, erros e tempo de cada bicho
-  const [rastreio] = useState(() => new RastreioLicao({ tipo: "fase", chave, jogo: fase.jogo }));
+  const [rastreio] = useState(() => new RastreioLicao(estudo ? { tipo: estudo.tipo, chave: estudo.dia, jogo: fase.jogo } : { tipo: "fase", chave, jogo: fase.jogo }));
   // saiu no meio da lição (voltou ao mapa / fechou): guarda como não concluída
   // Com cacheComponents, o Next guarda esta tela escondida (<Activity>) ao sair. Ao esconder: fecha o registro,
   // para a voz e VOLTA A FASE PARA O INÍCIO, para que ao voltar ela recomece do zero (com instrução falada e
@@ -112,7 +128,7 @@ export function JogoFase({
 
   function comecar() {
     rastreio.comecar();
-    const nova = shuffle(animaisDaFase(territorio, fase)).slice(0, BICHOS_POR_FASE);
+    const nova = estudo ? estudo.fila : shuffle(animaisDaFase(territorio, fase)).slice(0, BICHOS_POR_FASE);
     setFila(nova);
     setIndice(0);
     setErrosBicho(0);
@@ -158,6 +174,13 @@ export function JogoFase({
     const total = pontosFase + PONTOS.fase;
     ganharPatinhas(PONTOS.fase);
     setPontosFase(total);
+    if (estudo) {
+      rastreio.fechar(true, estrelas);
+      estudo.aoConcluir?.({ estrelas, erros: errosFase });
+      setEtapa("fim");
+      speak(`Parabéns! Você ganhou ${estrelas} ${estrelas === 1 ? "estrela" : "estrelas"}!`);
+      return;
+    }
     concluirFase(chave, estrelas, total);
     if (proxChave) {
       const prox = territorioPorId(proxChave.split("/")[0]);
@@ -173,7 +196,7 @@ export function JogoFase({
 
   const topo = (
     <div className="flex items-center gap-2 pt-[env(safe-area-inset-top)] sm:gap-3">
-      <BotaoRedondoLink href="/" aria-label="Voltar ao mapa">
+      <BotaoRedondoLink href={estudo?.voltar ?? "/"} aria-label={estudo ? "Voltar ao estudo" : "Voltar ao mapa"}>
         <Arte nome="ui/voltar" className="size-7" />
       </BotaoRedondoLink>
       <div className="flex min-w-0 flex-1 justify-center">
@@ -191,7 +214,7 @@ export function JogoFase({
             >
               <Arte nome={info.icone} className="size-7 shrink-0" />
               <span className="truncate">
-                {territorio.nome} · {fase.titulo}
+                {estudo ? fase.titulo : `${territorio.nome} · ${fase.titulo}`}
               </span>
             </motion.span>
           )}
@@ -239,7 +262,7 @@ export function JogoFase({
               animate="dentro"
               variants={{ dentro: { transition: { staggerChildren: 0.06, delayChildren: 0.2 } } }}
             >
-              {animaisDaFase(territorio, fase)
+              {(estudo?.fila ?? animaisDaFase(territorio, fase))
                 .slice(0, 5)
                 .map((a) => (
                   <motion.button
@@ -305,7 +328,7 @@ export function JogoFase({
                     <Comemoracao raio={110} />
                   </motion.span>
                 )}
-                <h2 className="text-2xl font-extrabold text-roxo sm:text-4xl">{nivelNovo ? "Subiu de nível!" : "Fase concluída!"}</h2>
+                <h2 className="text-2xl font-extrabold text-roxo sm:text-4xl">{nivelNovo ? "Subiu de nível!" : estudo ? `${fase.titulo}: feito!` : "Fase concluída!"}</h2>
                 <Estrelas valor={estrelas} tamanho="lg" atraso={0.4} />
                 <motion.p
                   initial={{ opacity: 0, y: 8 }}
@@ -360,6 +383,18 @@ export function JogoFase({
                   transition={{ ...MOLA_ENTRADA, delay: 1.3 }}
                   className="flex w-full flex-col items-stretch gap-3 pt-2 sm:w-auto sm:flex-row sm:flex-wrap sm:justify-center"
                 >
+                  {estudo ? (
+                    <BotaoLink
+                      href={estudo.voltar}
+                      cor="verde"
+                      tamanho="lg"
+                      fala="Continuar o estudo"
+                      icone={<Arte nome="ui/bandeira" className="size-9" />}
+                    >
+                      Continuar
+                    </BotaoLink>
+                  ) : (
+                  <>
                   {/* Avançar sempre passa pelo mapa: lá o explorador anda pela trilha até a fase nova (mostra o progresso) */}
                   <BotaoLink
                     href="/"
@@ -382,6 +417,8 @@ export function JogoFase({
                   >
                     Jogar de novo
                   </Botao>
+                  </>
+                  )}
                 </motion.div>
               </Painel>
             </motion.div>

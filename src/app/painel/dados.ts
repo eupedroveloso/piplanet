@@ -170,7 +170,8 @@ export function metricas(p: Progress, agora: number) {
 
   // lições
   const licoes = sessoes.filter((s) => s.tipo === "fase");
-  const bichos = licoes.flatMap((s) => (s.bichos ?? []).map((b) => ({ ...b, jogo: s.jogo, data: s.inicio })));
+  // palavras lidas em qualquer lição: jornada, estudo do dia e reforço
+  const bichos = sessoes.filter((s) => s.tipo === "fase" || s.tipo === "estudo" || s.tipo === "reforco").flatMap((s) => (s.bichos ?? []).map((b) => ({ ...b, jogo: s.jogo, data: s.inicio })));
   const recentes = bichos.slice(-60);
   const semErro = recentes.length ? recentes.filter((b) => b.erros === 0).length / recentes.length : null;
   const comDica = recentes.length ? recentes.filter((b) => b.erros >= 2).length / recentes.length : null;

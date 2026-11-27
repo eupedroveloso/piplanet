@@ -46,8 +46,8 @@ export interface BichoSessao {
 
 /** Registro de uma sessão (lição, cartas ou nivelamento), para monitorar o aprendizado. */
 export interface Sessao {
-  tipo: "fase" | "cartas" | "nivelamento";
-  /** Fase: "territorio/indice". */
+  tipo: "fase" | "cartas" | "nivelamento" | "estudo" | "reforco";
+  /** Fase: "territorio/indice". Estudo e reforço: o dia ("AAAA-MM-DD"). */
   chave?: string;
   jogo?: string;
   inicio: number;
